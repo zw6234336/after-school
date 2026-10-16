@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#050816" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>" />
+    <title>作业星球</title>
+  </head>
+  <body>
+    <div id="app" class="app">
+      <div id="stage" class="stage"></div>
+
+      <header class="hud hud-top">
+        <div class="brand">
+          <span class="brand-logo" aria-hidden="true">🚀</span>
+          <div>
+            <h1 id="title">作业星球</h1>
+            <p id="subtitle"></p>
+          </div>
+        </div>
+        <div class="hud-actions">
+          <button id="btn-level" class="level-btn" type="button"><span class="lv-icon" aria-hidden="true">⭐</span><span class="lv-name">普通</span></button>
+          <div class="star-counter" id="star-counter" aria-label="获得的星星">
+            <span aria-hidden="true">⭐</span><b id="star-count">0</b>
+          </div>
+          <button id="btn-sound" class="icon-btn" type="button" aria-label="关闭声音">🔊</button>
+          <button id="btn-report" class="icon-btn" type="button" aria-label="家长报告" title="家长报告">📋</button>
+        </div>
+      </header>
+
+      <footer class="hud hud-bottom">
+        <div class="fuel">
+          <div class="fuel-label"><span>🔥 火箭燃料</span><b id="fuel-text">0%</b></div>
+          <div class="fuel-bar"><i id="fuel-fill"></i></div>
+          <p id="hint" class="hint"></p>
+        </div>
+      </footer>
+
+      <aside id="panel" class="panel" aria-live="polite"></aside>
+      <div id="modal" class="modal" hidden></div>
+      <div id="toast" class="toast" role="status"></div>
+      <div id="loading" class="loading"><div class="loading-rocket">🚀</div><p>正在飞往作业星球…</p></div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

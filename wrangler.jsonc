@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // 部署后的地址：https://after-school.<你的子域>.workers.dev
+  "name": "after-school",
+  "compatibility_date": "2026-10-01",
+  // 纯静态站点：只上传 vite 打包出来的 dist 目录
+  "assets": {
+    "directory": "./dist"
+  }
+}
