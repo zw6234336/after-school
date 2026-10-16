@@ -97,6 +97,18 @@ export class HomeworkScene extends EventTarget {
     this.focused = subjectId ? this.planets.find((p) => p.subject.id === subjectId) : null;
   }
 
+  /** 换难度后作业变了：星球和卫星重新生成，并播放出场动画 */
+  setHomework(homework) {
+    this.homework = homework;
+    this.focused = null;
+    this.hovered = null;
+    for (const planet of this.planets) planet.labelObj.removeFromParent();
+    this.scene.remove(this.orbit);
+    disposeTree(this.orbit);
+    this.#buildPlanets(true);
+    this.refresh();
+  }
+
   /** UI 面板挡住的区域（像素），相机会把星球移到剩下的可见区域中间 */
   setInset(inset) {
     this.inset = inset;
@@ -348,7 +360,7 @@ export class HomeworkScene extends EventTarget {
     rocket.add(this.rocketHit);
   }
 
-  #buildPlanets() {
+  #buildPlanets(animate = false) {
     const subjects = this.homework.subjects;
     const n = subjects.length;
     this.ringRadius = n <= 3 ? 6.2 : 6.2 + (n - 3) * 0.9;
@@ -415,7 +427,10 @@ export class HomeworkScene extends EventTarget {
       labelObj.position.set(0, -2.15, 0);
       group.add(labelObj);
 
-      return { subject, group, body, glow, moons, label, scale: 1, spin: 0.1 + i * 0.03, bob: i * 1.7, complete: false };
+      // 出场动画：依次从小变大，冒出一圈星星
+      const appear = animate ? -0.25 * i : 1;
+      if (animate) group.scale.setScalar(0.0001);
+      return { subject, group, body, glow, moons, label, labelObj, appear, scale: 1, spin: 0.1 + i * 0.03, bob: i * 1.7, complete: false };
     });
   }
 
@@ -532,7 +547,15 @@ export class HomeworkScene extends EventTarget {
     for (const planet of this.planets) {
       const active = planet === this.focused || planet.subject.id === this.hovered;
       planet.scale += ((active ? 1.12 : 1) - planet.scale) * Math.min(1, dt * 6);
-      planet.group.scale.setScalar(planet.scale);
+      if (planet.appear < 1) {
+        const before = planet.appear;
+        planet.appear = Math.min(1, planet.appear + dt * 1.4);
+        if (before <= 0 && planet.appear > 0) {
+          this.particles.emit(planet.group.getWorldPosition(v1), { count: 80, colors: [planet.subject.color, '#ffffff'], speed: 4, gravity: 0, life: 1 });
+        }
+      }
+      planet.group.scale.setScalar(planet.scale * easeOutBack(Math.max(0, planet.appear)));
+      planet.labelObj.visible = planet.appear > 0.4;
       planet.group.position.y = Math.sin(t * 0.8 + planet.bob) * 0.18;
       planet.body.rotation.y += dt * planet.spin;
       const glowTarget = planet.complete ? 2.2 : active ? 1.4 : 1.0;
@@ -670,6 +693,23 @@ export class HomeworkScene extends EventTarget {
 }
 
 // ---------- 小工具 ----------
+
+function easeOutBack(x) {
+  const c1 = 1.70158;
+  const c3 = c1 + 1;
+  return x <= 0 ? 0.0001 : 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+}
+
+function disposeTree(root) {
+  root.traverse((obj) => {
+    obj.geometry?.dispose();
+    const materials = Array.isArray(obj.material) ? obj.material : obj.material ? [obj.material] : [];
+    for (const m of materials) {
+      m.map?.dispose();
+      m.dispose();
+    }
+  });
+}
 
 function makeLabel(subject, onClick) {
   const el = document.createElement('button');

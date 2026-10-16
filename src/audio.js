@@ -100,16 +100,62 @@ class Sound {
 
 export const sound = new Sound();
 
+let speechToken = 0;
+
+function utterance(text, rate) {
+  const clean = text.replace(/[_＿]+/g, ' ');
+  const u = new SpeechSynthesisUtterance(clean);
+  u.lang = /[\u4e00-\u9fff]/.test(clean) ? 'zh-CN' : 'en-US';
+  u.rate = rate ?? (u.lang === 'en-US' ? 0.85 : 0.9);
+  u.pitch = 1.1;
+  return u;
+}
+
 export function speak(text) {
   const synth = window.speechSynthesis;
   if (!synth || sound.muted || !text) return;
+  speechToken++;
   synth.cancel();
-  const clean = text.replace(/[_＿]+/g, ' ');
-  const u = new SpeechSynthesisUtterance(clean);
-  u.lang = /[一-鿿]/.test(clean) ? 'zh-CN' : 'en-US';
-  u.rate = 0.9;
-  u.pitch = 1.1;
-  synth.speak(u);
+  synth.speak(utterance(text));
+}
+
+/** 一句一句地读，onStart(i) 用来高亮正在读的句子；返回一个停止函数 */
+export function speakSequence(texts, { onStart, onDone, rate } = {}) {
+  const synth = window.speechSynthesis;
+  if (!synth || sound.muted || texts.length === 0) {
+    onDone?.();
+    return () => {};
+  }
+  synth.cancel();
+  const token = ++speechToken;
+  let i = 0;
+  let finished = false;
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    onDone?.();
+  };
+  const next = () => {
+    if (token !== speechToken) return finish();
+    if (i >= texts.length) return finish();
+    const index = i++;
+    const u = utterance(texts[index], rate);
+    u.onstart = () => token === speechToken && onStart?.(index);
+    u.onend = next;
+    u.onerror = next;
+    synth.speak(u);
+  };
+  next();
+  return () => {
+    speechToken++;
+    synth.cancel();
+    finish();
+  };
+}
+
+export function stopSpeaking() {
+  speechToken++;
+  window.speechSynthesis?.cancel();
 }
 
 export const canSpeak = typeof window !== 'undefined' && 'speechSynthesis' in window;

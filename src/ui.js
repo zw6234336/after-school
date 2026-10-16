@@ -1,24 +1,45 @@
-import { isCorrect } from './checker.js';
+import { isCorrect, writingChecks } from './checker.js';
 import { questionStars, STARS } from './progress.js';
-import { sound, speak, canSpeak } from './audio.js';
+import { sound, speak, speakSequence, stopSpeaking, canSpeak } from './audio.js';
+import { LEVELS, levelInfo } from './data.js';
+import {
+  esc,
+  standardChip,
+  icanHtml,
+  taskStandards,
+  passageHtml,
+  vocabCardsHtml,
+  tileSource,
+  shuffledOrder,
+  tilesHtml,
+  checklistHtml,
+  writeHtml,
+  fluencyHtml,
+  standardsReportHtml,
+} from './lesson.js';
 
 const SHEET_MQ = window.matchMedia('(max-width: 760px), (orientation: portrait) and (max-width: 1100px)');
 const COARSE = window.matchMedia('(pointer: coarse)').matches;
 const MAX_TRIES = 3;
+const MAX_WPM = 250;
 
 const PRAISE = ['答对啦！', '太棒了！', '真厉害！', '完全正确！', '你是小天才！', '继续加油！'];
 const RETRY = ['再想想～', '差一点点！', '仔细看看题目哦', '别着急，再试一次'];
+const PRAISE_EN = ['Great job! 答对啦！', 'Awesome! 太棒了！', 'You got it! 完全正确！', 'Super! 真厉害！'];
+const RETRY_EN = ['Try again! 再想想～', 'So close! 差一点点！', 'Look again! 再仔细看看'];
 
-const esc = (s) =>
-  String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const pick = (list) => list[(Math.random() * list.length) | 0];
 
 export class UI {
-  constructor({ homework, progress, scene }) {
+  constructor({ homework, progress, scene, levels }) {
     this.homework = homework;
     this.progress = progress;
     this.scene = scene;
+    this.levels = levels;
     this.view = null;
+    this.introSeen = new Set();
+    this.drafts = {};
+    this.readerCollapsed = false;
 
     this.app = document.getElementById('app');
     this.panel = document.getElementById('panel');
@@ -30,6 +51,7 @@ export class UI {
     this.fuelFill = document.getElementById('fuel-fill');
     this.hint = document.getElementById('hint');
     this.soundBtn = document.getElementById('btn-sound');
+    this.levelBtn = document.getElementById('btn-level');
 
     document.getElementById('title').textContent = homework.title;
     document.title = homework.title;
@@ -43,6 +65,7 @@ export class UI {
       sound.click();
     });
     document.getElementById('btn-report').addEventListener('click', () => this.openReport());
+    this.levelBtn.addEventListener('click', () => this.openLevelPicker());
 
     scene.addEventListener('select', (e) => this.openSubject(e.detail.subjectId, e.detail.taskId));
     scene.addEventListener('rocket', () => this.#onRocket());
@@ -54,14 +77,24 @@ export class UI {
       const input = this.panel.querySelector('.answer-input');
       if (input) this.#answer(input.value);
     });
+    this.panel.addEventListener('input', (e) => {
+      if (e.target.classList.contains('write-input')) this.#onWriteInput(e.target);
+    });
     this.modal.addEventListener('click', (e) => this.#onModalClick(e));
     document.addEventListener('keydown', (e) => this.#onKey(e));
 
     new ResizeObserver(() => this.#syncInset()).observe(this.panel);
     SHEET_MQ.addEventListener('change', () => this.#syncInset());
 
-    this.shownStars = progress.stars();
     this.allDone = progress.remainingTasks() === 0;
+    this.#renderHud();
+  }
+
+  /** 换难度后：关掉面板，按新的作业刷新界面 */
+  setHomework(homework) {
+    this.homework = homework;
+    this.closePanel();
+    this.allDone = this.progress.remainingTasks() === 0;
     this.#renderHud();
   }
 
@@ -74,30 +107,58 @@ export class UI {
     sound.click();
     this.scene.focus(subject.id);
     const task = taskId && subject.tasks.find((t) => t.id === taskId);
-    if (task?.kind === 'quiz') this.openTask(subject, task);
+    if (task && task.kind !== 'check') this.openTask(subject, task);
     else this.#show({ type: 'subject', subject });
   }
 
   closePanel() {
+    this.#stopActivity();
     this.view = null;
     this.panel.classList.remove('open');
     this.app.classList.remove('panel-open');
     this.scene.focus(null);
     this.#syncInset();
-    window.speechSynthesis?.cancel();
+  }
+
+  /** 停掉正在进行的朗读和计时 */
+  #stopActivity() {
+    this.stopReading?.();
+    this.stopReading = null;
+    clearInterval(this.timer);
+    this.timer = null;
+    stopSpeaking();
   }
 
   #show(view) {
+    this.#stopActivity();
     this.view = view;
     this.panel.style.setProperty('--c', view.subject.color);
-    if (view.type === 'subject') this.panel.innerHTML = this.#subjectHtml(view.subject);
-    else if (view.type === 'quiz') this.panel.innerHTML = this.#quizHtml(view);
-    else this.panel.innerHTML = this.#summaryHtml(view);
+    const render = {
+      subject: () => this.#subjectHtml(view.subject),
+      intro: () => this.#introHtml(view),
+      quiz: () => this.#quizHtml(view),
+      summary: () => this.#summaryHtml(view),
+      write: () => this.#writeView(view),
+      fluency: () => this.#fluencyView(view),
+    }[view.type];
+    this.panel.innerHTML = render();
     this.panel.scrollTop = 0;
     this.panel.classList.add('open');
     this.app.classList.add('panel-open');
     this.#syncInset();
-    if (view.type === 'quiz' && !COARSE) this.panel.querySelector('.answer-input, .choice')?.focus({ preventScroll: true });
+    if (view.type === 'quiz' && !COARSE) this.panel.querySelector('.answer-input, .choice, .tile')?.focus({ preventScroll: true });
+  }
+
+  #head(title, sub, back = true) {
+    return `
+      <header class="panel-head">
+        ${back ? '<button class="icon-btn" data-action="back" aria-label="返回任务列表">←</button>' : ''}
+        <div class="ph-text">
+          <h2>${esc(title)}</h2>
+          <p>${esc(sub)}</p>
+        </div>
+        <button class="icon-btn close" data-action="close" aria-label="返回太空">✕</button>
+      </header>`;
   }
 
   #subjectHtml(subject) {
@@ -108,12 +169,21 @@ export class UI {
         const isDone = p.isDone(task);
         const f = p.taskFraction(task);
         const state = isDone ? 'done' : f > 0 ? 'partial' : '';
+        const stds = taskStandards(task);
+        const main = task.standard || stds[0];
         let meta;
         let action;
         if (task.kind === 'quiz') {
-          const solved = task.questions.filter((_, i) => p.record(task, i)?.solved).length;
-          meta = `${task.questions.length} 道题${solved ? ` · 已完成 ${solved} 道` : ''}`;
-          action = `<button class="btn ${isDone ? 'ghost' : 'primary'}" data-action="open-task" data-task="${esc(task.id)}">${isDone ? '看看' : solved ? '继续' : '开始'}</button>`;
+          const finished = task.questions.filter((_, i) => p.questionDone(task, i)).length;
+          meta = `${task.passage ? `📖 ${task.passage.title || '阅读'} · ` : ''}${task.questions.length} 道题${finished ? ` · 已完成 ${finished} 道` : ''}`;
+          action = `<button class="btn ${isDone ? 'ghost' : 'primary'}" data-action="open-task" data-task="${esc(task.id)}">${isDone ? '看看' : finished ? '继续' : '开始'}</button>`;
+        } else if (task.kind === 'write') {
+          meta = isDone ? (p.isVerified(task) ? '✅ 家长已检查' : '已交，等爸爸妈妈检查') : task.note || '写几句英语';
+          action = `<button class="btn ${isDone ? 'ghost' : 'primary'}" data-action="open-task" data-task="${esc(task.id)}">${isDone ? '修改' : '开始'}</button>`;
+        } else if (task.kind === 'fluency') {
+          const best = p.fluencyRuns(task).reduce((m, r) => Math.max(m, r.wpm), 0);
+          meta = best ? `最好成绩 ${best} WPM · 目标 ${task.fluency.goal}` : `${task.fluency.passage.words} words · 目标 ${task.fluency.goal} WPM`;
+          action = `<button class="btn ${isDone ? 'ghost' : 'primary'}" data-action="open-task" data-task="${esc(task.id)}">${isDone ? '再读一次' : '开始'}</button>`;
         } else {
           meta = task.note || '做完后点一下“完成啦”';
           action = `<button class="btn check ${isDone ? 'on' : ''}" data-action="toggle-check" data-task="${esc(task.id)}" aria-pressed="${isDone}">${isDone ? '✅ 已完成' : '完成啦'}</button>`;
@@ -122,7 +192,9 @@ export class UI {
           <li class="task-card ${state}">
             <span class="tc-moon" aria-hidden="true">${isDone ? '🌕' : f > 0 ? '🌓' : '🌑'}</span>
             <div class="tc-body">
+              ${stds.length ? `<div class="tc-stds">${stds.map(standardChip).join('')}</div>` : ''}
               <h3>${esc(task.title)}</h3>
+              ${main ? `<p class="tc-ican">🎯 ${esc(main.ican)}</p>` : ''}
               <p>${esc(meta)}</p>
               ${task.kind === 'quiz' && f > 0 && !isDone ? `<div class="tc-bar"><i style="width:${f * 100}%"></i></div>` : ''}
             </div>
@@ -143,72 +215,118 @@ export class UI {
       <ul class="task-list">${items}</ul>`;
   }
 
-  // ---------- 面板：答题 ----------
-
   openTask(subject, task) {
-    const qi = task.questions.findIndex((_, i) => !this.progress.record(task, i)?.solved);
-    if (qi === -1) this.#show({ type: 'summary', subject, task });
-    else this.#show({ type: 'quiz', subject, task, qi });
+    if (task.kind === 'write') return this.#show({ type: 'write', subject, task });
+    if (task.kind === 'fluency') return this.#show({ type: 'fluency', subject, task, step: 'listen', running: false });
+    if (task.kind !== 'quiz') return this.#show({ type: 'subject', subject });
+    const qi = task.questions.findIndex((_, i) => !this.progress.questionDone(task, i));
+    if (qi === -1) return this.#show({ type: 'summary', subject, task });
+    const started = task.questions.some((_, i) => this.progress.record(task, i));
+    if (task.passage && !started && !this.introSeen.has(task.id)) return this.#show({ type: 'intro', subject, task });
+    this.#show({ type: 'quiz', subject, task, qi });
   }
 
-  #quizHtml({ subject, task, qi }) {
+  // ---------- 读前准备 ----------
+
+  #introHtml({ subject, task }) {
+    const { passage } = task;
+    const kind = passage.genre === 'informational' ? ['text', '文章'] : ['story', '故事'];
+    return `
+      ${this.#head(task.title, `${subject.name} · Before you read · 读前准备`)}
+      ${icanHtml(task.standard || taskStandards(task)[0])}
+      <ol class="intro-steps">
+        ${
+          passage.vocab.length
+            ? `<li><span>1</span><div><b>Words to know</b><small>先认识这些新词，点一下听发音</small>${vocabCardsHtml(passage.vocab)}</div></li>`
+            : ''
+        }
+        <li><span>${passage.vocab.length ? 2 : 1}</span><div><b>Read the ${kind[0]}</b><small>读${kind[1]}《${esc(passage.title || task.title)}》，${passage.words} 个词。不认识的词可以点一下听</small></div></li>
+        <li><span>${passage.vocab.length ? 3 : 2}</span><div><b>Answer and find evidence</b><small>回答问题，并在文中找出证明答案的句子 🔍</small></div></li>
+      </ol>
+      <button class="btn primary wide" data-action="start-reading">Start reading · 开始阅读 →</button>`;
+  }
+
+  // ---------- 答题 ----------
+
+  #quizHtml(view) {
+    const { subject, task, qi } = view;
     const q = task.questions[qi];
     const rec = this.progress.record(task, qi);
+    const evidenceStage = !!(q.evidence && rec?.solved && !rec.evidenceDone);
+    view.stage = evidenceStage ? 'evidence' : 'answer';
+
     const dots = task.questions
       .map((_, i) => {
         const r = this.progress.record(task, i);
-        const cls = i === qi ? 'current' : !r?.solved ? '' : r.revealed ? 'revealed' : r.firstCorrect ? 'ok' : 'fixed';
+        let cls = '';
+        if (i === qi) cls = 'current';
+        else if (this.progress.questionDone(task, i)) cls = r.revealed ? 'revealed' : r.firstCorrect ? 'ok' : 'fixed';
+        else if (r?.solved) cls = 'partial';
         return `<li class="${cls}"></li>`;
       })
       .join('');
 
     let answerArea;
-    if (q.options) {
+    if (evidenceStage) {
+      answerArea = `<div class="answer-done">✅ <b>${esc(rec.revealed ? q.answers[0] : rec.last ?? q.answers[0])}</b></div>`;
+    } else if (q.type === 'choice') {
       answerArea = `<div class="choices">${q.options
         .map((o) => `<button type="button" class="choice" data-action="choose" data-value="${esc(o)}">${esc(o)}</button>`)
         .join('')}</div>`;
+    } else if (q.type === 'build' || q.type === 'order') {
+      if (this.tileState?.key !== q.key) this.tileState = { key: q.key, order: shuffledOrder(q), picked: [] };
+      answerArea = tilesHtml(q, this.tileState);
     } else {
       const mode = q.numeric ? (COARSE ? 'none' : 'decimal') : 'text';
       answerArea = `
         <form class="answer" autocomplete="off">
           <input class="answer-input ${q.numeric ? 'numeric' : ''}" inputmode="${mode}" enterkeyhint="done"
                  autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="40"
-                 placeholder="${q.numeric ? '?' : '在这里写答案'}" aria-label="答案" />
+                 placeholder="${q.numeric ? '?' : q.standard ? 'Type your answer' : '在这里写答案'}" aria-label="答案" />
           <button type="submit" class="btn primary">提交</button>
         </form>
         ${q.numeric ? keypadHtml() : ''}`;
     }
 
-    return `
-      <header class="panel-head">
-        <button class="icon-btn" data-action="back" aria-label="返回任务列表">←</button>
-        <div class="ph-text">
-          <h2>${esc(task.title)}</h2>
-          <p>${esc(subject.name)} · 第 ${qi + 1} / ${task.questions.length} 题</p>
-        </div>
-        <button class="icon-btn close" data-action="close" aria-label="返回太空">✕</button>
-      </header>
-      <ol class="dots" aria-hidden="true">${dots}</ol>
-      <section class="question">
+    const feedback = evidenceStage
+      ? '🔍 Now find the evidence! <small>再到文章里点出能证明答案的句子</small>'
+      : rec?.tries
+        ? `已经试了 ${rec.tries} 次，加油！`
+        : '';
+    const reader = task.passage
+      ? passageHtml(task.passage, { mode: evidenceStage ? 'evidence' : 'read', collapsed: !evidenceStage && this.readerCollapsed })
+      : '';
+
+    const question = `
+      <section class="question ${q.text.length > 24 ? 'long' : ''}">
         <div class="q-text">${esc(q.text)}</div>
         <div class="q-tools">
-          ${canSpeak ? '<button class="pill" data-action="speak">🔊 读题</button>' : ''}
-          ${q.hint ? '<button class="pill" data-action="hint">💡 提示</button>' : ''}
+          ${canSpeak ? `<button class="pill" data-action="speak">🔊 ${q.standard ? 'Listen' : '读题'}</button>` : ''}
+          ${q.hint && !evidenceStage ? '<button class="pill" data-action="hint">💡 提示</button>' : ''}
+          ${q.evidence && !evidenceStage ? '<span class="pill static">🔍 答对后要找证据</span>' : ''}
         </div>
-      </section>
-      <div class="feedback" role="status">${rec?.tries ? `已经试了 ${rec.tries} 次，加油！` : ''}</div>
-      ${answerArea}`;
+      </section>`;
+    const status = `<div class="feedback ${evidenceStage ? 'info' : ''}" role="status">${feedback}</div>`;
+    // 答题时先读文章再看题；找证据时题目和答案放上面，下面是要点句子的文章
+    const body = evidenceStage ? `${question}${answerArea}${status}${reader}` : `${reader}${question}${status}${answerArea}`;
+
+    return `
+      ${this.#head(task.title, `${subject.name} · 第 ${qi + 1} / ${task.questions.length} 题`)}
+      <ol class="dots" aria-hidden="true">${dots}</ol>
+      ${icanHtml(q.standard || task.standard)}
+      ${body}`;
   }
 
   #answer(value) {
     const view = this.view;
-    if (view?.type !== 'quiz' || this.busy) return;
+    if (view?.type !== 'quiz' || view.stage !== 'answer' || this.busy) return;
     const { subject, task, qi } = view;
     const q = task.questions[qi];
     if (!String(value).trim()) {
       this.#feedback('先写下你的答案吧～', 'info');
       return;
     }
+    const english = !!(q.standard || task.standard);
     const correct = isCorrect(q, value);
     const rec = this.progress.submit(task, qi, String(value).trim(), correct);
 
@@ -217,13 +335,19 @@ export class UI {
       sound.correct();
       this.scene.celebrate(subject.id, 'correct');
       const stars = questionStars(rec);
-      this.#feedback(`${pick(PRAISE)} ${stars ? `+${stars} ⭐` : ''}`, 'ok');
+      const next = q.evidence ? ' 🔍 Now find the evidence!' : '';
+      this.#feedback(`${pick(english ? PRAISE_EN : PRAISE)} ${stars ? `+${stars} ⭐` : ''}${next}`, 'ok');
       this.#lockAnswer(value);
       this.#flyStars(stars);
-      setTimeout(() => {
-        this.busy = false;
-        if (this.view === view) this.#nextQuestion();
-      }, 1100);
+      setTimeout(
+        () => {
+          this.busy = false;
+          if (this.view !== view) return;
+          if (q.evidence) this.#show(view);
+          else this.#nextQuestion();
+        },
+        q.evidence ? 1000 : 1100,
+      );
       return;
     }
 
@@ -241,14 +365,56 @@ export class UI {
     }
     if (rec.tries >= MAX_TRIES) {
       this.#feedback(
-        `正确答案是 <b>${esc(q.answers[0])}</b>，记住它哦！<button class="btn primary small" data-action="reveal">记住啦，下一题 →</button>`,
+        `正确答案是 <b>${esc(q.answers[0])}</b>，记住它哦！<button class="btn primary small" data-action="reveal">记住啦，${q.evidence ? '去找证据' : '下一题'} →</button>`,
         'reveal',
         true,
       );
       this.panel.querySelectorAll('.answer button, .answer input, .choice, .keypad button').forEach((el) => (el.disabled = true));
+      if (this.tileState && (q.type === 'build' || q.type === 'order')) this.#renderTiles(true);
     } else {
       const hint = q.hint && rec.tries >= 1 ? `<br/>💡 ${esc(q.hint)}` : '';
-      this.#feedback(`${pick(RETRY)}（还可以试 ${MAX_TRIES - rec.tries} 次）${hint}`, 'bad', true);
+      this.#feedback(`${pick(english ? RETRY_EN : RETRY)}（还可以试 ${MAX_TRIES - rec.tries} 次）${hint}`, 'bad', true);
+    }
+  }
+
+  /** 在文章里点句子找证据 */
+  #pickEvidence(si, el) {
+    const view = this.view;
+    if (this.busy || view.stage !== 'evidence') return;
+    const { subject, task, qi } = view;
+    const q = task.questions[qi];
+    const correct = q.evidence.includes(si);
+    const rec = this.progress.submitEvidence(task, qi, correct);
+    if (correct) {
+      this.busy = true;
+      view.stage = 'done';
+      el.classList.add('found');
+      sound.correct();
+      this.scene.celebrate(subject.id, 'correct');
+      const stars = rec.evidenceFirst ? STARS.evidence : 0;
+      this.#feedback(`🔍 You found the evidence! 找到证据啦 ${stars ? `+${stars} ⭐` : ''}`, 'ok');
+      this.#flyStars(stars, el);
+      setTimeout(() => {
+        this.busy = false;
+        if (this.view === view) this.#nextQuestion();
+      }, 1400);
+      return;
+    }
+    sound.wrong();
+    el.classList.remove('miss');
+    void el.offsetWidth;
+    el.classList.add('miss');
+    if (rec.evidenceTries >= MAX_TRIES) {
+      view.stage = 'done';
+      this.progress.revealEvidence(task, qi);
+      for (const i of q.evidence) this.panel.querySelector(`.sent[data-s="${i}"]`)?.classList.add('reveal');
+      this.#feedback(
+        '👀 The evidence is here. 证据在这里，读一读它<button class="btn primary small" data-action="evidence-next">Next · 下一题 →</button>',
+        'reveal',
+        true,
+      );
+    } else {
+      this.#feedback(`That sentence doesn’t prove it. Look again! 这句证明不了答案，再找找（还可以试 ${MAX_TRIES - rec.evidenceTries} 次）`, 'bad');
     }
   }
 
@@ -257,7 +423,7 @@ export class UI {
     const n = task.questions.length;
     for (let step = 1; step <= n; step++) {
       const i = (qi + step) % n;
-      if (!this.progress.record(task, i)?.solved) {
+      if (!this.progress.questionDone(task, i)) {
         this.#show({ type: 'quiz', subject, task, qi: i });
         return;
       }
@@ -270,6 +436,16 @@ export class UI {
     const btn = [...this.panel.querySelectorAll('.choice')].find((b) => b.dataset.value === value);
     btn?.classList.add('right');
     this.panel.querySelector('.answer-input')?.classList.add('right');
+    if (this.panel.querySelector('.tiles')) {
+      this.#renderTiles(true);
+      this.panel.querySelector('.tile-slots')?.classList.add('right');
+    }
+  }
+
+  #renderTiles(locked = false) {
+    const el = this.panel.querySelector('.tiles');
+    if (!el || this.view?.type !== 'quiz') return;
+    el.outerHTML = tilesHtml(this.view.task.questions[this.view.qi], this.tileState, locked);
   }
 
   #feedback(text, tone, html = false) {
@@ -281,8 +457,8 @@ export class UI {
     el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
-  #shake() {
-    const el = this.panel.querySelector('.question');
+  #shake(selector = '.question') {
+    const el = this.panel.querySelector(selector);
     el?.classList.remove('shake');
     void el?.offsetWidth;
     el?.classList.add('shake');
@@ -292,38 +468,173 @@ export class UI {
     const recs = task.questions.map((_, i) => this.progress.record(task, i));
     const firstTry = recs.filter((r) => r?.firstCorrect).length;
     const stars = recs.reduce((s, r) => s + questionStars(r), 0);
+    const evidenceQs = task.questions.filter((q) => q.evidence).length;
+    const evidenceFirst = task.questions.filter((q, i) => q.evidence && recs[i]?.evidenceFirst).length;
     const rows = task.questions
       .map((q, i) => {
         const r = recs[i];
         const mark = r?.firstCorrect ? '✅' : r?.revealed ? '👀' : '🔁';
         const extra = r?.firstCorrect ? '' : `<small>第一次写的是「${esc(r?.first ?? '')}」</small>`;
-        return `<li><span>${mark}</span><div><b>${esc(q.text)}</b><em>答案：${esc(q.answers[0])}</em>${extra}</div></li>`;
+        const evidence = q.evidence ? `<small class="ev">${r?.evidenceFirst ? '🔍 一次找到证据' : '🔍 找到了证据'}</small>` : '';
+        return `<li><span>${mark}</span><div>${standardChip(q.standard)}<b>${esc(q.text)}</b><em>答案：${esc(q.answers[0])}</em>${extra}${evidence}</div></li>`;
       })
       .join('');
     return `
-      <header class="panel-head">
-        <button class="icon-btn" data-action="back" aria-label="返回任务列表">←</button>
-        <div class="ph-text">
-          <h2>${esc(task.title)}</h2>
-          <p>${esc(subject.name)} · 已完成</p>
-        </div>
-        <button class="icon-btn close" data-action="close" aria-label="返回太空">✕</button>
-      </header>
+      ${this.#head(task.title, `${subject.name} · 已完成`)}
       <section class="summary">
         <div class="summary-badge">${firstTry === task.questions.length ? '🏆' : '🌟'}</div>
         <h3>${firstTry === task.questions.length ? '全部一次答对！' : '任务完成！'}</h3>
-        <p>一次答对 <b>${firstTry}</b> / ${task.questions.length} 题，获得 <b>${stars}</b> ⭐</p>
+        <p>一次答对 <b>${firstTry}</b> / ${task.questions.length} 题${evidenceQs ? `，一次找到证据 <b>${evidenceFirst}</b> / ${evidenceQs}` : ''}，获得 <b>${stars}</b> ⭐</p>
       </section>
       <ul class="review">${rows}</ul>
       <button class="btn primary wide" data-action="back">返回任务列表</button>`;
   }
 
+  // ---------- 写作 ----------
+
+  #writeView({ subject, task }) {
+    const text = this.drafts[task.id] ?? this.progress.writing(task);
+    return `
+      ${this.#head(task.title, `${subject.name} · Writing · 写作`)}
+      ${icanHtml(task.standard)}
+      ${writeHtml(task, text, writingChecks(task.write, text), this.progress.isDone(task))}`;
+  }
+
+  #onWriteInput(el) {
+    const { task } = this.view;
+    this.drafts[task.id] = el.value;
+    this.panel.querySelector('.checklist').innerHTML = checklistHtml(writingChecks(task.write, el.value));
+  }
+
+  #submitWriting(btn) {
+    const { task } = this.view;
+    const area = this.panel.querySelector('.write-input');
+    const text = area.value.trim();
+    const checks = writingChecks(task.write, text);
+    const passed = checks.every((c) => c.ok);
+    const wasDone = this.progress.isDone(task);
+    this.progress.saveWriting(task, text, passed);
+    delete this.drafts[task.id];
+    if (passed) {
+      sound.correct();
+      if (!wasDone) this.#flyStars(STARS.check, btn);
+      this.#feedback(wasDone ? 'Updated! 已更新，等爸爸妈妈检查' : 'Great writing! 写得真棒！已交给爸爸妈妈检查 ✅', 'ok');
+      btn.textContent = 'Update · 更新';
+    } else {
+      sound.wrong();
+      this.#shake('.checklist');
+      const missing = checks.filter((c) => !c.ok).map((c) => c.zh);
+      this.#feedback(`Almost there! 还差一点：${missing.join('；')}`, 'bad');
+    }
+  }
+
+  // ---------- 朗读 ----------
+
+  #fluencyView(view) {
+    const { subject, task } = view;
+    return `
+      ${this.#head(task.title, `${subject.name} · Fluency · 朗读`)}
+      ${icanHtml(task.standard)}
+      ${fluencyHtml(task, this.progress.fluencyRuns(task), { step: view.step, running: view.running, reading: !!this.stopReading })}`;
+  }
+
+  #startFluency() {
+    const view = this.view;
+    view.step = 'alone';
+    view.running = true;
+    this.#show(view);
+    const start = performance.now();
+    view.startedAt = start;
+    const time = this.panel.querySelector('.time');
+    this.timer = setInterval(() => {
+      time.textContent = `${((performance.now() - start) / 1000).toFixed(1)}s`;
+    }, 100);
+  }
+
+  #stopFluency(btn) {
+    const view = this.view;
+    const seconds = (performance.now() - view.startedAt) / 1000;
+    view.running = false;
+    const { task } = view;
+    const wpm = Math.round((task.fluency.passage.words / seconds) * 60);
+    // 小学生朗读一般不会超过每分钟 250 词，太快说明还没读完就点了
+    if (wpm > MAX_WPM) {
+      this.#show(view);
+      this.#feedback('太快啦，是不是还没读完？读完整篇再点“读完了”', 'info');
+      return;
+    }
+    const wasDone = this.progress.isDone(task);
+    this.progress.saveFluency(task, { wpm, seconds: Math.round(seconds * 10) / 10, at: Date.now() });
+    this.#show(view);
+    this.panel.querySelector('.time').textContent = `${seconds.toFixed(1)}s`;
+    const met = wpm >= task.fluency.goal;
+    this.#feedback(
+      `📣 ${wpm} words per minute! ${met ? '🎯 You met the goal! 达到目标啦' : `目标是 ${task.fluency.goal}，多读几遍会更流利`}`,
+      'ok',
+    );
+    sound.correct();
+    if (!wasDone) this.#flyStars(STARS.check, btn);
+  }
+
+  /** 一句一句读文章并高亮；再点一次停止 */
+  #toggleReading(passage, rate) {
+    if (this.stopReading) {
+      this.stopReading();
+      return;
+    }
+    if (sound.muted) {
+      this.toast('🔇 声音关着呢，点右上角的喇叭打开');
+      return;
+    }
+    const sentences = () => this.panel.querySelectorAll('.reader .sent');
+    let ended = false;
+    const stop = speakSequence(passage.sentences, {
+      rate,
+      onStart: (i) => sentences().forEach((el, j) => el.classList.toggle('speaking', i === j)),
+      onDone: () => {
+        ended = true;
+        sentences().forEach((el) => el.classList.remove('speaking'));
+        this.stopReading = null;
+        this.#refreshReadButtons();
+      },
+    });
+    if (!ended) this.stopReading = stop;
+    this.#refreshReadButtons();
+  }
+
+  #refreshReadButtons() {
+    const reading = !!this.stopReading;
+    const step = this.view?.step;
+    const set = (action, on, off) => {
+      const b = this.panel.querySelector(`[data-action="${action}"]`);
+      if (b) b.textContent = on ? '⏹ Stop' : off;
+    };
+    set('read-aloud', reading, '🔊 Read to me');
+    set('model-read', reading && step === 'listen', '🎧 Listen');
+    set('read-along', reading && step === 'along', '👀 Read along');
+  }
+
+  #sayWord(el) {
+    const view = this.view;
+    if (view?.running) return;
+    speak(el.textContent.replace(/[^A-Za-z'’-]/g, ''));
+    const passage = view?.task?.passage || view?.task?.fluency?.passage;
+    const v = el.dataset.vocab !== undefined && passage?.vocab[Number(el.dataset.vocab)];
+    if (v) this.toast(`${v.emoji} ${v.word}：${v.meaning}`);
+  }
+
   // ---------- 事件 ----------
 
   #onPanelClick(e) {
+    const view = this.view;
+    // 文章里的句子和单词
+    const sentence = e.target.closest('.reader .sent');
+    if (sentence && view?.type === 'quiz' && view.stage === 'evidence') return this.#pickEvidence(Number(sentence.dataset.s), sentence);
+    const word = e.target.closest('.reader .w');
+    if (word) return this.#sayWord(word);
+
     const btn = e.target.closest('[data-action]');
     if (!btn || btn.disabled) return;
-    const view = this.view;
     const action = btn.dataset.action;
     if (action === 'close') return this.closePanel();
     if (!view) return;
@@ -332,7 +643,6 @@ export class UI {
     switch (action) {
       case 'back':
         sound.click();
-        window.speechSynthesis?.cancel();
         this.#show({ type: 'subject', subject: view.subject });
         break;
       case 'open-task':
@@ -351,9 +661,54 @@ export class UI {
         this.#show({ type: 'subject', subject: view.subject });
         break;
       }
+      case 'start-reading':
+        sound.click();
+        this.introSeen.add(task.id);
+        this.openTask(view.subject, task);
+        break;
+      case 'say':
+        speak(btn.dataset.text);
+        break;
+      case 'read-aloud':
+        this.#toggleReading(task.passage);
+        break;
+      case 'toggle-reader': {
+        this.readerCollapsed = !this.readerCollapsed;
+        this.panel.querySelector('.reader')?.classList.toggle('collapsed', this.readerCollapsed);
+        btn.textContent = this.readerCollapsed ? '📖 展开文章' : '收起';
+        break;
+      }
       case 'choose':
         this.#answer(btn.dataset.value);
         break;
+      case 'tile':
+        if (this.busy) break;
+        sound.click();
+        this.tileState.picked.push(Number(btn.dataset.i));
+        this.#renderTiles();
+        break;
+      case 'untile':
+        if (this.busy) break;
+        this.tileState.picked = this.tileState.picked.filter((i) => i !== Number(btn.dataset.i));
+        this.#renderTiles();
+        break;
+      case 'tile-reset':
+        this.tileState.picked = [];
+        this.#renderTiles();
+        break;
+      case 'tile-check': {
+        const q = task.questions[view.qi];
+        const source = tileSource(q);
+        const picked = this.tileState.picked;
+        if (picked.length === 0) {
+          this.#feedback(q.type === 'order' ? '先按顺序点卡片吧' : '先点字母块拼单词吧', 'info');
+        } else if (q.type === 'order' && picked.length < source.length) {
+          this.#feedback('Put every card in order. 把每张卡片都排进去哦', 'info');
+        } else {
+          this.#answer(picked.map((i) => source[i]).join(q.type === 'order' ? ' → ' : ''));
+        }
+        break;
+      }
       case 'key': {
         const input = this.panel.querySelector('.answer-input');
         const k = btn.dataset.key;
@@ -364,22 +719,60 @@ export class UI {
         break;
       }
       case 'speak': {
-        const q = view.task.questions[view.qi];
+        const q = task.questions[view.qi];
         speak(q.speak || q.text);
         break;
       }
       case 'hint':
-        this.#feedback(`💡 ${view.task.questions[view.qi].hint}`, 'info');
+        this.#feedback(`💡 ${task.questions[view.qi].hint}`, 'info');
         break;
-      case 'reveal':
-        this.progress.reveal(view.task, view.qi);
+      case 'reveal': {
+        this.progress.reveal(task, view.qi);
+        if (task.questions[view.qi].evidence) this.#show(view);
+        else this.#nextQuestion();
+        break;
+      }
+      case 'evidence-next':
         this.#nextQuestion();
+        break;
+      case 'use-frame': {
+        const area = this.panel.querySelector('.write-input');
+        const start = task.write.frame.split(/_{2,}/)[0];
+        if (!area.value.trim()) area.value = start;
+        else if (!area.value.includes(start.trim())) area.value = `${area.value.trimEnd()} ${start}`;
+        area.focus();
+        area.setSelectionRange(area.value.length, area.value.length);
+        this.#onWriteInput(area);
+        break;
+      }
+      case 'write-submit':
+        this.#submitWriting(btn);
+        break;
+      case 'model-read':
+      case 'read-along': {
+        const step = action === 'model-read' ? 'listen' : 'along';
+        if (this.stopReading && view.step === step) {
+          this.stopReading();
+          break;
+        }
+        view.step = step;
+        this.#show(view);
+        this.#toggleReading(task.fluency.passage, step === 'listen' ? 0.85 : 0.65);
+        break;
+      }
+      case 'fluency-start':
+        sound.click();
+        this.#startFluency();
+        break;
+      case 'fluency-stop':
+        this.#stopFluency(btn);
         break;
     }
   }
 
   #onProgress(detail) {
     this.#renderHud();
+    if (detail?.homework) return;
     if (detail?.reset) {
       this.allDone = false;
       if (this.view) this.#show({ type: 'subject', subject: this.view.subject });
@@ -469,8 +862,8 @@ export class UI {
         let sAsked = 0;
         let sRight = 0;
         for (const task of s.tasks) {
-          if (task.kind === 'check') {
-            checks.push({ subject: s, task });
+          if (task.kind !== 'quiz') {
+            if (task.kind === 'check' || task.kind === 'write') checks.push({ subject: s, task });
             continue;
           }
           task.questions.forEach((q, i) => {
@@ -497,8 +890,14 @@ export class UI {
           .map(({ subject, task }) => {
             const done = p.isDone(task);
             const ok = p.isVerified(task);
+            const writing = task.kind === 'write' && p.writing(task);
+            const status = task.kind === 'write' ? (done ? '孩子已交' : writing ? '还没写完' : '还没开始') : done ? '孩子已标记完成' : '还没完成';
             return `<li>
-              <div><b>${esc(task.title)}</b><small>${esc(subject.name)} · ${done ? '孩子已标记完成' : '还没完成'}</small></div>
+              <div>
+                ${standardChip(task.standard)}
+                <b>${esc(task.title)}</b><small>${esc(subject.name)} · ${status}</small>
+                ${writing ? `<blockquote class="writing-sample">${esc(writing)}</blockquote>` : ''}
+              </div>
               <button class="btn small ${ok ? 'on' : 'ghost'}" data-action="verify" data-task="${esc(task.id)}" ${done ? '' : 'disabled'}>
                 ${ok ? '✅ 已检查' : '检查通过'}
               </button>
@@ -511,7 +910,7 @@ export class UI {
       ? mistakes
           .map(
             ({ subject, task, q, r }) => `<li>
-              <div><b>${esc(q.text)}</b>
+              <div>${standardChip(q.standard)}<b>${esc(q.text)}</b>
               <small>${esc(subject.name)} · ${esc(task.title)}</small></div>
               <div class="mistake-answers">
                 <span class="wrong">第一次：${esc(r.first)}</span>
@@ -525,12 +924,13 @@ export class UI {
 
     const total = p.allTasks.length;
     const finished = total - p.remainingTasks();
+    const level = levelInfo(this.homework.level);
     this.#openModal(`
       <div class="modal-card report">
         <header>
           <div>
             <h2>📋 家长报告</h2>
-            <p>${esc([this.homework.child, this.homework.date].filter(Boolean).join(' · '))}</p>
+            <p>${esc([this.homework.child, this.homework.date, `${level.icon} ${level.name}难度`].filter(Boolean).join(' · '))}</p>
           </div>
           <button class="icon-btn" data-action="close-modal" aria-label="关闭">✕</button>
         </header>
@@ -543,6 +943,7 @@ export class UI {
           <thead><tr><th>科目</th><th>完成</th><th>一次答对率</th></tr></thead>
           <tbody>${rows}</tbody>
         </table>
+        ${standardsReportHtml(this.homework, p)}
         <h3>✍️ 需要家长检查</h3>
         <ul class="report-list">${checkList}</ul>
         <h3>📕 错题本 <small>（第一次答错的题）</small></h3>
@@ -564,6 +965,9 @@ export class UI {
         break;
       case 'report':
         this.openReport();
+        break;
+      case 'level':
+        this.#chooseLevel(btn.dataset.level);
         break;
       case 'print':
         window.print();
@@ -595,9 +999,59 @@ export class UI {
     this.modal.innerHTML = '';
   }
 
+  // ---------- 难度 ----------
+
+  openLevelPicker() {
+    if (this.homework.lockDifficulty) {
+      this.toast(`🔒 难度由爸爸妈妈设置为「${levelInfo(this.homework.level).name}」`);
+      return;
+    }
+    if (this.scene.isLaunching) return;
+    sound.click();
+    const cards = LEVELS.map((level) => {
+      const sum = this.levels.summary(level.id);
+      const current = level.id === this.homework.level;
+      const detail = sum ? `${sum.tasks} 项作业 · ${sum.questions} 道题` : '这个难度下没有作业';
+      return `
+        <button class="level-card ${current ? 'current' : ''}" data-action="level" data-level="${level.id}" ${sum ? '' : 'disabled'}
+                aria-pressed="${current}">
+          <span class="lc-icon" aria-hidden="true">${level.icon}</span>
+          <span class="lc-name">${esc(level.name)}${current ? '<em>当前</em>' : ''}</span>
+          <span class="lc-desc">${esc(level.desc)}</span>
+          <span class="lc-detail">${esc(detail)}</span>
+        </button>`;
+    }).join('');
+    this.#openModal(`
+      <div class="modal-card levels">
+        <header>
+          <div>
+            <h2>选择难度</h2>
+            <p>换难度后会换一套题目。已完成的打卡任务和星星都会保留，换回来进度还在。</p>
+          </div>
+          <button class="icon-btn" data-action="close-modal" aria-label="关闭">✕</button>
+        </header>
+        <div class="level-grid">${cards}</div>
+      </div>`);
+  }
+
+  #chooseLevel(id) {
+    this.#closeModal();
+    if (id === this.homework.level) return;
+    const level = levelInfo(id);
+    this.levels.apply(id);
+    sound.complete();
+    this.toast(`${level.icon} 已切换到「${level.name}」难度`);
+  }
+
   // ---------- HUD ----------
 
   #renderHud() {
+    const level = levelInfo(this.homework.level);
+    this.levelBtn.dataset.level = level.id;
+    this.levelBtn.querySelector('.lv-icon').textContent = this.homework.lockDifficulty ? '🔒' : level.icon;
+    this.levelBtn.querySelector('.lv-name').textContent = level.name;
+    this.levelBtn.setAttribute('aria-label', `难度：${level.name}${this.homework.lockDifficulty ? '（家长已锁定）' : '，点击更换'}`);
+
     const p = this.progress;
     const stars = p.stars();
     this.starCount.textContent = stars;

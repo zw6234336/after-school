@@ -1,6 +1,7 @@
 {
   "title": "作业星球",
   "child": "小宇航员",
+  "difficulty": "normal",
   "subjects": [
     {
       "id": "chinese",
@@ -16,6 +17,11 @@
           "id": "chinese-writing",
           "title": "抄写第 5 课生字，每个 2 遍",
           "note": "写完请爸爸妈妈看一看"
+        },
+        {
+          "id": "chinese-sentence",
+          "title": "挑战：用今天学的 3 个词语各造一个句子",
+          "level": "hard"
         },
         {
           "id": "chinese-quiz",
@@ -40,6 +46,12 @@
               "q": "小蝌蚪的妈妈是谁？",
               "options": ["金鱼", "青蛙", "乌龟", "鸭子"],
               "a": "青蛙"
+            },
+            {
+              "q": "“欲穷千里目”的下一句是？",
+              "options": ["白日依山尽", "更上一层楼", "黄河入海流"],
+              "a": "更上一层楼",
+              "level": "hard"
             }
           ]
         }
@@ -54,7 +66,16 @@
         {
           "id": "math-mental",
           "title": "口算挑战：100 以内加减法",
-          "generate": { "kind": "arith", "ops": ["+", "-"], "max": 100, "count": 10 }
+          "generate": {
+            "kind": "arith",
+            "ops": ["+", "-"],
+            "max": 100,
+            "count": 10,
+            "levels": {
+              "easy": { "max": 20, "count": 6 },
+              "hard": { "terms": 3, "count": 8 }
+            }
+          }
         },
         {
           "id": "math-times",
@@ -66,14 +87,26 @@
           "title": "解决问题",
           "questions": [
             {
+              "q": "树上有 5 只小鸟，飞走了 2 只，还剩几只？",
+              "a": "3",
+              "level": "easy"
+            },
+            {
               "q": "树上有 12 只小鸟，飞走了 5 只，还剩几只？",
               "a": "7",
-              "hint": "用减法：12 - 5"
+              "hint": "用减法：12 - 5",
+              "level": ["normal", "hard"]
             },
             {
               "q": "每盒有 4 个蛋糕，3 盒一共有几个蛋糕？",
               "a": "12",
               "hint": "3 个 4 相加，也可以用乘法"
+            },
+            {
+              "q": "小明有 5 盒铅笔，每盒 6 支，送给同学 8 支，还剩几支？",
+              "a": "22",
+              "hint": "先算一共有几支：5 × 6",
+              "level": "hard"
             }
           ]
         },
@@ -90,36 +123,139 @@
       "color": "#4cc9f0",
       "tasks": [
         {
-          "id": "english-listen",
-          "title": "听读 Unit 3 课文 2 遍"
+          "id": "en-phonics",
+          "title": "Phonics: Short a",
+          "standard": "RF.1.3",
+          "questions": [
+            { "q": "Build the word: 🐱", "tiles": ["c", "a", "t", "p"], "a": "cat", "speak": "Build the word cat." },
+            { "q": "Build the word: 🗺️", "tiles": ["m", "a", "p", "t"], "a": "map", "speak": "Build the word map." },
+            { "q": "Build the word: 🎒", "tiles": ["b", "a", "g", "d"], "a": "bag", "speak": "Build the word bag.", "level": ["normal", "hard"] },
+            {
+              "q": "Which word has the short a sound, like “cat”?",
+              "options": ["hat", "cake", "kite"],
+              "a": "hat",
+              "speak": "Which word has the short a sound, like cat? hat, cake, or kite?"
+            },
+            { "q": "Build the word: 🐟", "tiles": ["f", "i", "sh", "a"], "a": "fish", "speak": "Build the word fish.", "hint": "sh 两个字母发一个音", "level": "hard" }
+          ]
         },
         {
-          "id": "english-words",
-          "title": "单词小卫士",
+          "id": "en-frog",
+          "title": "Read: From Egg to Frog",
+          "standard": "RI.1.1",
+          "passage": {
+            "title": "From Egg to Frog",
+            "genre": "informational",
+            "text": "A frog lays many eggs in a pond. A tiny tadpole hatches from each egg. The tadpole has a long tail, and it swims like a fish. Soon, the tadpole grows two back legs. Next, it grows two front legs. Then its tail gets shorter and shorter. At last, it is a frog! A frog can live on land and in water.",
+            "vocab": [
+              { "word": "pond", "meaning": "池塘", "emoji": "🪷" },
+              { "word": "tadpole", "meaning": "蝌蚪", "emoji": "🐸" },
+              { "word": "hatches", "meaning": "孵出来", "emoji": "🐣" }
+            ]
+          },
           "questions": [
+            { "q": "Where does a frog lay its eggs?", "options": ["in a tree", "in a pond", "in the sand"], "a": "in a pond", "evidence": "lays many eggs" },
+            { "q": "What hatches from each egg?", "options": ["a fish", "a tadpole", "a frog"], "a": "a tadpole", "evidence": "hatches from each egg" },
+            { "q": "Which legs grow first?", "options": ["the back legs", "the front legs"], "a": "the back legs", "evidence": "two back legs" },
             {
-              "q": "apple 是什么意思？",
-              "options": ["苹果", "香蕉", "橙子"],
-              "a": "苹果",
-              "speak": "apple"
+              "q": "Put the steps in order.",
+              "order": ["A frog lays eggs.", "A tadpole hatches.", "It grows legs.", "It becomes a frog."],
+              "standard": "RI.1.3"
+            },
+            { "q": "In this text, “hatches” means…", "options": ["comes out of an egg", "jumps very high", "swims very fast"], "a": "comes out of an egg", "standard": "L.1.4" },
+            {
+              "q": "What is this text mostly about?",
+              "options": ["how a frog grows", "what frogs eat", "where fish live"],
+              "a": "how a frog grows",
+              "standard": "RI.1.2",
+              "level": ["normal", "hard"]
             },
             {
-              "q": "🐱 用英语怎么说？",
-              "a": "cat",
-              "speak": "猫用英语怎么说？"
-            },
-            {
-              "q": "red 是什么颜色？",
-              "options": ["🔴 红色", "🔵 蓝色", "🟢 绿色"],
-              "a": "🔴 红色",
-              "speak": "red"
-            },
-            {
-              "q": "一、二、三用英语怎么说？",
-              "a": ["one two three", "one, two, three"],
-              "hint": "o__  t__  t____"
+              "q": "Where can a frog live?",
+              "options": ["only in water", "only on land", "on land and in water"],
+              "a": "on land and in water",
+              "evidence": "live on land",
+              "level": "hard"
             }
           ]
+        },
+        {
+          "id": "en-story",
+          "title": "Story: Max and the Big Box",
+          "standard": "RL.1.1",
+          "passage": {
+            "title": "Max and the Big Box",
+            "genre": "literature",
+            "text": "Max got a big box from Grandma. He did not want the toy inside. He wanted the box! First, Max made the box a car. He went zoom, zoom, zoom. Next, he made it a boat. He sailed across the rug sea. Then, Max made the box a rocket. He flew all the way to the moon. At the end of the day, Max was sleepy. He curled up in his box and fell asleep. “Best present ever,” he said.",
+            "vocab": [
+              { "word": "present", "meaning": "礼物", "emoji": "🎁" },
+              { "word": "sailed", "meaning": "航行", "emoji": "⛵" },
+              { "word": "curled", "meaning": "蜷起身子", "emoji": "🐈" }
+            ]
+          },
+          "questions": [
+            { "q": "Who is the main character?", "options": ["Grandma", "Max", "a cat"], "a": "Max", "standard": "RL.1.3" },
+            { "q": "What did Max want?", "options": ["the toy", "the box", "a boat"], "a": "the box", "evidence": "He wanted the box" },
+            { "q": "What did Max make first?", "options": ["a rocket", "a boat", "a car"], "a": "a car", "evidence": "made the box a car" },
+            {
+              "q": "Retell the story in order.",
+              "order": ["Max gets a big box.", "He plays with the box.", "He falls asleep in the box."],
+              "standard": "RL.1.2",
+              "level": "easy"
+            },
+            {
+              "q": "Retell the story in order.",
+              "order": ["Max gets a big box.", "He makes a car.", "He makes a boat.", "He makes a rocket.", "He falls asleep in the box."],
+              "standard": "RL.1.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "How does Max feel about the box?",
+              "options": ["He loves it.", "He is sad.", "He is scared."],
+              "a": "He loves it.",
+              "evidence": "Best present ever",
+              "standard": "RL.1.4",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is the lesson of this story?",
+              "options": ["You can have fun with simple things.", "Boxes are very heavy.", "Never open a present."],
+              "a": "You can have fun with simple things.",
+              "standard": "RL.1.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "en-fluency",
+          "title": "Fluency: Read “From Egg to Frog” aloud",
+          "standard": "RF.1.4",
+          "fluency": { "passage": "en-frog" }
+        },
+        {
+          "id": "en-write-easy",
+          "title": "Write: An animal I like",
+          "standard": "W.1.1",
+          "level": "easy",
+          "write": { "prompt": "What animal do you like?", "frame": "I like ___.", "minWords": 3 }
+        },
+        {
+          "id": "en-write",
+          "title": "Write: My favorite animal",
+          "standard": "W.1.1",
+          "level": ["normal", "hard"],
+          "write": {
+            "prompt": "What is your favorite animal? Tell why.",
+            "frame": "My favorite animal is ___ because ___.",
+            "require": ["because"],
+            "minWords": 8
+          }
+        },
+        {
+          "id": "en-retell",
+          "title": "Speak: Retell “Max and the Big Box” to a grown-up",
+          "standard": "SL.1.2",
+          "note": "用 First, Next, Then, At the end 讲给爸爸妈妈听"
         }
       ]
     }
