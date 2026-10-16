@@ -123,7 +123,7 @@ export function shuffledOrder(q) {
     const j = Math.floor(rand() * (i + 1));
     [order[i], order[j]] = [order[j], order[i]];
   }
-  const solved = q.type === 'order' ? order.every((v, i) => v === i) : order.map((i) => source[i]).join('') === q.answers[0];
+  const solved = q.type === 'order' ? order.every((v, i) => v === i) : order.map((i) => source[i]).join(q.joiner) === q.answers[0];
   if (solved && order.length > 1) order.push(order.shift());
   return order;
 }
@@ -137,9 +137,12 @@ export function tilesHtml(q, state, locked = false) {
         `<button type="button" class="tile picked" data-action="untile" data-i="${i}" ${locked ? 'disabled' : ''}>${isOrder ? `<em>${n + 1}</em>` : ''}${esc(source[i])}</button>`,
     )
     .join('');
+  const words = q.joiner === ' ';
   const placeholder = isOrder
     ? 'Tap the cards in order: first → last <small>按先后顺序点卡片</small>'
-    : 'Tap the letters to build the word <small>点字母块拼出单词</small>';
+    : words
+      ? 'Tap the words to make a sentence <small>点单词卡拼出句子</small>'
+      : 'Tap the letters to build the word <small>点字母块拼出单词</small>';
   const bank = state.order
     .map((i) =>
       state.picked.includes(i)
@@ -148,7 +151,7 @@ export function tilesHtml(q, state, locked = false) {
     )
     .join('');
   return `
-    <div class="tiles ${q.type} ${locked ? 'locked' : ''}">
+    <div class="tiles ${q.type} ${words ? 'words' : ''} ${locked ? 'locked' : ''}">
       <div class="tile-slots">${picked || `<span class="tile-placeholder">${placeholder}</span>`}</div>
       <div class="tile-bank">${bank}</div>
       <div class="tile-actions">

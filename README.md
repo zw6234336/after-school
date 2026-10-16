@@ -79,6 +79,8 @@ npm run dev
 }
 ```
 
+[examples/homework-demo.json](examples/homework-demo.json) 是一份包含语文、数学和各种题型的完整示例，可以复制里面的写法。
+
 可选字段 `"date": "2026-10-16"` 可以固定日期，不写就用当天日期。文件格式有问题时，页面会直接提示哪一项出错。
 
 ### 难度怎么生效
@@ -137,6 +139,12 @@ npm run dev
 // 自然拼读：用字母块拼单词（可以有干扰字母，也可以是 "sh" 这样的组合）
 { "q": "Build the word: 🐟", "tiles": ["f", "i", "sh", "a"], "a": "fish", "speak": "Build the word fish." }
 
+// 句型：答案里有空格时，变成用单词卡拼句子
+{ "q": "What season is it? 🌷", "tiles": ["It's", "winter.", "spring."], "a": "It's spring." }
+
+// 听力：listen 为 true 时，题目出现就自动读一遍 speak
+{ "q": "🔊 Listen and choose.", "options": ["net", "wet", "vet", "jet"], "a": "vet", "speak": "vet", "listen": true }
+
 // 朗读流利度：引用同一科目里某篇文章；goal 不写时按年级取参考值（一年级 60 WPM）
 { "id": "en-fluency", "title": "Fluency", "standard": "RF.1.4", "fluency": { "passage": "en-frog" } }
 
@@ -172,7 +180,8 @@ npm run deploy
 ## 目录结构
 
 ```
-public/homework.json   作业内容（家长编辑这里）
+public/homework.json   今天的作业（家长编辑这里）
+examples/              完整示例作业
 src/scene.js           three.js 场景：星球、卫星、火箭、相机动画
 src/particles.js       烟花和星星粒子
 src/ui.js              作业面板、答题、家长报告

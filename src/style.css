@@ -1552,6 +1552,13 @@ button {
   display: none;
 }
 
+.tiles.words .tile {
+  min-width: 0;
+  height: 50px;
+  padding: 0 14px;
+  font-size: 21px;
+}
+
 .tiles.order .tile-slots,
 .tiles.order .tile-bank {
   flex-direction: column;
