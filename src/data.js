@@ -134,7 +134,7 @@ function normalizeTask(t, { fallbackId, date, level, siblings, where }) {
 /**
  * 题目类型：
  *   choice  有 options
- *   build   有 tiles：点字母块拼出答案（自然拼读）
+ *   build   有 tiles：点字母块拼单词（自然拼读），或者点单词卡拼句子（答案里有空格时）
  *   order   有 order：把几项按正确顺序排好（复述、步骤）
  *   input   其他：输入答案
  * evidence：答对后还要在文章里点出能证明答案的句子（文本证据）
@@ -159,7 +159,8 @@ function normalizeQuestion(q, { passage, standard, where }) {
     if (Array.isArray(q.tiles)) {
       tiles = q.tiles.map(String);
       if (tiles.some((tile) => !tile.trim())) throw new Error(`${where}的 "tiles" 里有空的字母块`);
-      if (!canBuild(answers[0].toLowerCase().replace(/\s+/g, ''), tiles.map((tile) => tile.toLowerCase().trim()))) {
+      const squash = (t) => t.toLowerCase().replace(/\s+/g, '');
+      if (!canBuild(squash(answers[0]), tiles.map(squash))) {
         throw new Error(`${where}的答案 "${answers[0]}" 不能用这些字母块拼出来`);
       }
       type = 'build';
@@ -197,6 +198,10 @@ function normalizeQuestion(q, { passage, standard, where }) {
     items,
     evidence,
     standard: q.standard ? standardOf(q.standard, where) : standard,
+    // 答案里有空格就是用单词卡拼句子，拼的时候用空格连接；否则是用字母拼单词
+    joiner: type === 'build' && /\s/.test(answers[0].trim()) ? ' ' : '',
+    // 听力题：显示题目时自动读出 speak
+    listen: !!q.listen,
     hint: q.hint ? String(q.hint) : '',
     speak: q.speak ? String(q.speak) : '',
     numeric: type === 'input' && answers.every((a) => /^-?\d+(\.\d+)?$/.test(a.trim())),

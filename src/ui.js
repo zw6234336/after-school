@@ -147,6 +147,11 @@ export class UI {
     this.app.classList.add('panel-open');
     this.#syncInset();
     if (view.type === 'quiz' && !COARSE) this.panel.querySelector('.answer-input, .choice, .tile')?.focus({ preventScroll: true });
+    // 听力题自动播放一遍，之后可以点“Listen”再听
+    if (view.type === 'quiz' && view.stage === 'answer') {
+      const q = view.task.questions[view.qi];
+      if (q.listen) setTimeout(() => this.view === view && speak(q.speak || q.text), 400);
+    }
   }
 
   #head(title, sub, back = true) {
@@ -705,7 +710,7 @@ export class UI {
         } else if (q.type === 'order' && picked.length < source.length) {
           this.#feedback('Put every card in order. 把每张卡片都排进去哦', 'info');
         } else {
-          this.#answer(picked.map((i) => source[i]).join(q.type === 'order' ? ' → ' : ''));
+          this.#answer(picked.map((i) => source[i]).join(q.type === 'order' ? ' → ' : q.joiner));
         }
         break;
       }

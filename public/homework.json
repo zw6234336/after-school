@@ -4,258 +4,225 @@
   "difficulty": "normal",
   "subjects": [
     {
-      "id": "chinese",
-      "name": "语文",
-      "icon": "📖",
-      "color": "#ff6b8b",
+      "id": "seasons",
+      "name": "季节",
+      "icon": "🌸",
+      "color": "#80ed99",
       "tasks": [
         {
-          "id": "chinese-reading",
-          "title": "朗读课文《小蝌蚪找妈妈》3 遍"
-        },
-        {
-          "id": "chinese-writing",
-          "title": "抄写第 5 课生字，每个 2 遍",
-          "note": "写完请爸爸妈妈看一看"
-        },
-        {
-          "id": "chinese-sentence",
-          "title": "挑战：用今天学的 3 个词语各造一个句子",
-          "level": "hard"
-        },
-        {
-          "id": "chinese-quiz",
-          "title": "课堂小测验",
+          "id": "seasons-words",
+          "title": "Words: spring, summer, fall, winter",
+          "standard": "L.K.5",
           "questions": [
+            { "q": "🌷🌸 Which season is it?", "options": ["spring", "summer", "fall", "winter"], "a": "spring", "speak": "Which season is it?" },
+            { "q": "☀️🏖️ Which season is it?", "options": ["spring", "summer", "fall", "winter"], "a": "summer", "speak": "Which season is it?" },
+            { "q": "🍂🍁 Which season is it?", "options": ["spring", "summer", "fall", "winter"], "a": "fall", "speak": "Which season is it?" },
+            { "q": "⛄❄️ Which season is it?", "options": ["spring", "summer", "fall", "winter"], "a": "winter", "speak": "Which season is it?" },
             {
-              "q": "“长大”的“长”读什么？",
-              "options": ["cháng", "zhǎng"],
-              "a": "zhǎng"
+              "q": "🔊 Listen and choose.",
+              "options": ["🌷 spring", "☀️ summer", "🍂 fall", "⛄ winter"],
+              "a": "🍂 fall",
+              "speak": "fall",
+              "listen": true,
+              "standard": "L.K.6",
+              "level": ["normal", "hard"]
             },
+            { "q": "Which one is NOT a season?", "options": ["spring", "hot", "winter", "summer"], "a": "hot", "level": ["normal", "hard"] },
             {
-              "q": "“春眠不觉晓”的下一句是？",
-              "options": ["处处闻啼鸟", "夜来风雨声", "花落知多少"],
-              "a": "处处闻啼鸟"
-            },
-            {
-              "q": "“大”的反义词是什么？",
-              "a": "小",
-              "hint": "想一想：大象和蚂蚁"
-            },
-            {
-              "q": "小蝌蚪的妈妈是谁？",
-              "options": ["金鱼", "青蛙", "乌龟", "鸭子"],
-              "a": "青蛙"
-            },
-            {
-              "q": "“欲穷千里目”的下一句是？",
-              "options": ["白日依山尽", "更上一层楼", "黄河入海流"],
-              "a": "更上一层楼",
-              "level": "hard"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "math",
-      "name": "数学",
-      "icon": "🔢",
-      "color": "#ffc23d",
-      "tasks": [
-        {
-          "id": "math-mental",
-          "title": "口算挑战：100 以内加减法",
-          "generate": {
-            "kind": "arith",
-            "ops": ["+", "-"],
-            "max": 100,
-            "count": 10,
-            "levels": {
-              "easy": { "max": 20, "count": 6 },
-              "hard": { "terms": 3, "count": 8 }
-            }
-          }
-        },
-        {
-          "id": "math-times",
-          "title": "乘法口诀小火车",
-          "generate": { "kind": "arith", "ops": ["×"], "table": 9, "count": 6 }
-        },
-        {
-          "id": "math-story",
-          "title": "解决问题",
-          "questions": [
-            {
-              "q": "树上有 5 只小鸟，飞走了 2 只，还剩几只？",
-              "a": "3",
-              "level": "easy"
-            },
-            {
-              "q": "树上有 12 只小鸟，飞走了 5 只，还剩几只？",
-              "a": "7",
-              "hint": "用减法：12 - 5",
+              "q": "Put the seasons in order.",
+              "order": ["🌷 spring", "☀️ summer", "🍂 fall", "⛄ winter"],
+              "standard": "L.K.6",
               "level": ["normal", "hard"]
             },
             {
-              "q": "每盒有 4 个蛋糕，3 盒一共有几个蛋糕？",
-              "a": "12",
-              "hint": "3 个 4 相加，也可以用乘法"
-            },
-            {
-              "q": "小明有 5 盒铅笔，每盒 6 支，送给同学 8 支，还剩几支？",
-              "a": "22",
-              "hint": "先算一共有几支：5 × 6",
+              "q": "Spell the word: ⛄❄️",
+              "tiles": ["w", "i", "n", "t", "e", "r", "s"],
+              "a": "winter",
+              "speak": "winter",
+              "standard": "L.K.2",
               "level": "hard"
             }
           ]
         },
         {
-          "id": "math-workbook",
-          "title": "完成练习册第 12 页"
+          "id": "seasons-sentence",
+          "title": "Say it: What season is it? It's spring.",
+          "standard": "L.K.1",
+          "questions": [
+            { "q": "What season is it? 🌷🌸", "tiles": ["It's", "winter.", "spring."], "a": "It's spring.", "speak": "What season is it?" },
+            { "q": "What season is it? ⛄❄️", "tiles": ["summer.", "It's", "winter."], "a": "It's winter.", "speak": "What season is it?" },
+            { "q": "What season is it? ☀️🏖️", "tiles": ["It's", "summer.", "fall."], "a": "It's summer.", "speak": "What season is it?", "level": ["normal", "hard"] },
+            { "q": "What season is it? 🍂🍁", "tiles": ["fall.", "spring.", "It's"], "a": "It's fall.", "speak": "What season is it?", "level": ["normal", "hard"] },
+            { "q": "Make the question.", "tiles": ["season", "it?", "What", "is"], "a": "What season is it?", "hint": "问句以 What 开头", "level": "hard" }
+          ]
         }
       ]
     },
     {
-      "id": "english",
-      "name": "英语",
+      "id": "weather",
+      "name": "天气",
+      "icon": "🌡️",
+      "color": "#ffb84d",
+      "tasks": [
+        {
+          "id": "weather-words",
+          "title": "Words: hot, cold, cool, warm",
+          "standard": "L.K.5",
+          "questions": [
+            { "q": "🥵🔥 It's ___.", "options": ["hot", "cold", "cool", "warm"], "a": "hot", "speak": "How does it feel?" },
+            { "q": "🥶🧊 It's ___.", "options": ["hot", "cold", "cool", "warm"], "a": "cold", "speak": "How does it feel?" },
+            { "q": "🌬️🍃 It's ___.", "options": ["hot", "cold", "cool", "warm"], "a": "cool", "speak": "How does it feel?" },
+            { "q": "🌤️😊 It's ___.", "options": ["hot", "cold", "cool", "warm"], "a": "warm", "speak": "How does it feel?" },
+            {
+              "q": "🔊 Listen and choose.",
+              "options": ["🥵 hot", "🥶 cold", "🍃 cool", "🌤️ warm"],
+              "a": "🌤️ warm",
+              "speak": "It's warm.",
+              "listen": true,
+              "standard": "L.K.6",
+              "level": ["normal", "hard"]
+            },
+            { "q": "The opposite of hot is ___.", "options": ["warm", "cold", "hot"], "a": "cold", "level": ["normal", "hard"] },
+            { "q": "The opposite of warm is ___.", "options": ["hot", "cool"], "a": "cool", "hint": "warm 有点热，cool 有点凉", "level": "hard" }
+          ]
+        },
+        {
+          "id": "weather-sentence",
+          "title": "Say it: It's warm. It's cold. It's hot. It's cool.",
+          "standard": "L.K.1",
+          "questions": [
+            { "q": "In winter ⛄ …", "tiles": ["It's", "cold.", "hot."], "a": "It's cold.", "speak": "In winter, it's..." },
+            { "q": "In summer ☀️ …", "tiles": ["hot.", "It's", "cool."], "a": "It's hot.", "speak": "In summer, it's..." },
+            { "q": "In spring 🌷 …", "tiles": ["It's", "warm.", "cold."], "a": "It's warm.", "speak": "In spring, it's...", "level": ["normal", "hard"] },
+            { "q": "In fall 🍂 …", "tiles": ["cool.", "hot.", "It's"], "a": "It's cool.", "speak": "In fall, it's...", "level": ["normal", "hard"] }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "letter-e",
+      "name": "字母 Ee",
       "icon": "🔤",
       "color": "#4cc9f0",
       "tasks": [
         {
-          "id": "en-phonics",
-          "title": "Phonics: Short a",
-          "standard": "RF.1.3",
+          "id": "e-words",
+          "title": "Phonics: Ee says /e/ — net, wet, vet, jet",
+          "standard": "RF.K.3",
           "questions": [
-            { "q": "Build the word: 🐱", "tiles": ["c", "a", "t", "p"], "a": "cat", "speak": "Build the word cat." },
-            { "q": "Build the word: 🗺️", "tiles": ["m", "a", "p", "t"], "a": "map", "speak": "Build the word map." },
-            { "q": "Build the word: 🎒", "tiles": ["b", "a", "g", "d"], "a": "bag", "speak": "Build the word bag.", "level": ["normal", "hard"] },
+            { "q": "Build the word: 🥅", "tiles": ["n", "e", "t", "a"], "a": "net", "speak": "net" },
+            { "q": "Build the word: 💦", "tiles": ["w", "e", "t", "o"], "a": "wet", "speak": "wet" },
+            { "q": "Build the word: 🐶🩺", "tiles": ["v", "e", "t", "i"], "a": "vet", "speak": "vet", "hint": "vet 是给动物看病的医生" },
+            { "q": "Build the word: ✈️", "tiles": ["j", "e", "t", "u"], "a": "jet", "speak": "jet" },
             {
-              "q": "Which word has the short a sound, like “cat”?",
-              "options": ["hat", "cake", "kite"],
-              "a": "hat",
-              "speak": "Which word has the short a sound, like cat? hat, cake, or kite?"
+              "q": "Which word has the short e sound /e/?",
+              "options": ["net", "nut", "not"],
+              "a": "net",
+              "speak": "Which word has the short e sound? net, nut, or not?"
             },
-            { "q": "Build the word: 🐟", "tiles": ["f", "i", "sh", "a"], "a": "fish", "speak": "Build the word fish.", "hint": "sh 两个字母发一个音", "level": "hard" }
-          ]
-        },
-        {
-          "id": "en-frog",
-          "title": "Read: From Egg to Frog",
-          "standard": "RI.1.1",
-          "passage": {
-            "title": "From Egg to Frog",
-            "genre": "informational",
-            "text": "A frog lays many eggs in a pond. A tiny tadpole hatches from each egg. The tadpole has a long tail, and it swims like a fish. Soon, the tadpole grows two back legs. Next, it grows two front legs. Then its tail gets shorter and shorter. At last, it is a frog! A frog can live on land and in water.",
-            "vocab": [
-              { "word": "pond", "meaning": "池塘", "emoji": "🪷" },
-              { "word": "tadpole", "meaning": "蝌蚪", "emoji": "🐸" },
-              { "word": "hatches", "meaning": "孵出来", "emoji": "🐣" }
-            ]
-          },
-          "questions": [
-            { "q": "Where does a frog lay its eggs?", "options": ["in a tree", "in a pond", "in the sand"], "a": "in a pond", "evidence": "lays many eggs" },
-            { "q": "What hatches from each egg?", "options": ["a fish", "a tadpole", "a frog"], "a": "a tadpole", "evidence": "hatches from each egg" },
-            { "q": "Which legs grow first?", "options": ["the back legs", "the front legs"], "a": "the back legs", "evidence": "two back legs" },
             {
-              "q": "Put the steps in order.",
-              "order": ["A frog lays eggs.", "A tadpole hatches.", "It grows legs.", "It becomes a frog."],
-              "standard": "RI.1.3"
-            },
-            { "q": "In this text, “hatches” means…", "options": ["comes out of an egg", "jumps very high", "swims very fast"], "a": "comes out of an egg", "standard": "L.1.4" },
-            {
-              "q": "What is this text mostly about?",
-              "options": ["how a frog grows", "what frogs eat", "where fish live"],
-              "a": "how a frog grows",
-              "standard": "RI.1.2",
+              "q": "🔊 Listen and choose.",
+              "options": ["net", "wet", "vet", "jet"],
+              "a": "vet",
+              "speak": "vet",
+              "listen": true,
+              "standard": "RF.K.2",
               "level": ["normal", "hard"]
             },
-            {
-              "q": "Where can a frog live?",
-              "options": ["only in water", "only on land", "on land and in water"],
-              "a": "on land and in water",
-              "evidence": "live on land",
-              "level": "hard"
-            }
+            { "q": "Which word rhymes with “net”?", "options": ["jet", "cat", "dog"], "a": "jet", "standard": "RF.K.2", "level": ["normal", "hard"] },
+            { "q": "Build a new -et word: 🐶🐱🐹", "tiles": ["p", "e", "t", "o"], "a": "pet", "speak": "pet", "hint": "家里养的小动物", "level": "hard" }
           ]
+        }
+      ]
+    },
+    {
+      "id": "story",
+      "name": "故事",
+      "icon": "📖",
+      "color": "#ff7eb6",
+      "tasks": [
+        {
+          "id": "story-book",
+          "title": "Read the Book 2 story with a grown-up",
+          "standard": "RL.K.10",
+          "note": "跟着课本（或点读笔、音频）读第二本书的故事，边听边用手指着读"
         },
         {
-          "id": "en-story",
-          "title": "Story: Max and the Big Box",
-          "standard": "RL.1.1",
+          "id": "story-read",
+          "title": "Read: What's Your Favorite Season?",
+          "standard": "RL.K.1",
           "passage": {
-            "title": "Max and the Big Box",
+            "title": "What's Your Favorite Season?",
             "genre": "literature",
-            "text": "Max got a big box from Grandma. He did not want the toy inside. He wanted the box! First, Max made the box a car. He went zoom, zoom, zoom. Next, he made it a boat. He sailed across the rug sea. Then, Max made the box a rocket. He flew all the way to the moon. At the end of the day, Max was sleepy. He curled up in his box and fell asleep. “Best present ever,” he said.",
+            "text": "It is a sunny day. Tom asks Mia, “What's your favorite season?” Mia says, “My favorite season is spring. It's warm, and I like the flowers.” Then Mia asks Tom, “What's your favorite season?” Tom says, “My favorite season is winter. It's cold, and I like the snow!” They both smile. Every season is fun.",
             "vocab": [
-              { "word": "present", "meaning": "礼物", "emoji": "🎁" },
-              { "word": "sailed", "meaning": "航行", "emoji": "⛵" },
-              { "word": "curled", "meaning": "蜷起身子", "emoji": "🐈" }
+              { "word": "favorite", "meaning": "最喜欢的", "emoji": "❤️" },
+              { "word": "season", "meaning": "季节", "emoji": "🗓️" },
+              { "word": "flowers", "meaning": "花", "emoji": "🌷" },
+              { "word": "snow", "meaning": "雪", "emoji": "❄️" }
             ]
           },
           "questions": [
-            { "q": "Who is the main character?", "options": ["Grandma", "Max", "a cat"], "a": "Max", "standard": "RL.1.3" },
-            { "q": "What did Max want?", "options": ["the toy", "the box", "a boat"], "a": "the box", "evidence": "He wanted the box" },
-            { "q": "What did Max make first?", "options": ["a rocket", "a boat", "a car"], "a": "a car", "evidence": "made the box a car" },
+            { "q": "Who are the two friends?", "options": ["Tom and Mia", "Tom and Max", "Mia and Grandma"], "a": "Tom and Mia", "standard": "RL.K.3" },
+            { "q": "What is Mia's favorite season?", "options": ["spring", "summer", "winter"], "a": "spring", "evidence": "My favorite season is spring" },
+            { "q": "What is Tom's favorite season?", "options": ["fall", "winter", "spring"], "a": "winter", "evidence": "My favorite season is winter" },
             {
-              "q": "Retell the story in order.",
-              "order": ["Max gets a big box.", "He plays with the box.", "He falls asleep in the box."],
-              "standard": "RL.1.2",
+              "q": "Why does Mia like spring?",
+              "options": ["She likes the flowers.", "She likes the snow.", "She likes the sea."],
+              "a": "She likes the flowers.",
+              "evidence": "I like the flowers",
+              "level": ["normal", "hard"]
+            },
+            { "q": "Tom says winter is ___.", "options": ["hot", "warm", "cold"], "a": "cold", "evidence": "It's cold", "level": "hard" },
+            {
+              "q": "Answer like Mia: What's your favorite season? 🌷",
+              "tiles": ["My favorite season is", "spring.", "winter."],
+              "a": "My favorite season is spring.",
+              "speak": "What's your favorite season?",
+              "standard": "L.K.1",
               "level": "easy"
             },
             {
-              "q": "Retell the story in order.",
-              "order": ["Max gets a big box.", "He makes a car.", "He makes a boat.", "He makes a rocket.", "He falls asleep in the box."],
-              "standard": "RL.1.2",
+              "q": "Answer like Mia: What's your favorite season? 🌷",
+              "tiles": ["season", "My", "is", "spring.", "favorite", "winter."],
+              "a": "My favorite season is spring.",
+              "speak": "What's your favorite season?",
+              "standard": "L.K.1",
               "level": ["normal", "hard"]
-            },
-            {
-              "q": "How does Max feel about the box?",
-              "options": ["He loves it.", "He is sad.", "He is scared."],
-              "a": "He loves it.",
-              "evidence": "Best present ever",
-              "standard": "RL.1.4",
-              "level": ["normal", "hard"]
-            },
-            {
-              "q": "What is the lesson of this story?",
-              "options": ["You can have fun with simple things.", "Boxes are very heavy.", "Never open a present."],
-              "a": "You can have fun with simple things.",
-              "standard": "RL.1.2",
-              "level": "hard"
             }
           ]
         },
         {
-          "id": "en-fluency",
-          "title": "Fluency: Read “From Egg to Frog” aloud",
-          "standard": "RF.1.4",
-          "fluency": { "passage": "en-frog" }
+          "id": "story-fluency",
+          "title": "Fluency: Read the story aloud",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": { "passage": "story-read" }
         },
         {
-          "id": "en-write-easy",
-          "title": "Write: An animal I like",
-          "standard": "W.1.1",
+          "id": "story-ask",
+          "title": "Ask a grown-up: “What's your favorite season?”",
+          "standard": "SL.K.1",
+          "note": "去问爸爸妈妈，听他们用 “My favorite season is ...” 回答"
+        },
+        {
+          "id": "story-write-easy",
+          "title": "Write: My favorite season",
+          "standard": "W.K.1",
           "level": "easy",
-          "write": { "prompt": "What animal do you like?", "frame": "I like ___.", "minWords": 3 }
+          "write": { "prompt": "What's your favorite season?", "frame": "My favorite season is ___.", "require": ["season"], "minWords": 5 }
         },
         {
-          "id": "en-write",
-          "title": "Write: My favorite animal",
-          "standard": "W.1.1",
+          "id": "story-write",
+          "title": "Write: My favorite season",
+          "standard": "W.K.1",
           "level": ["normal", "hard"],
           "write": {
-            "prompt": "What is your favorite animal? Tell why.",
-            "frame": "My favorite animal is ___ because ___.",
+            "prompt": "What's your favorite season? Why?",
+            "frame": "My favorite season is ___ because ___.",
             "require": ["because"],
             "minWords": 8
           }
-        },
-        {
-          "id": "en-retell",
-          "title": "Speak: Retell “Max and the Big Box” to a grown-up",
-          "standard": "SL.1.2",
-          "note": "用 First, Next, Then, At the end 讲给爸爸妈妈听"
         }
       ]
     }
