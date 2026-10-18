@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>作业星球设计说明</title>
+<style>
+  :root {
+    --bg: #f6f5fb;
+    --surface: #ffffff;
+    --surface-2: #f0eef8;
+    --ink: #1d1b2f;
+    --ink-soft: #5d5a78;
+    --ink-faint: #8a87a6;
+    --line: #e2dfef;
+    --accent: #6a4cff;
+    --gold: #e09b00;
+    --gold-soft: #fff3cf;
+    --ok: #15924d;
+    --ok-soft: #dcf7e7;
+    --bad: #d83a55;
+    --bad-soft: #ffe1e7;
+    --info: #0b7fc0;
+    --info-soft: #ddf2ff;
+    --paper: #fbf7ee;
+    --paper-ink: #2a2340;
+    --RF: #e08a00; --RL: #d6407f; --RI: #0b8fc4; --L: #7b4fe0; --W: #1f9a55; --SL: #b58900;
+    --radius: 18px;
+    --font: 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0c0f24; --surface: #151a38; --surface-2: #1c2248; --ink: #eef0ff; --ink-soft: #b0b6dd; --ink-faint: #7c83b3;
+      --line: #2a3163; --accent: #a594ff; --gold: #ffd166; --gold-soft: #3a3214; --ok: #4ade80; --ok-soft: #12351f;
+      --bad: #ff6b8b; --bad-soft: #3d1621; --info: #7cc8ff; --info-soft: #11304a;
+      --RF: #ffb84d; --RL: #ff7eb6; --RI: #4cc9f0; --L: #b388ff; --W: #80ed99; --SL: #ffd166;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0c0f24; --surface: #151a38; --surface-2: #1c2248; --ink: #eef0ff; --ink-soft: #b0b6dd; --ink-faint: #7c83b3;
+    --line: #2a3163; --accent: #a594ff; --gold: #ffd166; --gold-soft: #3a3214; --ok: #4ade80; --ok-soft: #12351f;
+    --bad: #ff6b8b; --bad-soft: #3d1621; --info: #7cc8ff; --info-soft: #11304a;
+    --RF: #ffb84d; --RL: #ff7eb6; --RI: #4cc9f0; --L: #b388ff; --W: #80ed99; --SL: #ffd166;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+  section { padding: 48px 0 8px; }
+  h2 { font-size: 26px; margin: 0 0 6px; letter-spacing: 0.02em; }
+  h2 .num { display: inline-grid; place-items: center; width: 34px; height: 34px; margin-right: 10px; border-radius: 10px; background: var(--accent); color: #fff; font-size: 17px; vertical-align: 3px; }
+  .sub { margin: 0 0 22px; color: var(--ink-soft); max-width: 46em; }
+  h3 { font-size: 18px; margin: 0 0 6px; }
+  code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; }
+  .grid { display: grid; gap: 14px; }
+  .grid > *, .flow > *, .branch > *, .arch > *, .principle > * { min-width: 0; }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+  .g2 { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 820px) { .g3, .g2 { grid-template-columns: 1fr; } }
+  .muted { color: var(--ink-soft); }
+  .small { font-size: 13px; }
+  .pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 99px; font-size: 12px; font-weight: 800; border: 1px solid currentColor; white-space: nowrap; }
+  .s-RF { color: var(--RF); } .s-RL { color: var(--RL); } .s-RI { color: var(--RI); } .s-L { color: var(--L); } .s-W { color: var(--W); } .s-SL { color: var(--SL); }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; overflow: hidden; color: #eef0ff; background: radial-gradient(1200px 500px at 80% -10%, #3b2a8a 0%, transparent 60%), radial-gradient(800px 400px at 0% 100%, #7a1f5c 0%, transparent 55%), #070a1f; }
+  .hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(1.5px 1.5px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 70% 20%, #fff, transparent), radial-gradient(1.2px 1.2px at 40% 80%, #fff, transparent), radial-gradient(1px 1px at 85% 65%, #fff, transparent), radial-gradient(1.5px 1.5px at 10% 70%, #fff, transparent), radial-gradient(1px 1px at 55% 50%, #fff, transparent); background-size: 260px 260px; opacity: 0.7; }
+  .hero .wrap { position: relative; display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: center; padding-top: 56px; padding-bottom: 56px; }
+  @media (max-width: 820px) { .hero .wrap { grid-template-columns: 1fr; } }
+  .kicker { font-size: 13px; letter-spacing: 0.12em; color: #b9b2ff; text-transform: uppercase; font-weight: 700; }
+  .hero h1 { font-size: clamp(36px, 6vw, 56px); margin: 6px 0 10px; line-height: 1.1; background: linear-gradient(90deg, #ffe08a, #ff9fd2 50%, #8fd8ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p.lead { font-size: 18px; color: #d4d8ff; margin: 0 0 22px; max-width: 32em; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 11px 18px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-weight: 800; font-size: 15px; cursor: pointer; text-decoration: none; transition: transform 0.12s, filter 0.15s; }
+  .btn:hover { filter: brightness(1.06); }
+  .btn:active { transform: scale(0.96); }
+  .btn.primary { border: none; color: #1b1440; background: linear-gradient(180deg, #ffe08a, #ffb84d); box-shadow: 0 4px 0 #c77d16; }
+  .btn.ghost { background: transparent; color: inherit; border-color: rgba(255, 255, 255, 0.35); }
+  .btn.small { padding: 6px 12px; font-size: 13px; border-radius: 10px; }
+
+  /* 小太阳系示意 */
+  .orbit { position: relative; width: min(340px, 80vw); aspect-ratio: 1; margin: 0 auto; }
+  .orbit .ring { position: absolute; inset: 12%; border: 1px dashed rgba(255, 255, 255, 0.25); border-radius: 50%; }
+  .orbit .center { position: absolute; inset: 0; display: grid; place-items: center; font-size: 54px; filter: drop-shadow(0 0 18px rgba(255, 180, 90, 0.8)); }
+  .orbit .spin { position: absolute; inset: 12%; animation: spin 30s linear infinite; }
+  .orbit .planet { position: absolute; width: 64px; height: 64px; margin: -32px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; box-shadow: 0 0 24px var(--glow); background: radial-gradient(circle at 35% 30%, #fff8, transparent 40%), var(--pc); animation: spin 30s linear infinite reverse; }
+  .orbit .moon { position: absolute; width: 12px; height: 12px; border-radius: 50%; background: #ffd166; box-shadow: 0 0 10px #ffd166; top: -6px; left: 50%; }
+  .orbit .moon.off { background: #56618f; box-shadow: none; }
+  .orbit .label { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 4px; font-size: 12px; white-space: nowrap; color: #fff; background: rgba(10, 14, 40, 0.7); padding: 1px 8px; border-radius: 99px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---------- 表格 ---------- */
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 13px; color: var(--ink-faint); font-weight: 600; }
+  .table-card { padding: 4px 6px; overflow-x: auto; }
+
+  /* ---------- 流程图 ---------- */
+  .flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; align-items: stretch; }
+  @media (max-width: 820px) { .flow { grid-template-columns: 1fr; } }
+  .node { position: relative; padding: 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
+  .node b { display: block; font-size: 15px; }
+  .node span { font-size: 13px; color: var(--ink-soft); }
+  .node.ok { background: var(--ok-soft); border-color: transparent; }
+  .node.bad { background: var(--bad-soft); border-color: transparent; }
+  .node.gold { background: var(--gold-soft); border-color: transparent; }
+  .node.info { background: var(--info-soft); border-color: transparent; }
+  .arrow { display: grid; place-items: center; color: var(--ink-faint); font-size: 22px; }
+  .branches { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 820px) { .branches { grid-template-columns: 1fr; } }
+  .branch { display: grid; gap: 8px; }
+
+  /* CCSS 代码解剖 */
+  .anatomy { display: flex; align-items: flex-start; justify-content: center; gap: 2px 6px; font-family: ui-monospace, Menlo, monospace; font-size: clamp(30px, 8vw, 52px); font-weight: 800; line-height: 1.1; }
+  .anatomy .part { display: grid; justify-items: center; }
+  .anatomy .part small { max-width: 8em; font-family: var(--font); font-size: 13px; font-weight: 600; line-height: 1.35; text-align: center; color: var(--ink-soft); margin-top: 6px; }
+  .anatomy .dot { color: var(--ink-faint); }
+  @media (max-width: 520px) { .anatomy .part small { font-size: 11px; max-width: 6.5em; } }
+
+  .principles { counter-reset: p; display: grid; gap: 10px; }
+  .principle { display: grid; grid-template-columns: 1fr 1.2fr; gap: 14px; padding: 14px 16px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
+  @media (max-width: 820px) { .principle { grid-template-columns: 1fr; } }
+  .principle h3::before { counter-increment: p; content: counter(p); display: inline-grid; place-items: center; width: 24px; height: 24px; margin-right: 8px; border-radius: 50%; background: var(--surface-2); font-size: 13px; }
+  .principle .how { border-left: 3px solid var(--accent); padding-left: 12px; }
+
+  /* ---------- demo ---------- */
+  .hud { position: sticky; top: 8px; z-index: 5; display: flex; align-items: center; gap: 12px; padding: 10px 16px; margin-bottom: 14px; border-radius: 16px; background: #0b1030; color: #eef0ff; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18); }
+  .hud .bar { flex: 1; height: 12px; border-radius: 99px; background: rgba(255, 255, 255, 0.12); overflow: hidden; }
+  .hud .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #ff6b35, #ffd166, #fff3b0); transition: width 0.6s cubic-bezier(0.3, 1.4, 0.5, 1); }
+  .hud .rocket { font-size: 26px; transition: transform 1.6s cubic-bezier(0.5, 0, 0.7, 0.2); }
+  .hud .rocket.launch { transform: translate(40px, -160px) rotate(-12deg); }
+  .hud .stars { font-weight: 800; color: #ffd166; font-variant-numeric: tabular-nums; }
+
+  .demo { display: grid; gap: 12px; }
+  .demo header { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .demo header h3 { margin: 0; flex: 1; }
+  .demo .why { font-size: 13px; color: var(--ink-soft); background: var(--surface-2); padding: 10px 12px; border-radius: 12px; }
+  .ican { display: flex; gap: 8px; align-items: center; padding: 8px 12px; border-radius: 12px; border-left: 4px solid currentColor; background: var(--surface-2); font-size: 14px; }
+  .ican b { color: var(--ink); font-weight: 700; }
+  .ican small { display: block; color: var(--ink-soft); }
+
+  .reader { padding: 12px 14px; border-radius: 14px; background: var(--paper); color: var(--paper-ink); font-family: Georgia, 'Times New Roman', serif; font-size: 18px; line-height: 1.8; }
+  .reader .sent { border-radius: 6px; transition: background 0.2s, box-shadow 0.2s; }
+  .reader .w { cursor: pointer; }
+  .reader .w:hover { background: rgba(42, 35, 64, 0.08); border-radius: 4px; }
+  .reader .vocab { color: #7b2fff; font-weight: 700; text-decoration: underline wavy rgba(123, 47, 255, 0.45); text-underline-offset: 4px; }
+  .reader.evidence .sent { cursor: pointer; background: rgba(76, 201, 240, 0.14); box-shadow: 0 0 0 2px rgba(76, 201, 240, 0.14); }
+  .reader.evidence .sent:hover { background: rgba(76, 201, 240, 0.32); }
+  .reader .sent.found { background: #b9f5cf !important; box-shadow: 0 0 0 3px #22c55e !important; }
+  .reader .sent.miss { animation: miss 0.6s; }
+  @keyframes miss { 30% { background: #ffc2cf; box-shadow: 0 0 0 3px #ff6b8b; } }
+
+  .q { font-size: 20px; font-weight: 800; text-align: center; }
+  .choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .choice { padding: 12px 6px; border-radius: 14px; border: 2px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-weight: 800; font-size: 17px; cursor: pointer; }
+  .choice:hover:not(:disabled) { border-color: var(--accent); }
+  .choice.wrong { border-color: var(--bad); background: var(--bad-soft); text-decoration: line-through; opacity: 0.7; }
+  .choice.right { border-color: var(--ok); background: var(--ok-soft); }
+  .fb { min-height: 26px; margin: 0; text-align: center; font-weight: 700; }
+  .fb.ok { color: var(--ok); } .fb.bad { color: var(--bad); } .fb.info { color: var(--info); }
+
+  .tabs { display: flex; gap: 6px; }
+  .tab { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line); background: transparent; color: var(--ink-soft); font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+  .tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .slots { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; min-height: 64px; padding: 10px; border-radius: 14px; border: 2px dashed var(--line); background: var(--surface-2); }
+  .slots.right { border-style: solid; border-color: var(--ok); }
+  .slots .placeholder { align-self: center; color: var(--ink-faint); font-size: 13px; }
+  .bank { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .tile { min-width: 48px; height: 50px; padding: 0 14px; border-radius: 12px; border: none; background: linear-gradient(180deg, #fff6d8, #ffe08a); color: #2a2340; font-family: Georgia, serif; font-size: 22px; font-weight: 700; box-shadow: 0 4px 0 #c99a2e; cursor: pointer; }
+  .tile.picked { background: linear-gradient(180deg, #e3f8ff, #a8e6ff); box-shadow: 0 4px 0 #4a9fc4; }
+  .tile:disabled { opacity: 0.2; box-shadow: none; cursor: default; }
+  .slots .tile:disabled { opacity: 1; box-shadow: 0 4px 0 #4a9fc4; }
+  .slots.right .tile { background: linear-gradient(180deg, #e6fbe9, #b9f5cf); box-shadow: 0 4px 0 #22c55e; }
+  .row { display: flex; gap: 8px; justify-content: space-between; }
+
+  textarea { width: 100%; min-height: 110px; padding: 12px 14px; border-radius: 14px; border: 2px solid var(--line); background: var(--paper); color: var(--paper-ink); font-family: Georgia, serif; font-size: 18px; line-height: 1.6; resize: vertical; outline: none; }
+  textarea:focus { border-color: var(--accent); }
+  .frame { font-family: Georgia, serif; font-size: 16px; padding: 8px 12px; border-radius: 12px; background: var(--surface-2); }
+  .checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .checks li { display: flex; gap: 8px; align-items: center; padding: 7px 10px; border-radius: 10px; background: var(--surface-2); font-size: 14px; transition: background 0.2s; }
+  .checks li.ok { background: var(--ok-soft); }
+  .checks small { color: var(--ink-soft); }
+
+  .mastery-demo input[type="range"] { width: 100%; accent-color: var(--accent); }
+  .levels { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .lvl { padding: 10px 6px; border-radius: 12px; text-align: center; background: var(--surface-2); font-size: 13px; opacity: 0.45; transition: opacity 0.2s, transform 0.2s; }
+  .lvl b { display: block; font-size: 15px; }
+  .lvl.on { opacity: 1; transform: translateY(-3px); }
+  .lvl.m4.on { background: var(--ok-soft); } .lvl.m3.on { background: var(--info-soft); } .lvl.m2.on { background: var(--gold-soft); } .lvl.m1.on { background: var(--bad-soft); }
+
+  /* 架构图 */
+  .arch { display: grid; grid-template-columns: 1fr auto 1fr auto 1.4fr; gap: 10px; align-items: center; }
+  @media (max-width: 820px) { .arch { grid-template-columns: 1fr; } .arch .arrow { transform: rotate(90deg); } }
+  .box { padding: 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
+  .box .file { font-family: ui-monospace, Menlo, monospace; font-weight: 800; color: var(--accent); }
+  .box ul { margin: 6px 0 0; padding-left: 18px; font-size: 13px; color: var(--ink-soft); }
+  .stack { display: grid; gap: 10px; }
+  pre { margin: 0; padding: 14px 16px; border-radius: 14px; background: #0f1330; color: #dfe3ff; overflow-x: auto; font-size: 13px; line-height: 1.55; }
+  pre .k { color: #8fd8ff; } pre .s { color: #ffd59a; } pre .c { color: #7f89b8; }
+
+  .limits li { margin-bottom: 8px; }
+  footer { padding: 40px 0 60px; color: var(--ink-faint); font-size: 13px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="kicker">Design notes · 设计说明</div>
+      <h1>作业星球</h1>
+      <p class="lead">用一个 3D 太空场景，把每天的作业变成一次“给火箭加燃料、发射”的小任务；英语部分按美国小学 Common Core（CCSS ELA）的底层逻辑来组织。</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn primary" href="#demo">试试交互 demo ↓</a>
+        <a class="btn ghost" href="../">打开作业星球（需先 npm run dev）</a>
+      </div>
+    </div>
+    <div class="orbit" aria-hidden="true">
+      <div class="ring"></div>
+      <div class="center">🚀</div>
+      <div class="spin">
+        <div class="planet" style="left:50%;top:0;--pc:#3fa36a;--glow:#80ed99"><span>🌸</span><i class="moon"></i><span class="label">季节</span></div>
+        <div class="planet" style="left:100%;top:50%;--pc:#c97a12;--glow:#ffb84d"><span>🌡️</span><i class="moon off"></i><span class="label">天气</span></div>
+        <div class="planet" style="left:50%;top:100%;--pc:#1f86b3;--glow:#4cc9f0"><span>🔤</span><i class="moon"></i><span class="label">字母 Ee</span></div>
+        <div class="planet" style="left:0;top:50%;--pc:#c2457f;--glow:#ff7eb6"><span>📖</span><i class="moon off"></i><span class="label">故事</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- 1 -->
+  <section>
+    <h2><span class="num">1</span>为三个人设计</h2>
+    <p class="sub">同一个页面，要同时满足三方面：孩子愿意做、做的是“对的练习”、家长不费力就能布置和检查。后面所有设计都是从这三点推出来的。</p>
+    <div class="grid g3">
+      <div class="card"><h3>🧒 孩子：愿意做</h3><p class="muted">即时反馈、看得见的进度、做完有“仪式感”。错了不惩罚，只鼓励再试。</p></div>
+      <div class="card"><h3>📚 学习：做对的练习</h3><p class="muted">每道题对准一个具体能力（CCSS 标准）。阅读围绕一篇文章：读 → 答 → 找证据 → 说 → 写。</p></div>
+      <div class="card"><h3>👪 家长：省心可控</h3><p class="muted">改一份 <code>homework.json</code> 就能布置作业；报告直接告诉你哪项能力达标、哪道题第一次错了。</p></div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <h2><span class="num">2</span>游戏化：用一个比喻把作业串起来</h2>
+    <p class="sub">不做“答题积分墙”，而是给作业一个孩子一眼能懂的故事：<b>每完成一项作业，就给火箭加一点燃料；加满就发射。</b>每个元素都对应作业里的一个真实概念。</p>
+    <div class="card table-card">
+      <table>
+        <thead><tr><th>作业里的概念</th><th>场景里的样子</th><th>为什么这样设计</th></tr></thead>
+        <tbody>
+          <tr><td>科目 / 今天的一项大作业</td><td>🪐 一颗星球（颜色区分）</td><td>一眼看到今天有几块内容；点星球镜头飞过去，进入“专注模式”</td></tr>
+          <tr><td>一个小任务</td><td>🌑 绕星球转的卫星，完成后变成 🌕 金色</td><td>进度具体到“哪一个还没做”，也可以直接点卫星开始</td></tr>
+          <tr><td>今天的总进度</td><td>🔥 中间火箭的燃料环 + 底部燃料条</td><td>把零散任务汇成一个共同目标，“还差 3 项就能发射”</td></tr>
+          <tr><td>全部完成</td><td>🚀 火箭发射 + 🎆 烟花 + 庆祝弹窗</td><td>给“做完”一个明确的结束仪式，而不是无限刷题</td></tr>
+          <tr><td>答对一题</td><td>⭐ 星星从题目飞进计数器 + 星球冒出粒子</td><td>奖励就发生在答题的那一刻，因果关系清楚</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <h2><span class="num">3</span>每一道题的反馈循环</h2>
+    <p class="sub">核心原则：<b>永远给孩子下一步可以做的事</b>，不让他卡住；同时把<b>第一次的回答</b>留给家长看——这才是真实水平。</p>
+    <div class="flow">
+      <div class="node info"><b>① 出题</b><span>一次只显示一道；可以 🔊 听题、💡 看提示</span></div>
+      <div class="node"><b>② 作答</b><span>选择 / 数字键盘 / 字母块 / 单词卡 / 排序 / 写作</span></div>
+      <div class="node"><b>③ 自动判断</b><span>忽略大小写、全半角、多余空格；数字按数值比较</span></div>
+      <div class="node gold"><b>④ 记录第一次回答</b><span>第一次错的题进入家长的错题本</span></div>
+    </div>
+    <div class="branches" style="margin-top:10px">
+      <div class="branch">
+        <div class="node ok"><b>✅ 答对</b><span>一次答对 +2⭐，改正后答对 +1⭐，星星飞进计数器</span></div>
+        <div class="node ok"><b>🔍 阅读题：再找证据</b><span>在文章里点出能证明答案的句子，一次找对 +1⭐</span></div>
+        <div class="node ok"><b>→ 自动进入下一题</b><span>全部做完显示小结；任务完成卫星变金色</span></div>
+      </div>
+      <div class="branch">
+        <div class="node bad"><b>❌ 第 1 次答错</b><span>“再想想～”，选择题划掉错误选项</span></div>
+        <div class="node bad"><b>❌ 第 2 次答错</b><span>自动给出 💡 提示</span></div>
+        <div class="node bad"><b>❌ 第 3 次答错</b><span>直接显示正确答案，“记住啦，下一题” —— 不让孩子卡死在一道题上</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section>
+    <h2><span class="num">4</span>英语：Common Core 的底层逻辑怎么变成产品</h2>
+    <p class="sub">美国小学英语（ELA）不是按“课文”组织，而是按<b>能力标准</b>组织：每个技能都有一个代码，课堂、作业和成绩单都围绕这些标准展开。</p>
+
+    <div class="card" style="margin-bottom:14px">
+      <div class="anatomy" aria-label="CCSS 代码 RI.1.1 的结构">
+        <div class="part s-RI">RI<small>领域：信息类阅读</small></div><div class="dot">.</div>
+        <div class="part">1<small>年级（K = 幼儿园）</small></div><div class="dot">.</div>
+        <div class="part">1<small>第 1 条：关键细节</small></div>
+      </div>
+      <p class="muted small" style="margin:10px 0 0">同一条标准在 K–5 年级螺旋上升：RI.K.1 “在帮助下回答关键细节问题” → RI.3.1 “明确引用文本作为回答依据”。所以年级只要改代码里的数字。</p>
+    </div>
+
+    <div class="principles">
+      <div class="principle">
+        <div><h3>标准驱动</h3><p class="muted small">每节课都有明确的学习目标，美国老师会把 “I can …” 写在黑板上。</p></div>
+        <div class="how">每道题、每项作业都带标准代码，题目上方显示 🎯 <i>I can answer questions about key details in a story.</i> 和中文解释。</div>
+      </div>
+      <div class="principle">
+        <div><h3>以文本为中心</h3><p class="muted small">阅读理解围绕一篇完整的短文，而不是零散的单句题。</p></div>
+        <div class="how">读前：先认识生词卡；读中：点任意单词听发音、“Read to me” 逐句朗读高亮；读后：回答“只看文章就能回答”的问题。</div>
+      </div>
+      <div class="principle">
+        <div><h3>文本证据（Text evidence）</h3><p class="muted small">CCSS 最核心的要求：回答要能在原文里找到依据，而不是凭印象。</p></div>
+        <div class="how">答对后还有第二步：在文章里点出证明答案的句子。报告里单独统计“一次就找对证据”的比例。</div>
+      </div>
+      <div class="principle">
+        <div><h3>阅读基础技能（Foundational skills）</h3><p class="muted small">低年级先打好拼读、音素意识和流利度的基础。</p></div>
+        <div class="how">听音拼词（字母块，带其他元音做干扰）、押韵辨析；朗读按“我听示范 → 我们一起读 → 我自己读”的渐进释放，计算每分钟词数并对照年级目标。</div>
+      </div>
+      <div class="principle">
+        <div><h3>读、写、说一体</h3><p class="muted small">同一个主题贯穿阅读、口语和写作。</p></div>
+        <div class="how">今天的“最喜欢的季节”：读 Tom 和 Mia 的故事 → 用单词卡拼 <i>My favorite season is spring.</i> → 去问爸爸妈妈 → 写一句带 because 的观点。</div>
+      </div>
+      <div class="principle">
+        <div><h3>标准化评分（Standards-based grading）</h3><p class="muted small">成绩单不是一个总分，而是每项标准的掌握程度。</p></div>
+        <div class="how">家长报告按 6 个领域分组，每条标准显示 4 级：Exceeds 优秀 / Meets 达标 / Approaching 接近 / Beginning 起步。</div>
+      </div>
+    </div>
+
+    <div class="card table-card" style="margin-top:14px">
+      <table>
+        <thead><tr><th>CCSS 领域</th><th>在作业星球里的交互</th><th>今天的作业</th></tr></thead>
+        <tbody>
+          <tr><td><span class="pill s-RF">🔤 RF</span> 阅读基础</td><td>字母块拼词、押韵、短元音辨析、朗读计时</td><td>Ee：net · wet · vet · jet</td></tr>
+          <tr><td><span class="pill s-RL">📚 RL</span> 文学阅读</td><td>故事阅读 + 找证据、人物、复述</td><td>What's Your Favorite Season?</td></tr>
+          <tr><td><span class="pill s-RI">🔬 RI</span> 信息类阅读</td><td>说明文阅读 + 找证据、步骤排序</td><td>（示例：From Egg to Frog）</td></tr>
+          <tr><td><span class="pill s-L">🧩 L</span> 语言运用</td><td>看图选词、分类、反义词、单词卡拼句型</td><td>四季、hot/cold/cool/warm、It's spring.</td></tr>
+          <tr><td><span class="pill s-W">✍️ W</span> 写作</td><td>写作题目 + 句子开头 + 实时检查清单</td><td>My favorite season is ___ because ___.</td></tr>
+          <tr><td><span class="pill s-SL">🗣️ SL</span> 听与说</td><td>听力题自动播放、复述/对话打卡</td><td>问大人 “What's your favorite season?”</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 5 demo -->
+  <section id="demo">
+    <h2><span class="num">5</span>交互 demo</h2>
+    <p class="sub">下面是从真实页面里抽出来的核心交互（简化版，可以直接点）。A、B、C 每完成一个，就给火箭加一格燃料——和真实页面的进度机制一样；D 演示家长报告怎么评级。</p>
+
+    <div class="hud" role="status">
+      <span class="rocket" id="hud-rocket" aria-hidden="true">🚀</span>
+      <span>火箭燃料</span>
+      <div class="bar"><i id="hud-fuel"></i></div>
+      <span class="stars">⭐ <span id="hud-stars">0</span></span>
+    </div>
+
+    <div class="grid g2">
+      <!-- Demo A -->
+      <div class="card demo" id="demo-a">
+        <header><h3>A. 读故事，找证据</h3><span class="pill s-RL">📚 RL.K.1</span></header>
+        <div class="ican s-RL"><span>🎯</span><div><b>I can answer questions about key details in a story.</b><small>回答故事里关键细节的问题</small></div></div>
+        <div class="reader" id="a-reader"></div>
+        <div class="q">What is Mia's favorite season?</div>
+        <div class="choices" id="a-choices"></div>
+        <p class="fb" id="a-fb" aria-live="polite">先读故事，再选答案。点单词可以听发音。</p>
+        <div class="row"><span class="small muted">答对后要在文章里点出证据句。</span><button class="btn small" id="a-reset">重来</button></div>
+        <div class="why"><b>设计要点：</b>答案和证据分两步。第一步检查“理解了没有”，第二步检查“能不能回到原文找依据”。证据句一开始不标出来，答对后整篇文章变成可点击的句子。</div>
+      </div>
+
+      <!-- Demo B -->
+      <div class="card demo" id="demo-b">
+        <header><h3>B. 拼句型 / 拼单词</h3><span class="pill s-L" id="b-std">🧩 L.K.1</span></header>
+        <div class="tabs" role="tablist">
+          <button class="tab" role="tab" aria-selected="true" data-mode="sentence">单词卡拼句子</button>
+          <button class="tab" role="tab" aria-selected="false" data-mode="word">字母块拼单词</button>
+        </div>
+        <div class="q" id="b-q"></div>
+        <div class="slots" id="b-slots"></div>
+        <div class="bank" id="b-bank"></div>
+        <p class="fb" id="b-fb" aria-live="polite"></p>
+        <div class="row"><button class="btn small" id="b-reset">↺ 重来</button><button class="btn primary small" id="b-check">Check ✓ 检查</button></div>
+        <div class="why"><b>设计要点：</b>同一个“点卡片”的动作，用在两种练习上：句型（<i>It's spring.</i>）和自然拼读（听 <i>net</i>，拼 n‑e‑t）。字母块里混入其他元音做干扰，练的正是“短元音 e”。</div>
+      </div>
+
+      <!-- Demo C -->
+      <div class="card demo" id="demo-c">
+        <header><h3>C. 写作检查清单</h3><span class="pill s-W">✍️ W.K.1</span><span class="pill s-L">🧩 L.K.2</span></header>
+        <div class="ican s-W"><span>🎯</span><div><b>I can write my opinion and give a reason.</b><small>写出自己的观点并给出理由</small></div></div>
+        <div><b>What's your favorite season? Why?</b></div>
+        <div class="frame">💬 My favorite season is ___ because ___.</div>
+        <textarea id="c-text" placeholder="Write here in English…" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="写作">my favorite season is winter because i like snow</textarea>
+        <ul class="checks" id="c-checks"></ul>
+        <p class="fb" id="c-fb" aria-live="polite"></p>
+        <div class="row"><span class="small muted">试着把开头改成大写、加句号、把 i 改成 I。</span><button class="btn primary small" id="c-submit">Turn it in 交作业</button></div>
+        <div class="why"><b>设计要点：</b>机器只检查“格式”（大写、标点、用了 because、字数），这些都是 CCSS Language 标准里的硬要求；“写得好不好”留给家长在报告里看。输入框故意关掉了自动首字母大写，否则就检查不出孩子自己会不会。</div>
+      </div>
+
+      <!-- Demo D -->
+      <div class="card demo mastery-demo" id="demo-d">
+        <header><h3>D. 家长报告：掌握度 4 级</h3><span class="pill" style="color:var(--accent)">报告</span></header>
+        <p class="muted small" style="margin:0">报告按标准统计“第一次就答对”的比例，再换算成美国学校常用的 4 级。拖动滑块看看：</p>
+        <label class="small" for="d-range">一次答对率：<b id="d-val">80%</b></label>
+        <input type="range" id="d-range" min="0" max="100" value="80" />
+        <div class="levels">
+          <div class="lvl m1" data-min="0"><b>Beginning</b>起步<br/><span class="small muted">&lt; 50%</span></div>
+          <div class="lvl m2" data-min="50"><b>Approaching</b>接近<br/><span class="small muted">≥ 50%</span></div>
+          <div class="lvl m3" data-min="75"><b>Meets</b>达标<br/><span class="small muted">≥ 75%</span></div>
+          <div class="lvl m4" data-min="90"><b>Exceeds</b>优秀<br/><span class="small muted">≥ 90%</span></div>
+        </div>
+        <div class="why"><b>设计要点：</b>看“第一次”而不是“最后”，因为孩子最终都会答对；第一次的结果才反映真实掌握情况。朗读用“实际每分钟词数 ÷ 年级目标”换算到同样的 4 级。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section>
+    <h2><span class="num">6</span>难度 = 支架 + 复杂度</h2>
+    <p class="sub">CCSS 里的“难”主要来自两件事：文本有多复杂，以及给了多少支架（scaffold）。三档难度按这个思路调整，而不是简单地“题目变多”。</p>
+    <div class="card table-card">
+      <table>
+        <thead><tr><th></th><th>🌱 简单</th><th>⭐ 普通</th><th>🔥 挑战</th></tr></thead>
+        <tbody>
+          <tr><td>今天的英语</td><td>9 项 · 21 题；复述只排 3 步；写 “I like ___.”</td><td>10 项 · 33 题；加听力、分类、排序、朗读</td><td>10 项 · 38 题；加拼写 winter、造问句、推断题</td></tr>
+          <tr><td>口算（自动生成）</td><td>数字范围缩小、口诀到 5、题目少四成</td><td>按布置的参数</td><td>三个数连算：连加连减、乘加乘减</td></tr>
+          <tr><td>写作要求</td><td>3–5 个词，不要求 because</td><td colspan="2">至少 8 个词，必须用 because 给出理由</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted small">换难度不会丢进度：答题记录按“题目”保存，换回来还在；已完成的打卡和星星都保留。</p>
+  </section>
+
+  <!-- 7 -->
+  <section>
+    <h2><span class="num">7</span>技术结构：一份 JSON 驱动整个页面</h2>
+    <p class="sub">家长只需要编辑 <code>public/homework.json</code>，其余全部自动完成：校验、按难度筛选、生成口算题、渲染 3D 场景、批改和报告。没有后端，部署就是上传静态文件。</p>
+    <div class="arch">
+      <div class="box"><div class="file">homework.json</div><ul><li>科目 / 任务 / 题目</li><li>standard、level、passage</li><li>家长每天改这里</li></ul></div>
+      <div class="arrow">→</div>
+      <div class="box"><div class="file">data.js</div><ul><li>校验，报错指出第几题</li><li>按难度筛选</li><li>按日期生成口算题</li><li>切句子、定位证据句</li></ul></div>
+      <div class="arrow">→</div>
+      <div class="stack">
+        <div class="box"><div class="file">scene.js · particles.js</div><ul><li>three.js：星球、卫星、火箭、星空、泛光</li><li>相机飞行、发射动画、烟花</li></ul></div>
+        <div class="box"><div class="file">ui.js · lesson.js · checker.js</div><ul><li>面板、答题、找证据、字母块、写作、朗读</li><li>判分与家长报告</li></ul></div>
+        <div class="box"><div class="file">progress.js</div><ul><li>按题目记录第一次回答、星星</li><li>存在浏览器 localStorage，按日期区分</li></ul></div>
+      </div>
+    </div>
+    <div style="margin-top:14px">
+<pre><span class="c">// 今天作业里的一道题：答对后要在故事里找证据</span>
+{
+  <span class="k">"q"</span>: <span class="s">"What is Mia's favorite season?"</span>,
+  <span class="k">"options"</span>: [<span class="s">"spring"</span>, <span class="s">"summer"</span>, <span class="s">"winter"</span>],
+  <span class="k">"a"</span>: <span class="s">"spring"</span>,
+  <span class="k">"evidence"</span>: <span class="s">"My favorite season is spring"</span>,   <span class="c">// 包含这段文字的句子就是证据</span>
+  <span class="k">"standard"</span>: <span class="s">"RL.K.1"</span>
+}</pre>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section>
+    <h2><span class="num">8</span>细节上的取舍</h2>
+    <div class="grid g2">
+      <div class="card"><h3>📱 平板优先</h3><p class="muted small">大按钮、屏幕数字键盘（不弹系统键盘）、竖屏用底部面板；相机会偏移，让选中的星球始终在面板外的可见区域。</p></div>
+      <div class="card"><h3>📴 不依赖外部资源</h3><p class="muted small">音效用 Web Audio 现场合成，朗读用系统自带语音，字体用系统字体，没有图片素材——打开就能用，国内网络也没问题。</p></div>
+      <div class="card"><h3>🧠 照顾注意力</h3><p class="muted small">一次只显示一道题；英语题的鼓励语中英双语；系统设置了“减少动态效果”时关掉公转、流星等动画。</p></div>
+      <div class="card"><h3>🔒 家长保留控制</h3><p class="muted small">可以锁定难度；打卡和写作需要家长点“检查通过”；清空进度要二次确认；报告可以打印。</p></div>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section>
+    <h2><span class="num">9</span>已知局限和下一步</h2>
+    <div class="card">
+      <ul class="limits">
+        <li><b>朗读只测速度：</b>页面听不出读错的词，得到的是每分钟词数（WPM），不是美国学校用的“每分钟读对词数”（WCPM），准确度靠家长在旁边听。下一步可以接语音识别。</li>
+        <li><b>课本原文：</b>课本故事需要家长自己填进 <code>passage.text</code>，目前用的是我写的练习故事。</li>
+        <li><b>进度只在这台设备：</b>换设备看不到。部署到 Cloudflare 后可以用 KV / D1 做云同步。</li>
+        <li><b>可以继续做的：</b>按周的历史记录和报告、多个孩子、错题自动生成复习题、拍照上传纸质作业让家长批注。</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">作业星球 · 设计说明。真实页面：<code>npm run dev</code> 后打开 <code>http://localhost:5173</code>。</footer>
+
+<script>
+(() => {
+  // ---------- 小 HUD：完成 demo 加燃料 ----------
+  const done = new Set();
+  let stars = 0;
+  const fuel = document.getElementById('hud-fuel');
+  const starEl = document.getElementById('hud-stars');
+  const rocket = document.getElementById('hud-rocket');
+  function addStars(n) { stars += n; starEl.textContent = stars; }
+  function complete(id) {
+    if (done.has(id)) return;
+    done.add(id);
+    fuel.style.width = `${(done.size / 3) * 100}%`;
+    if (done.size === 3) {
+      setTimeout(() => rocket.classList.add('launch'), 500);
+      setTimeout(() => { rocket.classList.remove('launch'); }, 3200);
+    }
+  }
+  const say = (text) => {
+    if (!('speechSynthesis' in window) || !text) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    u.rate = 0.85;
+    speechSynthesis.speak(u);
+  };
+  const setFb = (el, text, tone) => { el.textContent = text; el.className = `fb ${tone || ''}`; };
+  const shuffle = (list) => {
+    const a = list.slice();
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    return a;
+  };
+
+  // ---------- A. 找证据 ----------
+  const story = [
+    'It is a sunny day.',
+    'Tom asks Mia, “What’s your favorite season?”',
+    'Mia says, “My favorite season is spring.',
+    'It’s warm, and I like the flowers.”',
+    'Tom says, “My favorite season is winter.',
+    'It’s cold, and I like the snow!”',
+  ];
+  const vocab = ['favorite', 'season', 'flowers', 'snow'];
+  const EVIDENCE = 2;
+  const aReader = document.getElementById('a-reader');
+  const aChoices = document.getElementById('a-choices');
+  const aFb = document.getElementById('a-fb');
+  let aStage = 'answer';
+  let aTries = 0;
+  function renderA() {
+    aReader.innerHTML = story.map((s, i) => `<span class="sent" data-s="${i}">${s.split(' ').map((t) => {
+      const core = t.replace(/[^A-Za-z'’]/g, '');
+      const lead = t.slice(0, t.indexOf(core[0] ?? ''));
+      const trail = t.slice(lead.length + core.length);
+      if (!core) return t;
+      const isVocab = vocab.includes(core.toLowerCase());
+      return `${lead}<span class="w${isVocab ? ' vocab' : ''}">${core}</span>${trail}`;
+    }).join(' ')}</span>`).join(' ');
+    aReader.classList.remove('evidence');
+    aChoices.innerHTML = ['summer', 'spring', 'winter'].map((o) => `<button class="choice" data-v="${o}">${o}</button>`).join('');
+    aStage = 'answer';
+    aTries = 0;
+    setFb(aFb, '先读故事，再选答案。点单词可以听发音。');
+  }
+  aChoices.addEventListener('click', (e) => {
+    const b = e.target.closest('.choice');
+    if (!b || b.disabled || aStage !== 'answer') return;
+    if (b.dataset.v === 'spring') {
+      b.classList.add('right');
+      aChoices.querySelectorAll('.choice').forEach((x) => (x.disabled = true));
+      addStars(2);
+      aStage = 'evidence';
+      aReader.classList.add('evidence');
+      setFb(aFb, 'Great job! +2⭐ 🔍 现在在故事里点出证明答案的句子', 'ok');
+    } else {
+      b.classList.add('wrong');
+      b.disabled = true;
+      setFb(aFb, 'Try again! 再读读 Mia 说的话', 'bad');
+    }
+  });
+  aReader.addEventListener('click', (e) => {
+    const sent = e.target.closest('.sent');
+    if (aStage === 'evidence' && sent) {
+      aTries++;
+      if (Number(sent.dataset.s) === EVIDENCE) {
+        sent.classList.add('found');
+        aStage = 'done';
+        aReader.classList.remove('evidence');
+        if (aTries === 1) addStars(1);
+        setFb(aFb, `🔍 You found the evidence! 找到证据啦${aTries === 1 ? ' +1⭐' : ''}`, 'ok');
+        complete('a');
+      } else {
+        sent.classList.remove('miss'); void sent.offsetWidth; sent.classList.add('miss');
+        setFb(aFb, '这句证明不了答案，再找找 —— 是谁说了 “spring”？', 'bad');
+      }
+      return;
+    }
+    const w = e.target.closest('.w');
+    if (w) say(w.textContent);
+  });
+  document.getElementById('a-reset').addEventListener('click', renderA);
+  renderA();
+
+  // ---------- B. 拼句型 / 拼单词 ----------
+  const MODES = {
+    sentence: { q: 'What season is it? 🌷🌸', tiles: ["It's", 'winter.', 'spring.'], answer: "It's spring.", joiner: ' ', std: '🧩 L.K.1', cls: 's-L', speak: 'What season is it?' },
+    word: { q: 'Build the word you hear 🔊 🥅', tiles: ['n', 'e', 't', 'a'], answer: 'net', joiner: '', std: '🔤 RF.K.3', cls: 's-RF', speak: 'net' },
+  };
+  let bMode = 'sentence';
+  let bOrder = [];
+  let bPicked = [];
+  let bDone = false;
+  const bQ = document.getElementById('b-q');
+  const bSlots = document.getElementById('b-slots');
+  const bBank = document.getElementById('b-bank');
+  const bFb = document.getElementById('b-fb');
+  const bStd = document.getElementById('b-std');
+  function resetB(mode = bMode) {
+    bMode = mode;
+    const m = MODES[mode];
+    bOrder = shuffle(m.tiles.map((_, i) => i));
+    bPicked = [];
+    bDone = false;
+    bQ.innerHTML = `${m.q} <button class="btn small" id="b-say" aria-label="听">🔊</button>`;
+    bStd.textContent = m.std;
+    bStd.className = `pill ${m.cls}`;
+    setFb(bFb, mode === 'word' ? '先点 🔊 听单词，再用字母块拼出来' : '点单词卡，拼出完整的回答');
+    bSlots.classList.remove('right');
+    drawB();
+  }
+  function drawB() {
+    const m = MODES[bMode];
+    bSlots.innerHTML = bPicked.length
+      ? bPicked.map((i) => `<button class="tile picked" data-i="${i}" ${bDone ? 'disabled' : ''}>${m.tiles[i]}</button>`).join('')
+      : '<span class="placeholder">点下面的卡片放到这里</span>';
+    bBank.innerHTML = bOrder.map((i) => `<button class="tile" data-i="${i}" ${bPicked.includes(i) || bDone ? 'disabled' : ''}>${m.tiles[i]}</button>`).join('');
+  }
+  document.querySelector('#demo-b .tabs').addEventListener('click', (e) => {
+    const t = e.target.closest('.tab');
+    if (!t) return;
+    document.querySelectorAll('#demo-b .tab').forEach((x) => x.setAttribute('aria-selected', String(x === t)));
+    resetB(t.dataset.mode);
+  });
+  bQ.addEventListener('click', (e) => { if (e.target.id === 'b-say') say(MODES[bMode].speak); });
+  bBank.addEventListener('click', (e) => {
+    const t = e.target.closest('.tile');
+    if (!t || t.disabled) return;
+    bPicked.push(Number(t.dataset.i));
+    drawB();
+  });
+  bSlots.addEventListener('click', (e) => {
+    const t = e.target.closest('.tile');
+    if (!t || bDone) return;
+    bPicked = bPicked.filter((i) => i !== Number(t.dataset.i));
+    drawB();
+  });
+  document.getElementById('b-reset').addEventListener('click', () => resetB());
+  document.getElementById('b-check').addEventListener('click', () => {
+    if (bDone) return;
+    const m = MODES[bMode];
+    const given = bPicked.map((i) => m.tiles[i]).join(m.joiner);
+    if (!given) return setFb(bFb, '先点卡片吧', 'info');
+    if (given === m.answer) {
+      bDone = true;
+      bSlots.classList.add('right');
+      drawB();
+      addStars(2);
+      setFb(bFb, `You got it! “${m.answer}” +2⭐`, 'ok');
+      say(m.answer);
+      complete('b');
+    } else {
+      setFb(bFb, 'So close! 再看看顺序 —— 点上面的卡片可以拿回来', 'bad');
+    }
+  });
+  resetB('sentence');
+
+  // ---------- C. 写作检查清单 ----------
+  const cText = document.getElementById('c-text');
+  const cChecks = document.getElementById('c-checks');
+  const cFb = document.getElementById('c-fb');
+  function checks(text) {
+    const t = text.trim();
+    const words = t.split(/\s+/).filter((w) => /[a-z]/i.test(w));
+    const sentences = t.split(/(?<=[.!?])\s+/).filter(Boolean);
+    return [
+      { en: 'Start each sentence with a capital letter', zh: '每句话的开头用大写字母', ok: sentences.length > 0 && sentences.every((s) => /^["'“‘]?[A-Z]/.test(s)) },
+      { en: 'End with . ! or ?', zh: '句末加上标点', ok: /[.!?]["'”’]?$/.test(t) },
+      { en: 'Write “I” as a capital letter', zh: '“I” 永远大写', ok: !/(^|[^A-Za-z'’])i([^A-Za-z'’]|$)/.test(t) },
+      { en: 'Use at least 8 words', zh: `至少 8 个单词（现在 ${words.length} 个）`, ok: words.length >= 8 },
+      { en: 'Use the word “because”', zh: '用 because 说出理由', ok: /(^|[^A-Za-z])because([^A-Za-z]|$)/i.test(t) },
+    ];
+  }
+  function drawC() {
+    const list = checks(cText.value);
+    cChecks.innerHTML = list.map((c) => `<li class="${c.ok ? 'ok' : ''}"><span>${c.ok ? '✅' : '⬜'}</span><div>${c.en}<br/><small>${c.zh}</small></div></li>`).join('');
+    return list;
+  }
+  cText.addEventListener('input', drawC);
+  document.getElementById('c-submit').addEventListener('click', () => {
+    const list = drawC();
+    const missing = list.filter((c) => !c.ok);
+    if (missing.length) return setFb(cFb, `Almost there! 还差：${missing.map((c) => c.zh.replace(/（.*）/, '')).join('；')}`, 'bad');
+    if (!done.has('c')) addStars(2);
+    setFb(cFb, 'Great writing! 写得真棒，已交给爸爸妈妈检查 ✅', 'ok');
+    complete('c');
+  });
+  drawC();
+
+  // ---------- D. 掌握度 ----------
+  const dRange = document.getElementById('d-range');
+  const dVal = document.getElementById('d-val');
+  const lvls = [...document.querySelectorAll('.lvl')];
+  function drawD() {
+    const v = Number(dRange.value);
+    dVal.textContent = `${v}%`;
+    const active = lvls.filter((l) => v >= Number(l.dataset.min)).pop();
+    lvls.forEach((l) => l.classList.toggle('on', l === active));
+  }
+  dRange.addEventListener('input', drawD);
+  drawD();
+})();
+</script>
+</body>
+</html>
