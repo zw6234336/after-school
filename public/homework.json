@@ -239,6 +239,11 @@
       ]
     },
     {
+      "id": "unit-phonics",
+      "unit": "k-phonics-short-vowels",
+      "lessons": "daily"
+    },
+    {
       "id": "unit-seasons",
       "unit": "k-seasons-weather",
       "lessons": "daily"

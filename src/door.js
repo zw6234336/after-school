@@ -1,6 +1,7 @@
 // 通往下一层的门：两把锁和试飞。
-// 读完这一层单元的所有课，就能来门口“试飞”：
-//   🔤 解码锁：屏幕上只显示英文单词（不朗读），孩子从三张图里选出它，认出 need 个就开；
+// 读完这一层单元的所有课（解码锁的词来自另一个单元的话，那个单元的课也要读完），就能来门口“试飞”：
+//   🔤 解码锁：屏幕上只显示英文单词（不朗读），孩子从三张图里选出它，认出 need 个就开。
+//      词来自 decode.unit（比如短元音拼读单元的 cat、pig、box），没写就用这一层的单元；
 //   🔍 理解锁：读 Zib 的一封短信，每道题都答对、并在信里点出证据句才开。
 // 每把锁只看这一次孩子自己做的结果：没有提示、不计时、不扣星星。没打开就记下“收集到的数据”
 // （哪些词没认出来、哪道题没答对），练完再来；锁打开以后一直开着。两把锁都开了，门打开，升起这一层的设计。
@@ -22,16 +23,22 @@ const shuffle = (list) => {
 };
 const dayText = (date) => new Date(`${date}T00:00:00`).toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' });
 
-/** 门现在的样子：哪几课还没读、两把锁开没开、能不能试飞；这一章没有门返回 null */
+/**
+ * 门现在的样子：哪几课还没读、两把锁开没开、能不能试飞；这一章没有门返回 null。
+ * unit 是这一层的单元，decodeUnit 是解码锁的词来自的单元（没写就是同一个）；两个单元的课都要读完
+ */
 export function doorStatus(chapter) {
   const door = chapter?.door;
   const unit = door && UNITS[chapter.unit];
   if (!unit) return null;
-  const learned = learnedLessons(unit.id);
-  const lessons = unit.lessons.map((l) => ({ id: l.id, title: l.title, read: learned.has(l.id) }));
+  const decodeUnit = UNITS[door.decode.unit] || unit;
+  const lessons = [...new Set([decodeUnit, unit])].flatMap((u) => {
+    const learned = learnedLessons(u.id);
+    return u.lessons.map((l) => ({ id: l.id, title: l.title, icon: u.icon, read: learned.has(l.id) }));
+  });
   const left = lessons.filter((l) => !l.read);
   const state = doorState(chapter.id);
-  return { ...state, door, unit, lessons, left, ready: left.length === 0, open: state.decode && state.comprehend };
+  return { ...state, door, unit, decodeUnit, lessons, left, ready: left.length === 0, open: state.decode && state.comprehend };
 }
 
 /** 单元里的词 → 图和出自哪一课：先看词墙，再看每篇文章的生词表 */
@@ -169,7 +176,7 @@ export class DoorHud {
     if (s.opened) detail = `门已经打开${door.unlock ? `，解锁了${door.unlock.name}` : ''}。一共试飞 ${flights.length} 次`;
     else if (!s.ready) detail = `读完这一层的 ${s.lessons.length} 课才能试飞，还差：${s.left.map((l) => l.title).join('、')}`;
     else if (!last) detail = '这一层的课都读完了，可以去门口试飞了';
-    else detail = `试飞 ${flights.length} 次。最近一次（${dayText(last.date)}）：${[flightLine(last), ...flightData(last, s.unit)].join('；')}`;
+    else detail = `试飞 ${flights.length} 次。最近一次（${dayText(last.date)}）：${[flightLine(last), ...flightData(last, s.decodeUnit)].join('；')}`;
     return `
       <li><div><b>🚪 第 ${this.chapter.layer} 层的门 · 解码锁 ${s.decode ? '🔓' : '🔒'} · 理解锁 ${s.comprehend ? '🔓' : '🔒'}</b>
       <small>${esc(detail)}。门只锁故事，不锁使命任务；试飞不计分，只看孩子自己做的结果</small></div></li>`;
@@ -197,7 +204,7 @@ export class DoorHud {
     } else if (s.open) {
       body = '<button class="btn primary wide" data-act="unlock">🚪 两把锁都开了，开门！</button>';
     } else if (!s.ready) {
-      const items = s.lessons.map((l) => `<li class="${l.read ? 'read' : ''}">${l.read ? '✅' : '⬜'} ${esc(l.title)}</li>`).join('');
+      const items = s.lessons.map((l) => `<li class="${l.read ? 'read' : ''}">${l.read ? '✅' : '⬜'} ${esc(l.icon || '')} ${esc(l.title)}</li>`).join('');
       body = `
         <h3>先读完这一层的课 <small>还差 ${s.left.length} 课 · 读完文章、做完那一课的阅读题就算读完</small></h3>
         <ul class="door-lessons">${items}</ul>
@@ -225,7 +232,7 @@ export class DoorHud {
       .slice(0, 5)
       .map((f) => {
         const ok = (!f.decode || f.decode.open) && (!f.comprehend || f.comprehend.open);
-        const data = flightData(f, s.unit);
+        const data = flightData(f, s.decodeUnit);
         return `
           <li class="${ok ? 'ok' : ''}">
             <b>${ok ? '✅' : '🧪'} 试飞 ${f.n} · ${esc(dayText(f.date))}</b>
@@ -252,7 +259,7 @@ export class DoorHud {
       steps,
       step: 0,
       record: { n: s.flights.length + 1, date },
-      decode: steps.includes('decode') ? { items: decodeItems(s.door, s.unit), i: 0, picks: [] } : null,
+      decode: steps.includes('decode') ? { items: decodeItems(s.door, s.decodeUnit), i: 0, picks: [] } : null,
       comprehend: steps.includes('comprehend') ? { ticket: tickets[tried % tickets.length], qi: 0, stage: 'answer', results: [], collapsed: false } : null,
     };
     sound.click();
@@ -424,7 +431,7 @@ export class DoorHud {
     const last = f.step === f.steps.length - 1;
     const name = kind === 'decode' ? '🔤 解码锁' : '🔍 理解锁';
     const score = kind === 'decode' ? `认出了 ${r.right} / ${r.total} 个词${r.open ? '' : `，要 ${r.need} 个`}` : `${r.total} 道题里过了 ${r.right} 道${r.open ? '' : '，要全部答对并找到证据'}`;
-    const data = flightData({ [kind]: r }, doorStatus(this.chapter).unit);
+    const data = flightData({ [kind]: r }, doorStatus(this.chapter).decodeUnit);
     if (r.open) sound.complete();
     this.#show(`
       ${this.#flightHead(name)}
@@ -445,7 +452,7 @@ export class DoorHud {
     this.flight = null;
     this.render();
     const open = s.decode && s.comprehend;
-    const data = flightData(f.record, s.unit);
+    const data = flightData(f.record, s.decodeUnit);
     if (open) sound.complete();
     this.#show(`
       <header>

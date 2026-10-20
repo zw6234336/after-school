@@ -47,8 +47,9 @@
     "to": { "layer": 2, "name": "集市", "icon": "🛍️" },
     "decode": {
       "standard": "RF.K.3",
+      "unit": "k-phonics-short-vowels",
       "need": 8,
-      "words": ["thermometer", "mittens", "snowmen", "blossoms", "rainbow", "seedlings", "sunscreen", "fireworks", "pumpkins", "grasshopper"]
+      "words": ["cat", "hat", "hen", "net", "pig", "pin", "fox", "box", "bug", "bus"]
     },
     "comprehend": {
       "standard": "RI.K.1",
