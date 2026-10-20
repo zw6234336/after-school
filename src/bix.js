@@ -13,6 +13,7 @@ const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').mat
 
 const v1 = new THREE.Vector3();
 const v2 = new THREE.Vector3();
+const c1 = new THREE.Color();
 
 const clamp01 = (x) => Math.min(1, Math.max(0, x));
 const easeInOut = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
@@ -54,6 +55,20 @@ export const STATION_SPOTS = {
   L: { x: 3.3, z: 2.7, labelY: 2.0 },
   WSL: { x: 2.3, z: -4.5, labelY: 4.9 },
 };
+/**
+ * 通往下一层的门（发射台左后方，从总览镜头看不会被飞船和拼读站挡住）；开门以后左边升起这一层的设计（气象塔）
+ */
+export const DOOR_SPOT = { x: -2.0, z: -5.0, labelY: 2.9 };
+export const TOWER_SPOT = { x: -4.1, z: -5.6 };
+/** 开门时 Zib 跑去站的地方：气象塔前面一点，在开门镜头的左边，不挡门 */
+const ZIB_AT_TOWER = { x: -4.0, z: -4.2 };
+/** 开门的两个镜头（相对着陆点）：先站在门前看门打开，再往后上方退一点看气象塔升起来。都在拼读站和飞船后面，不会被挡住 */
+export const DOOR_SHOTS = {
+  door: { pos: [-1.1, 1.3, -1.5], look: [-2.0, 0.4, -5.0] },
+  tower: { pos: [-0.7, 2.6, -1.2], look: [-3.4, 0.2, -5.4] },
+};
+/** 气象塔四个圆环的颜色：冬、春、夏、秋 */
+const SEASON_COLORS = ['#9fd3ff', '#ff8fc8', '#ffd166', '#f08a3c'];
 /** 数学、语文等科目的站点，按顺序摆在地图两边 */
 export const EXTRA_SPOTS = [
   { x: -5.8, z: 0.6, labelY: 1.9 },
@@ -82,6 +97,8 @@ export class BixStage {
     this.#buildStation();
     this.#buildSign();
     this.#buildStations();
+    this.#buildDoor();
+    this.#buildTower();
     this.#buildRocks();
     this.#buildShip();
     this.#buildZib();
@@ -265,6 +282,54 @@ export class BixStage {
         });
       }
     });
+  }
+
+  /**
+   * 门的样子跟着进度变：两盏锁灯（红是锁着，绿是开了）；开门动画播过的话，门开着、气象塔立着。
+   * 锁刚打开时灯上冒一串小星星
+   */
+  setDoor({ decode, comprehend, opened }) {
+    const d = this.door;
+    [decode, comprehend].forEach((open, i) => {
+      const lamp = d.lamps[i];
+      if (open && lamp.open === false) this.host.particles.emit(lamp.mesh.getWorldPosition(new THREE.Vector3()), { count: 30, colors: ['#4ade80', '#ffffff'], speed: 1.6, gravity: 0, life: 0.9 });
+      lamp.open = !!open;
+      lamp.mesh.material.color.set(open ? '#4ade80' : '#ff4d6d').multiplyScalar(1.8);
+    });
+    if (opened && !this.doorOpening) {
+      this.#swingDoor(1);
+      this.tower.group.visible = true;
+      this.tower.group.position.y = 0;
+    }
+  }
+
+  /** 两把锁都开了，开门第一步：门向里打开，门后亮起来；返回 Promise */
+  async swingOpen() {
+    this.doorOpening = true;
+    this.zib.goal = { ...ZIB_AT_TOWER };
+    await this.#anim(1.8, (k) => this.#swingDoor(easeInOut(k)));
+    this.host.particles.firework(this.door.group.localToWorld(new THREE.Vector3(0, 2.4, 0.3)), ['#ffd166', '#b388ff']);
+  }
+
+  /** 开门第二步：气象塔从地下升起来，顶上放四朵季节颜色的烟花；返回 Promise */
+  async raiseTower() {
+    const t = this.tower;
+    t.group.visible = true;
+    const base = this.site.localToWorld(new THREE.Vector3(TOWER_SPOT.x, ground(TOWER_SPOT.x, TOWER_SPOT.z) + 0.1, TOWER_SPOT.z));
+    let dust = 0;
+    await this.#anim(2.8, (k, dt = 0) => {
+      t.group.position.y = -t.height * (1 - easeOut(k));
+      dust -= dt;
+      if (dust <= 0 && k < 1) {
+        dust = 0.18;
+        this.host.particles.emit(base, { count: 14, colors: ['#c9b48a', '#ffffff'], speed: 1.4, gravity: -0.6, life: 0.9 });
+      }
+    });
+    this.zibReact('nod');
+    const top = t.orb.getWorldPosition(new THREE.Vector3());
+    SEASON_COLORS.forEach((c, i) => setTimeout(() => this.host.particles.firework(top.clone().add(v1.set((i - 1.5) * 0.9, 1 + (i % 2) * 0.6, 0)), [c, '#ffffff']), i * 260));
+    await wait(this.reduced ? 0 : 1200);
+    this.doorOpening = false;
   }
 
   /** 开场动画每一帧调用：更新动画，并按镜头预设摆好相机 */
@@ -598,6 +663,128 @@ export class BixStage {
     tower.add(this.towerBeacon);
   }
 
+  /** 通往下一层的门：石头门框、两扇向里开的门（关着时中间拼成一个金色徽记）、门楣上两盏锁灯、门后的光 */
+  #buildDoor() {
+    const g = new THREE.Group();
+    place(g, DOOR_SPOT.x, DOOR_SPOT.z);
+    // 正面朝着总览镜头
+    g.rotateY(Math.atan2(-DOOR_SPOT.x, 13.5 - DOOR_SPOT.z));
+    this.site.add(g);
+    const stone = new THREE.MeshStandardMaterial({ color: '#7b86b0', roughness: 0.8, flatShading: true });
+    const dark = new THREE.MeshStandardMaterial({ color: '#2f3760', roughness: 0.55, metalness: 0.3 });
+    const base = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.16, 1.1), stone);
+    base.position.y = 0.02;
+    g.add(base);
+    for (const side of [-1, 1]) {
+      const pillar = new THREE.Mesh(new THREE.BoxGeometry(0.32, 2.0, 0.42), stone);
+      pillar.position.set(side * 0.88, 1.0, 0);
+      g.add(pillar);
+    }
+    const lintel = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.36, 0.5), stone);
+    lintel.position.y = 2.15;
+    g.add(lintel);
+
+    const c = document.createElement('canvas');
+    c.width = c.height = 128;
+    const cg = c.getContext('2d');
+    const grad = cg.createRadialGradient(64, 64, 4, 64, 64, 70);
+    grad.addColorStop(0, '#fff6dc');
+    grad.addColorStop(0.45, '#ffc46e');
+    grad.addColorStop(1, '#8f6bff');
+    cg.fillStyle = grad;
+    cg.fillRect(0, 0, 128, 128);
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    const portal = new THREE.Mesh(
+      new THREE.PlaneGeometry(1.44, 1.96),
+      new THREE.MeshBasicMaterial({ map: tex, color: new THREE.Color('#ffffff').multiplyScalar(1.5), transparent: true, opacity: 0, depthWrite: false }),
+    );
+    portal.position.set(0, 1.0, -0.08);
+    g.add(portal);
+
+    const emblem = new THREE.MeshBasicMaterial({ color: new THREE.Color('#ffd166').multiplyScalar(1.4), side: THREE.DoubleSide });
+    const leaves = [-1, 1].map((side) => {
+      const pivot = new THREE.Group();
+      pivot.position.x = side * 0.72;
+      const leaf = new THREE.Mesh(new THREE.BoxGeometry(0.72, 1.96, 0.1), dark);
+      leaf.position.set(-side * 0.36, 1.0, 0);
+      const half = new THREE.Mesh(new THREE.CircleGeometry(0.22, 24, side < 0 ? Math.PI / 2 : -Math.PI / 2, Math.PI), emblem);
+      half.position.set(-side * 0.72, 1.15, 0.056);
+      pivot.add(leaf, half);
+      g.add(pivot);
+      return { pivot, side };
+    });
+
+    // 左边的灯是解码锁，右边是理解锁
+    const lamps = [-1, 1].map((side) => {
+      const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.13, 16, 12), new THREE.MeshBasicMaterial({ color: new THREE.Color('#ff4d6d').multiplyScalar(1.8) }));
+      mesh.position.set(side * 0.5, 2.15, 0.27);
+      g.add(mesh);
+      return { mesh, open: null };
+    });
+
+    const hit = new THREE.Mesh(new THREE.BoxGeometry(2.4, 2.6, 1.2), new THREE.MeshBasicMaterial({ visible: false }));
+    hit.position.y = 1.2;
+    hit.userData.door = true;
+    g.add(hit);
+    this.door = { group: g, leaves, lamps, portal, hit, k: 0 };
+  }
+
+  /** 门开到几成：0 关着，1 全开 */
+  #swingDoor(k) {
+    const d = this.door;
+    d.k = k;
+    for (const { pivot, side } of d.leaves) pivot.rotation.y = -side * k * 1.75;
+    d.portal.material.opacity = k;
+  }
+
+  /** Bix 气象塔：四个斜着转的圆环是四个季节，顶上的球按冬、春、夏、秋换颜色；开门以后从地下升起来 */
+  #buildTower() {
+    const holder = new THREE.Group();
+    place(holder, TOWER_SPOT.x, TOWER_SPOT.z);
+    // 缩小一点：开门的镜头离得近，整座塔要拍得下
+    holder.scale.setScalar(0.82);
+    this.site.add(holder);
+    const g = new THREE.Group();
+    g.visible = false;
+    holder.add(g);
+    const white = new THREE.MeshStandardMaterial({ color: '#e3e9f7', roughness: 0.35, metalness: 0.2 });
+    const dark = new THREE.MeshStandardMaterial({ color: '#2b3150', roughness: 0.6 });
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.7, 0.4, 8), new THREE.MeshStandardMaterial({ color: '#7b86b0', roughness: 0.8, flatShading: true }));
+    base.position.y = 0.2;
+    const spire = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.2, 3.7, 12), white);
+    spire.position.y = 2.2;
+    g.add(base, spire);
+    const rings = SEASON_COLORS.map((color, i) => {
+      const spin = new THREE.Group();
+      spin.position.y = 1.15 + i * 0.72;
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.66 - i * 0.08, 0.05, 8, 40), new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.55, roughness: 0.4 }));
+      ring.rotation.x = Math.PI / 2 + (i % 2 ? 0.35 : -0.35);
+      spin.add(ring);
+      g.add(spin);
+      return spin;
+    });
+    const orb = new THREE.Mesh(new THREE.SphereGeometry(0.3, 24, 16), new THREE.MeshBasicMaterial({ color: SEASON_COLORS[0] }));
+    orb.position.y = 4.3;
+    const cups = new THREE.Group();
+    cups.position.y = 4.85;
+    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.3, 8), dark);
+    pole.position.y = -0.15;
+    cups.add(pole);
+    for (let i = 0; i < 3; i++) {
+      const a = (i / 3) * Math.PI * 2;
+      const arm = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.025, 0.025), dark);
+      arm.position.set(Math.cos(a) * 0.21, 0, Math.sin(a) * 0.21);
+      arm.rotation.y = -a;
+      const cup = new THREE.Mesh(new THREE.SphereGeometry(0.08, 12, 8, 0, Math.PI), white);
+      cup.position.set(Math.cos(a) * 0.42, 0, Math.sin(a) * 0.42);
+      cup.rotation.y = -a;
+      cups.add(arm, cup);
+    }
+    g.add(orb, cups);
+    this.tower = { group: g, rings, orb, cups, height: 5.1 };
+  }
+
   #buildRocks() {
     const mat = new THREE.MeshStandardMaterial({ color: '#3d5a80', roughness: 0.85, flatShading: true });
     const crystal = new THREE.MeshStandardMaterial({ color: '#9be7ff', emissive: '#4cc9f0', emissiveIntensity: 0.6, roughness: 0.2, flatShading: true });
@@ -610,7 +797,7 @@ export class BixStage {
       const d = 2.4 + rand() * 8;
       const x = Math.cos(a) * d;
       const z = Math.sin(a) * d;
-      const spots = [...Object.values(STATION_SPOTS), ...EXTRA_SPOTS, { x: 1.4, z: 1.0 }];
+      const spots = [...Object.values(STATION_SPOTS), ...EXTRA_SPOTS, DOOR_SPOT, TOWER_SPOT, { x: 1.4, z: 1.0 }];
       if (Math.hypot(x, z) < 2 || spots.some((s) => Math.hypot(x - s.x, z - s.z) < 1.5)) continue;
       const isCrystal = i % 5 === 0;
       const rock = new THREE.Mesh(isCrystal ? crystalGeo : geo, isCrystal ? crystal : mat);
@@ -889,6 +1076,19 @@ export class BixStage {
     this.towerBeacon.scale.setScalar(this.beaconBoost > 0 ? 1.8 + Math.sin(t * 20) * 0.4 : 1);
     for (const ring of this.doneRings.values()) ring.material.opacity = 0.6 + Math.sin(t * 3) * 0.3;
     this.padLights.forEach((m, i) => (m.visible = Math.sin(t * 3 - i * 0.8) > -0.2));
+    // 门：锁着的灯轻轻跳，开着的门后面的光一明一暗
+    const d = this.door;
+    for (const lamp of d.lamps) lamp.mesh.scale.setScalar(lamp.open ? 1 : 1 + Math.sin(t * 3) * 0.1);
+    if (d.k > 0) d.portal.material.opacity = d.k * (0.85 + Math.sin(t * 2.2) * 0.15);
+    // 气象塔：圆环转，顶上的球按冬、春、夏、秋一圈一圈换颜色，风速计一直转
+    const tw = this.tower;
+    if (tw.group.visible) {
+      tw.rings.forEach((r, i) => (r.rotation.y += dt * (0.5 + i * 0.2) * (i % 2 ? -1 : 1)));
+      const season = (t * 0.25) % 4;
+      const i = Math.floor(season);
+      tw.orb.material.color.set(SEASON_COLORS[i]).lerp(c1.set(SEASON_COLORS[(i + 1) % 4]), easeInOut(season - i)).multiplyScalar(1.6);
+      tw.cups.rotation.y += dt * 4;
+    }
     const s = this.sign;
     s.pop = Math.max(0, s.pop - dt * 1.6);
     s.group.scale.setScalar(1 + Math.sin(s.pop * Math.PI) * 0.25);

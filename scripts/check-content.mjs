@@ -144,6 +144,7 @@ for (const ch of chapters) {
     if (!STATION_KEYS.includes(key)) at(`surface.stations 里的 "${key}" 不是站点，可用：${STATION_KEYS.join(' / ')}`);
   }
   if (ch.explore) checkExplore(ch, at);
+  if (ch.door) checkDoor(ch, at);
   const op = ch.opening;
   if (!op) continue;
   if (!Array.isArray(op.shots) || op.shots.length === 0) {
@@ -239,6 +240,66 @@ function checkExplore(ch, at) {
   });
 }
 
+/**
+ * 通往下一层的门。解码锁的词要是单元词墙或生词表里带图的词，图不能重复（孩子是看词选图）；
+ * 理解锁的每封短信按普通任务的规则加载（答案在选项里、证据句找得到），每道题都要有证据句，
+ * 短信本身只能用高频词、单元文章里的词、前面几层学过的词和 comprehend.vocab 里声明的词
+ */
+function checkDoor(ch, at) {
+  const door = ch.door;
+  const unit = units[ch.unit];
+  if (!unit) return;
+  if (!door.to?.layer || !door.to?.name) at('door.to 要写 layer 和 name（通往第几层、叫什么）');
+
+  const dec = door.decode || {};
+  if (!parseStandard(dec.standard || '')) at(`door.decode.standard "${dec.standard}" 不是 CCSS 代码`);
+  const pics = new Map();
+  for (const w of unit.wordWall || []) pics.set(String(w.word).toLowerCase(), w.emoji);
+  for (const l of unit.lessons) {
+    for (const t of l.tasks || []) for (const v of t.passage?.vocab || []) if (!pics.has(String(v.word).toLowerCase())) pics.set(String(v.word).toLowerCase(), v.emoji);
+  }
+  const words = Array.isArray(dec.words) ? dec.words : [];
+  if (words.length < 3) at('door.decode.words 至少要 3 个词（每道题要两张干扰图）');
+  const byPic = new Map();
+  for (const w of words) {
+    const pic = pics.get(String(w).toLowerCase());
+    if (!pic) at(`door.decode.words 里的 "${w}" 不是单元 ${ch.unit} 词墙或生词表里带图的词`);
+    else if (byPic.has(pic)) at(`door.decode.words 里 "${w}" 和 "${byPic.get(pic)}" 的图一样（${pic}），看图分不出来`);
+    else byPic.set(pic, w);
+  }
+  if (!(dec.need >= 1 && dec.need <= words.length)) at(`door.decode.need 要在 1 到 ${words.length} 之间`);
+
+  const com = door.comprehend || {};
+  if (!parseStandard(com.standard || '')) at(`door.comprehend.standard "${com.standard}" 不是 CCSS 代码`);
+  const tickets = Array.isArray(com.tickets) ? com.tickets : [];
+  if (!tickets.length) at('door.comprehend.tickets 至少要有一封短信');
+  try {
+    const tasks = tickets.map((t) => ({ id: t.id, title: t.title, standard: com.standard, passage: { title: t.title, genre: 'informational', text: t.text }, questions: t.questions }));
+    normalizeHomework({ subjects: [{ id: 'door', name: '理解锁', tasks }] }, { level: 'normal', today: '2026-01-01' });
+  } catch (err) {
+    at(`door 的短信加载出错：${err.message}`);
+  }
+  const earlier = chapters.filter((c) => c.layer < ch.layer && units[c.unit]).flatMap((c) => unitWords(units[c.unit]));
+  const allowed = new Set([
+    ...DOLCH,
+    ...Object.values(ch.opening?.vocab || {}).flat().map((w) => w.toLowerCase()),
+    ...earlier,
+    ...unitWords(unit),
+    ...unit.lessons.flatMap((l) => (l.tasks || []).flatMap((t) => wordsOf(t.passage?.text || ''))),
+    ...(com.vocab || []).map((w) => String(w).toLowerCase()),
+  ]);
+  const ids = new Set();
+  tickets.forEach((t, i) => {
+    const where = `door 第 ${i + 1} 封短信${t.id ? `（${t.id}）` : ''}`;
+    if (!t.id || !t.title || !t.text) at(`${where}要写 id、title 和 text`);
+    else if (ids.has(t.id)) at(`${where}的 id 重复`);
+    ids.add(t.id);
+    for (const q of t.questions || []) if (q.evidence === undefined) at(`${where}「${q.q}」没写 evidence：理解锁每道题都要找证据句`);
+    const bad = [...new Set(wordsOf(t.text || '').filter((w) => !allowed.has(w)))];
+    if (bad.length) at(`${where}用到了没学过的词：${bad.join('、')}。只能用高频词、单元里学过的词，或者在 door.comprehend.vocab 里声明`);
+  });
+}
+
 // ---------- 汇总 ----------
 
 for (const unit of Object.values(units)) {
@@ -273,6 +334,10 @@ for (const ch of chapters) {
     const finds = ch.explore.discoveries || [];
     const school = finds.filter((d) => d.from?.school).length;
     console.log(`   闲逛：${ch.explore.zones?.length || 0} 个地带 · ${finds.length} 个发现物（${school} 个是学校本周的词，${finds.length - school} 个读完课文才能破译）`);
+  }
+  if (ch.door) {
+    const { to, decode, comprehend } = ch.door;
+    console.log(`   门：通往第 ${to?.layer} 层 ${to?.name} · 解码锁 ${decode?.words?.length ?? 0} 个词认出 ${decode?.need} 个 · 理解锁 ${comprehend?.tickets?.length ?? 0} 封短信`);
   }
 }
 
