@@ -1137,8 +1137,10 @@ export class BixExplore extends EventTarget {
 
     // 着陆区里不能穿过去的东西：飞船、站点、通往下一层的门和旁边的气象塔
     this.obstacles = [{ dir: siteDir(0, 0), r: 0.75 }];
-    for (const s of [...Object.values(STATION_SPOTS), ...EXTRA_SPOTS, TOWER_SPOT]) this.obstacles.push({ dir: siteDir(s.x, s.z), r: 0.85 });
-    this.obstacles.push({ dir: siteDir(DOOR_SPOT.x, DOOR_SPOT.z), r: 1.2 });
+    for (const s of [...Object.values(STATION_SPOTS), ...EXTRA_SPOTS]) this.obstacles.push({ dir: siteDir(s.x, s.z), r: 0.85 });
+    // 门和气象塔挨得很近，中间的缝走不过去：当成一个包住两样的大障碍物，绕着走，不会卡在缝里
+    const gap = Math.hypot(DOOR_SPOT.x - TOWER_SPOT.x, DOOR_SPOT.z - TOWER_SPOT.z);
+    this.obstacles.push({ dir: siteDir((DOOR_SPOT.x + TOWER_SPOT.x) / 2, (DOOR_SPOT.z + TOWER_SPOT.z) / 2), r: gap / 2 + 1.25 });
 
     this.#buildDiscoveries(chapter.explore.discoveries || []);
     this.#buildDecor();
@@ -1276,7 +1278,7 @@ export class BixExplore extends EventTarget {
   }
 
   walkTo(dir, onArrive = null, stop = 0) {
-    this.target = { dir: dir.clone().normalize(), onArrive, stop, best: Infinity, stuck: 0 };
+    this.target = { dir: dir.clone().normalize(), onArrive, stop, best: Infinity, stuck: 0, detour: null, detours: 0, side: 0 };
     this.zibStage = null;
     this.framing = null;
     this.#mark(this.target.dir);
@@ -1420,6 +1422,8 @@ export class BixExplore extends EventTarget {
 
   #buildDecor() {
     const avoid = this.discoveries.map((d) => d.dir);
+    // 着陆区边上的障碍物（飞船、站点、门和气象塔）旁边不种树，不然中间会留下走不过去的窄缝
+    const site = [...this.obstacles];
     const placed = [];
     for (const zone of this.zones.list) {
       const kinds = decorKinds(zone);
@@ -1433,6 +1437,7 @@ export class BixExplore extends EventTarget {
         const colat = Math.acos(top + this.rand() * (bottom - top)) / DEG;
         const dir = dirAt(90 - colat, lon);
         if (avoid.some((a) => a.distanceTo(dir) * R < 2.6) || placed.some((p) => p.distanceTo(dir) * R < 1.5)) continue;
+        if (site.some((o) => o.dir.distanceTo(dir) * R < o.r + 1.6)) continue;
         placed.push(dir);
         const kind = zone.look.decor[(this.rand() * zone.look.decor.length) | 0];
         if (!kinds[kind]) continue;
@@ -1484,23 +1489,69 @@ export class BixExplore extends EventTarget {
       if (REDUCED_MOTION && ang > stop) this.#rotateAlong(p, tg.dir, ang - stop);
       return this.#arrive();
     }
-    // 朝着目标走；前面有飞船、站点、大树挡着，就往旁边绕
-    const move = this.#steer(p, tangentOf(p, v1.copy(tg.dir).sub(p), v2));
+    // 朝着目标走；前面有飞船、站点、大树挡着，就往旁边绕。正在绕路时沿着挡路的东西的边走
+    const toward = tangentOf(p, v1.copy(tg.dir).sub(p), v2);
+    const move = tg.detour ? this.#around(p, tg) : this.#steer(p, toward);
     this.speed = Math.min(WALK_SPEED, this.speed + dt * 6);
     const align = this.fwd.dot(move);
     const step = Math.min(ang - stop, (this.speed * clamp01(0.3 + align) * dt) / R);
     p.addScaledVector(move, step).normalize();
     this.#pushOut(p);
     this.#turn(this.fwd, p, move, dt * 9);
-    // 被挡住、半天走不近（比如点在了飞船里面）：停下来
     const left = p.angleTo(tg.dir);
-    if (left < tg.best - 0.0005) {
+    if (tg.detour) {
+      // 绕完这一段：从现在的位置重新算有没有走近
+      if ((tg.detour.t -= dt) <= 0) {
+        tg.detour = null;
+        tg.best = left;
+        tg.stuck = 0;
+      }
+    } else if (left < tg.best - 0.0005) {
       tg.best = left;
       tg.stuck = 0;
-    } else if ((tg.stuck += dt) > 1) {
-      this.target = null;
+    } else if ((tg.stuck += dt) > 0.6) {
+      // 半天走不近：两个挨着的东西中间常常会卡住，沿着最近的那个绕一段（先往目标那边绕，不行再换一边）；
+      // 绕了几次还不行，或者点在了飞船里面这种走不到的地方，就停下来
+      if (tg.detours < 4 && !this.#unreachable(tg.dir)) {
+        tg.detours += 1;
+        tg.side = tg.side ? -tg.side : 0;
+        tg.detour = { t: 1.3, o: this.#nearest(p) };
+        tg.toward = toward.clone();
+        tg.stuck = 0;
+      } else {
+        this.target = null;
+      }
     }
     stand(this.astro.group, p, this.fwd);
+  }
+
+  /** 离得最近的障碍物（按到边的距离） */
+  #nearest(p) {
+    let near = null;
+    let best = Infinity;
+    for (const o of this.obstacles) {
+      const d = p.distanceTo(o.dir) * R - o.r;
+      if (d < best) {
+        best = d;
+        near = o;
+      }
+    }
+    return near;
+  }
+
+  /** 绕路：沿着开始绕路时最近的那个障碍物的边走（tg.side 是往哪边绕，第一次选离目标近的那边）。中途不换障碍物，不然会原地来回晃 */
+  #around(p, tg) {
+    const near = tg.detour.o;
+    if (!near) return tg.toward;
+    const toObstacle = tangentOf(p, v3.copy(near.dir).sub(p), v4);
+    const along = v5.crossVectors(p, toObstacle).normalize();
+    if (!tg.side) tg.side = along.dot(tg.toward) >= 0 ? 1 : -1;
+    return along.multiplyScalar(tg.side);
+  }
+
+  /** 目标在障碍物里面（或者紧贴着）：走不到 */
+  #unreachable(dir) {
+    return this.obstacles.some((o) => dir.distanceTo(o.dir) * R < o.r + 0.3);
   }
 
   #arrive() {
