@@ -169,6 +169,14 @@ npm run dev
 
 修改或新增单元后运行 `npm run check:content`，它会用和页面一样的规则在三档难度下检查每个单元。
 
+### 开场动画（原型）
+
+“星际破译”故事里，进入星球的每一层前会播一段开场动画：作业号着陆、原住民 Zib 用学过的词打招呼、中途停下来复习两道题、最后预告这一层的新词。开场的台词和题目写在 [`content/story/`](content/README.md#故事章节和开场动画) 里。现在还没有接进作业流程，开发时这样预览：
+
+```
+http://localhost:5173/?opening=ch01-weather-station
+```
+
 ## 部署到 Cloudflare
 
 项目已经配好 [Cloudflare Workers 静态资源](https://developers.cloudflare.com/workers/static-assets/)（见 `wrangler.jsonc`），不需要写任何后端代码。
@@ -200,7 +208,9 @@ src/scene.js           three.js 场景：星球、卫星、火箭、相机动画
 src/particles.js       烟花和星星粒子
 src/ui.js              作业面板、答题、家长报告
 src/data.js            读取作业文件、展开内容库单元、生成口算题
-src/content.js         把 content/units 里的单元打包进页面
+src/content.js         把 content/units 和 content/story 打包进页面
+src/opening.js         开场动画播放器：字幕、复习停顿、标题卡、跳过
+src/bix.js             开场动画的三维布景：Bix 星、作业号、气象站、Zib、镜头预设
 src/checker.js         判断答案对错
 src/progress.js        进度和星星（localStorage）
 src/standards.js       CCSS 标准说明、“I can”目标、掌握等级

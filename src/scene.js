@@ -80,6 +80,7 @@ export class HomeworkScene extends EventTarget {
     this.launchState = null;
     this.nextShootingStar = 3;
     this.time = 0;
+    this.cinematic = null;
     this.last = performance.now();
 
     this.#bindPointer();
@@ -166,6 +167,25 @@ export class HomeworkScene extends EventTarget {
 
   get isLaunching() {
     return !!this.launchState;
+  }
+
+  /**
+   * 开场动画：把相机交给 cinematic（需要有 update(dt, t, camera)），期间不能点星球。
+   * 结束后相机从当前位置平滑飞回作业星球。
+   */
+  startCinematic(cinematic) {
+    this.cinematic = cinematic;
+    this.focused = null;
+    this.hovered = null;
+    this.renderer.domElement.style.cursor = '';
+  }
+
+  endCinematic() {
+    if (!this.cinematic) return;
+    this.cinematic = null;
+    this.camPos.copy(this.camera.position);
+    this.camLook.copy(this.camera.getWorldDirection(v1)).multiplyScalar(12).add(this.camera.position);
+    this.parallax.set(0, 0);
   }
 
   // ---------- 场景搭建 ----------
@@ -470,7 +490,7 @@ export class HomeworkScene extends EventTarget {
   }
 
   #pick() {
-    if (Math.abs(this.pointer.x) > 1 || this.launchState) return null;
+    if (Math.abs(this.pointer.x) > 1 || this.launchState || this.cinematic) return null;
     // 视图偏移会改变投影，射线需要用同一个相机矩阵
     this.raycaster.setFromCamera(this.pointer, this.camera);
     const hits = this.raycaster.intersectObjects(this.hitTargets, false);
@@ -579,6 +599,13 @@ export class HomeworkScene extends EventTarget {
     this.#updateShootingStar(dt);
     this.particles.update(dt);
     this.starUniforms.uTime.value = t;
+
+    if (this.cinematic) {
+      if (this.camera.view?.enabled) this.camera.clearViewOffset();
+      this.cinematic.update(dt, t, this.camera);
+      this.composer.render();
+      return;
+    }
 
     // 相机
     this.#computeGoal();
@@ -700,7 +727,7 @@ function easeOutBack(x) {
   return x <= 0 ? 0.0001 : 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
 }
 
-function disposeTree(root) {
+export function disposeTree(root) {
   root.traverse((obj) => {
     obj.geometry?.dispose();
     const materials = Array.isArray(obj.material) ? obj.material : obj.material ? [obj.material] : [];
@@ -737,7 +764,7 @@ function makeLabel(subject, onClick) {
   return { el, count, bar };
 }
 
-function planetTexture(color, seed) {
+export function planetTexture(color, seed) {
   const c = document.createElement('canvas');
   c.width = 512;
   c.height = 256;
@@ -773,7 +800,7 @@ function planetTexture(color, seed) {
   return tex;
 }
 
-function glowMaterial(color) {
+export function glowMaterial(color) {
   return new THREE.ShaderMaterial({
     uniforms: { uColor: { value: color.clone() }, uIntensity: { value: 1.2 } },
     vertexShader: /* glsl */ `
