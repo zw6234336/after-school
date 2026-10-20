@@ -25,5 +25,7 @@ Core Knowledge Language Arts、Listening & Learning、Tell It Again! 是 Core Kn
 | Summer | Lesson 4: Summer | 缩写成短文，保留夏天的月份、白天最长、温度计、放假、游泳和防晒霜、树荫和七月四日的烟花；去掉了华盛顿的游客、割草和花园等段落；题目重写并加了文本证据，其中一题和 Winter 那一课比较温度计（RI.K.9）；按原作的讨论题加了“讲给大人听” |
 | Autumn | Lesson 5: Autumn | 缩写成短文，保留秋天的月份、天气转凉、白天变短、树叶变色和掉落、扫落叶、秋收、集市上的南瓜、感恩节晚餐和四季循环；去掉了去山里看红叶、集市的游乐项目和感恩节菜单；题目重写并加了文本证据；参照原作的 Pausing Point（Riddles for Core Content、Seasonal Sort）加了一组“这是哪个季节”的复习题 |
 | The Grasshopper and the Ants | Lesson 6: The Grasshopper and the Ants | 缩写寓言，对话改成“某某说：……”的句式方便分句；去掉了中间的歌和蚂蚁的刻薄回答，保留结尾的歌；题目重写，寓意题标为一年级标准作为挑战 |
+| Safety in Storms | Lesson 7: Safety in Storms | 缩写成短文，保留乌云、闪电和雷声、待在屋里或车里、不站在树下、从泳池里出来、冰雹和雨天的穿着；去掉了闪电和电的原理、被闪电劈倒的树、在户外趴下和冰雹的大小；题目重写并加了文本证据；加了一组“安全还是不安全”的分类题 |
+| Meteorology | Lesson 8: Meteorology | 缩写成短文，保留气象学家做什么、预报天气能帮人知道穿什么、农民也要知道什么时候下雨、卫星拍云、看云识天气、提醒大家暴风雨要来和 Annie 的告别；去掉了电视上的天气预报员、天气记录、三种云的名字和飓风；题目重写并加了文本证据，其中一题问作者给出的理由（RI.K.8）；加了“当一回天气预报员”的口语任务 |
 
 只用了文字，没有用读本里的图片（部分图片是第三方授权）。
