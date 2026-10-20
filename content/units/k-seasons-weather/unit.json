@@ -26,6 +26,15 @@
     { "word": "thermometer", "meaning": "温度计", "emoji": "🌡️", "lesson": "l2-winter" },
     { "word": "mittens", "meaning": "连指手套", "emoji": "🧤", "lesson": "l2-winter" },
     { "word": "envelopes", "meaning": "信封（春节的红包）", "emoji": "🧧", "lesson": "l2-winter" },
+    { "word": "thaw", "meaning": "（冰雪）融化", "emoji": "🧊", "lesson": "l3-spring" },
+    { "word": "seedlings", "meaning": "幼苗", "emoji": "🌱", "lesson": "l3-spring" },
+    { "word": "blossoms", "meaning": "树上开的花", "emoji": "🌸", "lesson": "l3-spring" },
+    { "word": "sunscreen", "meaning": "防晒霜", "emoji": "🧴", "lesson": "l4-summer" },
+    { "word": "indoors", "meaning": "在屋里", "emoji": "🏠", "lesson": "l4-summer" },
+    { "word": "fireworks", "meaning": "烟花", "emoji": "🎆", "lesson": "l4-summer" },
+    { "word": "chill", "meaning": "凉意，冷飕飕的感觉", "emoji": "🥶", "lesson": "l5-autumn" },
+    { "word": "shed", "meaning": "（树）掉落（叶子）", "emoji": "🍂", "lesson": "l5-autumn" },
+    { "word": "harvest", "meaning": "收获，收庄稼", "emoji": "🌽", "lesson": "l5-autumn" },
     { "word": "grasshopper", "meaning": "蚱蜢", "emoji": "🦗", "lesson": "l6-grasshopper" },
     { "word": "hungry", "meaning": "饿", "emoji": "😋", "lesson": "l6-grasshopper" }
   ],
@@ -181,6 +190,300 @@
             "frame": "In winter, people ___.",
             "minWords": 5
           }
+        }
+      ]
+    },
+    {
+      "id": "l3-spring",
+      "title": "Spring",
+      "genre": "informational",
+      "from": "Lesson 3: Spring",
+      "changes": "Shortened and simplified; kept the spring months, thawing, windy and rainy days, the rainbow, cherry blossoms and planting on farms; removed the old sayings, the Potomac floods, the holidays and Memorial Day; questions rewritten with text evidence; writing task added.",
+      "tasks": [
+        {
+          "id": "sw-l3-read",
+          "title": "Read: Spring",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Spring",
+            "genre": "informational",
+            "text": "Dear Kindergartners, After winter, the next season is spring! Spring includes March, April, and May. The days get longer, and the air gets warmer. The snow and ice begin to thaw. Animals wake up from their long winter sleep. Spring is a very windy season. It is a perfect time to fly a kite! There are many rainy days, too. I love to splash in puddles in my rain boots. After the rain, you may see a rainbow in the sky. In April, the cherry trees in my city are full of pink and white blossoms. On farms, farmers plant seeds in neat rows. Soon, little green seedlings come up. What is spring like where you live? Your friend, Annie",
+            "vocab": [
+              { "word": "thaw", "meaning": "（冰雪）融化", "emoji": "🧊" },
+              { "word": "rainbow", "meaning": "彩虹", "emoji": "🌈" },
+              { "word": "blossoms", "meaning": "树上开的花", "emoji": "🌸" },
+              { "word": "seedlings", "meaning": "幼苗", "emoji": "🌱" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What is this letter mostly about?",
+              "options": ["spring", "winter", "kites"],
+              "a": "spring",
+              "evidence": "the next season is spring",
+              "standard": "RI.K.2"
+            },
+            {
+              "q": "Which months are in spring?",
+              "options": ["March, April, and May", "December, January, and February", "June, July, and August"],
+              "a": "March, April, and May",
+              "evidence": "March, April, and May"
+            },
+            {
+              "q": "What can you see in the sky after the rain?",
+              "options": ["a rainbow", "snow", "the moon"],
+              "a": "a rainbow",
+              "evidence": "you may see a rainbow"
+            },
+            {
+              "q": "The snow and ice begin to thaw. Thaw means ___.",
+              "options": ["melt", "freeze", "fall"],
+              "a": "melt",
+              "evidence": "begin to thaw",
+              "standard": "RI.K.4",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Put the spring changes in order.",
+              "order": ["The snow and ice thaw.", "Farmers plant seeds in rows.", "Little green seedlings come up."],
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Why does the snow begin to thaw in spring?",
+              "options": ["The air gets warmer.", "It is very windy.", "Farmers plant seeds."],
+              "a": "The air gets warmer.",
+              "evidence": "the air gets warmer",
+              "standard": "RI.K.3",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sw-l3-write-easy",
+          "title": "Write: Spring",
+          "standard": "W.K.2",
+          "level": "easy",
+          "write": {
+            "prompt": "Tell one thing about spring.",
+            "frame": "In spring, ___.",
+            "minWords": 3
+          }
+        },
+        {
+          "id": "sw-l3-write",
+          "title": "Write: Spring",
+          "standard": "W.K.2",
+          "level": ["normal", "hard"],
+          "write": {
+            "prompt": "Tell two things you can see in spring.",
+            "frame": "In spring, I see ___ and ___.",
+            "minWords": 7
+          }
+        }
+      ]
+    },
+    {
+      "id": "l4-summer",
+      "title": "Summer",
+      "genre": "informational",
+      "from": "Lesson 4: Summer",
+      "changes": "Shortened and simplified; kept the summer months, long days, the thermometer, vacation, the pool and sunscreen, shade, and the Fourth of July; removed the Washington, D.C. sightseeing, crowds, mowing and gardens; questions rewritten with text evidence, including one that compares the thermometer with the Winter lesson (RI.K.9); speaking task added from the lesson's discussion question.",
+      "tasks": [
+        {
+          "id": "sw-l4-read",
+          "title": "Read: Summer",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Summer",
+            "genre": "informational",
+            "text": "Dear Kindergartners, Today I will tell you about summer. Summer includes June, July, and August. The days are the longest of the year. Summer is the hottest season. When it is hot, the liquid in the thermometer goes up high. Summer is my favorite season because I love the warm sunshine. There is no school, so it is vacation time! I like to swim at the pool to keep cool. I wear sunscreen so I do not get a sunburn. On the hottest days, some people rest in the shade or stay indoors. The Fourth of July is the birthday of the United States. At night, we watch colorful fireworks. What is summer like where you live? Your friend, Annie",
+            "vocab": [
+              { "word": "vacation", "meaning": "假期", "emoji": "🏖️" },
+              { "word": "sunscreen", "meaning": "防晒霜", "emoji": "🧴" },
+              { "word": "indoors", "meaning": "在屋里", "emoji": "🏠" },
+              { "word": "fireworks", "meaning": "烟花", "emoji": "🎆" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "Which months are in summer?",
+              "options": ["June, July, and August", "March, April, and May", "December, January, and February"],
+              "a": "June, July, and August",
+              "evidence": "June, July, and August"
+            },
+            {
+              "q": "Why does Annie wear sunscreen?",
+              "options": ["so she does not get a sunburn", "so she stays warm", "so she can swim fast"],
+              "a": "so she does not get a sunburn",
+              "evidence": "so I do not get a sunburn"
+            },
+            {
+              "q": "What does Annie watch on the Fourth of July?",
+              "options": ["fireworks", "snowmen", "falling leaves"],
+              "a": "fireworks",
+              "evidence": "colorful fireworks"
+            },
+            {
+              "q": "In winter, the liquid in the thermometer stays down low. In summer, it goes ___.",
+              "options": ["up high", "down low"],
+              "a": "up high",
+              "evidence": "goes up high",
+              "hint": "Winter 那一课说冷的时候液体在下面；热的时候呢？",
+              "standard": "RI.K.9",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Some people stay indoors. Indoors means ___.",
+              "options": ["inside a building", "in the pool", "under a tree"],
+              "a": "inside a building",
+              "evidence": "stay indoors",
+              "standard": "RI.K.4",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is this letter mostly about?",
+              "options": ["summer", "the pool", "fireworks"],
+              "a": "summer",
+              "evidence": "Today I will tell you about summer",
+              "hint": "pool 和 fireworks 只是信里的一个细节，整封信在讲什么？",
+              "standard": "RI.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sw-l4-tell",
+          "title": "Tell a grown-up about a summer day",
+          "standard": "SL.K.4",
+          "note": "用 In summer, it is … / I wear … / I like to … 告诉大人夏天的天气、穿什么、做什么，讲完请大人点“完成啦”。"
+        }
+      ]
+    },
+    {
+      "id": "l5-autumn",
+      "title": "Autumn",
+      "genre": "informational",
+      "from": "Lesson 5: Autumn",
+      "changes": "Shortened and simplified; kept the autumn months, cooler air, shorter days, leaves changing color and falling, raking leaves, harvest, pumpkins at the county fair, Thanksgiving dinner and the cycle of the seasons; removed the mountain trip, fair rides and food, and the Thanksgiving menu; questions rewritten with text evidence; added a season-sorting review modeled on the Pausing Point (Riddles for Core Content, Seasonal Sort).",
+      "tasks": [
+        {
+          "id": "sw-l5-read",
+          "title": "Read: Autumn",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Autumn",
+            "genre": "informational",
+            "text": "Dear Kindergartners, After summer comes autumn, and kids go back to school. Autumn includes September, October, and November. The air gets cooler, and there is a chill at night. The days get shorter and shorter. The leaves on many trees turn yellow, orange, red, and brown. Then the trees shed their leaves. That is why autumn is also called fall! We rake the leaves into a big pile and jump in it. Autumn is harvest time on farms. Farmers pick the fruits and vegetables that grew all summer. At the county fair, I saw giant pumpkins. In November, my family eats Thanksgiving dinner together. Soon it will be winter, and the cycle of the seasons starts again. Your friend, Annie",
+            "vocab": [
+              { "word": "chill", "meaning": "凉意，冷飕飕的感觉", "emoji": "🥶" },
+              { "word": "shed", "meaning": "（树）掉落（叶子）", "emoji": "🍂" },
+              { "word": "harvest", "meaning": "收获，收庄稼", "emoji": "🌽" },
+              { "word": "pumpkins", "meaning": "南瓜", "emoji": "🎃" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "Which months are in autumn?",
+              "options": ["September, October, and November", "June, July, and August", "March, April, and May"],
+              "a": "September, October, and November",
+              "evidence": "September, October, and November"
+            },
+            {
+              "q": "What happens to the leaves in autumn?",
+              "options": ["They change color and fall.", "They grow big and green.", "They turn into snow."],
+              "a": "They change color and fall.",
+              "evidence": ["turn yellow, orange, red, and brown", "shed their leaves"]
+            },
+            {
+              "q": "What does Annie's family eat together in November?",
+              "options": ["Thanksgiving dinner", "snow cones", "birthday cake"],
+              "a": "Thanksgiving dinner",
+              "evidence": "Thanksgiving dinner"
+            },
+            {
+              "q": "The trees shed their leaves. Shed means ___.",
+              "options": ["drop", "grow", "eat"],
+              "a": "drop",
+              "evidence": "shed their leaves",
+              "standard": "RI.K.4",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What do farmers do at harvest time?",
+              "options": ["They pick fruits and vegetables.", "They plant seeds in rows.", "They swim at the pool."],
+              "a": "They pick fruits and vegetables.",
+              "evidence": "Farmers pick the fruits and vegetables",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Why is autumn also called fall?",
+              "options": ["The leaves fall from the trees.", "Kids fall down in the leaves.", "It is cold at night."],
+              "a": "The leaves fall from the trees.",
+              "evidence": ["shed their leaves", "That is why autumn is also called fall"],
+              "standard": "RI.K.3",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sw-l5-sort",
+          "title": "Review: Which season is it?",
+          "standard": "L.K.5",
+          "questions": [
+            {
+              "q": "🧤 People wear hats, mittens, and scarves. Which season is it?",
+              "options": ["winter", "spring", "summer", "autumn"],
+              "a": "winter",
+              "speak": "People wear hats, mittens, and scarves. Which season is it?"
+            },
+            {
+              "q": "🌸 The cherry trees are full of blossoms. Which season is it?",
+              "options": ["winter", "spring", "summer", "autumn"],
+              "a": "spring",
+              "speak": "The cherry trees are full of blossoms. Which season is it?"
+            },
+            {
+              "q": "🎆 We watch fireworks on the Fourth of July. Which season is it?",
+              "options": ["winter", "spring", "summer", "autumn"],
+              "a": "summer",
+              "speak": "We watch fireworks on the Fourth of July. Which season is it?"
+            },
+            {
+              "q": "🍂 The trees shed their leaves. Which season is it?",
+              "options": ["winter", "spring", "summer", "autumn"],
+              "a": "autumn",
+              "speak": "The trees shed their leaves. Which season is it?"
+            },
+            {
+              "q": "🌱 Farmers plant seeds in neat rows. Which season is it?",
+              "options": ["winter", "spring", "summer", "autumn"],
+              "a": "spring",
+              "speak": "Farmers plant seeds in neat rows. Which season is it?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🧴 People wear sunscreen at the pool. Which season is it?",
+              "options": ["winter", "spring", "summer", "autumn"],
+              "a": "summer",
+              "speak": "People wear sunscreen at the pool. Which season is it?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🧧 Children get red envelopes. Which season is it?",
+              "options": ["winter", "spring", "summer", "autumn"],
+              "a": "winter",
+              "speak": "Children get red envelopes. Which season is it?",
+              "level": "hard"
+            },
+            {
+              "q": "🎃 Farmers pick fruits and vegetables. Which season is it?",
+              "options": ["winter", "spring", "summer", "autumn"],
+              "a": "autumn",
+              "speak": "Farmers pick fruits and vegetables. Which season is it?",
+              "level": "hard"
+            }
+          ]
         }
       ]
     },
