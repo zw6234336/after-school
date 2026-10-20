@@ -225,6 +225,11 @@
           }
         }
       ]
+    },
+    {
+      "id": "unit-seasons",
+      "unit": "k-seasons-weather",
+      "lessons": ["l1-weather", "l2-winter", "l6-grasshopper"]
     }
   ]
 }

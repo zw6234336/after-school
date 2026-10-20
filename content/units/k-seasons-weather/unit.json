@@ -1,0 +1,261 @@
+{
+  "id": "k-seasons-weather",
+  "grade": "K",
+  "title": "Seasons and Weather",
+  "titleZh": "四季与天气",
+  "icon": "🌦️",
+  "color": "#7cc8ff",
+  "question": "How does the weather change from season to season?",
+  "questionZh": "每个季节的天气有什么不同？",
+  "license": "CC BY-NC-SA 4.0",
+  "source": {
+    "work": "Seasons and Weather — Tell It Again! Read-Aloud Anthology (Kindergarten, Core Knowledge Language Arts)",
+    "short": "CKLA Kindergarten · Seasons and Weather",
+    "author": "Core Knowledge Foundation",
+    "year": 2013,
+    "url": "https://www.coreknowledge.org/free-resource/ckla-domain-08-seasons-weather/",
+    "license": "CC BY-NC-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+    "notice": "This work is based on an original work of the Core Knowledge® Foundation made available through licensing under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License. This does not in any way imply that the Core Knowledge Foundation endorses this work."
+  },
+  "wordWall": [
+    { "word": "weather", "meaning": "天气", "emoji": "🌦️", "lesson": "l1-weather" },
+    { "word": "season", "meaning": "季节", "emoji": "🗓️", "lesson": "l1-weather" },
+    { "word": "cycle", "meaning": "循环，一圈一圈地重复", "emoji": "🔄", "lesson": "l1-weather" },
+    { "word": "autumn", "meaning": "秋天（也叫 fall）", "emoji": "🍂", "lesson": "l1-weather" },
+    { "word": "thermometer", "meaning": "温度计", "emoji": "🌡️", "lesson": "l2-winter" },
+    { "word": "mittens", "meaning": "连指手套", "emoji": "🧤", "lesson": "l2-winter" },
+    { "word": "envelopes", "meaning": "信封（春节的红包）", "emoji": "🧧", "lesson": "l2-winter" },
+    { "word": "grasshopper", "meaning": "蚱蜢", "emoji": "🦗", "lesson": "l6-grasshopper" },
+    { "word": "hungry", "meaning": "饿", "emoji": "😋", "lesson": "l6-grasshopper" }
+  ],
+  "lessons": [
+    {
+      "id": "l1-weather",
+      "title": "What's the Weather Like?",
+      "genre": "informational",
+      "from": "Lesson 1: What's the Weather Like?",
+      "changes": "Shortened and simplified for independent kindergarten reading; kept Annie's letter frame; removed the map, polar and rainforest sections; comprehension questions rewritten as choices with text evidence.",
+      "tasks": [
+        {
+          "id": "sw-l1-read",
+          "title": "Read: What's the Weather Like?",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "What's the Weather Like?",
+            "genre": "informational",
+            "text": "Dear Kindergartners, Hello! My name is Annie. I live in a big city called Washington, D.C. I will be your weather pen pal. There are many kinds of weather. It can be sunny, cloudy, windy, rainy, or stormy. The weather changes day by day. There are four seasons in a year: winter, spring, summer, and autumn. Winter is the coldest season. In spring, new plants grow and flowers bloom. Summer is the hottest season. In autumn, the leaves fall from the trees. Autumn is also called fall. The seasons always change in the same order, year after year. This is called a cycle. Your friend, Annie",
+            "vocab": [
+              { "word": "weather", "meaning": "天气", "emoji": "🌦️" },
+              { "word": "seasons", "meaning": "季节", "emoji": "🗓️" },
+              { "word": "autumn", "meaning": "秋天", "emoji": "🍂" },
+              { "word": "cycle", "meaning": "循环", "emoji": "🔄" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "Where does Annie live?",
+              "options": ["Washington, D.C.", "the South Pole", "a rainforest"],
+              "a": "Washington, D.C.",
+              "evidence": "I live in a big city called Washington"
+            },
+            {
+              "q": "Which season is the coldest?",
+              "options": ["winter", "summer", "spring"],
+              "a": "winter",
+              "evidence": "Winter is the coldest season"
+            },
+            {
+              "q": "Which season is the hottest?",
+              "options": ["autumn", "summer", "winter"],
+              "a": "summer",
+              "evidence": "Summer is the hottest season",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Autumn is also called ___.",
+              "options": ["fall", "spring", "snow"],
+              "a": "fall",
+              "evidence": "Autumn is also called fall",
+              "standard": "RI.K.4"
+            },
+            {
+              "q": "Put the seasons in order. Start with winter.",
+              "order": ["winter", "spring", "summer", "autumn"],
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is Annie's letter mostly about?",
+              "options": ["the seasons and the weather", "how to build a snowman", "a trip to the zoo"],
+              "a": "the seasons and the weather",
+              "standard": "RI.K.2",
+              "level": "hard"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l2-winter",
+      "title": "Winter",
+      "genre": "informational",
+      "from": "Lesson 2: Winter",
+      "changes": "Shortened and simplified; kept the thermometer, winter clothing, snow and Chinese New Year (red paper, red envelopes); removed other holidays, snow shoveling and snowplow sections; questions rewritten with text evidence; writing task added.",
+      "tasks": [
+        {
+          "id": "sw-l2-read",
+          "title": "Read: Winter",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Winter",
+            "genre": "informational",
+            "text": "Dear Kindergartners, Today I will tell you about winter. Winter is the coldest season of the year. Winter includes December, January, and February. A thermometer tells us how hot or cold it is. When it is cold, the liquid in the thermometer stays down low. In winter, people wear hats, mittens, and scarves to stay warm. When it is very cold, rain can turn into snow. I love to build snowmen and go sledding! Winter has fun holidays, too. At Chinese New Year, homes are decorated with red paper. Children get red envelopes for good luck. What do you like best about winter? Your friend, Annie",
+            "vocab": [
+              { "word": "thermometer", "meaning": "温度计", "emoji": "🌡️" },
+              { "word": "mittens", "meaning": "连指手套", "emoji": "🧤" },
+              { "word": "snowmen", "meaning": "雪人", "emoji": "⛄" },
+              { "word": "envelopes", "meaning": "信封（红包）", "emoji": "🧧" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What is this letter mostly about?",
+              "options": ["winter", "summer", "the rainforest"],
+              "a": "winter",
+              "evidence": "Today I will tell you about winter",
+              "standard": "RI.K.2"
+            },
+            {
+              "q": "When it is cold, where is the liquid in the thermometer?",
+              "options": ["down low", "up high"],
+              "a": "down low",
+              "evidence": "stays down low"
+            },
+            {
+              "q": "What do people wear to stay warm in winter?",
+              "options": ["hats, mittens, and scarves", "swimsuits and sandals"],
+              "a": "hats, mittens, and scarves",
+              "evidence": "hats, mittens, and scarves"
+            },
+            {
+              "q": "When it is very cold, rain can turn into ___.",
+              "options": ["snow", "flowers", "leaves"],
+              "a": "snow",
+              "evidence": "rain can turn into snow",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What do children get at Chinese New Year?",
+              "options": ["red envelopes", "new sleds", "snowmen"],
+              "a": "red envelopes",
+              "evidence": "Children get red envelopes",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Winter is cold. Summer is ___.",
+              "options": ["hot", "cold"],
+              "a": "hot",
+              "standard": "L.K.5"
+            }
+          ]
+        },
+        {
+          "id": "sw-l2-write-easy",
+          "title": "Write: Winter",
+          "standard": "W.K.2",
+          "level": "easy",
+          "write": {
+            "prompt": "Tell one thing about winter.",
+            "frame": "In winter, ___.",
+            "minWords": 3
+          }
+        },
+        {
+          "id": "sw-l2-write",
+          "title": "Write: Winter",
+          "standard": "W.K.2",
+          "level": ["normal", "hard"],
+          "write": {
+            "prompt": "Tell what people do or wear in winter.",
+            "frame": "In winter, people ___.",
+            "minWords": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "l6-grasshopper",
+      "title": "The Grasshopper and the Ants",
+      "genre": "literature",
+      "from": "Lesson 6: The Grasshopper and the Ants",
+      "changes": "Shortened the fable; dialogue rewritten as \"X said, ...\" so each sentence stands alone; removed the summer song and the ants' unkind reply, kept the closing song; questions rewritten, the lesson-of-the-story question tagged as a grade 1 stretch (RL.1.2).",
+      "tasks": [
+        {
+          "id": "sw-l6-read",
+          "title": "Read: The Grasshopper and the Ants",
+          "standard": "RL.K.1",
+          "passage": {
+            "title": "The Grasshopper and the Ants",
+            "genre": "literature",
+            "text": "On a fine summer day, a grasshopper hopped in a field. He sang and danced all day long. Nearby, the ants worked hard. They filled their house with food for the long, cold winter. The grasshopper said, “Come and play with me!” But the ants kept working. Then autumn came, and the leaves fell from the trees. Soon it was winter. The grasshopper was cold and hungry. He knocked on the ants' door and asked, “May I share your food?” The ants asked, “What did you do all summer?” The grasshopper said, “I sang and danced in the sun.” As he walked away, he sang, “Next time I'll work as well as dance. Then I'll be ready, like the ants!”",
+            "vocab": [
+              { "word": "grasshopper", "meaning": "蚱蜢", "emoji": "🦗" },
+              { "word": "ants", "meaning": "蚂蚁", "emoji": "🐜" },
+              { "word": "hungry", "meaning": "饿", "emoji": "😋" },
+              { "word": "share", "meaning": "分享", "emoji": "🤝" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What season is it at the start of the story?",
+              "options": ["summer", "winter", "spring"],
+              "a": "summer",
+              "evidence": "On a fine summer day"
+            },
+            {
+              "q": "What did the ants do in the summer?",
+              "options": ["They worked hard and saved food.", "They sang and danced all day."],
+              "a": "They worked hard and saved food.",
+              "evidence": ["the ants worked hard", "They filled their house with food"],
+              "standard": "RL.K.3"
+            },
+            {
+              "q": "How did the grasshopper feel in winter?",
+              "options": ["cold and hungry", "warm and happy"],
+              "a": "cold and hungry",
+              "evidence": "cold and hungry",
+              "standard": "RL.K.3"
+            },
+            {
+              "q": "Put the story in order.",
+              "order": ["The grasshopper sang and danced.", "It was winter. He was cold and hungry.", "He asked the ants for food."],
+              "standard": "RL.K.2",
+              "level": "easy"
+            },
+            {
+              "q": "Put the story in order.",
+              "order": ["The grasshopper sang and danced.", "Autumn came, and the leaves fell.", "It was winter. He was cold and hungry.", "He asked the ants for food."],
+              "standard": "RL.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What did the grasshopper learn?",
+              "options": ["Work first, so you are ready later.", "Always sing in the summer.", "Ants do not like music."],
+              "a": "Work first, so you are ready later.",
+              "evidence": "Next time I'll work as well as dance",
+              "standard": "RL.1.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sw-l6-retell",
+          "title": "Retell the story to a grown-up",
+          "standard": "RL.K.2",
+          "note": "用 First… Then… At the end… 把蚱蜢和蚂蚁的故事讲给大人听，讲完请大人点“完成啦”。"
+        }
+      ]
+    }
+  ]
+}

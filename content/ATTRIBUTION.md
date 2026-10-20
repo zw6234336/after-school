@@ -1,0 +1,26 @@
+# 署名与来源
+
+每个单元的 `unit.json` 里也记录了来源（`source`），每一课记录了改编自原作的哪一部分（`from`），以及改了什么（`changes`）。这个文件是汇总，方便人看。
+
+## Core Knowledge Language Arts（CKLA）
+
+原作要求的署名（按原文保留）：
+
+> This work is based on an original work of the Core Knowledge® Foundation made available through licensing under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License. This does not in any way imply that the Core Knowledge Foundation endorses this work.
+
+Core Knowledge Language Arts、Listening & Learning、Tell It Again! 是 Core Knowledge Foundation 的商标，这里只用来说明出处。
+
+### Kindergarten · Domain 8 · Seasons and Weather
+
+- 原作：*Seasons and Weather — Tell It Again!™ Read-Aloud Anthology*, Kindergarten, Core Knowledge Language Arts®, © 2013 Core Knowledge Foundation
+- 下载页：<https://www.coreknowledge.org/free-resource/ckla-domain-08-seasons-weather/>
+- 原作授权：[CC BY-NC-SA 3.0 Unported](https://creativecommons.org/licenses/by-nc-sa/3.0/)（读本版权页上写明）
+- 本项目里的单元：[`units/k-seasons-weather/unit.json`](units/k-seasons-weather/unit.json)
+
+| 本项目的课 | 改编自 | 改动 |
+|---|---|---|
+| What's the Weather Like? | Lesson 1: What's the Weather Like? | 原文是给老师朗读的长信，缩写成孩子能自己读的短文，保留 Annie 写信的形式；去掉了地图和极地、雨林部分；题目按原作的理解题改写成选择题，加了文本证据 |
+| Winter | Lesson 2: Winter | 缩写成短文，保留温度计、冬天穿着、下雪和春节（红纸、红包）；去掉了其他节日和铲雪等段落；题目重写并加了文本证据 |
+| The Grasshopper and the Ants | Lesson 6: The Grasshopper and the Ants | 缩写寓言，对话改成“某某说：……”的句式方便分句；去掉了中间的歌和蚂蚁的刻薄回答，保留结尾的歌；题目重写，寓意题标为一年级标准作为挑战 |
+
+只用了文字，没有用读本里的图片（部分图片是第三方授权）。

@@ -90,7 +90,23 @@ export function passageHtml(passage, { mode = 'read', collapsed = false, marks =
       </header>
       <div class="reader-text">${sentences}</div>
       ${tip}
+      ${creditHtml(passage.credit)}
     </section>`;
+}
+
+/** 改编内容的署名：一行来源常驻显示，点开看原作要求的完整声明和授权 */
+function creditHtml(c) {
+  if (!c) return '';
+  const link = (url, label) => (url ? `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>` : esc(label));
+  const by = [c.year && `© ${c.year}`, c.author].filter(Boolean).join(' ');
+  return `
+    <details class="reader-credit">
+      <summary>📜 Adapted from ${esc(c.work)}${c.part ? ` · ${esc(c.part)}` : ''}</summary>
+      <p>
+        ${c.notice ? `${esc(c.notice)}<br />` : ''}
+        ${by ? `${esc(by)} · ` : ''}原作 ${link(c.url, '下载页')}${c.license ? ` · 原作授权 ${link(c.licenseUrl, c.license)}` : ''}${c.adaptedLicense ? ` · 改编版授权 ${link(c.adaptedLicenseUrl, c.adaptedLicense)}` : ''}
+      </p>
+    </details>`;
 }
 
 export function vocabCardsHtml(vocab) {
