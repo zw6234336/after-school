@@ -189,6 +189,19 @@ npm run dev
 
 地带和发现物写在章节文件的 `explore` 里（见 [content/README.md](content/README.md#故事章节和开场动画)），`npm run check:content` 会检查发现物的名字在那一课的文章里、Zib 的话只用学过的词。
 
+### 给小宇航员穿对衣服
+
+地图右下角的 **🎒 衣柜** 里放着这一层课文讲到的衣服，读完那一课才拿得到：🧤 mittens（Winter）、👢 rain boots（Spring）、🧴 sunscreen（Summer）。还没拿到的名字显示成外星符号，写着读完哪一课就能拿到。
+
+闲逛走进天气地带时，Zib 用学过的话提醒该穿什么，比如在雪之谷说 “Brr! It is cold! Put on your mittens!”，在雨之林说 “It is wet! Put on your rain boots!”。晴之丘要抹防晒霜，戴着连指手套也不行（“No mittens in the sun!”）。
+
+- 穿得不对时，小宇航员会不舒服：冷了发抖、呼白气，没穿雨靴脚下溅水，热了冒汗、头盔发红。
+- 提醒会一直留着，直到穿对或者离开这个地带（也可以点 ✕ 关上）。穿对了 Zib 会夸一句、点点头。
+- 不拦路、不计分：这里练的是这个单元的核心目标“天气决定穿什么”，也让读完一课有一样看得见的东西。
+- 穿着什么会记在浏览器里。家长报告里能看到拿到了几件、还差哪几课。
+
+衣柜写在章节文件的 `wardrobe` 里（见 [content/README.md](content/README.md#衣柜穿对衣服)）。
+
 ### 门和两把锁
 
 着陆区发射台的左后方有一扇 **🚪 通往第 2 层** 的门，名牌上显示这一层的课读完了几课。单元的课全部读完以后，点门就能**试飞**，门上有两把锁：
@@ -212,7 +225,7 @@ npm run dev
 ```
 http://localhost:5173/?opening=ch01-weather-station   直接播放开场，播完着陆
 http://localhost:5173/?explore                         着陆以后直接去逛逛
-http://localhost:5173/?story=reset                     回到航行期（着陆、燃料天数、图鉴和门锁清空）
+http://localhost:5173/?story=reset                     回到航行期（着陆、燃料天数、图鉴、门锁和身上的衣服清空）
 ```
 
 ## 部署到 Cloudflare
@@ -253,6 +266,7 @@ src/surface.js         着陆后的地面地图：站点名牌、点击、镜头
 src/explore.js         闲逛 Bix 星：小宇航员、沿球面行走、第三人称镜头、天气地带、发现物
 src/explore-hud.js     闲逛的网页部分：去逛逛按钮、发现卡片、图鉴、翻译机破译名字
 src/door.js            通往下一层的门：两把锁、试飞、收集到的数据、家长报告里的门
+src/wardrobe.js        衣柜：读完一课拿到衣服、闲逛时 Zib 提醒穿什么、穿得对不对
 src/stations.js        按 CCSS 领域把当天任务分到站点
 src/story.js           故事进度：燃料、着陆、读过的课、发现图鉴
 src/checker.js         判断答案对错

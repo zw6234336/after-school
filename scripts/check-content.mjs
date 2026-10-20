@@ -144,6 +144,7 @@ for (const ch of chapters) {
     if (!STATION_KEYS.includes(key)) at(`surface.stations 里的 "${key}" 不是站点，可用：${STATION_KEYS.join(' / ')}`);
   }
   if (ch.explore) checkExplore(ch, at);
+  if (ch.wardrobe) checkWardrobe(ch, at);
   if (ch.door) checkDoor(ch, at);
   const op = ch.opening;
   if (!op) continue;
@@ -241,6 +242,47 @@ function checkExplore(ch, at) {
 }
 
 /**
+ * 衣柜：每件衣服的名字要出现在那一课的文章里（读完那一课才拿得到）；
+ * 地带要在 explore.zones 里，wear / off 指向衣柜里的衣服，feel 是 cold / wet / hot；
+ * Zib 的话只能用高频词、章节声明的词、前面几层学过的词，和这个地带提到的衣服那几课文章里的词
+ */
+function checkWardrobe(ch, at) {
+  const wr = ch.wardrobe;
+  const unit = units[ch.unit];
+  if (!unit) return;
+  const items = Array.isArray(wr.items) ? wr.items : [];
+  const byId = new Map();
+  const lessonText = (lesson) =>
+    (lesson.tasks || []).flatMap((t) => [t.passage?.text || '', ...(t.passage?.vocab || []).map((v) => v.word)]).join(' ').toLowerCase();
+  items.forEach((item, i) => {
+    const where = `wardrobe 第 ${i + 1} 件衣服${item.id ? `（${item.id}）` : ''}`;
+    for (const key of ['id', 'word', 'emoji', 'zh']) if (!item[key]) at(`${where}缺少 ${key}`);
+    if (byId.has(item.id)) at(`${where}的 id 重复`);
+    const lesson = unit.lessons.find((l) => l.id === item.from?.lesson);
+    if (!lesson) at(`${where}的 from.lesson "${item.from?.lesson}" 在单元 ${ch.unit} 里找不到`);
+    else if (!lessonText(lesson).includes(String(item.word).toLowerCase())) at(`${where}的 "${item.word}" 不在《${lesson.title}》的文章里，读完这一课也拿不到`);
+    byId.set(item.id, { item, lesson });
+  });
+
+  const zoneIds = new Set((ch.explore?.zones || []).map((z) => z.id));
+  const earlier = chapters.filter((c) => c.layer < ch.layer && units[c.unit]).flatMap((c) => unitWords(units[c.unit]));
+  const base = [...DOLCH, ...Object.values(ch.opening?.vocab || {}).flat().map((w) => w.toLowerCase()), ...earlier];
+  for (const [zoneId, rule] of Object.entries(wr.zones || {})) {
+    const where = `wardrobe.zones.${zoneId}`;
+    if (!zoneIds.has(zoneId)) at(`${where}：地带 "${zoneId}" 不在 explore.zones 里`);
+    if (!['cold', 'wet', 'hot'].includes(rule.feel)) at(`${where}的 feel 只能是 cold / wet / hot`);
+    const mentioned = [rule.wear, ...Object.keys(rule.off || {})];
+    for (const id of mentioned) if (id && !byId.has(id)) at(`${where}提到的 "${id}" 不是衣柜里的衣服`);
+    if (rule.wear && (!rule.need || !rule.good)) at(`${where}要写 need（没穿时 Zib 说的话）和 good（穿对了说的话）`);
+    const allowed = new Set([...base, ...mentioned.flatMap((id) => (byId.get(id) ? [...wordsOf(lessonText(byId.get(id).lesson)), ...wordsOf(byId.get(id).item.word)] : []))]);
+    for (const [key, text] of [['need', rule.need], ['good', rule.good], ...Object.entries(rule.off || {}).map(([id, t]) => [`off.${id}`, t])]) {
+      const bad = [...new Set(wordsOf(text || '').filter((w) => !allowed.has(w)))];
+      if (bad.length) at(`${where}.${key} 用到了没学过的词：${bad.join('、')}`);
+    }
+  }
+}
+
+/**
  * 通往下一层的门。解码锁的词要是单元词墙或生词表里带图的词，图不能重复（孩子是看词选图）；
  * 理解锁的每封短信按普通任务的规则加载（答案在选项里、证据句找得到），每道题都要有证据句，
  * 短信本身只能用高频词、单元文章里的词、前面几层学过的词和 comprehend.vocab 里声明的词
@@ -334,6 +376,10 @@ for (const ch of chapters) {
     const finds = ch.explore.discoveries || [];
     const school = finds.filter((d) => d.from?.school).length;
     console.log(`   闲逛：${ch.explore.zones?.length || 0} 个地带 · ${finds.length} 个发现物（${school} 个是学校本周的词，${finds.length - school} 个读完课文才能破译）`);
+  }
+  if (ch.wardrobe) {
+    const zones = Object.keys(ch.wardrobe.zones || {});
+    console.log(`   衣柜：${ch.wardrobe.items?.length ?? 0} 件衣服（${(ch.wardrobe.items || []).map((i) => i.word).join('、')}）· ${zones.length} 个地带要穿对（${zones.join('、')}）`);
   }
   if (ch.door) {
     const { to, decode, comprehend } = ch.door;

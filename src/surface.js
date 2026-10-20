@@ -253,6 +253,21 @@ export class BixSurface extends EventTarget {
     this.dispatchEvent(new CustomEvent('explore', { detail: { on: false } }));
   }
 
+  /** 衣柜：小宇航员身上穿的衣服（Set） */
+  setOutfit(ids) {
+    this.explore?.setOutfit(ids);
+  }
+
+  /** 穿得不对时小宇航员的样子（'cold' / 'wet' / 'hot' / null） */
+  setFeel(kind) {
+    this.explore?.setFeel(kind);
+  }
+
+  /** 穿对了：Zib 点点头，冒一串小星星 */
+  cheer() {
+    this.stage.zibReact('nod');
+  }
+
   /** 收进图鉴以后：三维里的气泡换成发现物的图标，小云开始跟着人 */
   markFound(id) {
     this.explore?.setFound(id);

@@ -59,7 +59,7 @@ export function addFuelDay(date) {
   save(state);
 }
 
-/** 回到航行期：着陆、燃料、发现图鉴和门锁都清空（家长报告里的“回到航行期”，开发时用 ?story=reset）。读过哪些课来自做题记录，保留 */
+/** 回到航行期：着陆、燃料、发现图鉴、门锁和身上的衣服都清空（家长报告里的“回到航行期”，开发时用 ?story=reset）。读过哪些课来自做题记录，保留 */
 export function resetStory() {
   const { learned } = load();
   save(learned ? { learned } : {});
@@ -159,5 +159,19 @@ export function addFlight(chapterId, flight) {
 export function setDoorOpened(chapterId) {
   const state = load();
   state.door = { ...state.door, [chapterId]: { ...state.door?.[chapterId], opened: true } };
+  save(state);
+}
+
+// ---------- 衣柜：小宇航员身上穿着什么 ----------
+
+/** 正穿着的衣服（衣柜里东西的 id） */
+export function outfit() {
+  const list = load().outfit;
+  return new Set(Array.isArray(list) ? list : []);
+}
+
+export function setOutfit(ids) {
+  const state = load();
+  state.outfit = [...ids];
   save(state);
 }

@@ -19,6 +19,7 @@ import {
 } from './lesson.js';
 import { ExploreHud } from './explore-hud.js';
 import { DoorHud } from './door.js';
+import { WardrobeHud } from './wardrobe.js';
 
 const SHEET_MQ = window.matchMedia('(max-width: 760px), (orientation: portrait) and (max-width: 1100px)');
 const COARSE = window.matchMedia('(pointer: coarse)').matches;
@@ -88,6 +89,11 @@ export class UI {
       date: () => this.homework.date,
     });
     this.door.setView(scene);
+    this.wardrobe = new WardrobeHud({
+      toast: (text) => this.toast(text),
+      openModal: (html) => this.#openModal(html),
+    });
+    this.wardrobe.setView(scene);
     progress.addEventListener('change', (e) => this.#onProgress(e.detail));
 
     this.panel.addEventListener('click', (e) => this.#onPanelClick(e));
@@ -124,6 +130,7 @@ export class UI {
     this.#listen(view);
     this.exploreHud.setView(view);
     this.door.setView(view);
+    this.wardrobe.setView(view);
     this.setHomework(homework);
   }
 
@@ -1050,12 +1057,16 @@ export class UI {
       <ul class="report-list">
         <li><div><b>${esc(title)}</b><small>${esc(detail)}</small></div>${action}</li>
         ${chapter ? this.exploreHud.reportHtml() : ''}
+        ${chapter ? this.wardrobe.reportHtml() : ''}
         ${chapter ? this.door.reportHtml() : ''}
       </ul>`;
   }
 
   #onModalClick(e) {
     if (e.target === this.modal) return this.#closeModal();
+    // Zib 的话、图鉴里的英文：点一个词听一遍
+    const say = e.target.closest('[data-say]');
+    if (say) return speak(say.dataset.say);
     const btn = e.target.closest('[data-action]');
     if (!btn || btn.disabled) return;
     switch (btn.dataset.action) {
@@ -1089,6 +1100,9 @@ export class UI {
       case 'find':
         this.#closeModal();
         this.exploreHud.onModalAction(btn);
+        break;
+      case 'wear':
+        this.wardrobe.onModalAction(btn);
         break;
       case 'story-reset':
         if (window.confirm('确定回到航行期吗？已经降落的进度、燃料天数、图鉴和门锁都会清空，做题记录不受影响。')) {
@@ -1173,6 +1187,7 @@ export class UI {
     const left = p.remainingTasks();
     this.exploreHud?.render();
     this.door?.render();
+    this.wardrobe?.render();
     if (this.#onSurface()) {
       this.fuelLabel.textContent = '📡 信号塔能量';
       this.hint.textContent = this.exploreHud?.exploring
