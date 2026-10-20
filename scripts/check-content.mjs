@@ -144,6 +144,19 @@ const wordsOf = (text) =>
     .map((w) => w.replace(/^'+|'+$/g, '').replace(/'s$/, ''))
     .filter((w) => w.length > 1 || w === 'a' || w === 'i');
 
+/**
+ * 走到这一章之前孩子已经学过的词：更浅的每一层的单元（知识单元、门上解码锁的拼读单元、航行期的单元）里，
+ * 读过的文章、词墙和生词表的所有词
+ */
+function learnedBefore(ch) {
+  return chapters
+    .filter((c) => c.layer < ch.layer)
+    .flatMap((c) => [c.unit, c.door?.decode?.unit, ...(c.voyage || [])])
+    .map((id) => units[id])
+    .filter(Boolean)
+    .flatMap((u) => [...unitWords(u), ...u.lessons.flatMap((l) => (l.tasks || []).flatMap((t) => wordsOf(t.passage?.text || '')))]);
+}
+
 /** 一个单元里孩子学过的词：词墙 + 每篇文章的生词 */
 const unitWords = (unit) => [
   ...(unit.wordWall || []).map((w) => w.word),
@@ -169,7 +182,7 @@ for (const ch of chapters) {
   }
 
   // 能用的词：高频词表 + 章节声明的词（学校本周、名字等）+ 更浅的层里学过的单元词
-  const earlier = chapters.filter((c) => c.layer < ch.layer && units[c.unit]).flatMap((c) => unitWords(units[c.unit]));
+  const earlier = learnedBefore(ch);
   const allowed = new Set([...DOLCH, ...Object.values(op.vocab || {}).flat().map((w) => w.toLowerCase()), ...earlier]);
   const thisUnit = units[ch.unit] ? unitWords(units[ch.unit]) : [];
 
@@ -211,7 +224,7 @@ function checkExplore(ch, at) {
     if (!(z.lon >= 0 && z.lon < 360)) at(`${where}的 lon（经度）要在 0–360 之间`);
   });
 
-  const earlier = chapters.filter((c) => c.layer < ch.layer && units[c.unit]).flatMap((c) => unitWords(units[c.unit]));
+  const earlier = learnedBefore(ch);
   const base = [...DOLCH, ...Object.values(ch.opening?.vocab || {}).flat().map((w) => w.toLowerCase()), ...earlier];
   const lessonWords = (lesson) =>
     (lesson.tasks || []).flatMap((t) => [...wordsOf(t.passage?.text || ''), ...(t.passage?.vocab || []).map((v) => String(v.word).toLowerCase())]);
@@ -280,7 +293,7 @@ function checkWardrobe(ch, at) {
   });
 
   const zoneIds = new Set((ch.explore?.zones || []).map((z) => z.id));
-  const earlier = chapters.filter((c) => c.layer < ch.layer && units[c.unit]).flatMap((c) => unitWords(units[c.unit]));
+  const earlier = learnedBefore(ch);
   const base = [...DOLCH, ...Object.values(ch.opening?.vocab || {}).flat().map((w) => w.toLowerCase()), ...earlier];
   for (const [zoneId, rule] of Object.entries(wr.zones || {})) {
     const where = `wardrobe.zones.${zoneId}`;
@@ -306,7 +319,7 @@ function checkDoor(ch, at) {
   const door = ch.door;
   const unit = units[ch.unit];
   if (!unit) return;
-  if (!door.to?.layer || !door.to?.name) at('door.to 要写 layer 和 name（通往第几层、叫什么）');
+  if (!door.to?.name || !(door.to.layer || door.to.final)) at('door.to 要写 name，再写 layer（通往第几层）或者 final: true（最后一层，通往星核）');
 
   const dec = door.decode || {};
   if (!parseStandard(dec.standard || '')) at(`door.decode.standard "${dec.standard}" 不是 CCSS 代码`);
@@ -339,7 +352,7 @@ function checkDoor(ch, at) {
   } catch (err) {
     at(`door 的短信加载出错：${err.message}`);
   }
-  const earlier = chapters.filter((c) => c.layer < ch.layer && units[c.unit]).flatMap((c) => unitWords(units[c.unit]));
+  const earlier = learnedBefore(ch);
   const allowed = new Set([
     ...DOLCH,
     ...Object.values(ch.opening?.vocab || {}).flat().map((w) => w.toLowerCase()),

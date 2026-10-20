@@ -1,0 +1,811 @@
+{
+  "id": "k-five-senses",
+  "grade": "K",
+  "title": "The Five Senses",
+  "titleZh": "五种感官",
+  "icon": "👂",
+  "color": "#ff9ecb",
+  "question": "How do our senses help us learn about the world?",
+  "questionZh": "我们的感官怎样帮我们认识世界？",
+  "license": "CC BY-NC-SA 4.0",
+  "source": {
+    "work": "The Five Senses — Tell It Again! Read-Aloud Anthology (Kindergarten, Core Knowledge Language Arts)",
+    "short": "CKLA Kindergarten · The Five Senses",
+    "author": "Core Knowledge Foundation",
+    "year": 2013,
+    "url": "https://www.coreknowledge.org/free-resource/ckla-domain-02-human-body-five-senses/",
+    "license": "CC BY-NC-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+    "notice": "This work is based on an original work of the Core Knowledge® Foundation made available through licensing under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License. This does not in any way imply that the Core Knowledge Foundation endorses this work."
+  },
+  "wordWall": [
+    { "word": "senses", "meaning": "感官", "emoji": "🖐️", "lesson": "l1-senses" },
+    { "word": "tongue", "meaning": "舌头", "emoji": "👅", "lesson": "l1-senses" },
+    { "word": "eyeballs", "meaning": "眼球", "emoji": "👀", "lesson": "l2-sight" },
+    { "word": "pupil", "meaning": "瞳孔", "emoji": "⚫", "lesson": "l2-sight" },
+    { "word": "iris", "meaning": "虹膜", "emoji": "🟤", "lesson": "l2-sight" },
+    { "word": "echo", "meaning": "回声", "emoji": "🗣️", "lesson": "l3-hearing" },
+    { "word": "eardrum", "meaning": "耳膜", "emoji": "🥁", "lesson": "l3-hearing" },
+    { "word": "whisper", "meaning": "悄悄话", "emoji": "🤫", "lesson": "l3-hearing" },
+    { "word": "sniff", "meaning": "闻一闻", "emoji": "👃", "lesson": "l4-smell" },
+    { "word": "smoke", "meaning": "烟", "emoji": "💨", "lesson": "l4-smell" },
+    { "word": "taste", "meaning": "尝；味道", "emoji": "😋", "lesson": "l5-taste" },
+    { "word": "sour", "meaning": "酸的", "emoji": "🍋", "lesson": "l5-taste" },
+    { "word": "salty", "meaning": "咸的", "emoji": "🥨", "lesson": "l5-taste" },
+    { "word": "feather", "meaning": "羽毛", "emoji": "🪶", "lesson": "l6-touch" },
+    { "word": "nerves", "meaning": "神经", "emoji": "🧠", "lesson": "l6-touch" },
+    { "word": "piano", "meaning": "钢琴", "emoji": "🎹", "lesson": "l7-ray-charles" },
+    { "word": "Braille", "meaning": "盲文", "emoji": "⠿", "lesson": "l7-ray-charles" },
+    { "word": "teacher", "meaning": "老师", "emoji": "👩‍🏫", "lesson": "l8-helen-keller" },
+    { "word": "college", "meaning": "大学", "emoji": "🎓", "lesson": "l8-helen-keller" }
+  ],
+  "lessons": [
+    {
+      "id": "l1-senses",
+      "title": "My Senses Are Amazing",
+      "genre": "literature",
+      "from": "Lesson 1: My Senses Are Amazing",
+      "changes": "Shortened the poem to its core stanzas, changed 'perfume' to 'a rose'; questions rewritten with text evidence and a rhyme question; added a body-part-to-sense sort.",
+      "tasks": [
+        {
+          "id": "fs-l1-read",
+          "title": "Read: My Senses Are Amazing",
+          "standard": "RL.K.1",
+          "passage": {
+            "title": "My Senses Are Amazing",
+            "genre": "literature",
+            "text": "My senses are amazing. They help me do so much. My eyes can see, my ears can hear, my skin and hands can touch. My tongue can taste the food I eat. My nose can smell a rose. My senses keep me safe from harm. My nose smells smoke, my skin feels heat, my ears hear fire alarms. Let's say all five together now: sight, hearing, taste, touch, and smell!",
+            "vocab": [
+              { "word": "senses", "meaning": "感官", "emoji": "🖐️" },
+              { "word": "tongue", "meaning": "舌头", "emoji": "👅" },
+              { "word": "smoke", "meaning": "烟", "emoji": "💨" },
+              { "word": "alarms", "meaning": "警报", "emoji": "🚨" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What can your eyes do?",
+              "options": ["see", "hear", "taste"],
+              "a": "see",
+              "evidence": "My eyes can see",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What can your nose smell?",
+              "options": ["a rose", "a song", "a color"],
+              "a": "a rose",
+              "evidence": "My nose can smell a rose",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What tastes the food you eat?",
+              "options": ["your tongue", "your ears", "your eyes"],
+              "a": "your tongue",
+              "evidence": "My tongue can taste the food I eat",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "How do your senses keep you safe? Your ears hear ___.",
+              "options": ["fire alarms", "red roses", "sweet food"],
+              "a": "fire alarms",
+              "evidence": "my ears hear fire alarms",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Which word rhymes with “much”?",
+              "options": ["touch", "see", "taste"],
+              "a": "touch",
+              "hint": "听一听 much 和哪个词的结尾一样",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "How many senses do you have?",
+              "options": ["five", "two", "ten"],
+              "a": "five",
+              "evidence": "say all five together",
+              "standard": "RL.K.1",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "fs-l1-sort",
+          "title": "Sort: Which sense?",
+          "standard": "L.K.5",
+          "questions": [
+            {
+              "q": "👀 eyes",
+              "options": ["sight", "hearing", "smell", "taste", "touch"],
+              "a": "sight",
+              "speak": "eyes"
+            },
+            {
+              "q": "👂 ears",
+              "options": ["sight", "hearing", "smell", "taste", "touch"],
+              "a": "hearing",
+              "speak": "ears"
+            },
+            {
+              "q": "👃 nose",
+              "options": ["sight", "hearing", "smell", "taste", "touch"],
+              "a": "smell",
+              "speak": "nose"
+            },
+            {
+              "q": "👅 tongue",
+              "options": ["sight", "hearing", "smell", "taste", "touch"],
+              "a": "taste",
+              "speak": "tongue",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "✋ skin and hands",
+              "options": ["sight", "hearing", "smell", "taste", "touch"],
+              "a": "touch",
+              "speak": "skin and hands",
+              "level": ["normal", "hard"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l2-sight",
+      "title": "The Sense of Sight",
+      "genre": "informational",
+      "from": "Lesson 2: The Sense of Sight",
+      "changes": "Shortened and simplified; kept 'look before you leap', looking both ways, eyeballs, eyelids, eyelashes, eyebrows, the pupil and iris and how pupils change in the dark; removed tear ducts and eye sockets; questions rewritten with text evidence; added a look-at-eyes speaking task.",
+      "tasks": [
+        {
+          "id": "fs-l2-read",
+          "title": "Read: The Sense of Sight",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "The Sense of Sight",
+            "genre": "informational",
+            "text": "Look before you leap! Your eyes help keep you safe. You look both ways before you cross the street. Your eyes are round like balls, so we call them eyeballs. Your eyelids close when you blink. Your eyelashes brush away dirt. Your eyebrows keep sweat out of your eyes. Look at a friend's eye. The black dot in the middle is the pupil. Light comes in through the pupil. The colored ring around it is the iris. In the dark, your pupils get bigger to let in more light. In the sun, they get smaller.",
+            "vocab": [
+              { "word": "eyeballs", "meaning": "眼球", "emoji": "👀" },
+              { "word": "eyelashes", "meaning": "睫毛", "emoji": "😌" },
+              { "word": "pupil", "meaning": "瞳孔", "emoji": "⚫" },
+              { "word": "iris", "meaning": "虹膜", "emoji": "🟤" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "Why do you look both ways before you cross the street?",
+              "options": ["to stay safe", "to see a rainbow", "to blink"],
+              "a": "to stay safe",
+              "evidence": "Your eyes help keep you safe"
+            },
+            {
+              "q": "What do your eyelashes do?",
+              "options": ["brush away dirt", "help you hear", "make light"],
+              "a": "brush away dirt",
+              "evidence": "Your eyelashes brush away dirt"
+            },
+            {
+              "q": "What is the colored ring around the pupil?",
+              "options": ["the iris", "the eyelid", "the eyebrow"],
+              "a": "the iris",
+              "evidence": "The colored ring around it is the iris"
+            },
+            {
+              "q": "In the dark, your pupils get ___.",
+              "options": ["bigger", "smaller", "wet"],
+              "a": "bigger",
+              "evidence": "In the dark, your pupils get bigger",
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Your eyes are round like balls, so we call them ___.",
+              "options": ["eyeballs", "eyebrows", "eyelids"],
+              "a": "eyeballs",
+              "evidence": "so we call them eyeballs",
+              "standard": "RI.K.4",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is this text mostly about?",
+              "options": ["how our eyes see and stay safe", "how to cross the street", "how to blink fast"],
+              "a": "how our eyes see and stay safe",
+              "evidence": "Your eyes help keep you safe",
+              "standard": "RI.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "fs-l2-look",
+          "title": "Look at a grown-up's eyes",
+          "standard": "SL.K.1",
+          "note": "看着大人的眼睛，找到瞳孔（中间的黑点）和虹膜（彩色的圈），用英文说 Your iris is brown. 再开关一下灯，看看瞳孔会不会变大、变小。完成后请大人点“完成啦”。"
+        }
+      ]
+    },
+    {
+      "id": "l3-hearing",
+      "title": "The Sense of Hearing",
+      "genre": "informational",
+      "from": "Lesson 3: The Sense of Hearing",
+      "changes": "Shortened and simplified; kept sound waves, echoes, the eardrum, loud and soft sounds and covering your ears; removed Echo Point in Australia and muffled sounds through walls; questions rewritten with text evidence; added a loud-or-soft sort.",
+      "tasks": [
+        {
+          "id": "fs-l3-read",
+          "title": "Read: The Sense of Hearing",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "The Sense of Hearing",
+            "genre": "informational",
+            "text": "Your ears hear sounds all the time, even when you are asleep. Sound moves through the air in sound waves. You cannot see sound waves, but you can hear them. Sound waves can bounce off a big hill. Then you hear your voice again. That is called an echo! Inside your ear is your eardrum. When sound waves hit it, the eardrum shakes. Then your brain tells you what the sound is. Some sounds are loud, like a fire alarm. Some sounds are soft, like a whisper. If a sound is too loud, cover your ears to keep them safe.",
+            "vocab": [
+              { "word": "waves", "meaning": "波（声波）", "emoji": "🌊" },
+              { "word": "echo", "meaning": "回声", "emoji": "🗣️" },
+              { "word": "eardrum", "meaning": "耳膜", "emoji": "🥁" },
+              { "word": "whisper", "meaning": "悄悄话", "emoji": "🤫" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "How does sound move through the air?",
+              "options": ["in sound waves", "in drops of rain", "in little balls"],
+              "a": "in sound waves",
+              "evidence": "Sound moves through the air in sound waves"
+            },
+            {
+              "q": "What is an echo?",
+              "options": ["your voice coming back from a hill", "a loud fire alarm", "a kind of drum"],
+              "a": "your voice coming back from a hill",
+              "evidence": ["Sound waves can bounce off a big hill", "Then you hear your voice again", "That is called an echo"]
+            },
+            {
+              "q": "A whisper is a ___ sound.",
+              "options": ["soft", "loud", "bright"],
+              "a": "soft",
+              "evidence": "Some sounds are soft, like a whisper"
+            },
+            {
+              "q": "What shakes inside your ear?",
+              "options": ["your eardrum", "your brain", "your nose"],
+              "a": "your eardrum",
+              "evidence": "the eardrum shakes",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Why should you cover your ears when a sound is too loud?",
+              "options": ["to keep them safe", "to hear it better", "to make an echo"],
+              "a": "to keep them safe",
+              "evidence": "cover your ears to keep them safe",
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is this text mostly about?",
+              "options": ["how we hear sounds", "how to make a drum", "how to whisper"],
+              "a": "how we hear sounds",
+              "evidence": "Your ears hear sounds all the time",
+              "standard": "RI.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "fs-l3-sort",
+          "title": "Sort: Loud or soft?",
+          "standard": "L.K.5",
+          "questions": [
+            {
+              "q": "🚨 a fire alarm",
+              "options": ["📢 loud", "🤫 soft"],
+              "a": "📢 loud",
+              "speak": "a fire alarm. Loud or soft?"
+            },
+            {
+              "q": "🤫 a whisper",
+              "options": ["📢 loud", "🤫 soft"],
+              "a": "🤫 soft",
+              "speak": "a whisper. Loud or soft?"
+            },
+            {
+              "q": "🥁 a big drum",
+              "options": ["📢 loud", "🤫 soft"],
+              "a": "📢 loud",
+              "speak": "a big drum. Loud or soft?"
+            },
+            {
+              "q": "🐱 a kitten's purr",
+              "options": ["📢 loud", "🤫 soft"],
+              "a": "🤫 soft",
+              "speak": "a kitten's purr. Loud or soft?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "⛈️ thunder",
+              "options": ["📢 loud", "🤫 soft"],
+              "a": "📢 loud",
+              "speak": "thunder. Loud or soft?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🍃 leaves in the wind",
+              "options": ["📢 loud", "🤫 soft"],
+              "a": "🤫 soft",
+              "speak": "leaves in the wind. Loud or soft?",
+              "level": "hard"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l4-smell",
+      "title": "The Sense of Smell",
+      "genre": "informational",
+      "from": "Lesson 4: The Sense of Smell",
+      "changes": "Shortened and simplified; 'odor molecules' became 'tiny bits'; kept sniffing a flower, dogs' strong sense of smell, a stuffy nose and smelling smoke; removed smell receptors, mucus and numbers of smells; questions rewritten with text evidence; writing task added.",
+      "tasks": [
+        {
+          "id": "fs-l4-read",
+          "title": "Read: The Sense of Smell",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "The Sense of Smell",
+            "genre": "informational",
+            "text": "Take a deep breath. Air goes up your nose. The air has tiny bits in it, too small to see. These tiny bits make smells. When you sniff a flower, the tiny bits go up your nose. Your nose tells your brain, and your brain says, “That flower smells sweet!” Dogs can smell much better than people. When you have a cold, your nose is stuffed up, and it is hard to smell. Your sense of smell can keep you safe, too. If you smell smoke, there may be a fire. Tell a grown-up right away!",
+            "vocab": [
+              { "word": "sniff", "meaning": "闻一闻", "emoji": "👃" },
+              { "word": "tiny", "meaning": "很小的", "emoji": "🔬" },
+              { "word": "stuffed", "meaning": "（鼻子）堵住了", "emoji": "🤧" },
+              { "word": "smoke", "meaning": "烟", "emoji": "💨" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What goes up your nose when you breathe?",
+              "options": ["air with tiny bits in it", "water", "sound waves"],
+              "a": "air with tiny bits in it",
+              "evidence": ["Air goes up your nose", "The air has tiny bits in it"]
+            },
+            {
+              "q": "Who can smell much better than people?",
+              "options": ["dogs", "fish", "birds"],
+              "a": "dogs",
+              "evidence": "Dogs can smell much better than people"
+            },
+            {
+              "q": "If you smell smoke, what should you do?",
+              "options": ["Tell a grown-up right away.", "Go to sleep.", "Sniff a flower."],
+              "a": "Tell a grown-up right away.",
+              "evidence": ["If you smell smoke", "Tell a grown-up right away"]
+            },
+            {
+              "q": "Why is it hard to smell when you have a cold?",
+              "options": ["Your nose is stuffed up.", "Your ears are wet.", "Your eyes are closed."],
+              "a": "Your nose is stuffed up.",
+              "evidence": "your nose is stuffed up",
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "The tiny bits are too small to see. Tiny means ___.",
+              "options": ["very small", "very loud", "very hot"],
+              "a": "very small",
+              "evidence": "too small to see",
+              "standard": "RI.K.4",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is this text mostly about?",
+              "options": ["how we smell things", "how dogs play", "how to take a bath"],
+              "a": "how we smell things",
+              "evidence": "These tiny bits make smells",
+              "standard": "RI.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "fs-l4-write-easy",
+          "title": "Write: A smell I like",
+          "standard": "W.K.2",
+          "level": "easy",
+          "write": {
+            "prompt": "What do you like to smell?",
+            "frame": "I like the smell of ___.",
+            "minWords": 6
+          }
+        },
+        {
+          "id": "fs-l4-write",
+          "title": "Write: A smell I like",
+          "standard": "W.K.2",
+          "level": ["normal", "hard"],
+          "write": {
+            "prompt": "What do you like to smell? How does it smell?",
+            "frame": "I like the smell of ___. It smells ___.",
+            "minWords": 9
+          }
+        }
+      ]
+    },
+    {
+      "id": "l5-taste",
+      "title": "The Sense of Taste",
+      "genre": "informational",
+      "from": "Lesson 5: The Sense of Taste",
+      "changes": "Shortened and simplified; kept taste buds on the tongue, sweet, salty, sour and bitter, the sour face, trying new foods and smell helping taste; removed saliva, swallowing and the number of taste buds; questions rewritten with text evidence; added a sweet-salty-sour sort.",
+      "tasks": [
+        {
+          "id": "fs-l5-read",
+          "title": "Read: The Sense of Taste",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "The Sense of Taste",
+            "genre": "informational",
+            "text": "Look at your tongue in a mirror. Do you see the tiny bumps? They have taste buds. Your taste buds tell your brain how food tastes. Cake tastes sweet. Pretzels taste salty. Lemons taste sour. When you taste something sour, you make a funny face! Some foods taste bitter, like coffee. Your nose helps you taste, too. When your nose is stuffed up, food does not taste as good. Try new foods! Your taste buds can learn to like new tastes.",
+            "vocab": [
+              { "word": "tongue", "meaning": "舌头", "emoji": "👅" },
+              { "word": "buds", "meaning": "（味）蕾", "emoji": "🌱" },
+              { "word": "salty", "meaning": "咸的", "emoji": "🥨" },
+              { "word": "sour", "meaning": "酸的", "emoji": "🍋" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "Where are your taste buds?",
+              "options": ["on your tongue", "in your ears", "on your hands"],
+              "a": "on your tongue",
+              "evidence": ["Look at your tongue", "They have taste buds"]
+            },
+            {
+              "q": "How do lemons taste?",
+              "options": ["sour", "sweet", "salty"],
+              "a": "sour",
+              "evidence": "Lemons taste sour"
+            },
+            {
+              "q": "Pretzels taste ___.",
+              "options": ["salty", "sour", "bitter"],
+              "a": "salty",
+              "evidence": "Pretzels taste salty"
+            },
+            {
+              "q": "What helps you taste, too?",
+              "options": ["your nose", "your eyes", "your feet"],
+              "a": "your nose",
+              "evidence": "Your nose helps you taste, too",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What happens when your nose is stuffed up?",
+              "options": ["Food does not taste as good.", "Food tastes sweeter.", "You taste with your ears."],
+              "a": "Food does not taste as good.",
+              "evidence": "food does not taste as good",
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Why should you try new foods?",
+              "options": ["Your taste buds can learn to like new tastes.", "New foods are always sweet.", "Your nose will stop working."],
+              "a": "Your taste buds can learn to like new tastes.",
+              "evidence": "Your taste buds can learn to like new tastes",
+              "standard": "RI.K.8",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "fs-l5-sort",
+          "title": "Sort: Sweet, salty, or sour?",
+          "standard": "L.K.5",
+          "questions": [
+            {
+              "q": "🎂 cake",
+              "options": ["sweet", "salty", "sour"],
+              "a": "sweet",
+              "speak": "cake. Sweet, salty, or sour?"
+            },
+            {
+              "q": "🥨 a pretzel",
+              "options": ["sweet", "salty", "sour"],
+              "a": "salty",
+              "speak": "a pretzel. Sweet, salty, or sour?"
+            },
+            {
+              "q": "🍋 a lemon",
+              "options": ["sweet", "salty", "sour"],
+              "a": "sour",
+              "speak": "a lemon. Sweet, salty, or sour?"
+            },
+            {
+              "q": "🍦 ice cream",
+              "options": ["sweet", "salty", "sour"],
+              "a": "sweet",
+              "speak": "ice cream. Sweet, salty, or sour?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🥒 a pickle",
+              "options": ["sweet", "salty", "sour"],
+              "a": "sour",
+              "speak": "a pickle. Sweet, salty, or sour?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🍟 chips",
+              "options": ["sweet", "salty", "sour"],
+              "a": "salty",
+              "speak": "chips. Sweet, salty, or sour?",
+              "level": "hard"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l6-touch",
+      "title": "The Sense of Touch",
+      "genre": "informational",
+      "from": "Lesson 6: The Sense of Touch",
+      "changes": "Shortened and simplified; kept feeling with the whole body, nerves as tiny wires to the brain, sensitive fingertips, textures and staying safe from heat; removed the swimming pool, ticklish feet and snow angels; questions rewritten with text evidence; added a soft-or-hard sort.",
+      "tasks": [
+        {
+          "id": "fs-l6-read",
+          "title": "Read: The Sense of Touch",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "The Sense of Touch",
+            "genre": "informational",
+            "text": "You can feel with your whole body! Your skin has nerves in it. Nerves are like tiny wires. They take messages to your brain. If you touch something hot, your nerves tell your brain, “Hot! Pull your hand away!” Your fingertips can feel very well. You can feel if things are soft or hard. A feather is soft. A rock is hard. Things can be smooth or bumpy, too. Your sense of touch helps keep you safe. Never touch a hot stove!",
+            "vocab": [
+              { "word": "nerves", "meaning": "神经", "emoji": "🧠" },
+              { "word": "fingertips", "meaning": "指尖", "emoji": "☝️" },
+              { "word": "feather", "meaning": "羽毛", "emoji": "🪶" },
+              { "word": "bumpy", "meaning": "凹凸不平的", "emoji": "🪨" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What part of your body can feel?",
+              "options": ["your whole body", "only your feet", "only your nose"],
+              "a": "your whole body",
+              "evidence": "You can feel with your whole body"
+            },
+            {
+              "q": "Nerves are like tiny ___.",
+              "options": ["wires", "eyes", "drums"],
+              "a": "wires",
+              "evidence": "Nerves are like tiny wires"
+            },
+            {
+              "q": "A feather is ___.",
+              "options": ["soft", "hard", "bumpy"],
+              "a": "soft",
+              "evidence": "A feather is soft"
+            },
+            {
+              "q": "What do nerves do?",
+              "options": ["take messages to your brain", "help you see", "make sounds"],
+              "a": "take messages to your brain",
+              "evidence": "They take messages to your brain",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What happens if you touch something hot?",
+              "options": ["Your nerves tell your brain to pull your hand away.", "Your hand gets cold.", "You hear an echo."],
+              "a": "Your nerves tell your brain to pull your hand away.",
+              "evidence": "If you touch something hot",
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is this text mostly about?",
+              "options": ["how we feel things", "how to make a wire", "how birds fly"],
+              "a": "how we feel things",
+              "evidence": "You can feel with your whole body",
+              "standard": "RI.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "fs-l6-sort",
+          "title": "Sort: Soft or hard?",
+          "standard": "L.K.5",
+          "questions": [
+            {
+              "q": "🪶 a feather",
+              "options": ["soft", "hard"],
+              "a": "soft",
+              "speak": "a feather. Soft or hard?"
+            },
+            {
+              "q": "🪨 a rock",
+              "options": ["soft", "hard"],
+              "a": "hard",
+              "speak": "a rock. Soft or hard?"
+            },
+            {
+              "q": "🧸 a teddy bear",
+              "options": ["soft", "hard"],
+              "a": "soft",
+              "speak": "a teddy bear. Soft or hard?"
+            },
+            {
+              "q": "🧱 a brick",
+              "options": ["soft", "hard"],
+              "a": "hard",
+              "speak": "a brick. Soft or hard?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🛏️ a pillow",
+              "options": ["soft", "hard"],
+              "a": "soft",
+              "speak": "a pillow. Soft or hard?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🥄 a spoon",
+              "options": ["soft", "hard"],
+              "a": "hard",
+              "speak": "a spoon. Soft or hard?",
+              "level": "hard"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l7-ray-charles",
+      "title": "Ray Charles",
+      "genre": "informational",
+      "from": "Lesson 7: Ray Charles",
+      "changes": "Shortened and simplified; kept his blindness at seven, the school for blind children, Braille, learning piano by hearing and touch and his quote about his ears; removed the jukebox, blackberries and later career details; questions rewritten with text evidence; added a listening speaking task.",
+      "tasks": [
+        {
+          "id": "fs-l7-read",
+          "title": "Read: Ray Charles",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Ray Charles",
+            "genre": "informational",
+            "text": "Ray Charles was a famous piano player and singer. When Ray was a little boy, he got very sick. By the time he was seven, he was blind. He could not see at all. Ray went to a special school for children who were blind. He learned to read with his fingers. This kind of reading is called Braille. It has little raised dots. Ray loved music best of all. He used his ears and his hands to learn to play the piano. Ray said, “My ears are my opportunity.” People all over the world still love his songs.",
+            "vocab": [
+              { "word": "famous", "meaning": "有名的", "emoji": "⭐" },
+              { "word": "blind", "meaning": "看不见的，盲的", "emoji": "🕶️" },
+              { "word": "Braille", "meaning": "盲文", "emoji": "⠿" },
+              { "word": "piano", "meaning": "钢琴", "emoji": "🎹" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What did Ray Charles do?",
+              "options": ["He played the piano and sang.", "He was a doctor.", "He drove a bus."],
+              "a": "He played the piano and sang.",
+              "evidence": "Ray Charles was a famous piano player and singer"
+            },
+            {
+              "q": "How did Ray read?",
+              "options": ["with his fingers", "with his ears", "with his nose"],
+              "a": "with his fingers",
+              "evidence": "He learned to read with his fingers"
+            },
+            {
+              "q": "Braille has little raised ___.",
+              "options": ["dots", "drums", "waves"],
+              "a": "dots",
+              "evidence": "It has little raised dots"
+            },
+            {
+              "q": "Which senses did Ray use to play the piano?",
+              "options": ["hearing and touch", "sight and smell", "taste and sight"],
+              "a": "hearing and touch",
+              "evidence": "He used his ears and his hands to learn to play the piano",
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Ray was blind. Blind means ___.",
+              "options": ["not able to see", "not able to hear", "very tall"],
+              "a": "not able to see",
+              "evidence": "He could not see at all",
+              "standard": "RI.K.4",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Ray said, “My ears are my opportunity.” What did he mean?",
+              "options": ["He could still do great things with his hearing.", "He did not like music.", "He wanted bigger ears."],
+              "a": "He could still do great things with his hearing.",
+              "evidence": "My ears are my opportunity",
+              "standard": "RI.K.3",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "fs-l7-listen",
+          "title": "Close your eyes and listen",
+          "standard": "SL.K.4",
+          "note": "像 Ray Charles 一样，闭上眼睛听一分钟，再用 I hear ___. 说出 3 个听到的声音给大人听。说完请大人点“完成啦”。"
+        }
+      ]
+    },
+    {
+      "id": "l8-helen-keller",
+      "title": "Helen Keller",
+      "genre": "informational",
+      "from": "Lesson 8: Helen Keller",
+      "changes": "Shortened and simplified; kept her illness as a baby, frustration, Anne Sullivan spelling words into her hand, the water moment, learning Braille and speaking, college and writing books; removed the darkened-room exercise and her behavior at dinner; questions rewritten with text evidence, including a comparison with Ray Charles (RI.K.9); added a hand-spelling speaking task.",
+      "tasks": [
+        {
+          "id": "fs-l8-read",
+          "title": "Read: Helen Keller",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Helen Keller",
+            "genre": "informational",
+            "text": "Helen Keller was a girl who lived long ago. When she was a baby, she got very sick. After that, she could not see or hear. Helen felt angry because she could not talk with people. Then a teacher named Anne Sullivan came to help. Anne spelled words into Helen's hand with her fingers. One day, Helen put her hand in cool water. Anne spelled w-a-t-e-r into her other hand. Helen understood! Everything has a name! Helen learned many words. She learned to read Braille and to talk. Helen grew up, went to college, and wrote books to help other people.",
+            "vocab": [
+              { "word": "teacher", "meaning": "老师", "emoji": "👩‍🏫" },
+              { "word": "spelled", "meaning": "拼写", "emoji": "✍️" },
+              { "word": "understood", "meaning": "明白了", "emoji": "💡" },
+              { "word": "college", "meaning": "大学", "emoji": "🎓" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What happened to Helen when she was a baby?",
+              "options": ["She got sick and could not see or hear.", "She learned to swim.", "She moved to a farm."],
+              "a": "She got sick and could not see or hear.",
+              "evidence": ["she got very sick", "she could not see or hear"]
+            },
+            {
+              "q": "Who came to help Helen?",
+              "options": ["a teacher named Anne Sullivan", "a doctor named Ray", "her dog"],
+              "a": "a teacher named Anne Sullivan",
+              "evidence": "a teacher named Anne Sullivan came to help"
+            },
+            {
+              "q": "How did Anne spell words for Helen?",
+              "options": ["into Helen's hand with her fingers", "on a big board", "with a loud voice"],
+              "a": "into Helen's hand with her fingers",
+              "evidence": "Anne spelled words into Helen's hand"
+            },
+            {
+              "q": "What was the first word Helen understood?",
+              "options": ["water", "cake", "dog"],
+              "a": "water",
+              "evidence": "Anne spelled w-a-t-e-r into her other hand",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Put Helen's life in order.",
+              "order": ["Helen got very sick.", "Anne Sullivan came to help.", "Helen understood the word water.", "Helen went to college."],
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "How were Helen Keller and Ray Charles alike?",
+              "options": ["They both read Braille.", "They both played the piano.", "They both could see."],
+              "a": "They both read Braille.",
+              "evidence": "She learned to read Braille",
+              "hint": "Ray Charles 那一课说他用手指读 Braille",
+              "standard": "RI.K.9",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "fs-l8-spell",
+          "title": "Spell a word into a grown-up's hand",
+          "standard": "SL.K.1",
+          "note": "像 Anne Sullivan 一样，在大人的手心里一个字母一个字母地写一个词（比如 cat），让大人闭着眼睛猜；再换大人写给你猜。完成后请大人点“完成啦”。"
+        }
+      ]
+    }
+  ]
+}

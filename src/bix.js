@@ -184,6 +184,36 @@ export class BixStage {
 
   // ---------- 地面地图用 ----------
 
+  /**
+   * 这一层的样子（章节的 surface）：ground 是着陆区地面的颜色，rain 为 false 时不下雨（地下的层没有雨），
+   * sign 是告示牌上一开始的符号（没写就保持原样）
+   */
+  setTheme(surface = {}) {
+    if (surface.ground) {
+      const color = new THREE.Color(surface.ground);
+      const m = this.planet.material;
+      m.map?.dispose();
+      m.map = planetTexture(color, 7);
+      m.emissive.copy(color);
+      m.needsUpdate = true;
+      this.glow.material.uniforms?.uColor?.value.set(surface.glow || surface.ground);
+    }
+    this.rainOn = surface.rain !== false;
+    this.rain.visible = this.rain.visible && this.rainOn;
+  }
+
+  /** 开门以后升起来的建筑的颜色：四个圆环和顶上的球（球按这些颜色轮流换） */
+  setTowerColors(colors) {
+    if (!Array.isArray(colors) || !colors.length || this.towerColors === colors) return;
+    this.towerColors = colors;
+    this.tower.rings.forEach((spin, i) => {
+      const c = colors[i % colors.length];
+      const m = spin.children[0].material;
+      m.color.set(c);
+      m.emissive.set(c);
+    });
+  }
+
   /** 开场结束或直接进入地图：飞船停在发射台上，Zib 站在旁边 */
   enterMap() {
     this.mapMode = true;
@@ -386,8 +416,8 @@ export class BixStage {
   updateVisibility(cameraPos) {
     // 镜头进到大气层里面时，大气光晕会糊满整个画面，先藏起来
     this.glow.visible = cameraPos.distanceTo(this.root.position) > R * 1.45;
-    // 雨只在着陆点附近看得见，从太空里看会变成一团白点
-    this.rain.visible = cameraPos.distanceTo(this.siteWorld) < 26;
+    // 雨只在着陆点附近看得见，从太空里看会变成一团白点；地下的层不下雨
+    this.rain.visible = this.rainOn !== false && cameraPos.distanceTo(this.siteWorld) < 26;
   }
 
   /** 换一张星球表面的贴图（闲逛的天气地带），旧的贴图释放掉 */
@@ -1086,9 +1116,10 @@ export class BixStage {
     const tw = this.tower;
     if (tw.group.visible) {
       tw.rings.forEach((r, i) => (r.rotation.y += dt * (0.5 + i * 0.2) * (i % 2 ? -1 : 1)));
-      const season = (t * 0.25) % 4;
-      const i = Math.floor(season);
-      tw.orb.material.color.set(SEASON_COLORS[i]).lerp(c1.set(SEASON_COLORS[(i + 1) % 4]), easeInOut(season - i)).multiplyScalar(1.6);
+      const colors = this.towerColors || SEASON_COLORS;
+      const phase = (t * 0.25) % colors.length;
+      const i = Math.floor(phase);
+      tw.orb.material.color.set(colors[i]).lerp(c1.set(colors[(i + 1) % colors.length]), easeInOut(phase - i)).multiplyScalar(1.6);
       tw.cups.rotation.y += dt * 4;
     }
     const s = this.sign;

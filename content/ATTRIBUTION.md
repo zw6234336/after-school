@@ -29,3 +29,24 @@ Core Knowledge Language Arts、Listening & Learning、Tell It Again! 是 Core Kn
 | Meteorology | Lesson 8: Meteorology | 缩写成短文，保留气象学家做什么、预报天气能帮人知道穿什么、农民也要知道什么时候下雨、卫星拍云、看云识天气、提醒大家暴风雨要来和 Annie 的告别；去掉了电视上的天气预报员、天气记录、三种云的名字和飓风；题目重写并加了文本证据，其中一题问作者给出的理由（RI.K.8）；加了“当一回天气预报员”的口语任务 |
 
 只用了文字，没有用读本里的图片（部分图片是第三方授权）。
+
+### Kindergarten · Domain 2 · The Five Senses
+
+- 原作：*The Five Senses — Tell It Again!™ Read-Aloud Anthology*, Kindergarten, Core Knowledge Language Arts®, © 2013 Core Knowledge Foundation
+- 下载页：<https://www.coreknowledge.org/free-resource/ckla-domain-02-human-body-five-senses/>
+- 原作授权：[CC BY-NC-SA 3.0 Unported](https://creativecommons.org/licenses/by-nc-sa/3.0/)（读本版权页上写明）
+- 本项目里的单元：[`units/k-five-senses/unit.json`](units/k-five-senses/unit.json)
+
+| 本项目的课 | 改编自 | 改动 |
+|---|---|---|
+| My Senses Are Amazing | Lesson 1: My Senses Are Amazing | 小诗只留核心几段，perfume 改成 a rose；题目重写并加了文本证据和押韵题；加了“身体部位对应哪种感官”的分类题 |
+| The Sense of Sight | Lesson 2: The Sense of Sight | 缩写成短文，保留“看清再跳”、过马路看两边、眼球、眼皮、睫毛、眉毛、瞳孔和虹膜、黑暗里瞳孔变大；去掉了泪腺和眼窝；题目重写并加了文本证据；加了“看大人的眼睛”口语任务 |
+| The Sense of Hearing | Lesson 3: The Sense of Hearing | 缩写成短文，保留声波、回声、耳膜、大声和小声、太吵时捂耳朵；去掉了澳大利亚的回声崖和隔墙听声音；题目重写并加了文本证据；加了“大声还是小声”的分类题 |
+| The Sense of Smell | Lesson 4: The Sense of Smell | 缩写成短文，“气味分子”改成“很小很小的东西”，保留闻花、狗的嗅觉、鼻塞、闻到烟要告诉大人；去掉了嗅觉感受器、鼻涕和能分辨多少种气味；题目重写并加了文本证据；加了写作任务 |
+| The Sense of Taste | Lesson 5: The Sense of Taste | 缩写成短文，保留舌头上的味蕾、甜咸酸苦、吃酸的做鬼脸、多尝新食物、鼻子帮忙尝味道；去掉了口水、吞咽和味蕾的数量；题目重写并加了文本证据；加了“甜、咸还是酸”的分类题 |
+| The Sense of Touch | Lesson 6: The Sense of Touch | 缩写成短文，保留全身都能感觉、神经像细细的电线、指尖很灵敏、软硬光滑凹凸、别碰热炉子；去掉了游泳池、怕痒的脚底和雪天使；题目重写并加了文本证据；加了“软还是硬”的分类题 |
+| Ray Charles | Lesson 7: Ray Charles | 缩写成短文，保留七岁失明、盲校、盲文、靠听觉和触觉学钢琴、“耳朵是我的机会”；去掉了点唱机、黑莓和后来的生平；题目重写并加了文本证据；加了“闭眼听声音”口语任务 |
+| Helen Keller | Lesson 8: Helen Keller | 缩写成短文，保留婴儿时生病、生气、Anne Sullivan 在手心拼词、水的那一刻、学会盲文和说话、上大学写书；去掉了黑屋子的想象和饭桌上的行为；题目重写并加了文本证据，其中一题和 Ray Charles 那一课比较（RI.K.9）；加了“在手心写词”口语任务 |
+
+只用了文字，没有用读本里的图片。
+

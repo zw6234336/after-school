@@ -1,0 +1,118 @@
+{
+  "id": "ch02-market",
+  "title": "第 2 章 · 集市",
+  "layer": 2,
+  "unit": "k-five-senses",
+  "surface": {
+    "ground": "#c98b4a",
+    "glow": "#ffb86b",
+    "rain": false,
+    "stations": {
+      "RI": { "name": "感官馆", "icon": "👂" }
+    }
+  },
+  "explore": {
+    "zones": [
+      { "id": "sight", "icon": "👀", "name": "看之原", "color": "#f2c94c", "lon": 0, "look": { "sky": "#16142e", "light": "#fff3c4", "fx": "motes", "decor": ["grass", "grass", "rock"] } },
+      { "id": "hearing", "icon": "👂", "name": "听之谷", "color": "#7cc8ff", "lon": 72, "look": { "sky": "#0b1a3c", "light": "#e8f4ff", "fx": "wind", "decor": ["mound", "rock"] } },
+      { "id": "smell", "icon": "👃", "name": "闻之园", "color": "#ff9ecb", "lon": 144, "look": { "sky": "#2a1024", "light": "#ffe0f0", "fx": "leaves", "decor": ["bush", "grass", "tree"] } },
+      { "id": "taste", "icon": "👅", "name": "尝之丘", "color": "#ffb347", "lon": 216, "look": { "sky": "#2b1608", "light": "#ffe2a2", "fx": "motes", "decor": ["mound", "pile"] } },
+      { "id": "touch", "icon": "✋", "name": "摸之林", "color": "#80cbc4", "lon": 288, "look": { "sky": "#0a1f1e", "light": "#d9fff6", "fx": null, "decor": ["tree", "bush", "rock"] } }
+    ],
+    "discoveries": [
+      { "id": "big-eyes", "model": "two-suns", "zone": "sight", "emoji": "👀", "zh": "会眨眼的大眼球", "word": "eyeballs", "say": "Look! Two eyeballs!", "note": "天上挂着两个圆圆的大眼球，一直看着你", "from": { "lesson": "l2-sight" }, "at": [49, 350] },
+      { "id": "dark-pupil", "zone": "sight", "emoji": "⚫", "zh": "会变大的黑点", "word": "pupil", "say": "Look! A big pupil!", "note": "地上一个黑黑的圆点，天越暗它越大", "from": { "lesson": "l2-sight" }, "at": [30, 22] },
+      { "id": "sound-waves", "model": "up-rain", "zone": "hearing", "emoji": "〰️", "zh": "看得见的声波", "word": "waves", "say": "Look! Sound waves!", "note": "一道道亮线从地上往上跑，像看得见的声音", "from": { "lesson": "l3-hearing" }, "at": [49, 64] },
+      { "id": "echo-hill", "zone": "hearing", "emoji": "🗣️", "zh": "会学你说话的小山", "word": "echo", "say": "Hi! Hi! It is an echo!", "note": "对着小山喊一声，它会把你的话再说一遍", "from": { "lesson": "l3-hearing" }, "at": [30, 92] },
+      { "id": "sweet-flowers", "model": "pinwheel-flowers", "zone": "smell", "emoji": "🌸", "zh": "香香的风车花", "word": "flower", "say": "Sniff the flower! It smells sweet!", "note": "转个不停的花，走近能闻到甜甜的香味", "from": { "lesson": "l4-smell" }, "at": [48, 140] },
+      { "id": "lemon-drops", "model": "firework-flowers", "zone": "taste", "emoji": "🍋", "zh": "酸溜溜的柠檬花", "word": "sour", "say": "Lemons taste sour!", "note": "花苞一个个飞上天，炸开的是柠檬味的小烟花", "from": { "lesson": "l5-taste" }, "at": [48, 214] },
+      { "id": "soft-feathers", "model": "dancing-leaves", "zone": "touch", "emoji": "🪶", "zh": "会飞的软羽毛", "word": "feather", "say": "A feather is soft!", "note": "一堆羽毛，走近就飞起来转圈", "from": { "lesson": "l6-touch" }, "at": [49, 282] },
+      { "id": "braille-rocks", "zone": "touch", "emoji": "⠿", "zh": "有小圆点的石头", "word": "dots", "say": "Look at the little dots!", "note": "石头上有一排排凸起来的小圆点，像盲文", "from": { "lesson": "l7-ray-charles" }, "at": [30, 306] }
+    ]
+  },
+  "door": {
+    "to": { "layer": 3, "name": "图书馆", "icon": "📚" },
+    "decode": {
+      "standard": "RF.K.3",
+      "unit": "k-phonics-digraphs",
+      "need": 8,
+      "words": ["ship", "fish", "shell", "chick", "chip", "chest", "bath", "duck", "sock", "lock"]
+    },
+    "comprehend": {
+      "standard": "RI.K.1",
+      "vocab": ["bix", "zib", "hi"],
+      "tickets": [
+        {
+          "id": "zib-senses",
+          "title": "Zib's Five Senses",
+          "text": "Dear friend, I have five senses, too! I see with my eyes. I hear with my ears. I smell with my nose. I taste with my tongue. I feel with my skin. I like the smell of a rose. Your friend, Zib",
+          "questions": [
+            { "q": "What does Zib see with?", "options": ["eyes", "ears", "a nose"], "a": "eyes", "evidence": "I see with my eyes" },
+            { "q": "What does Zib like to smell?", "options": ["a rose", "smoke", "a lemon"], "a": "a rose", "evidence": "I like the smell of a rose" }
+          ]
+        },
+        {
+          "id": "zib-tastes",
+          "title": "Zib Tastes Food",
+          "text": "Dear friend, Lemons taste sour. When I taste something sour, I make a funny face! Cake tastes sweet. Pretzels taste salty. I like sweet food best! Your friend, Zib",
+          "questions": [
+            { "q": "How do lemons taste?", "options": ["sour", "sweet", "salty"], "a": "sour", "evidence": "Lemons taste sour" },
+            { "q": "What does Zib like best?", "options": ["sweet food", "sour food", "salty food"], "a": "sweet food", "evidence": "I like sweet food best" }
+          ]
+        },
+        {
+          "id": "zib-sounds",
+          "title": "Zib Hears Sounds",
+          "text": "Dear friend, A fire alarm is loud. A whisper is soft. When a sound is too loud, I cover my ears. When I say hi to a big hill, I hear an echo! Your friend, Zib",
+          "questions": [
+            { "q": "What is soft?", "options": ["a whisper", "a fire alarm", "a big drum"], "a": "a whisper", "evidence": "A whisper is soft" },
+            { "q": "What does Zib do when a sound is too loud?", "options": ["covers its ears", "sings a song", "eats a cake"], "a": "covers its ears", "evidence": "I cover my ears" }
+          ]
+        }
+      ]
+    },
+    "unlock": {
+      "id": "senses-tower",
+      "emoji": "🎪",
+      "name": "Bix 感官塔",
+      "note": "Zib 照你讲的五种感官做了这座塔：顶上的球按看、听、闻、尝、摸五种颜色轮流换，塔一转就能让人闻到香味、听到音乐。",
+      "colors": ["#f2c94c", "#7cc8ff", "#ff9ecb", "#ffb347", "#80cbc4"]
+    }
+  },
+  "opening": {
+    "title": "第 2 层 · 集市",
+    "subtitle": "👂 感官馆 · The Five Senses",
+    "intro": "第 1 层的门打开了！门后面的通道一直往下，通往 Bix 星的第 2 层。",
+    "vocab": {
+      "school": [],
+      "names": ["zib"],
+      "extra": ["hi", "brr", "warm", "stay", "seasons", "winter", "spring", "summer", "which"]
+    },
+    "shots": [
+      { "type": "fly", "camera": "approach", "action": "approach", "zh": "穿过第 1 层的门，使命号往星球里面飞……", "ms": 5200 },
+      { "type": "fly", "camera": "descent", "action": "land", "zh": "第 2 层到了：一个热热闹闹的集市", "ms": 7000 },
+      { "type": "say", "camera": "zib", "action": "zib-appear", "text": "Hi! Look! I have mittens!", "zh": "Zib 戴着你送的连指手套跑过来" },
+      {
+        "type": "ask",
+        "camera": "zib",
+        "q": "Mittens help you stay ___.",
+        "options": ["warm", "wet"],
+        "a": "warm",
+        "hint": "Brr! Put on mittens. Now you are warm!",
+        "review": { "source": "第 1 层 · Winter", "standard": "RI.K.1" }
+      },
+      { "type": "say", "camera": "zib", "action": "zib-wave", "text": "Look! Four seasons!", "zh": "集市里有四个季节的摊位" },
+      {
+        "type": "ask",
+        "camera": "zib",
+        "q": "Winter, spring, summer, and ___?",
+        "options": ["autumn", "snow"],
+        "a": "autumn",
+        "hint": "Winter, spring, summer, and a…",
+        "review": { "source": "第 1 层 · What's the Weather Like?", "standard": "RI.K.3" }
+      },
+      { "type": "preview", "camera": "sign", "action": "sign", "word": "taste", "text": "What is this? Let's find out!", "zh": "告示上的新词还看不懂，这一层就要学它" },
+      { "type": "title", "camera": "station", "ms": 3200 }
+    ]
+  }
+}

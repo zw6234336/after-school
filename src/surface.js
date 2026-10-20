@@ -37,6 +37,7 @@ export class BixSurface extends EventTarget {
     this.chapter = chapter || null;
     const fresh = !stage;
     this.stage = stage || new BixStage(host);
+    this.stage.setTheme(chapter?.surface);
     this.stage.enterMap();
 
     this.explore = chapter?.explore?.zones?.length ? new BixExplore(this.stage, host, chapter, foundDiscoveries(chapter.id)) : null;
@@ -192,6 +193,7 @@ export class BixSurface extends EventTarget {
     label.bar.style.width = `${status.ready ? 100 : (read / status.lessons.length) * 100}%`;
     label.el.classList.toggle('done', status.opened);
     label.el.classList.toggle('ready', status.ready && !status.opened);
+    this.stage.setTowerColors(status.door.unlock?.colors);
     this.stage.setDoor(status);
   }
 
@@ -211,9 +213,11 @@ export class BixSurface extends EventTarget {
   }
 
   #buildDoorLabel(door) {
-    const label = makeLabel({ icon: '🚪', name: `第 ${door.to.layer} 层`, color: '#b388ff' }, () => this.dispatchEvent(new CustomEvent('door')));
+    // 最后一层的门通往星核（K 年级的终点），其他的门通往下一层
+    const name = door.to.layer ? `第 ${door.to.layer} 层` : door.to.name;
+    const label = makeLabel({ icon: door.to.layer ? '🚪' : door.to.icon || '💎', name, color: '#b388ff' }, () => this.dispatchEvent(new CustomEvent('door')));
     label.el.classList.add('station-label', 'door-label');
-    label.el.setAttribute('aria-label', `通往第 ${door.to.layer} 层的门`);
+    label.el.setAttribute('aria-label', `通往${name}的门`);
     const labelObj = new CSS2DObject(label.el);
     labelObj.position.copy(this.stage.site.worldToLocal(this.stage.stationWorld(DOOR_SPOT, DOOR_SPOT.labelY, v1)));
     this.stage.site.add(labelObj);

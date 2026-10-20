@@ -110,6 +110,33 @@ content/
 - 字幕（`text`、`q`、`options`、`hint`）只能用 [`wordlists/dolch.json`](wordlists/dolch.json) 里的高频词（Dolch 词表，公有领域）、更浅的层里学过的单元词，以及 `vocab` 里声明的词；`preview` 的新词必须是本章单元要学的词，每段最多一个。`npm run check:content` 会检查这些。
 - 开发时打开 `http://localhost:5173/?opening=ch01-weather-station`（或 `?opening=layer-1`）预览。
 
+### 每一层的样子和单元
+
+```jsonc
+{
+  "id": "ch02-market", "layer": 2, "unit": "k-five-senses",   // 这一层地图上读的知识单元：着陆的第二天开始每天排一课
+  "voyage": ["k-phonics-short-vowels"],                         // 只有第 1 层用：这些单元在航行期就开始排
+  "surface": {
+    "ground": "#c98b4a", "glow": "#ffb86b",                     // 着陆区地面和大气光晕的颜色
+    "rain": false,                                              // 地下的层不下雨
+    "stations": { "RI": { "name": "感官馆", "icon": "👂" } }      // 站点改名
+  },
+  "explore": {
+    "zones": [{ "id": "sight", "name": "看之原", "color": "#f2c94c", "lon": 0,
+                "look": { "sky": "#16142e", "light": "#fff3c4", "fx": "motes", "decor": ["grass", "rock"] } }],   // 地带的样子写在数据里
+    "discoveries": [{ "id": "big-eyes", "model": "two-suns", … }]   // model：借用已有发现物的模型，不写就是一簇水晶
+  },
+  "door": {
+    "to": { "layer": 3, "name": "图书馆", "icon": "📚" },         // 最后一层写 { "name": "星核", "final": true }
+    "decode": { "unit": "k-phonics-digraphs", … },               // 这一层的拼读单元，着陆的第二天开始排
+    "unlock": { "name": "Bix 感官塔", "colors": ["#f2c94c", …] }   // 开门以后升起来的塔用这几个颜色
+  }
+}
+```
+
+- `fx` 可以是 `wind`、`motes`、`uprain`、`upsnow`、`leaves` 或 `null`；`decor` 可以用 `grass`、`rock`、`mound`、`tree`、`bush`、`drift`、`crystal`、`pile`。
+- 开场字幕、Zib 的话和门上的短信能用的“前面学过的词”，是更浅的每一层所有单元（知识单元、拼读单元、航行期单元）里读过的文章、词墙和生词表的词。
+
 ### 闲逛：地带和发现物
 
 章节里还可以写 `explore`，着陆以后孩子可以离开着陆区，在整颗星球上闲逛：
