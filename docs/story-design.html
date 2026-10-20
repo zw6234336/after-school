@@ -116,6 +116,45 @@
   .lock code { font-family: var(--mono); font-size: 11.5px; color: #ffe08a; }
   .surface-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-faint); padding: 0 6px; }
 
+  /* 着陆后的地面地图 */
+  .map-row { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .map-row { grid-template-columns: minmax(0, 1fr); } }
+  .map-top { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 10px; font-size: 12.5px; color: var(--a-soft); }
+  .map-top b { color: var(--a-ink); font-size: 14px; }
+  .map-top .tag { padding: 2px 9px; border-radius: 99px; border: 1px solid var(--a-line); }
+  .map-top .today { margin-left: auto; color: var(--a-gold); font-weight: 800; }
+  .mapbox { position: relative; aspect-ratio: 4 / 3; border-radius: 22px; overflow: hidden;
+    background: radial-gradient(60% 55% at 50% 48%, rgba(124, 200, 255, 0.28), transparent 70%), radial-gradient(120% 90% at 50% 120%, #2a5a86, transparent 60%), linear-gradient(180deg, #16284d, #1d3d66 60%, #24507c); }
+  @media (max-width: 560px) { .mapbox { aspect-ratio: 1 / 1.05; } }
+  .mapbox::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(1.2px 1.2px at 20% 30%, rgba(255,255,255,.5), transparent), radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,.4), transparent), radial-gradient(1.5px 1.5px at 40% 80%, rgba(156,231,255,.6), transparent); background-size: 120px 120px; opacity: .6; }
+  .paths { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .paths line { stroke: rgba(255, 255, 255, 0.35); stroke-width: 2; stroke-dasharray: 2 6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  .paths line.on { stroke: #ffd166; stroke-dasharray: none; }
+  .spot { position: absolute; transform: translate(-50%, -50%); display: grid; justify-items: center; gap: 3px; padding: 0; border: none; background: none; color: var(--a-ink); cursor: pointer; font: inherit; }
+  .spot .disc { position: relative; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; background: rgba(14, 19, 48, 0.85); border: 2px solid var(--sc); box-shadow: 0 0 18px color-mix(in srgb, var(--sc) 45%, transparent); transition: transform 0.15s; }
+  .spot:hover .disc { transform: scale(1.06); }
+  .spot.on .disc { background: color-mix(in srgb, var(--sc) 30%, #0e1330); transform: scale(1.1); box-shadow: 0 0 0 4px rgba(255, 209, 102, 0.6), 0 0 26px color-mix(in srgb, var(--sc) 60%, transparent); }
+  .spot .count { position: absolute; right: -8px; top: -6px; padding: 1px 6px; border-radius: 99px; font-size: 11px; font-weight: 800; background: #ffd166; color: #1b1440; }
+  .spot .count.done { background: #4ade80; color: #06301a; }
+  .spot .nm { padding: 1px 8px; border-radius: 8px; font-size: 12px; font-weight: 800; background: rgba(7, 10, 31, 0.7); white-space: nowrap; }
+  .spot .nm small { font-family: var(--mono); font-size: 10px; color: var(--sc); margin-left: 4px; }
+  .spot.pad .disc { width: 64px; height: 64px; font-size: 30px; border-color: #ffd166; }
+  .spot.pad { cursor: default; }
+  .zibmark { position: absolute; font-size: 26px; transform: translate(-50%, -50%); transition: left 0.5s cubic-bezier(.3,1.3,.5,1), top 0.5s cubic-bezier(.3,1.3,.5,1); pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,.4)); }
+  .doorbar { position: absolute; left: 50%; bottom: 4%; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 99px; font-size: 12px; font-weight: 700; white-space: nowrap; background: rgba(7, 10, 31, 0.78); border: 1px dashed rgba(255, 209, 102, 0.6); color: #ffe7a6; }
+  @media (max-width: 560px) { .spot .disc { width: 46px; height: 46px; font-size: 22px; } .spot.pad .disc { width: 52px; height: 52px; } .spot .nm { font-size: 11px; } .spot .nm small { display: none; } .doorbar { font-size: 11px; } }
+  .tasks { display: grid; gap: 10px; }
+  .tasks h3 { display: flex; align-items: center; gap: 8px; margin: 0; }
+  .tasks .what { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
+  .tasks ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .tasks li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 8px; align-items: start; padding: 8px 10px; border-radius: 12px; background: var(--surface-2); font-size: 14px; }
+  .tasks li .ck { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 900; border: 1.5px solid var(--line); color: var(--ink-faint); }
+  .tasks li.done .ck { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .tasks li.done b { color: var(--ink-faint); text-decoration: line-through; }
+  .tasks li small { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; font-size: 11.5px; color: var(--ink-faint); }
+  .tasks li small span { padding: 0 6px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); }
+  .tasks .look { font-size: 13px; color: var(--ink-soft); padding-top: 8px; border-top: 1px dashed var(--line); }
+
   /* 角色 */
   .who { display: grid; gap: 6px; align-content: start; text-align: center; }
   .who .face { font-size: 44px; line-height: 1.2; }
@@ -286,12 +325,13 @@
         <a href="#idea"><b>1</b>一句话</a>
         <a href="#ship"><b>2</b>借鉴星舰</a>
         <a href="#planet"><b>3</b>星球剖面</a>
-        <a href="#cast"><b>4</b>角色</a>
-        <a href="#mech"><b>5</b>核心机制</a>
-        <a href="#opening"><b>6</b>开场动画</a>
-        <a href="#ch1"><b>7</b>第一章分镜</a>
-        <a href="#data"><b>8</b>数据</a>
-        <a href="#rules"><b>9</b>规则和落地</a>
+        <a href="#map"><b>4</b>地面地图</a>
+        <a href="#cast"><b>5</b>角色</a>
+        <a href="#mech"><b>6</b>核心机制</a>
+        <a href="#opening"><b>7</b>开场动画</a>
+        <a href="#ch1"><b>8</b>第一章分镜</a>
+        <a href="#data"><b>9</b>数据</a>
+        <a href="#rules"><b>10</b>规则和落地</a>
       </nav>
     </div>
     <svg viewBox="0 0 260 300" role="img" aria-label="不锈钢星舰立在发射塔旁，塔上有两只机械臂">
@@ -369,7 +409,7 @@
   <section id="planet">
     <div class="sec-head"><span class="num">3</span><div>
       <h2>星球剖面：往深处 = 能力，往四周 = 知识</h2>
-      <p class="sub">Bix 星从外到里分成五层，大约对应 K 年级一整年。每一层有几个街区，每个街区是一个知识单元，同一层的街区可以按任意顺序去，跟着学校的进度走就行。每一层的门有两把锁：解码锁（RF）和理解锁（RL / RI / W / SL），这正好对应“理解 = 解码 × 语言理解”。</p>
+      <p class="sub">Bix 星从外到里分成五层，大约对应 K 年级一整年。每一层安排几个知识单元，轮流成为这一层的主题，先学哪个可以跟着学校的进度走；每一层的地面上都有五个固定站点，每天的任务就分在这些站点里（见第 4 节）。每一层的门有两把锁：解码锁（RF）和理解锁（RL / RI / W / SL），这正好对应“理解 = 解码 × 语言理解”。</p>
     </div></div>
     <div class="planet">
       <div class="surface-label"><span>☀️ 地表</span><span>越往下越深 ↓</span></div>
@@ -403,12 +443,62 @@
         <div class="locks"><span class="lock">🔤 解码锁 <code>RF.K.4</code></span><span class="lock">✍️ 理解锁 <code>W.K.2 · SL.K.4</code></span></div>
       </div>
     </div>
-    <p class="muted small" style="margin-top:12px">街区名后面的英文是 CKLA K 年级的单元，内容库里目前只做好了 Seasons and Weather，其余待改编。门锁里的标准是示意，具体每层考哪几条，等单元做出来再定。</p>
+    <p class="muted small" style="margin-top:12px">单元名后面的英文是 CKLA K 年级的单元，内容库里目前只做好了 Seasons and Weather，其余待改编。门锁里的标准是示意，具体每层考哪几条，等单元做出来再定。</p>
+  </section>
+
+  <!-- 4 着陆后的地面地图 -->
+  <section id="map">
+    <div class="sec-head"><span class="num">4</span><div>
+      <h2>着陆以后：每天的使命任务就在 Bix 星上</h2>
+      <p class="sub">分两个阶段。<b>航行期</b>（第一章的第一周）还是现在的太空界面，每天完成任务给使命号加燃料。<b>着陆以后</b>，主界面换成当前这一层的地面地图：孩子只需要认一个地方，当天学校的作业和单元的课，都按能力自动分到地图上的站点里。下面用今天的真实作业演示（普通难度，15 项），可以点各个站点看看。</p>
+    </div></div>
+    <div class="map-row">
+      <div class="screen">
+        <div class="map-top"><b>🛬 第 1 层 · 着陆区</b><span class="tag">🌦️ 本单元：Seasons and Weather</span><span class="today" id="map-today"></span></div>
+        <div class="mapbox" id="mapbox">
+          <svg class="paths" id="paths" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <div class="spot pad" style="left:50%;top:50%"><span class="disc">🚀</span><span class="nm">使命号</span></div>
+          <div class="doorbar">🚪 通往第 2 层 · 解码锁 🔓 · 理解锁 🔒</div>
+          <span class="zibmark" id="zibmark" aria-hidden="true">👽</span>
+        </div>
+      </div>
+      <div class="card tasks" id="station-tasks" aria-live="polite"></div>
+    </div>
+
+    <div class="card table-card" style="margin-top:14px">
+      <table>
+        <thead><tr><th>站点</th><th>领域</th><th>在这里做什么</th><th>第 1 层的样子</th><th>今天</th></tr></thead>
+        <tbody>
+          <tr><td>🔤 拼读站</td><td data-k="领域"><span class="pill s-RF">RF</span></td><td data-k="做什么">破译外星文字：拼读、高频词、朗读。解码锁也装在这里</td><td data-k="样子">雨棚下的一面符号墙</td><td data-k="今天">2 项</td></tr>
+          <tr><td>📚 故事屋</td><td data-k="领域"><span class="pill s-RL">RL</span></td><td data-k="做什么">读故事、寓言，讲给大人听</td><td data-k="样子">圆顶小屋，门口立着蚱蜢和蚂蚁的雕像</td><td data-k="今天">4 项</td></tr>
+          <tr><td>🔬 研究站</td><td data-k="领域"><span class="pill s-RI">RI</span></td><td data-k="做什么">读说明文，研究地球的知识。样子跟着当前单元变</td><td data-k="样子"><b>气象站</b>：风向标、风速计、雨量筒</td><td data-k="今天">2 项</td></tr>
+          <tr><td>🧩 词语站</td><td data-k="领域"><span class="pill s-L">L</span></td><td data-k="做什么">认词、分类、反义词、拼句子</td><td data-k="样子">挂满词卡的小摊</td><td data-k="今天">4 项</td></tr>
+          <tr><td>📡 广播站</td><td data-k="领域"><span class="pill s-W">W</span> <span class="pill s-SL">SL</span></td><td data-k="做什么">写一句话、和大人对话，消息发给 Zib 或者地球</td><td data-k="样子">信号塔</td><td data-k="今天">3 项</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid g3" style="margin-top:14px">
+      <div class="card"><h3>📍 怎么分到站点</h3><p class="muted small">每项任务都写了 CCSS 标准，按标准的领域放进对应站点：RF → 拼读站，RL → 故事屋，RI → 研究站，L → 词语站，W 和 SL → 广播站。任务没写标准时，按它题目里最多的领域。家长不需要多填任何东西，学校作业每天换内容也能自动分好。</p></div>
+      <div class="card"><h3>🔢 其他科目</h3><p class="muted small">数学、语文这些没有 CCSS 标准的科目，每个科目在地图边上单独开一个站点（比如“🔢 数学站”），名字就用作业文件里的科目名。当天没有任务的站点变暗，但不会消失，让孩子慢慢熟悉这张地图。</p></div>
+      <div class="card"><h3>🎆 每天的收尾</h3><p class="muted small">当天的任务全部完成后，广播站的信号塔向地球发出信号，地面控制中心（家长）收到，替代原来的火箭发射和烟花。家长报告仍然按学校的科目分组，方便和学校对照。</p></div>
+    </div>
+
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card">
+        <h3>🗺️ 每一层的地图怎么变</h3>
+        <p class="muted small">五个站点的作用和图标每层都一样，孩子到了新的一层也知道去哪儿找什么。变的是样子：配色跟着剖面图越往下越暖，研究站跟着当前单元换造型（气象站 → 温室 → 农场……），故事屋和词语站也换成这一层的风格。进入新的一层时先播开场动画（第 7 节），播完就落在这一层的地图上。</p>
+      </div>
+      <div class="card">
+        <h3>🧑‍🚀 Zib 在哪儿</h3>
+        <p class="muted small">Zib 跟着孩子走，孩子点了哪个站点，Zib 就跑到哪个站点门口，用学过的词打招呼，比如在故事屋说 <i>“Let's read!”</i>。孩子做完一个站点的任务，Zib 就会提议下一个还没做完的站点，但孩子可以自己挑顺序。</p>
+      </div>
+    </div>
   </section>
 
   <!-- 4 角色 -->
   <section id="cast">
-    <div class="sec-head"><span class="num">4</span><div>
+    <div class="sec-head"><span class="num">5</span><div>
       <h2>角色</h2>
       <p class="sub">角色少而固定，每个都承担一个学习上的作用。</p>
     </div></div>
@@ -422,7 +512,7 @@
 
   <!-- 5 核心机制 -->
   <section id="mech">
-    <div class="sec-head"><span class="num">5</span><div>
+    <div class="sec-head"><span class="num">6</span><div>
       <h2>核心机制：翻译机和两把锁的门</h2>
       <p class="sub">左边可以拖动滑块试试：孩子学会的词越多，翻译机能翻出来的越多，给的帮助越少。点紫色的外星符号可以听这个词。</p>
     </div></div>
@@ -471,7 +561,7 @@
 
   <!-- 6 开场动画 -->
   <section id="opening">
-    <div class="sec-head"><span class="num">6</span><div>
+    <div class="sec-head"><span class="num">7</span><div>
       <h2>每一层的开场动画：用学过的内容介绍新地方</h2>
       <p class="sub">进入每一层之前，先播一段 40–60 秒的开场动画。动画里的英语全部来自孩子已经学过的内容；中途停下来问两三个复习问题；最后留一个还看不懂的新词，作为这一层的悬念。下面是进入第 2 层（集市）的样例，可以点播放试试。</p>
     </div></div>
@@ -566,7 +656,7 @@
 
   <!-- 7 第一章分镜 -->
   <section id="ch1">
-    <div class="sec-head"><span class="num">7</span><div>
+    <div class="sec-head"><span class="num">8</span><div>
       <h2>第一章分镜 · 气象站</h2>
       <p class="sub">用已经做好的 Seasons and Weather 单元做第一章，大约一周，从发射到打开第一层的门。</p>
     </div></div>
@@ -575,7 +665,7 @@
       <div class="beat"><div class="frame"><div><div class="art">🚀⛽🌍</div><div class="say">燃料 ■■■■□ 再加一次就能出发</div></div></div><b>加注燃料</b><p>每天完成使命任务给飞船加一次燃料，一周加满后飞往 Bix 星。中途完成当天的任务时，播放助推器被机械臂接住的动画。</p></div>
       <div class="beat"><div class="frame"><div><div class="art">🪐🔄🛬</div><div class="say">“A <i>jet</i>! It is <i>wet</i>!”</div></div></div><b>第 1 层开场动画</b><p>飞船翻身减速，在雨里降落在气象站。开场用学校本周学的短元音 e 和天气词介绍这里，最后出现一块看不懂的告示（weather）。</p></div>
       <div class="beat"><div class="frame"><div><div class="art">👽💬</div><div class="say">“◇○ ! ☉ ◐■ <i>Zib</i>.”</div></div></div><b>Zib 出场</b><p>翻译机只认出 I 和 Zib。Zib 说：Bix 星没有四季，它想知道地球的冬天是什么样。</p><div class="tags"><span class="pill s-RF">RF.K.3</span></div></div>
-      <div class="beat"><div class="frame"><div><div class="art">🌦️📚</div><div class="say">任务：两封信 + 一个寓言</div></div></div><b>气象站的任务</b><p>三项任务就是单元里的三课：What's the Weather Like?、Winter、The Grasshopper and the Ants。</p><div class="tags"><span class="pill s-RI">RI.K.1</span><span class="pill s-RL">RL.K.2</span></div></div>
+      <div class="beat"><div class="frame"><div><div class="art">🌦️📚</div><div class="say">任务：两封信 + 一个寓言</div></div></div><b>第 1 层的地图</b><p>着陆后主界面换成第 1 层的地面地图。单元的三课和学校当天的作业按能力分到五个站点：说明文去气象站，寓言去故事屋，写作去广播站。</p><div class="tags"><span class="pill s-RI">RI.K.1</span><span class="pill s-RL">RL.K.2</span></div></div>
       <div class="beat"><div class="frame"><div><div class="art">✉️👽</div><div class="say">“In winter, people wear <i>mittens</i>.”</div></div></div><b>给 Zib 回信</b><p>用学过的词写一句话告诉 Zib 冬天是什么样，就是 Winter 那一课的写作任务。Zib 回信道谢，又问了一个新问题。</p><div class="tags"><span class="pill s-W">W.K.2</span></div></div>
       <div class="beat"><div class="frame"><div><div class="art">🚪🔤🔍</div><div class="say">解码锁 🔓 · 理解锁 🔒</div></div></div><b>两把锁的门</b><p>读对本层的词，再做一张出门条。没打开就算一次试飞，收集数据，练完再来。</p><div class="tags"><span class="pill s-RF">RF.K.3</span><span class="pill s-RI">RI.K.1</span></div></div>
       <div class="beat"><div class="frame"><div><div class="art">🏛️🌡️✨</div><div class="say">解锁：Bix 气象塔</div></div></div><b>参观第一座设计</b><p>门打开，三维场景里升起原住民的气象塔，得到一张图鉴卡。预告第 2 层：集市。</p></div>
@@ -584,7 +674,7 @@
 
   <!-- 7 数据 -->
   <section id="data">
-    <div class="sec-head"><span class="num">8</span><div>
+    <div class="sec-head"><span class="num">9</span><div>
       <h2>数据：故事只引用单元，不复制内容</h2>
       <p class="sub">故事章节也放进内容库（<code>content/story/</code>），每章引用一个单元和它的课。单元本身照样可以不带故事单独使用，故事改了也不影响题目。</p>
     </div></div>
@@ -614,19 +704,20 @@
 
   <!-- 8 规则和落地 -->
   <section id="rules">
-    <div class="sec-head"><span class="num">9</span><div>
+    <div class="sec-head"><span class="num">10</span><div>
       <h2>规则和落地顺序</h2>
       <p class="sub">故事是为学习服务的，下面这些规则不能破。</p>
     </div></div>
     <div class="grid g2">
       <div class="card">
-        <h3>六条规则</h3>
+        <h3>七条规则</h3>
         <ol class="rules">
           <li><div><b>门只锁故事，不锁使命任务</b><span>当天的使命任务（也就是学校布置的作业）永远可以直接做，故事进度卡住也不影响。</span></div></li>
           <li><div><b>过关看掌握的证据</b><span>只看 You do 阶段和出门条，不看分数和速度，没有倒计时。</span></div></li>
           <li><div><b>失败不扣分</b><span>试飞失败只给出具体的“数据”，然后安排练习。</span></div></li>
           <li><div><b>翻译机按渐进释放</b><span>帮助随掌握程度减少，从朗读加中文翻译，到点了才帮，再到不翻译。</span></div></li>
           <li><div><b>英语只放在要学的地方</b><span>原住民说的话用学过的词写；剧情交代用中文语音或漫画格子，不增加阅读负担。</span></div></li>
+          <li><div><b>孩子只认一张地图</b><span>着陆以后所有任务都在当前这一层的地图上，站点的作用和图标每层不变；家长报告仍按学校的科目分组。</span></div></li>
           <li><div><b>外星符号只表示“还没破译”</b><span>破译后显示正常的英文字母，不让孩子学一套假字母，以免和正在学的字母混淆。</span></div></li>
         </ol>
       </div>
@@ -636,6 +727,7 @@
           <li><div><b>故事数据格式和校验</b><span>定好 <code>content/story</code> 的格式，<code>check:content</code> 检查每条消息只用到学过的词。</span></div></li>
           <li><div><b>翻译机组件</b><span>外星符号和英文之间的切换，词库来自进度记录。</span></div></li>
           <li><div><b>开场动画播放器</b><span>按 <code>opening.shots</code> 播放：镜头、逐词字幕、复习停顿、新词预告；校验字幕只用学过的词。</span></div></li>
+          <li><div><b>着陆后的地面地图</b><span>按任务的 CCSS 领域把当天任务分到五个站点，着陆后替换太空界面；其他科目各开一个站点。</span></div></li>
           <li><div><b>第一章的消息和门</b><span>复用现有的题目、写作和出门条，加上门锁判断和试飞记录。</span></div></li>
           <li><div><b>三维场景</b><span>银色不锈钢飞船、机械臂接住助推器、着陆动画、解锁建筑。</span></div></li>
           <li><div><b>家长端改成地面控制中心</b><span>发射前 Go / No-go、确认打卡，报告里加上故事进度。</span></div></li>
@@ -856,6 +948,66 @@
     const w = e.target.closest('.w');
     if (w) say(w.dataset.w);
   });
+})();
+// ---------- 着陆后的地面地图：今天的作业按领域分到站点 ----------
+(() => {
+  const S = '学校', U = '单元 · 四季与天气';
+  const STATIONS = [
+    { id: 'WSL', icon: '📡', name: '广播站', codes: ['W', 'SL'], color: '#80ed99', x: 50, y: 16,
+      what: '写一句话、和大人对话，消息发给 Zib 或者地球。', look: '第 1 层的样子：一座信号塔，全部任务完成后由它向地球发信号。', zib: 'Hi! Tell me!',
+      tasks: [[`${S} · 故事`, 'Ask a grown-up: “What’s your favorite season?”', 'SL.K.1'], [`${S} · 故事`, 'Write: My favorite season', 'W.K.1'], [U, 'Write: Winter', 'W.K.2']] },
+    { id: 'RF', icon: '🔤', name: '拼读站', codes: ['RF'], color: '#ffb84d', x: 20, y: 31,
+      what: '破译外星文字：拼读、高频词、朗读。解码锁也装在这里。', look: '第 1 层的样子：雨棚下的一面符号墙。', zib: 'Look! A sign!',
+      tasks: [[`${S} · 字母 Ee`, 'Phonics: Ee says /e/ — net, wet, vet, jet', 'RF.K.3', true], [`${S} · 故事`, 'Fluency: Read the story aloud', 'RF.K.4']] },
+    { id: 'RI', icon: '🔬', name: '气象站', codes: ['RI'], color: '#4cc9f0', x: 80, y: 31,
+      what: '研究站：读说明文，研究地球的知识。这一层的单元是天气，所以它是一座气象站。', look: '第 1 层的样子：风向标、风速计、雨量筒。下一个单元换成温室、农场……', zib: 'It is cold!',
+      tasks: [[U, 'Read: What’s the Weather Like?', 'RI.K.1'], [U, 'Read: Winter', 'RI.K.1']] },
+    { id: 'RL', icon: '📚', name: '故事屋', codes: ['RL'], color: '#ff7eb6', x: 22, y: 72,
+      what: '读故事和寓言，读完讲给大人听。', look: '第 1 层的样子：圆顶小屋，门口立着蚱蜢和蚂蚁的雕像。', zib: 'Let’s read!',
+      tasks: [[`${S} · 故事`, 'Read the Book 2 story with a grown-up', 'RL.K.10'], [`${S} · 故事`, 'Read: What’s Your Favorite Season?', 'RL.K.1'], [U, 'Read: The Grasshopper and the Ants', 'RL.K.1'], [U, 'Retell the story to a grown-up', 'RL.K.2']] },
+    { id: 'L', icon: '🧩', name: '词语站', codes: ['L'], color: '#b388ff', x: 78, y: 72,
+      what: '认词、分类、找反义词、用词卡拼句子。', look: '第 1 层的样子：挂满词卡的小摊。', zib: 'Hot! Cold!',
+      tasks: [[`${S} · 季节`, 'Words: spring, summer, fall, winter', 'L.K.5', true], [`${S} · 季节`, 'Say it: What season is it? It’s spring.', 'L.K.1', true], [`${S} · 天气`, 'Words: hot, cold, cool, warm', 'L.K.5'], [`${S} · 天气`, 'Say it: It’s warm. It’s cold.', 'L.K.1']] },
+  ];
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  const box = document.getElementById('mapbox');
+  const paths = document.getElementById('paths');
+  const panel = document.getElementById('station-tasks');
+  const zib = document.getElementById('zibmark');
+
+  paths.innerHTML = STATIONS.map((s) => `<line data-id="${s.id}" x1="50" y1="50" x2="${s.x}" y2="${s.y}" />`).join('');
+  for (const s of STATIONS) {
+    const done = s.tasks.filter((t) => t[3]).length;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'spot';
+    b.dataset.id = s.id;
+    b.style.cssText = `left:${s.x}%;top:${s.y}%;--sc:${s.color}`;
+    b.setAttribute('aria-label', `${s.name}，${s.tasks.length} 项任务，完成 ${done} 项`);
+    b.innerHTML = `<span class="disc">${s.icon}<span class="count${done === s.tasks.length ? ' done' : ''}">${done}/${s.tasks.length}</span></span><span class="nm">${s.name}<small>${s.codes.join('·')}</small></span>`;
+    box.appendChild(b);
+  }
+  const total = STATIONS.reduce((n, s) => n + s.tasks.length, 0);
+  const doneAll = STATIONS.reduce((n, s) => n + s.tasks.filter((t) => t[3]).length, 0);
+  document.getElementById('map-today').textContent = `今天 ${doneAll} / ${total}`;
+
+  function select(id) {
+    const s = STATIONS.find((x) => x.id === id);
+    box.querySelectorAll('.spot[data-id]').forEach((b) => b.classList.toggle('on', b.dataset.id === id));
+    paths.querySelectorAll('line').forEach((l) => l.classList.toggle('on', l.dataset.id === id));
+    zib.style.left = `${s.x + (s.x < 50 ? 10 : -10)}%`;
+    zib.style.top = `${s.y + 4}%`;
+    panel.innerHTML = `
+      <h3>${s.icon} ${esc(s.name)} ${s.codes.map((c) => `<span class="pill s-${c}">${c}</span>`).join(' ')}</h3>
+      <p class="what">${esc(s.what)}</p>
+      <ul>${s.tasks.map(([src, title, code, done]) => `<li class="${done ? 'done' : ''}"><span class="ck">${done ? '✓' : ''}</span><div><b>${esc(title)}</b><small><span>${esc(src)}</span><span>${esc(code)}</span></small></div></li>`).join('')}</ul>
+      <p class="look">${esc(s.look)}<br />👽 Zib 在门口：<i>“${esc(s.zib)}”</i></p>`;
+  }
+  box.addEventListener('click', (e) => {
+    const b = e.target.closest('.spot[data-id]');
+    if (b) select(b.dataset.id);
+  });
+  select('RI');
 })();
 </script>
 </body>
