@@ -31,6 +31,18 @@
       { "id": "pumpkin-patch", "zone": "leaves", "emoji": "🎃", "zh": "会长大的南瓜", "word": "pumpkins", "say": "Look! Pumpkins! A big one and a little one!", "note": "一片南瓜田，走近南瓜就一个个鼓起来", "from": { "lesson": "l5-autumn" }, "at": [30, 300] }
     ]
   },
+  "wardrobe": {
+    "items": [
+      { "id": "mittens", "word": "mittens", "emoji": "🧤", "zh": "连指手套", "from": { "lesson": "l2-winter" } },
+      { "id": "rain-boots", "word": "rain boots", "emoji": "👢", "zh": "雨靴", "from": { "lesson": "l3-spring" } },
+      { "id": "sunscreen", "word": "sunscreen", "emoji": "🧴", "zh": "防晒霜", "from": { "lesson": "l4-summer" } }
+    ],
+    "zones": {
+      "snow": { "wear": "mittens", "feel": "cold", "need": "Brr! It is cold! Put on your mittens!", "good": "Good! You are warm." },
+      "rain": { "wear": "rain-boots", "feel": "wet", "need": "It is wet! Put on your rain boots!", "good": "Good! Your feet are not wet." },
+      "sun": { "wear": "sunscreen", "feel": "hot", "need": "It is hot! Put on sunscreen!", "good": "Good! No sunburn for you!", "off": { "mittens": "No mittens in the sun!" } }
+    }
+  },
   "door": {
     "to": { "layer": 2, "name": "集市", "icon": "🛍️" },
     "decode": {

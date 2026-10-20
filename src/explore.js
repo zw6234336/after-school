@@ -280,6 +280,60 @@ function buildAstronaut() {
   return { group, inner, legs, arms, head, shadow2, hit, phase: 0, walk: 0, hop: 0 };
 }
 
+/**
+ * 衣柜里的衣服穿在小宇航员身上的样子（id 和章节 wardrobe.items 一致）：红色毛线连指手套、黄色雨靴、
+ * 背包侧面挂的一瓶防晒霜（镜头在身后，挂前面看不见）。还有一层热得发红的光，冒汗的时候亮。
+ * 返回 { gear: id → 网格列表, heat }
+ */
+function buildGear(a) {
+  const knit = std('#e63946', { roughness: 0.95 });
+  const cuffMat = std('#ffffff', { roughness: 0.9 });
+  const mittens = a.arms.map((shoulder, i) => {
+    const side = i === 0 ? -1 : 1;
+    const m = new THREE.Group();
+    m.position.y = -0.33;
+    const hand = new THREE.Mesh(ball(0.095, 14, 10), knit);
+    hand.scale.set(1, 1.15, 0.85);
+    const thumb = new THREE.Mesh(ball(0.042, 10, 8), knit);
+    thumb.position.set(-side * 0.075, 0.015, 0.03);
+    const cuff = new THREE.Mesh(new THREE.TorusGeometry(0.072, 0.028, 8, 20), cuffMat);
+    cuff.position.y = 0.075;
+    cuff.rotation.x = Math.PI / 2;
+    m.add(hand, thumb, cuff);
+    shoulder.add(m);
+    return m;
+  });
+
+  const rubber = std('#ffd60a', { roughness: 0.25, metalness: 0.05 });
+  const boots = a.legs.map((hip) => {
+    const b = new THREE.Group();
+    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.105, 0.112, 0.24, 14), rubber);
+    shaft.position.y = -0.25;
+    const foot = new THREE.Mesh(ball(0.115, 14, 10), rubber);
+    foot.scale.set(1, 0.6, 1.4);
+    foot.position.set(0, -0.365, 0.035);
+    b.add(shaft, foot);
+    hip.add(b);
+    return b;
+  });
+
+  const bottle = new THREE.Group();
+  bottle.position.set(0.21, 0.62, -0.27);
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.05, 0.15, 12), std('#ffffff', { roughness: 0.4 }));
+  const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.045, 10), std('#ff8a3d', { roughness: 0.5 }));
+  cap.position.y = 0.095;
+  const label = new THREE.Mesh(new THREE.CylinderGeometry(0.051, 0.051, 0.05, 12), std('#ffd166', { roughness: 0.5 }));
+  bottle.add(body, cap, label);
+  a.inner.add(bottle);
+
+  const heat = new THREE.Mesh(ball(0.36, 20, 14), new THREE.MeshBasicMaterial({ color: '#ff5a36', transparent: true, opacity: 0, depthWrite: false }));
+  a.head.add(heat);
+
+  const gear = { mittens, 'rain-boots': boots, sunscreen: [bottle] };
+  for (const parts of Object.values(gear)) for (const p of parts) p.visible = false;
+  return { gear, heat };
+}
+
 // ---------- 发现物 ----------
 // 每个发现物在自己的小坐标系里搭（y 朝上，原点在地面上），返回：
 //   group 整体；hits 点击用的网格；bubbleAt 头上小气泡的位置；reach 走到离中心多远停下；
@@ -1106,6 +1160,11 @@ export class BixExplore extends EventTarget {
 
     // 小宇航员和 Zib
     this.astro = buildAstronaut();
+    const { gear, heat } = buildGear(this.astro);
+    this.gear = gear;
+    this.heat = heat;
+    this.feel = null;
+    this.feelT = 0;
     this.root.add(this.astro.group);
     this.astro.hit.userData.astronaut = true;
     stage.zib.group.add(blobShadow(0.42));
@@ -1184,6 +1243,17 @@ export class BixExplore extends EventTarget {
     if (d) d.bubble.element.firstChild.textContent = d.data.emoji;
   }
 
+  /** 身上穿着哪些衣服（Set，衣柜里东西的 id）；没有模型的 id 不管 */
+  setOutfit(ids) {
+    for (const [id, parts] of Object.entries(this.gear)) for (const p of parts) p.visible = ids.has(id);
+  }
+
+  /** 穿得不对时的样子：'cold' 发抖、呼白气，'wet' 脚下溅水，'hot' 冒汗、头盔发红；null 是穿对了或者这里穿什么都行 */
+  setFeel(kind) {
+    this.feel = kind || null;
+    this.feelT = 0;
+  }
+
   /** 拖动屏幕：镜头绕着人转（弧度） */
   orbit(angle) {
     if (!this.out) return;
@@ -1255,6 +1325,7 @@ export class BixExplore extends EventTarget {
     this.astroAt.copy(this.pos).multiplyScalar(R);
     this.camAt.copy(camera.position).sub(this.root.position);
     this.#animateAstro(dt, t);
+    if (this.out) this.#updateFeel(dt);
     this.#updateDiscoveries(dt, t);
     this.#updateLights(dt);
     if (this.out) this.weather.update(dt, t, this.astroAt, this.camFwd, this.side.crossVectors(this.camFwd, this.pos));
@@ -1559,6 +1630,31 @@ export class BixExplore extends EventTarget {
     const idle = REDUCED_MOTION ? 0 : Math.sin(t * 2.2) * 0.012;
     a.inner.position.y = Math.abs(Math.sin(a.phase)) * 0.06 * a.walk + idle + Math.sin(a.hop * Math.PI) * 0.35;
     a.head.rotation.y = this.out ? 0 : Math.sin(t * 0.6) * 0.25;
+    // 冷得发抖；热得头盔外面一层红光
+    const feel = this.out ? this.feel : null;
+    a.inner.position.x = feel === 'cold' && !REDUCED_MOTION ? Math.sin(t * 45) * 0.012 : 0;
+    const heat = feel === 'hot' ? 0.24 + (REDUCED_MOTION ? 0 : Math.sin(t * 3) * 0.06) : 0;
+    this.heat.material.opacity += (heat - this.heat.material.opacity) * Math.min(1, dt * 3);
+  }
+
+  /** 穿得不对的时候，身边冒出来的东西：白气、水花、汗珠 */
+  #updateFeel(dt) {
+    if (!this.feel || REDUCED_MOTION) return;
+    this.feelT -= dt;
+    if (this.feelT > 0) return;
+    const a = this.astro;
+    const emit = (at, opts) => this.host.particles.emit(at, { gravity: 0, ...opts });
+    if (this.feel === 'cold') {
+      this.feelT = 1.1;
+      emit(a.head.localToWorld(v4.set(0, -0.06, 0.42)), { count: 8, colors: ['#ffffff', '#dff3ff'], speed: 0.35, life: 1.1, drag: 0.94, intensity: 1.2 });
+    } else if (this.feel === 'wet') {
+      // 走路的时候溅得多
+      this.feelT = a.walk > 0.3 ? 0.3 : 1.0;
+      for (const leg of a.legs) emit(leg.localToWorld(v4.set(0, -0.38, 0.05)), { count: 5, colors: ['#9fdcff', '#4fb3c8'], speed: 1.1, life: 0.45, drag: 0.9 });
+    } else if (this.feel === 'hot') {
+      this.feelT = 0.6;
+      emit(a.head.localToWorld(v4.set((Math.random() - 0.5) * 0.3, 0.26, 0.1)), { count: 2, colors: ['#bfeaff'], speed: 0.5, life: 0.8, intensity: 1.4 });
+    }
   }
 
   #updateDiscoveries(dt, t) {

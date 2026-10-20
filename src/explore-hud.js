@@ -294,7 +294,7 @@ function spoken(d, known) {
 }
 
 /** 一句英文，每个词都可以点一下再听 */
-function wordsHtml(text) {
+export function wordsHtml(text) {
   return text
     .split(/(\s+)/)
     .map((part) => {

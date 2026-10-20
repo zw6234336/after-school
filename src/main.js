@@ -7,6 +7,7 @@ import { HomeworkScene } from './scene.js';
 import { stationize } from './stations.js';
 import { landedChapter, nextChapter, setLanded, resetStory, voyage, addFuelDay, learnLesson } from './story.js';
 import { newlyDecoded } from './explore-hud.js';
+import { newItems } from './wardrobe.js';
 import { BixSurface } from './surface.js';
 import { UI } from './ui.js';
 
@@ -82,11 +83,13 @@ async function start() {
     progress.addEventListener('change', fuelUp);
     fuelUp();
     syncLearned(progress);
-    // 读完一课：着陆以后，提示孩子图鉴里有名字被破译了
+    // 读完一课：着陆以后，提示孩子图鉴里有名字被破译了、衣柜里多了衣服
     progress.addEventListener('change', () => {
-      const fresh = syncLearned(progress);
-      const names = landed ? newlyDecoded(landed, fresh[landed.unit] || []) : [];
-      if (names.length) setTimeout(() => ui.toast(`🔓 翻译机破译了 ${names.length} 个新名字，去闲逛看看吧！`), 2800);
+      const fresh = syncLearned(progress)[landed?.unit] || [];
+      const names = landed ? newlyDecoded(landed, fresh) : [];
+      const items = landed ? newItems(landed, fresh) : [];
+      const news = [names.length && `🔓 翻译机破译了 ${names.length} 个新名字`, items.length && `🎒 衣柜里多了 ${items.map((i) => `${i.emoji} ${i.word}`).join('、')}`].filter(Boolean);
+      if (news.length) setTimeout(() => ui.toast(`${news.join('，')}，去闲逛看看吧！`), 2800);
     });
 
     /** 开场动画播完：记下已着陆，在开场留下的布景上显示地面地图 */
