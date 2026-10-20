@@ -191,10 +191,13 @@ export class HomeworkScene extends EventTarget {
   // ---------- 场景搭建 ----------
 
   #buildLights() {
-    this.scene.add(new THREE.HemisphereLight('#b9c6ff', '#2a1b3d', 1.3));
+    // 闲逛 Bix 星时会把这两盏灯调暗，改用跟着人走的灯
+    this.hemiLight = new THREE.HemisphereLight('#b9c6ff', '#2a1b3d', 1.3);
+    this.scene.add(this.hemiLight);
     const sun = new THREE.DirectionalLight('#fff1d6', 2.6);
     sun.position.set(8, 10, 9);
     this.scene.add(sun);
+    this.sunLight = sun;
     this.coreLight = new THREE.PointLight('#ffb36b', 25, 0, 2);
     this.coreLight.position.set(0, 1, 0);
     this.scene.add(this.coreLight);

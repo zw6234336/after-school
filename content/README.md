@@ -96,6 +96,29 @@ content/
 - 字幕（`text`、`q`、`options`、`hint`）只能用 [`wordlists/dolch.json`](wordlists/dolch.json) 里的高频词（Dolch 词表，公有领域）、更浅的层里学过的单元词，以及 `vocab` 里声明的词；`preview` 的新词必须是本章单元要学的词，每段最多一个。`npm run check:content` 会检查这些。
 - 开发时打开 `http://localhost:5173/?opening=ch01-weather-station`（或 `?opening=layer-1`）预览。
 
+### 闲逛：地带和发现物
+
+章节里还可以写 `explore`，着陆以后孩子可以离开着陆区，在整颗星球上闲逛：
+
+```jsonc
+"explore": {
+  "zones": [   // 着陆区四周的天气地带，按经度（lon，0–360）排一圈；经度 0 在发射台后面
+    { "id": "wind", "icon": "🌬️", "name": "风之原", "color": "#3a7bd5", "lon": 0 }
+  ],
+  "discoveries": [
+    { "id": "pinwheel-flowers", "zone": "wind", "emoji": "🌬️", "zh": "风车花",
+      "word": "windy",                   // 名字：学过才显示英文，没学过显示外星符号
+      "say": "It is windy!",             // Zib 介绍它的话，要说出 word
+      "note": "花瓣像风车一样，一直在风里转",   // 中文旁白：这个单元一课都还没读完时显示
+      "from": { "lesson": "l1-weather" },   // 读完哪一课破译；学校本周教过的词写 { "school": "学校本周 · 天气" }
+      "at": [49, 346] }                  // 在星球上的位置：[纬度, 经度]，纬度最多 60（再往北就是着陆区）
+  ]
+}
+```
+
+- 地带的 `id` 决定三维布景和飘着的东西（`wind`、`sun`、`rain`、`snow`、`leaves`），发现物的 `id` 决定它的模型，见 `src/explore.js`；没有专门模型的发现物显示成一簇发光的水晶。
+- `from.lesson` 的发现物，`word` 必须出现在那一课的文章或生词里；`say` 只能用高频词、`opening.vocab` 里的词、更浅的层学过的词、那一课文章里的词和它自己的名字。发现物之间至少隔开 3.5（星球半径是 14）。`npm run check:content` 会检查这些。
+
 ## 检查内容
 
 ```bash
@@ -109,6 +132,7 @@ npm run check:content
 - 有 `source` 的单元，每一课都写了 `from` 和 `changes`
 - 任务 id 在所有单元里不重复
 - 生词表里的词在文章里出现过
+- 故事章节：开场字幕只用学过的词；闲逛的发现物名字能破译、Zib 的话只用学过的词、位置不在着陆区里
 
 还会列出每篇文章的词数和每课的题目数，方便控制长度。
 

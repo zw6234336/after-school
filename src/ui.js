@@ -17,6 +17,7 @@ import {
   fluencyHtml,
   standardsReportHtml,
 } from './lesson.js';
+import { ExploreHud } from './explore-hud.js';
 
 const SHEET_MQ = window.matchMedia('(max-width: 760px), (orientation: portrait) and (max-width: 1100px)');
 const COARSE = window.matchMedia('(pointer: coarse)').matches;
@@ -71,6 +72,14 @@ export class UI {
 
     this.fuelLabel = document.querySelector('.fuel-label span');
     this.#listen(scene);
+    this.exploreHud = new ExploreHud({
+      toast: (text) => this.toast(text),
+      openModal: (html) => this.#openModal(html),
+      closePanel: () => this.closePanel(),
+      refresh: () => this.#renderHud(),
+      date: () => this.homework.date,
+    });
+    this.exploreHud.setView(scene);
     progress.addEventListener('change', (e) => this.#onProgress(e.detail));
 
     this.panel.addEventListener('click', (e) => this.#onPanelClick(e));
@@ -105,6 +114,7 @@ export class UI {
     this.closePanel();
     this.scene = view;
     this.#listen(view);
+    this.exploreHud.setView(view);
     this.setHomework(homework);
   }
 
@@ -875,6 +885,7 @@ export class UI {
   #onKey(e) {
     if (e.key === 'Escape') {
       if (!this.modal.hidden) this.#closeModal();
+      else if (this.exploreHud.closeCard()) return;
       else if (this.view && this.view.type !== 'subject') this.#show({ type: 'subject', subject: this.view.subject });
       else if (this.view) this.closePanel();
       return;
@@ -1028,6 +1039,7 @@ export class UI {
       <h3>🚀 故事进度 <small>（星际破译）</small></h3>
       <ul class="report-list">
         <li><div><b>${esc(title)}</b><small>${esc(detail)}</small></div>${action}</li>
+        ${chapter ? this.exploreHud.reportHtml() : ''}
       </ul>`;
   }
 
@@ -1062,6 +1074,10 @@ export class UI {
         break;
       case 'land':
         this.#land();
+        break;
+      case 'find':
+        this.#closeModal();
+        this.exploreHud.onModalAction(btn);
         break;
       case 'story-reset':
         if (window.confirm('确定回到航行期吗？已经降落的进度和燃料天数都会清空，做题记录不受影响。')) {
@@ -1144,10 +1160,12 @@ export class UI {
     this.fuelText.textContent = `${pct}%`;
     this.fuelFill.style.width = `${pct}%`;
     const left = p.remainingTasks();
+    this.exploreHud?.render();
     if (this.#onSurface()) {
       this.fuelLabel.textContent = '📡 信号塔能量';
-      this.hint.textContent =
-        left === 0
+      this.hint.textContent = this.exploreHud?.exploring
+        ? this.exploreHud.hint(left)
+        : left === 0
           ? '🎉 全部完成！点一下使命号，再向地球发一次信号吧'
           : pct === 0
             ? '👆 点一个站点，开始使命任务吧！完成任务给信号塔充能'

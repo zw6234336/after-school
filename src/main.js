@@ -5,7 +5,8 @@ import { OpeningPlayer } from './opening.js';
 import { Progress } from './progress.js';
 import { HomeworkScene } from './scene.js';
 import { stationize } from './stations.js';
-import { landedChapter, nextChapter, setLanded, resetStory, voyage, addFuelDay } from './story.js';
+import { landedChapter, nextChapter, setLanded, resetStory, voyage, addFuelDay, learnLesson } from './story.js';
+import { newlyDecoded } from './explore-hud.js';
 import { BixSurface } from './surface.js';
 import { UI } from './ui.js';
 
@@ -41,6 +42,23 @@ function initialHomework(raw) {
   return normalizeHomework(raw, { level: fallback });
 }
 
+/**
+ * 翻译机词库：读完一课（这一课带文章的任务做完了），就把这一课记下来，以后每天都算学过。
+ * 返回这次新读完的课（单元 id → 课的 id 列表）
+ */
+function syncLearned(progress) {
+  const fresh = {};
+  for (const unit of new Set(Object.values(STORY).map((c) => UNITS[c.unit]).filter(Boolean))) {
+    for (const lesson of unit.lessons) {
+      const reads = lesson.tasks.filter((t) => t.passage);
+      const ids = new Set((reads.length ? reads : lesson.tasks).map((t) => t.id));
+      const read = progress.allTasks.some((t) => ids.has(t.id) && progress.isDone(t));
+      if (read && learnLesson(unit.id, lesson.id)) (fresh[unit.id] ||= []).push(lesson.id);
+    }
+  }
+  return fresh;
+}
+
 async function start() {
   const loading = document.getElementById('loading');
   try {
@@ -55,7 +73,7 @@ async function start() {
     const forView = (hw) => (landed ? stationize(hw, landed.surface?.stations) : hw);
     const progress = new Progress(forView(homework));
     const scene = new HomeworkScene(document.getElementById('stage'), homework, progress);
-    let view = landed ? new BixSurface(scene, forView(homework), progress) : scene;
+    let view = landed ? new BixSurface(scene, forView(homework), progress, { chapter: landed }) : scene;
 
     // 航行期：今天的使命任务全部完成，就给飞船加一天燃料（加满就能降落）
     const fuelUp = () => {
@@ -63,6 +81,13 @@ async function start() {
     };
     progress.addEventListener('change', fuelUp);
     fuelUp();
+    syncLearned(progress);
+    // 读完一课：着陆以后，提示孩子图鉴里有名字被破译了
+    progress.addEventListener('change', () => {
+      const fresh = syncLearned(progress);
+      const names = landed ? newlyDecoded(landed, fresh[landed.unit] || []) : [];
+      if (names.length) setTimeout(() => ui.toast(`🔓 翻译机破译了 ${names.length} 个新名字，去闲逛看看吧！`), 2800);
+    });
 
     /** 开场动画播完：记下已着陆，在开场留下的布景上显示地面地图 */
     const land = (chapter, stage) => {
@@ -70,7 +95,7 @@ async function start() {
       landed = chapter;
       const hw = forView(homework);
       progress.setHomework(hw);
-      view = new BixSurface(scene, hw, progress, { stage });
+      view = new BixSurface(scene, hw, progress, { stage, chapter });
       ui.setView(view, hw);
     };
 
@@ -144,6 +169,9 @@ async function start() {
       },
     });
     requestAnimationFrame(() => loading.classList.add('hidden'));
+
+    // 开发用：?explore 着陆以后直接去逛逛
+    if (params.has('explore') && view !== scene) view.startExplore?.();
 
     // 开发用：?opening=ch01-weather-station（或 ?opening=layer-1）直接播开场，播完就着陆
     const openingId = params.get('opening');

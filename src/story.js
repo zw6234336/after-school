@@ -59,7 +59,73 @@ export function addFuelDay(date) {
   save(state);
 }
 
-/** 回到航行期：着陆和燃料都清空（家长报告里的“回到航行期”，开发时用 ?story=reset） */
+/** 回到航行期：着陆、燃料和发现图鉴都清空（家长报告里的“回到航行期”，开发时用 ?story=reset）。读过哪些课来自做题记录，保留 */
 export function resetStory() {
-  save({});
+  const { learned } = load();
+  save(learned ? { learned } : {});
+}
+
+// ---------- 翻译机词库：读过的课 ----------
+
+/** 某个单元里读过的课（课的 id） */
+export function learnedLessons(unitId) {
+  const list = load().learned?.[unitId];
+  return new Set(Array.isArray(list) ? list : []);
+}
+
+/** 读完一课：这一课的词翻译机就认识了（只记一次） */
+export function learnLesson(unitId, lessonId) {
+  const state = load();
+  const list = Array.isArray(state.learned?.[unitId]) ? state.learned[unitId] : [];
+  if (list.includes(lessonId)) return false;
+  state.learned = { ...state.learned, [unitId]: [...list, lessonId] };
+  save(state);
+  return true;
+}
+
+// ---------- 闲逛：发现图鉴和每天的记录 ----------
+
+/** 这一章已经收进图鉴的发现物（id 列表，按找到的顺序） */
+export function foundDiscoveries(chapterId) {
+  const list = load().found?.[chapterId];
+  return Array.isArray(list) ? list : [];
+}
+
+/** 收进图鉴；同时记在当天的闲逛记录里，家长报告用 */
+export function addFound(chapterId, id, date) {
+  const state = load();
+  const list = Array.isArray(state.found?.[chapterId]) ? state.found[chapterId] : [];
+  if (list.includes(id)) return false;
+  state.found = { ...state.found, [chapterId]: [...list, id] };
+  const day = exploreDayOf(state, date);
+  day.found = [...day.found, id];
+  save(state);
+  return true;
+}
+
+/** 某一天的闲逛记录：找到了哪些（id 列表）、逛了多少秒 */
+export function exploreDay(date) {
+  return exploreDayOf(load(), date);
+}
+
+export function addExploreTime(date, seconds) {
+  if (!(seconds > 0)) return;
+  const state = load();
+  const day = exploreDayOf(state, date);
+  day.seconds = Math.round(day.seconds + seconds);
+  save(state);
+}
+
+/** 只保留最近 14 天的闲逛记录 */
+function exploreDayOf(state, date) {
+  state.explore ||= {};
+  if (!state.explore[date]) {
+    state.explore[date] = { found: [], seconds: 0 };
+    const days = Object.keys(state.explore).sort();
+    for (const d of days.slice(0, Math.max(0, days.length - 14))) delete state.explore[d];
+  }
+  const day = state.explore[date];
+  if (!Array.isArray(day.found)) day.found = [];
+  if (!(day.seconds >= 0)) day.seconds = 0;
+  return day;
 }
