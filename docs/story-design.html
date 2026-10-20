@@ -155,6 +155,45 @@
   .tasks li small span { padding: 0 6px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); }
   .tasks .look { font-size: 13px; color: var(--ink-soft); padding-top: 8px; border-top: 1px dashed var(--line); }
 
+  /* 闲逛 */
+  .ex-row { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .ex-row { grid-template-columns: minmax(0, 1fr); } }
+  .globe-wrap { display: grid; justify-items: center; gap: 10px; }
+  .globe { position: relative; width: min(100%, 460px); aspect-ratio: 1; border-radius: 50%; overflow: hidden;
+    background: conic-gradient(from -36deg, #3a7bd5 0 72deg, #f2b84b 72deg 144deg, #3f8f8a 144deg 216deg, #c7dcff 216deg 288deg, #c96a3a 288deg 360deg);
+    box-shadow: inset -30px -40px 80px rgba(0, 0, 0, 0.45), inset 20px 20px 60px rgba(255, 255, 255, 0.15), 0 0 0 6px rgba(124, 200, 255, 0.25), 0 20px 50px rgba(10, 10, 40, 0.35); }
+  .globe::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 50% 50%, transparent 0 22%, rgba(7, 10, 31, 0.08) 22.5% 23%, transparent 23.5%); pointer-events: none; }
+  .globe .home { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 34%; aspect-ratio: 1; border-radius: 50%; display: grid; place-content: center; justify-items: center; gap: 2px; text-align: center;
+    background: radial-gradient(circle, #2a5a86, #1d3d66); color: #fff; font-size: 12px; font-weight: 800; box-shadow: 0 0 0 3px rgba(255, 209, 102, 0.6); }
+  .globe .home span { font-size: 20px; letter-spacing: 2px; }
+  .globe .zone { position: absolute; transform: translate(-50%, -50%); padding: 1px 8px; border-radius: 8px; font-size: 12px; font-weight: 800; color: #fff; background: rgba(7, 10, 31, 0.55); white-space: nowrap; pointer-events: none; }
+  .globe .find { position: absolute; transform: translate(-50%, -50%); width: 44px; height: 44px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.85); background: rgba(7, 10, 31, 0.55); font-size: 22px; cursor: pointer; display: grid; place-items: center; transition: transform 0.15s; }
+  .globe .find:hover { transform: translate(-50%, -50%) scale(1.1); }
+  .globe .find.on { box-shadow: 0 0 0 4px #ffd166, 0 0 20px #ffd166; }
+  .globe .find.got::after { content: '✓'; position: absolute; right: -4px; top: -4px; width: 16px; height: 16px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; font-weight: 900; background: #4ade80; color: #06301a; }
+  .globe .walker { position: absolute; transform: translate(-50%, -50%); font-size: 24px; transition: left 0.9s cubic-bezier(.4,0,.2,1), top 0.9s cubic-bezier(.4,0,.2,1); pointer-events: none; filter: drop-shadow(0 3px 4px rgba(0,0,0,.5)); }
+  .globe .walker.zib { font-size: 20px; transition-delay: 0.15s; }
+  @media (max-width: 520px) { .globe .find { width: 36px; height: 36px; font-size: 18px; } .globe .zone { font-size: 10.5px; } }
+  .xlate { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; font-size: 13px; }
+  .xlate button { padding: 5px 12px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-weight: 700; cursor: pointer; }
+  .xlate button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .dcard { display: grid; gap: 10px; }
+  .dcard .pic { font-size: 54px; line-height: 1; }
+  .dcard .name { font: 700 26px/1.3 Georgia, 'Times New Roman', serif; }
+  .dcard .name .glyph { font-family: var(--font); letter-spacing: 4px; color: #7b4fe0; font-size: 22px; }
+  .dcard .zh { color: var(--ink-soft); font-size: 14px; }
+  .dcard .zibline { padding: 10px 12px; border-radius: 12px; background: var(--surface-2); font: 600 18px/1.5 Georgia, serif; }
+  .dcard .zibline small { display: block; font: 500 12.5px/1.5 var(--font); color: var(--ink-faint); }
+  .dcard .why { font-size: 13px; color: var(--ink-soft); }
+  .dcard .acts { display: flex; flex-wrap: wrap; gap: 6px; }
+  .dcard .acts button { padding: 7px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-weight: 700; font-size: 13px; cursor: pointer; }
+  .dcard .acts button.primary { background: linear-gradient(180deg, #ffe08a, #ffb84d); border: none; color: #1b1440; box-shadow: 0 3px 0 #c77d16; }
+  .journal { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+  .journal div { display: grid; justify-items: center; gap: 2px; padding: 10px 4px; border-radius: 12px; background: var(--surface-2); text-align: center; font-size: 12px; color: var(--ink-faint); }
+  .journal div b { font-size: 26px; line-height: 1.2; filter: grayscale(1) brightness(0.3); opacity: 0.5; }
+  .journal div.got { background: var(--gold-soft); color: var(--ink); }
+  .journal div.got b { filter: none; opacity: 1; }
+
   /* 角色 */
   .who { display: grid; gap: 6px; align-content: start; text-align: center; }
   .who .face { font-size: 44px; line-height: 1.2; }
@@ -326,12 +365,13 @@
         <a href="#ship"><b>2</b>借鉴星舰</a>
         <a href="#planet"><b>3</b>星球剖面</a>
         <a href="#map"><b>4</b>地面地图</a>
-        <a href="#cast"><b>5</b>角色</a>
-        <a href="#mech"><b>6</b>核心机制</a>
-        <a href="#opening"><b>7</b>开场动画</a>
-        <a href="#ch1"><b>8</b>第一章分镜</a>
-        <a href="#data"><b>9</b>数据</a>
-        <a href="#rules"><b>10</b>规则和落地</a>
+        <a href="#explore"><b>5</b>闲逛</a>
+        <a href="#cast"><b>6</b>角色</a>
+        <a href="#mech"><b>7</b>核心机制</a>
+        <a href="#opening"><b>8</b>开场动画</a>
+        <a href="#ch1"><b>9</b>第一章分镜</a>
+        <a href="#data"><b>10</b>数据</a>
+        <a href="#rules"><b>11</b>规则和落地</a>
       </nav>
     </div>
     <svg viewBox="0 0 260 300" role="img" aria-label="不锈钢星舰立在发射塔旁，塔上有两只机械臂">
@@ -487,7 +527,7 @@
     <div class="grid g2" style="margin-top:14px">
       <div class="card">
         <h3>🗺️ 每一层的地图怎么变</h3>
-        <p class="muted small">五个站点的作用和图标每层都一样，孩子到了新的一层也知道去哪儿找什么。变的是样子：配色跟着剖面图越往下越暖，研究站跟着当前单元换造型（气象站 → 温室 → 农场……），故事屋和词语站也换成这一层的风格。进入新的一层时先播开场动画（第 7 节），播完就落在这一层的地图上。</p>
+        <p class="muted small">五个站点的作用和图标每层都一样，孩子到了新的一层也知道去哪儿找什么。变的是样子：配色跟着剖面图越往下越暖，研究站跟着当前单元换造型（气象站 → 温室 → 农场……），故事屋和词语站也换成这一层的风格。进入新的一层时先播开场动画（第 8 节），播完就落在这一层的地图上。离开着陆区可以在整颗星球上闲逛（第 5 节）。</p>
       </div>
       <div class="card">
         <h3>🧑‍🚀 Zib 在哪儿</h3>
@@ -496,9 +536,90 @@
     </div>
   </section>
 
+  <!-- 5 闲逛 -->
+  <section id="explore">
+    <div class="sec-head"><span class="num">5</span><div>
+      <h2>闲逛 Bix 星：看风景，找新奇的东西</h2>
+      <p class="sub">Bix 星很小，一直往前走就能绕回着陆点。孩子的小宇航员点哪里就走到哪里，Zib 跟在旁边。离开着陆区，第 1 层是一圈奇怪的天气地带：在 Bix 星上，天气不跟着季节变，而是跟着地方变。往雪之谷走就冷，往晴之丘走就热。8 样新奇的东西一开始就都在星球上，随时可以去找。<b>真正做出来是 three.js 的 3D 场景：就在着陆用的那颗 Bix 星模型上走，下面的圆形图只是示意，</b>方便看清地带和发现物的位置。可以点星球上的发现物，也可以切换翻译机的状态看看。</p>
+    </div></div>
+    <div class="ex-row">
+      <div class="globe-wrap">
+        <div class="globe" id="globe" aria-label="从上往下看 Bix 星：中间是着陆区，四周是五个天气地带">
+          <div class="home"><span>🚀📡</span>着陆区<br />五个站点</div>
+          <span class="walker" id="me" style="left:50%;top:38%">🧑‍🚀</span>
+          <span class="walker zib" id="zibw" style="left:56%;top:40%">👽</span>
+        </div>
+        <div class="xlate" role="group" aria-label="翻译机状态">
+          <span class="muted">翻译机：</span>
+          <button type="button" data-x="0" aria-pressed="true">刚着陆</button>
+          <button type="button" data-x="1" aria-pressed="false">学完 What's the Weather Like?</button>
+        </div>
+      </div>
+      <div>
+        <div class="card dcard" id="dcard" aria-live="polite"></div>
+        <div class="journal" id="journal" aria-label="发现图鉴"></div>
+        <p class="muted small" style="margin-top:8px">📔 发现图鉴：找到的东西会亮起来，没找到的是灰色剪影。</p>
+      </div>
+    </div>
+
+    <div class="grid g3" style="margin-top:14px">
+      <div class="card"><h3>🔤 名字要“破译”</h3><p class="muted small">发现物的英文名用翻译机的规则：学过的词显示成英文，没学过的显示外星符号。比如 windy、sunny 出自 Annie 的第一封信，读完这一课之前，风车花的名字是看不懂的符号；读完以后再回去看，它就“破译”成了 <i>windy</i>。闲逛就成了回去读课文的理由。</p></div>
+      <div class="card"><h3>💬 Zib 只说学过的词</h3><p class="muted small">点到一个发现物，Zib 用一句学过的话介绍它，比如 <i>“It is windy!”</i>，点任何一个词都能再听。规则和开场动画一样：只用高频词、学过的单元词和学校本周的词，由 <code>check:content</code> 检查。中文旁白只在翻译机刚着陆的阶段出现。</p></div>
+      <div class="card"><h3>📔 图鉴连着说和写</h3><p class="muted small">每个发现物收进图鉴后有一页，可以按“讲给大人听”（SL.K.4 描述熟悉的事物），这一页也会变成广播站的写作素材：<i>“I saw a ___.”</i>（W.K.2）。不考试、不计分，找得多也不加星星，好奇心本身就是奖励。</p></div>
+    </div>
+
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card">
+        <h3>🧭 怎么走</h3>
+        <ol class="rules">
+          <li><div><b>点哪里走到哪里</b><span>在地面上点一下，小宇航员就沿着星球表面走过去，Zib 跟在后面，镜头跟在人身后上方（第三人称）。不用摇杆，平板和手机都好操作。</span></div></li>
+          <li><div><b>星球是圆的</b><span>一直往一个方向走，会绕一圈回到着陆区；天边能看到下一个地带冒出来，像《小王子》的星球。</span></div></li>
+          <li><div><b>随时回家</b><span>屏幕角上有“🏠 回着陆点”和“📔 图鉴”两个按钮；回到着陆区就又看到五个站点。</span></div></li>
+          <li><div><b>发现物会招手</b><span>走近的时候发现物会发光、发出声音，孩子不需要地图也能找到。</span></div></li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>🧑‍👩‍👧 和使命任务的关系</h3>
+        <ol class="rules">
+          <li><div><b>随时都能逛</b><span>发现物一开始就都在，不锁也不计时，逛多久都不扣分。</span></div></li>
+          <li><div><b>任务还在着陆区</b><span>五个站点只在着陆区。离开着陆区时，HUD 还会显示今天剩几项任务；Zib 偶尔会说 <i>“Let's go home!”</i>，但不会强迫孩子回去。</span></div></li>
+          <li><div><b>家长看得到</b><span>家长报告里显示今天找到了哪些新东西、逛了多久，只作参考，不做限制。</span></div></li>
+          <li><div><b>每一层换一批</b><span>到了第 2 层，地带和发现物跟着新单元换（比如五感单元：会尝味道的花、会发光的耳朵草），第 1 层的图鉴保留。</span></div></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3>🧊 3D 怎么做（three.js）</h3>
+      <ol class="rules">
+        <li><div><b>同一颗星球，同一个场景</b><span>着陆区和五个站点在小星球的“北极”。点“🧭 去逛逛”，镜头从地图的俯视角度降到小宇航员身后，地平线弯弯的；点“🏠 回着陆点”再升回地图视角。不切换页面，也不另开引擎。</span></div></li>
+        <li><div><b>沿着球面走</b><span>点地面时用射线算出点中了星球表面的哪一点，小宇航员沿着球面的最短路线走过去，身体始终和地面垂直；镜头平滑地跟在后面。星球半径小，走一两分钟就能绕一圈。</span></div></li>
+        <li><div><b>每个地带有自己的 3D 布景</b><span>风之原：会转的风车花、跟着人飘的小云；晴之丘：两个发光的太阳投下两道影子、冒泡的温泉；雨之林：往上飞的雨滴、带小闪电的半透明水母云；雪之谷：反着飘的雪花、发蓝光的冰晶；叶之坡：一走近就跳起来转圈的落叶堆。地面颜色和灯光跟着地带渐变。</span></div></li>
+        <li><div><b>发现物会招手</b><span>走到附近时发现物发光、轻轻晃、发出合成音效；点它，Zib 跑过来说一句话，屏幕上弹出发现卡片（文字和按钮用网页元素，方便点读）。</span></div></li>
+        <li><div><b>平板跑得动</b><span>低多边形模型、粒子数量有上限、离得远的地带不更新动画；系统开了“减少动态效果”时，走路改成直接移过去，粒子静止。</span></div></li>
+      </ol>
+    </div>
+
+    <pre style="margin-top:14px"><span class="c">// 写在章节文件里（content/story/ch01-weather-station.json）</span>
+"explore": {
+  "zones": [
+    { "id": "wind", "icon": "🌬️", "name": "风之原", "color": "#3a7bd5", "lon": 0 },   <span class="c">// lon：地带中心的经度</span>
+    { "id": "sun", "icon": "☀️", "name": "晴之丘", "color": "#f2b84b", "lon": 72 }
+  ],
+  "discoveries": [
+    { "id": "pinwheel-flowers", "zone": "wind", "emoji": "🌬️", "zh": "风车花",
+      "word": "windy",                          <span class="c">// 名字用哪个词：学过才显示英文</span>
+      "say": "It is windy!",                    <span class="c">// Zib 的话：只能用学过的词</span>
+      "note": "花瓣像风车一样，一直在风里转",       <span class="c">// 中文旁白：翻译机刚着陆时显示</span>
+      "from": { "lesson": "l1-weather" },       <span class="c">// 这个词在哪一课学；学校本周的词写 { "school": "…" }</span>
+      "at": [49, 346] }                         <span class="c">// 在星球上的位置（纬度、经度）</span>
+  ]
+}</pre>
+  </section>
+
   <!-- 4 角色 -->
   <section id="cast">
-    <div class="sec-head"><span class="num">5</span><div>
+    <div class="sec-head"><span class="num">6</span><div>
       <h2>角色</h2>
       <p class="sub">角色少而固定，每个都承担一个学习上的作用。</p>
     </div></div>
@@ -512,7 +633,7 @@
 
   <!-- 5 核心机制 -->
   <section id="mech">
-    <div class="sec-head"><span class="num">6</span><div>
+    <div class="sec-head"><span class="num">7</span><div>
       <h2>核心机制：翻译机和两把锁的门</h2>
       <p class="sub">左边可以拖动滑块试试：孩子学会的词越多，翻译机能翻出来的越多，给的帮助越少。点紫色的外星符号可以听这个词。</p>
     </div></div>
@@ -561,7 +682,7 @@
 
   <!-- 6 开场动画 -->
   <section id="opening">
-    <div class="sec-head"><span class="num">7</span><div>
+    <div class="sec-head"><span class="num">8</span><div>
       <h2>每一层的开场动画：用学过的内容介绍新地方</h2>
       <p class="sub">进入每一层之前，先播一段 40–60 秒的开场动画。动画里的英语全部来自孩子已经学过的内容；中途停下来问两三个复习问题；最后留一个还看不懂的新词，作为这一层的悬念。下面是进入第 2 层（集市）的样例，可以点播放试试。</p>
     </div></div>
@@ -656,7 +777,7 @@
 
   <!-- 7 第一章分镜 -->
   <section id="ch1">
-    <div class="sec-head"><span class="num">8</span><div>
+    <div class="sec-head"><span class="num">9</span><div>
       <h2>第一章分镜 · 气象站</h2>
       <p class="sub">用已经做好的 Seasons and Weather 单元做第一章，大约一周，从发射到打开第一层的门。</p>
     </div></div>
@@ -674,7 +795,7 @@
 
   <!-- 7 数据 -->
   <section id="data">
-    <div class="sec-head"><span class="num">9</span><div>
+    <div class="sec-head"><span class="num">10</span><div>
       <h2>数据：故事只引用单元，不复制内容</h2>
       <p class="sub">故事章节也放进内容库（<code>content/story/</code>），每章引用一个单元和它的课。单元本身照样可以不带故事单独使用，故事改了也不影响题目。</p>
     </div></div>
@@ -704,7 +825,7 @@
 
   <!-- 8 规则和落地 -->
   <section id="rules">
-    <div class="sec-head"><span class="num">10</span><div>
+    <div class="sec-head"><span class="num">11</span><div>
       <h2>规则和落地顺序</h2>
       <p class="sub">故事是为学习服务的，下面这些规则不能破。</p>
     </div></div>
@@ -728,6 +849,7 @@
           <li><div><b>翻译机组件</b><span>外星符号和英文之间的切换，词库来自进度记录。</span></div></li>
           <li><div><b>开场动画播放器</b><span>按 <code>opening.shots</code> 播放：镜头、逐词字幕、复习停顿、新词预告；校验字幕只用学过的词。</span></div></li>
           <li><div><b>着陆后的地面地图</b><span>按任务的 CCSS 领域把当天任务分到五个站点，着陆后替换太空界面；其他科目各开一个站点。</span></div></li>
+          <li><div><b>闲逛模式</b><span>小宇航员和 Zib 在整颗小星球上点哪儿走哪儿；五个天气地带和 8 个发现物；名字按翻译机破译；发现图鉴。</span></div></li>
           <li><div><b>第一章的消息和门</b><span>复用现有的题目、写作和出门条，加上门锁判断和试飞记录。</span></div></li>
           <li><div><b>三维场景</b><span>银色不锈钢飞船、机械臂接住助推器、着陆动画、解锁建筑。</span></div></li>
           <li><div><b>家长端改成地面控制中心</b><span>发射前 Go / No-go、确认打卡，报告里加上故事进度。</span></div></li>
@@ -1008,6 +1130,119 @@
     if (b) select(b.dataset.id);
   });
   select('RI');
+})();
+// ---------- 闲逛：星球上的新奇发现 ----------
+(() => {
+  const GLYPHS = '◇◆○●◐◑△▽▲▼□■◈◉◎⊕⊗⊙✦✧☉☽★☆⬡⬢';
+  const alien = (w) => [...w.toLowerCase()].map((c) => (/[a-z]/.test(c) ? GLYPHS[c.charCodeAt(0) - 97] : c)).join('');
+  const ZONES = [
+    { name: '风之原', a: 0 }, { name: '晴之丘', a: 72 }, { name: '雨之林', a: 144 }, { name: '雪之谷', a: 216 }, { name: '叶之坡', a: 288 },
+  ];
+  const L1 = 'What’s the Weather Like?（第 1 层单元 · RI.K.1）';
+  const FINDS = [
+    { id: 'pinwheel', emoji: '🌬️', zh: '风车花', word: 'windy', say: 'It is windy!', from: L1, note: '花瓣像风车一样，一直在风里转', a: -14, r: 33 },
+    { id: 'cloud', emoji: '☁️', zh: '会跟着你走的小云', word: 'cloudy', say: 'It is cloudy! It will go with you!', from: L1, note: '一小朵云跟在小宇航员头顶，走到哪儿跟到哪儿', a: 16, r: 44 },
+    { id: 'suns', emoji: '☀️', zh: '两个太阳', word: 'sunny', say: 'It is sunny! Look up! One, two!', from: L1, note: '天上同时挂着两个太阳', a: 62, r: 33 },
+    { id: 'spring', emoji: '♨️', zh: '冒泡的温泉', word: 'hot', say: 'It is hot! Hot, hot, hot!', from: '学校本周 · 天气（L.K.5）', note: '泡泡一个接一个冒出来，碰到就“噗”地变成小星星', a: 86, r: 44, learned: true },
+    { id: 'rain', emoji: '🌧️', zh: '往上下的雨', word: 'rainy', say: 'It is rainy! Look up!', from: L1, note: '雨滴从地面往天上飞', a: 130, r: 31 },
+    { id: 'storm', emoji: '⛈️', zh: '水母雷云', word: 'stormy', say: 'It is stormy!', from: L1, note: '一团像水母的云，触须一闪一闪是小闪电', a: 164, r: 33 },
+    { id: 'snow', emoji: '❄️', zh: '往上飘的雪', word: 'snow', say: 'Look! Snow! It is cold!', from: '学校本周 · 故事（生词）', note: '雪花从地上往天上飘，摸一下凉凉的', a: 226, r: 32, learned: true },
+    { id: 'leaves', emoji: '🍂', zh: '会跳舞的落叶', word: 'autumn', say: 'Autumn leaves! Look, they jump!', from: L1, note: '一堆落叶，走近就跳起来转圈', a: 278, r: 32 },
+  ];
+  const at = (a, r) => ({ x: 50 + r * Math.sin((a * Math.PI) / 180), y: 50 - r * Math.cos((a * Math.PI) / 180) });
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  const globe = document.getElementById('globe');
+  const card = document.getElementById('dcard');
+  const journal = document.getElementById('journal');
+  const me = document.getElementById('me');
+  const zib = document.getElementById('zibw');
+  let level = 0;
+  let current = 'pinwheel';
+  const got = new Set(['spring']);
+
+  for (const z of ZONES) {
+    const p = at(z.a, 44);
+    const el = document.createElement('span');
+    el.className = 'zone';
+    el.style.cssText = `left:${p.x}%;top:${p.y + (z.a === 0 ? -2 : 0)}%`;
+    el.textContent = z.name;
+    globe.appendChild(el);
+  }
+  for (const f of FINDS) {
+    const p = at(f.a, f.r);
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'find';
+    b.dataset.id = f.id;
+    b.style.cssText = `left:${p.x}%;top:${p.y}%`;
+    b.textContent = f.emoji;
+    b.setAttribute('aria-label', f.zh);
+    globe.appendChild(b);
+  }
+  const learned = (f) => f.learned || level === 1;
+  const say = (text) => {
+    try {
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 0.8;
+      speechSynthesis.speak(u);
+    } catch (e) {}
+  };
+
+  function render() {
+    const f = FINDS.find((x) => x.id === current);
+    const known = learned(f);
+    const name = known ? `${f.word.charAt(0).toUpperCase()}${f.word.slice(1)}` : `<span class="glyph">${esc(alien(f.word))}</span>`;
+    const line = known ? esc(f.say) : `Look! <span class="glyph" style="font-family:var(--font);letter-spacing:3px;color:#7b4fe0">${esc(alien(f.word))}</span>!`;
+    card.innerHTML = `
+      <div class="pic">${f.emoji}</div>
+      <div class="name">${name} <span class="zh">· ${esc(f.zh)}</span></div>
+      <div class="zibline">👽 ${line}${level === 0 ? `<small>中文旁白：${esc(f.note)}</small>` : ''}</div>
+      <div class="why">${known ? '✅ 这个词学过了，名字已经破译' : '🔒 还没学这个词，名字是外星符号'} · 词：<b>${esc(f.word)}</b> · 出自 ${esc(f.from)}</div>
+      <div class="acts">
+        <button type="button" data-act="hear">🔊 听 Zib 说</button>
+        <button type="button" class="${got.has(f.id) ? '' : 'primary'}" data-act="keep">${got.has(f.id) ? '📔 已在图鉴里' : '📔 收进图鉴'}</button>
+        <button type="button" data-act="tell">🗣️ 讲给大人听</button>
+      </div>`;
+    globe.querySelectorAll('.find').forEach((b) => {
+      b.classList.toggle('on', b.dataset.id === current);
+      b.classList.toggle('got', got.has(b.dataset.id));
+    });
+    journal.innerHTML = FINDS.map((x) => `<div class="${got.has(x.id) ? 'got' : ''}"><b>${x.emoji}</b>${got.has(x.id) ? (learned(x) ? esc(x.word) : esc(alien(x.word))) : '？'}</div>`).join('');
+  }
+  function walkTo(f) {
+    const p = at(f.a, f.r);
+    const back = at(f.a, f.r - 9);
+    me.style.left = `${back.x}%`;
+    me.style.top = `${back.y}%`;
+    zib.style.left = `${back.x + 5}%`;
+    zib.style.top = `${back.y + 3}%`;
+  }
+  globe.addEventListener('click', (e) => {
+    const b = e.target.closest('.find');
+    if (!b) return;
+    current = b.dataset.id;
+    walkTo(FINDS.find((x) => x.id === current));
+    render();
+  });
+  card.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-act]');
+    if (!b) return;
+    const f = FINDS.find((x) => x.id === current);
+    if (b.dataset.act === 'hear') say(learned(f) ? f.say : `Look! ${f.word}!`);
+    if (b.dataset.act === 'keep') { got.add(f.id); render(); }
+    if (b.dataset.act === 'tell') b.textContent = '🗣️ 已提醒：讲给大人听';
+  });
+  document.querySelector('.xlate').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-x]');
+    if (!b) return;
+    level = Number(b.dataset.x);
+    document.querySelectorAll('.xlate [data-x]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    render();
+  });
+  walkTo(FINDS[0]);
+  render();
 })();
 </script>
 </body>
