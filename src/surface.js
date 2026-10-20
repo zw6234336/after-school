@@ -4,10 +4,11 @@
 // 和一样的事件（'select'、'rocket'）。
 // 章节里写了 explore 的话，还可以离开着陆区闲逛（startExplore / goHome），
 // 事件：'explore' { on }、'discover' { id }、'zone' { zone }、'walk'。
+// 章节里写了 door 的话，地图上还有一扇通往下一层的门（setDoor / openDoor），点它发 'door' 事件。
 
 import * as THREE from 'three';
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
-import { BixStage, STATION_SPOTS, BIX_RADIUS } from './bix.js';
+import { BixStage, STATION_SPOTS, BIX_RADIUS, DOOR_SPOT, DOOR_SHOTS } from './bix.js';
 import { BixExplore } from './explore.js';
 import { makeLabel } from './scene.js';
 import { foundDiscoveries } from './story.js';
@@ -22,6 +23,7 @@ const v2 = new THREE.Vector3();
 const q1 = new THREE.Quaternion();
 const q0 = new THREE.Quaternion();
 const easeInOut = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export class BixSurface extends EventTarget {
   /**
@@ -68,6 +70,7 @@ export class BixSurface extends EventTarget {
     this.launching = null;
 
     this.setHomework(homework);
+    if (chapter?.door) this.#buildDoorLabel(chapter.door);
     this.#computeGoal(host.camera.aspect);
     if (fresh) {
       this.camPos.copy(this.goalPos);
@@ -178,6 +181,45 @@ export class BixSurface extends EventTarget {
     this.stage.wiggle();
   }
 
+  // ---------- 通往下一层的门 ----------
+
+  /** 门的名牌和锁灯跟着进度变（DoorHud 每次刷新 HUD 时调用） */
+  setDoor(status) {
+    if (!this.doorLabel) return;
+    const { label } = this.doorLabel;
+    const read = status.lessons.length - status.left.length;
+    label.count.textContent = status.opened ? '已打开' : status.ready ? `${status.decode ? '🔓' : '🔒'}${status.comprehend ? '🔓' : '🔒'}` : `${read}/${status.lessons.length} 课`;
+    label.bar.style.width = `${status.ready ? 100 : (read / status.lessons.length) * 100}%`;
+    label.el.classList.toggle('done', status.opened);
+    label.el.classList.toggle('ready', status.ready && !status.opened);
+    this.stage.setDoor(status);
+  }
+
+  /** 开门：镜头先拍门打开，再退一点拍气象塔升起来，名牌先收起来；返回 Promise */
+  async openDoor() {
+    if (this.exploring) this.goHome();
+    const labels = this.labelRenderer.domElement.style;
+    labels.visibility = 'hidden';
+    this.focused = { shot: DOOR_SHOTS.door };
+    await wait(REDUCED_MOTION ? 0 : 1200);
+    await this.stage.swingOpen();
+    this.focused = { shot: DOOR_SHOTS.tower };
+    await wait(REDUCED_MOTION ? 0 : 900);
+    await this.stage.raiseTower();
+    this.focused = null;
+    labels.visibility = '';
+  }
+
+  #buildDoorLabel(door) {
+    const label = makeLabel({ icon: '🚪', name: `第 ${door.to.layer} 层`, color: '#b388ff' }, () => this.dispatchEvent(new CustomEvent('door')));
+    label.el.classList.add('station-label', 'door-label');
+    label.el.setAttribute('aria-label', `通往第 ${door.to.layer} 层的门`);
+    const labelObj = new CSS2DObject(label.el);
+    labelObj.position.copy(this.stage.site.worldToLocal(this.stage.stationWorld(DOOR_SPOT, DOOR_SPOT.labelY, v1)));
+    this.stage.site.add(labelObj);
+    this.doorLabel = { label, labelObj };
+  }
+
   // ---------- 闲逛 ----------
 
   get canExplore() {
@@ -192,6 +234,7 @@ export class BixSurface extends EventTarget {
     this.exploring = true;
     this.explore.enter();
     for (const st of this.stations) st.labelObj.visible = false;
+    if (this.doorLabel) this.doorLabel.labelObj.visible = false;
     this.#fly();
     this.dispatchEvent(new CustomEvent('explore', { detail: { on: true } }));
   }
@@ -205,6 +248,7 @@ export class BixSurface extends EventTarget {
     this.#fly(() => {
       this.explore.arriveHome();
       for (const st of this.stations) st.labelObj.visible = true;
+      if (this.doorLabel) this.doorLabel.labelObj.visible = true;
     });
     this.dispatchEvent(new CustomEvent('explore', { detail: { on: false } }));
   }
@@ -289,7 +333,11 @@ export class BixSurface extends EventTarget {
     }
     const site = this.stage.site;
     this.goalUp.set(0, 1, 0);
-    if (this.focused) {
+    if (this.focused?.shot) {
+      // 开门的镜头：直接给出相机和看的点（相对着陆点）
+      site.localToWorld(this.goalPos.set(...this.focused.shot.pos));
+      site.localToWorld(this.goalLook.set(...this.focused.shot.look));
+    } else if (this.focused) {
       const { spot } = this.focused;
       this.stage.stationWorld(spot, 0.9, this.goalLook);
       this.goalPos.copy(site.localToWorld(v1.set(spot.x * 0.75, 0, spot.z + 6.4)));
@@ -386,6 +434,7 @@ export class BixSurface extends EventTarget {
       }
       const hit = this.#pick();
       if (hit === 'ship') this.dispatchEvent(new CustomEvent('rocket'));
+      else if (hit === 'door') this.dispatchEvent(new CustomEvent('door'));
       else if (hit === 'astronaut') this.startExplore();
       else if (hit) this.#select(hit);
     };
@@ -400,7 +449,7 @@ export class BixSurface extends EventTarget {
   }
 
   /**
-   * 点中了哪个站点（返回科目 id），点中飞船返回 'ship'，点中小宇航员返回 'astronaut'。
+   * 点中了哪个站点（返回科目 id），点中飞船返回 'ship'，点中门返回 'door'，点中小宇航员返回 'astronaut'。
    * 闲逛时（hover 为 true 才会问）返回点中的发现物或地面，只用来改鼠标样式
    */
   #pick(hover = false) {
@@ -408,10 +457,12 @@ export class BixSurface extends EventTarget {
     this.raycaster.setFromCamera(this.pointer, this.host.camera);
     if (this.exploring) return hover && this.explore.hover(this.raycaster) === 'discovery' ? 'discovery' : null;
     if (this.explore?.hover(this.raycaster) === 'astronaut') return 'astronaut';
-    const hits = this.raycaster.intersectObjects([this.stage.ship, ...this.stations.map((s) => s.hit)], true);
-    const first = hits[0]?.object;
+    const targets = [this.stage.ship, ...this.stations.map((s) => s.hit)];
+    if (this.doorLabel) targets.push(this.stage.door.hit);
+    const first = this.raycaster.intersectObjects(targets, true)[0]?.object;
     if (!first) return null;
     if (first.userData.subjectId) return first.userData.subjectId;
+    if (first.userData.door) return 'door';
     return 'ship';
   }
 

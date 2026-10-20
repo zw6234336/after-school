@@ -119,6 +119,34 @@ content/
 - 地带的 `id` 决定三维布景和飘着的东西（`wind`、`sun`、`rain`、`snow`、`leaves`），发现物的 `id` 决定它的模型，见 `src/explore.js`；没有专门模型的发现物显示成一簇发光的水晶。
 - `from.lesson` 的发现物，`word` 必须出现在那一课的文章或生词里；`say` 只能用高频词、`opening.vocab` 里的词、更浅的层学过的词、那一课文章里的词和它自己的名字。发现物之间至少隔开 3.5（星球半径是 14）。`npm run check:content` 会检查这些。
 
+### 通往下一层的门
+
+章节里还可以写 `door`：单元的课全部读完以后，孩子在门口“试飞”，两把锁都打开就能下到下一层。
+
+```jsonc
+"door": {
+  "to": { "layer": 2, "name": "集市", "icon": "🛍️" },          // 通往第几层（解锁卡片上预告）
+  "decode": {                                                // 🔤 解码锁：看词选图
+    "standard": "RF.K.3",
+    "need": 8,                                               // 认出几个就开
+    "words": ["thermometer", "mittens", "snowmen", …]        // 单元词墙或生词表里带图的词，图不能重复
+  },
+  "comprehend": {                                            // 🔍 理解锁：读 Zib 的短信，答对并找到证据
+    "standard": "RI.K.1",
+    "vocab": ["bix", "earth"],                               // 短信里额外允许的词
+    "tickets": [                                             // 每次试飞换一封
+      { "id": "zib-weather", "title": "A Letter from Zib", "text": "Dear friend, …",
+        "questions": [{ "q": "What does Zib wear in the snow?", "options": ["mittens", "sunscreen", "rain boots"], "a": "mittens", "evidence": "I wear mittens" }] }
+    ]
+  },
+  "unlock": { "id": "weather-tower", "emoji": "🌦️", "name": "Bix 气象塔", "note": "解锁卡片上的说明" }
+}
+```
+
+- 解码锁的图来自词墙（`wordWall`）的 `emoji`，词墙里没有的再看文章生词表；词出自哪一课也从这里找，用来告诉孩子“再读一读哪一课”。
+- 短信的题目写法和普通阅读题一样，但每道题都要有 `evidence`。短信正文只能用高频词、这个单元文章里的词、前面几层学过的词和 `comprehend.vocab` 里的词。
+- `unlock.id` 决定开门以后升起来的三维建筑，见 `src/bix.js`；第 1 层是 `weather-tower`。
+
 ## 检查内容
 
 ```bash
@@ -133,6 +161,7 @@ npm run check:content
 - 任务 id 在所有单元里不重复
 - 生词表里的词在文章里出现过
 - 故事章节：开场字幕只用学过的词；闲逛的发现物名字能破译、Zib 的话只用学过的词、位置不在着陆区里
+- 门：解码锁的词都有图、图不重复，`need` 不超过词数；理解锁的短信能正常加载（答案在选项里、证据句找得到）、每道题都有证据句、正文只用学过的词
 
 还会列出每篇文章的词数和每课的题目数，方便控制长度。
 

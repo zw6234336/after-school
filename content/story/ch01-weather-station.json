@@ -31,6 +31,53 @@
       { "id": "pumpkin-patch", "zone": "leaves", "emoji": "🎃", "zh": "会长大的南瓜", "word": "pumpkins", "say": "Look! Pumpkins! A big one and a little one!", "note": "一片南瓜田，走近南瓜就一个个鼓起来", "from": { "lesson": "l5-autumn" }, "at": [30, 300] }
     ]
   },
+  "door": {
+    "to": { "layer": 2, "name": "集市", "icon": "🛍️" },
+    "decode": {
+      "standard": "RF.K.3",
+      "need": 8,
+      "words": ["thermometer", "mittens", "snowmen", "blossoms", "rainbow", "seedlings", "sunscreen", "fireworks", "pumpkins", "grasshopper"]
+    },
+    "comprehend": {
+      "standard": "RI.K.1",
+      "vocab": ["bix", "earth"],
+      "tickets": [
+        {
+          "id": "zib-weather",
+          "title": "A Letter from Zib",
+          "text": "Dear friend, On Bix, it is cold in the snow. I wear mittens. It is hot on the hill. I wear sunscreen. I like the rain best. After the rain, I see a rainbow in the sky! Your friend, Zib",
+          "questions": [
+            { "q": "What does Zib wear in the snow?", "options": ["mittens", "sunscreen", "rain boots"], "a": "mittens", "evidence": "I wear mittens" },
+            { "q": "What does Zib see after the rain?", "options": ["a rainbow", "fireworks", "pumpkins"], "a": "a rainbow", "evidence": "I see a rainbow" }
+          ]
+        },
+        {
+          "id": "zib-seasons",
+          "title": "Zib Learns About Earth",
+          "text": "Dear friend, Thank you for your letter about the seasons on Earth. In winter, it is cold, and people wear mittens. In spring, the snow and ice thaw, and farmers plant seeds. In summer, it is hot. In autumn, the leaves fall from the trees. I want to see Earth! Your friend, Zib",
+          "questions": [
+            { "q": "In spring, what do farmers do?", "options": ["They plant seeds.", "They pick pumpkins.", "They wear sunscreen."], "a": "They plant seeds.", "evidence": "farmers plant seeds" },
+            { "q": "When do the leaves fall from the trees?", "options": ["in autumn", "in spring", "in summer"], "a": "in autumn", "evidence": "the leaves fall from the trees" }
+          ]
+        },
+        {
+          "id": "zib-thermometer",
+          "title": "Zib's Thermometer",
+          "text": "Dear friend, Look! I have a thermometer now. When it is cold, the liquid stays down low. When it is hot, the liquid goes up high. Today the liquid is up high, so I will swim in the pool to keep cool. Your friend, Zib",
+          "questions": [
+            { "q": "When it is cold, where is the liquid?", "options": ["down low", "up high"], "a": "down low", "evidence": "the liquid stays down low" },
+            { "q": "What will Zib do today?", "options": ["swim in the pool", "build snowmen", "rake leaves"], "a": "swim in the pool", "evidence": "I will swim in the pool" }
+          ]
+        }
+      ]
+    },
+    "unlock": {
+      "id": "weather-tower",
+      "emoji": "🌦️",
+      "name": "Bix 气象塔",
+      "note": "Bix 星没有四季。Zib 照你讲的地球四季，做了这座气象塔：四个圆环是四个季节，顶上的球按冬、春、夏、秋一圈一圈换颜色。"
+    }
+  },
   "opening": {
     "title": "第 1 层 · 着陆区",
     "subtitle": "🌦️ 气象站 · Seasons and Weather",

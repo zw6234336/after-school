@@ -18,6 +18,7 @@ import {
   standardsReportHtml,
 } from './lesson.js';
 import { ExploreHud } from './explore-hud.js';
+import { DoorHud } from './door.js';
 
 const SHEET_MQ = window.matchMedia('(max-width: 760px), (orientation: portrait) and (max-width: 1100px)');
 const COARSE = window.matchMedia('(pointer: coarse)').matches;
@@ -80,6 +81,13 @@ export class UI {
       date: () => this.homework.date,
     });
     this.exploreHud.setView(scene);
+    this.door = new DoorHud({
+      toast: (text) => this.toast(text),
+      openModal: (html) => this.#openModal(html),
+      closePanel: () => this.closePanel(),
+      date: () => this.homework.date,
+    });
+    this.door.setView(scene);
     progress.addEventListener('change', (e) => this.#onProgress(e.detail));
 
     this.panel.addEventListener('click', (e) => this.#onPanelClick(e));
@@ -115,6 +123,7 @@ export class UI {
     this.scene = view;
     this.#listen(view);
     this.exploreHud.setView(view);
+    this.door.setView(view);
     this.setHomework(homework);
   }
 
@@ -885,6 +894,7 @@ export class UI {
   #onKey(e) {
     if (e.key === 'Escape') {
       if (!this.modal.hidden) this.#closeModal();
+      else if (this.door.close()) return;
       else if (this.exploreHud.closeCard()) return;
       else if (this.view && this.view.type !== 'subject') this.#show({ type: 'subject', subject: this.view.subject });
       else if (this.view) this.closePanel();
@@ -1024,7 +1034,7 @@ export class UI {
     let action = '';
     if (chapter) {
       title = `已降落 Bix 星 · ${chapter.title}`;
-      detail = '主界面是这一层的地面地图，作业按站点分组。回到航行期会清空着陆和燃料天数，做题记录不受影响';
+      detail = '主界面是这一层的地面地图，作业按站点分组。回到航行期会清空着陆、燃料天数、图鉴和门锁，做题记录不受影响';
       action = '<button class="btn small ghost" data-action="story-reset">回到航行期</button>';
     } else if (voyage) {
       title = `航行中 · 燃料 ${voyage.days}/${voyage.target} 天`;
@@ -1040,6 +1050,7 @@ export class UI {
       <ul class="report-list">
         <li><div><b>${esc(title)}</b><small>${esc(detail)}</small></div>${action}</li>
         ${chapter ? this.exploreHud.reportHtml() : ''}
+        ${chapter ? this.door.reportHtml() : ''}
       </ul>`;
   }
 
@@ -1080,7 +1091,7 @@ export class UI {
         this.exploreHud.onModalAction(btn);
         break;
       case 'story-reset':
-        if (window.confirm('确定回到航行期吗？已经降落的进度和燃料天数都会清空，做题记录不受影响。')) {
+        if (window.confirm('确定回到航行期吗？已经降落的进度、燃料天数、图鉴和门锁都会清空，做题记录不受影响。')) {
           this.story.reset();
           this.openReport();
         }
@@ -1161,6 +1172,7 @@ export class UI {
     this.fuelFill.style.width = `${pct}%`;
     const left = p.remainingTasks();
     this.exploreHud?.render();
+    this.door?.render();
     if (this.#onSurface()) {
       this.fuelLabel.textContent = '📡 信号塔能量';
       this.hint.textContent = this.exploreHud?.exploring

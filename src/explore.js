@@ -7,7 +7,7 @@
 import * as THREE from 'three';
 import { CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-import { BIX_RADIUS as R, STATION_SPOTS, EXTRA_SPOTS } from './bix.js';
+import { BIX_RADIUS as R, STATION_SPOTS, EXTRA_SPOTS, DOOR_SPOT, TOWER_SPOT } from './bix.js';
 import { dotTexture } from './particles.js';
 import { sound } from './audio.js';
 
@@ -1081,9 +1081,10 @@ export class BixExplore extends EventTarget {
 
     stage.setGroundTexture(groundTexture(this.zones));
 
-    // 着陆区里不能穿过去的东西：飞船和站点
+    // 着陆区里不能穿过去的东西：飞船、站点、通往下一层的门和旁边的气象塔
     this.obstacles = [{ dir: siteDir(0, 0), r: 0.75 }];
-    for (const s of [...Object.values(STATION_SPOTS), ...EXTRA_SPOTS]) this.obstacles.push({ dir: siteDir(s.x, s.z), r: 0.85 });
+    for (const s of [...Object.values(STATION_SPOTS), ...EXTRA_SPOTS, TOWER_SPOT]) this.obstacles.push({ dir: siteDir(s.x, s.z), r: 0.85 });
+    this.obstacles.push({ dir: siteDir(DOOR_SPOT.x, DOOR_SPOT.z), r: 1.2 });
 
     this.#buildDiscoveries(chapter.explore.discoveries || []);
     this.#buildDecor();

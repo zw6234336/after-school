@@ -59,7 +59,7 @@ export function addFuelDay(date) {
   save(state);
 }
 
-/** 回到航行期：着陆、燃料和发现图鉴都清空（家长报告里的“回到航行期”，开发时用 ?story=reset）。读过哪些课来自做题记录，保留 */
+/** 回到航行期：着陆、燃料、发现图鉴和门锁都清空（家长报告里的“回到航行期”，开发时用 ?story=reset）。读过哪些课来自做题记录，保留 */
 export function resetStory() {
   const { learned } = load();
   save(learned ? { learned } : {});
@@ -128,4 +128,36 @@ function exploreDayOf(state, date) {
   if (!Array.isArray(day.found)) day.found = [];
   if (!(day.seconds >= 0)) day.seconds = 0;
   return day;
+}
+
+// ---------- 通往下一层的门：两把锁和试飞记录 ----------
+
+/** 这一章的门：两把锁开了没有、开门动画播过没有、试飞记录（最早的在前） */
+export function doorState(chapterId) {
+  const d = load().door?.[chapterId] || {};
+  return { decode: !!d.decode, comprehend: !!d.comprehend, opened: !!d.opened, flights: Array.isArray(d.flights) ? d.flights : [] };
+}
+
+/** 记下一次试飞；锁打开以后就一直开着。返回新的状态 */
+export function addFlight(chapterId, flight) {
+  const state = load();
+  const d = state.door?.[chapterId] || {};
+  state.door = {
+    ...state.door,
+    [chapterId]: {
+      ...d,
+      decode: !!d.decode || !!flight.decode?.open,
+      comprehend: !!d.comprehend || !!flight.comprehend?.open,
+      flights: [...(Array.isArray(d.flights) ? d.flights : []), flight].slice(-20),
+    },
+  };
+  save(state);
+  return doorState(chapterId);
+}
+
+/** 开门动画播过了：以后直接显示开着的门和升起来的建筑 */
+export function setDoorOpened(chapterId) {
+  const state = load();
+  state.door = { ...state.door, [chapterId]: { ...state.door?.[chapterId], opened: true } };
+  save(state);
 }

@@ -2795,3 +2795,291 @@ body.cinematic .toast {
     pointer-events: none;
   }
 }
+
+/* ---------- 通往下一层的门：门口、试飞 ---------- */
+
+.door-label.ready {
+  animation: door-ready 2.4s ease-in-out infinite;
+}
+
+@keyframes door-ready {
+  50% {
+    box-shadow: 0 0 30px color-mix(in srgb, var(--c) 75%, transparent);
+  }
+}
+
+.door-card {
+  --c: #b388ff;
+  width: min(620px, 100%);
+  border-color: color-mix(in srgb, var(--c) 40%, transparent);
+}
+
+.door-card header {
+  margin-bottom: 14px;
+}
+
+.door-card header p {
+  line-height: 1.5;
+}
+
+.locks {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.lock {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+}
+
+.lock.open {
+  border-color: color-mix(in srgb, var(--ok) 55%, transparent);
+  background: rgba(74, 222, 128, 0.08);
+}
+
+.lock-icon {
+  font-size: 28px;
+}
+
+.lock > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.lock b,
+.lock small {
+  display: block;
+}
+
+.lock small {
+  margin-top: 4px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.lock-state {
+  flex: none;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-faint);
+}
+
+.lock.open .lock-state {
+  color: var(--ok);
+}
+
+.door-lessons {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 6px;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+.door-lessons li.read {
+  color: var(--ink);
+}
+
+.door-unlocked {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255, 209, 102, 0.08);
+  border: 1px solid rgba(255, 209, 102, 0.4);
+}
+
+.door-unlocked > span {
+  font-size: 44px;
+}
+
+.door-unlocked small {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.flight-log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.flight-log li {
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.flight-log b,
+.flight-log span,
+.flight-log small {
+  display: block;
+}
+
+.flight-log span {
+  margin-top: 3px;
+  font-size: 14px;
+}
+
+.flight-log small {
+  margin-top: 3px;
+  color: var(--ink-faint);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.flight-log li.ok b {
+  color: var(--ok);
+}
+
+/* 解码锁：只显示单词，不朗读；从三张图里选 */
+.decode-word {
+  margin: 18px 0 6px;
+  text-align: center;
+  font-family: 'Andika', 'Comic Sans MS', 'Trebuchet MS', var(--font);
+  font-size: clamp(40px, 9vw, 60px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.decode-tip {
+  margin: 0 0 14px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+.decode-tip small {
+  display: block;
+  color: var(--ink-faint);
+}
+
+.decode-pics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.decode-pic {
+  aspect-ratio: 1;
+  border-radius: 20px;
+  border: 2px solid var(--line);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: clamp(44px, 12vw, 64px);
+  cursor: pointer;
+  transition: transform 0.12s, border-color 0.15s, background 0.15s;
+}
+
+.decode-pic:hover:not(:disabled) {
+  border-color: var(--c);
+}
+
+.decode-pic:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.decode-pic.right {
+  border-color: var(--ok);
+  background: rgba(74, 222, 128, 0.18);
+}
+
+.decode-pic.wrong {
+  border-color: rgba(255, 107, 139, 0.6);
+  background: rgba(255, 107, 139, 0.12);
+  opacity: 0.6;
+}
+
+/* 一把锁做完 */
+.lock-result {
+  margin: 8px 0 18px;
+  padding: 20px 16px;
+  text-align: center;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+}
+
+.lock-result.open {
+  border-color: color-mix(in srgb, var(--ok) 55%, transparent);
+  background: rgba(74, 222, 128, 0.08);
+}
+
+.lr-icon {
+  font-size: 64px;
+  animation: pop 0.5s both;
+}
+
+.lock-result h3 {
+  margin: 8px 0 4px;
+  font-size: 22px;
+}
+
+.lock-result p {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.lr-data {
+  margin: 14px 0;
+  padding: 12px 14px;
+  text-align: left;
+  border-radius: 14px;
+  background: rgba(124, 200, 255, 0.08);
+  border: 1px solid rgba(124, 200, 255, 0.3);
+}
+
+.lr-data b,
+.lr-data small {
+  display: block;
+}
+
+.lr-data small {
+  margin-top: 4px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.door-note {
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.door-unlock .unlock-note {
+  max-width: 28em;
+  margin-inline: auto;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.next-layer {
+  margin: 16px auto 0;
+  padding: 10px 14px;
+  max-width: 24em;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed var(--line);
+  color: var(--ink-soft);
+}
+
+.door-card.still {
+  animation: none;
+}
