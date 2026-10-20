@@ -1,0 +1,1116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>英语星球页面设计</title>
+<style>
+  :root {
+    --bg: #f6f5fb;
+    --surface: #ffffff;
+    --surface-2: #f0eef8;
+    --ink: #1d1b2f;
+    --ink-soft: #5d5a78;
+    --ink-faint: #8a87a6;
+    --line: #e2dfef;
+    --accent: #6a4cff;
+    --gold: #e09b00;
+    --gold-soft: #fff3cf;
+    --ok: #15924d;
+    --ok-soft: #dcf7e7;
+    --bad: #d83a55;
+    --bad-soft: #ffe1e7;
+    --RF: #e08a00; --RL: #d6407f; --RI: #0b8fc4; --L: #7b4fe0; --W: #1f9a55; --SL: #b58900;
+    --radius: 18px;
+    --font: 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --hand: 'Chalkboard SE', 'Comic Sans MS', 'Marker Felt', 'Segoe Print', cursive;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0c0f24; --surface: #151a38; --surface-2: #1c2248; --ink: #eef0ff; --ink-soft: #b0b6dd; --ink-faint: #7c83b3;
+      --line: #2a3163; --accent: #a594ff; --gold: #ffd166; --gold-soft: #3a3214; --ok: #4ade80; --ok-soft: #12351f;
+      --bad: #ff6b8b; --bad-soft: #3d1621;
+      --RF: #ffb84d; --RL: #ff7eb6; --RI: #4cc9f0; --L: #b388ff; --W: #80ed99; --SL: #ffd166;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0c0f24; --surface: #151a38; --surface-2: #1c2248; --ink: #eef0ff; --ink-soft: #b0b6dd; --ink-faint: #7c83b3;
+    --line: #2a3163; --accent: #a594ff; --gold: #ffd166; --gold-soft: #3a3214; --ok: #4ade80; --ok-soft: #12351f;
+    --bad: #ff6b8b; --bad-soft: #3d1621;
+    --RF: #ffb84d; --RL: #ff7eb6; --RI: #4cc9f0; --L: #b388ff; --W: #80ed99; --SL: #ffd166;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); }
+  button { font: inherit; color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  section { padding: 56px 0 8px; scroll-margin-top: 8px; }
+  h2 { font-size: 26px; line-height: 1.3; margin: 0 0 4px; letter-spacing: 0.02em; }
+  h3 { font-size: 17px; margin: 0 0 6px; }
+  .sub { margin: 0; color: var(--ink-soft); max-width: 46em; }
+  .muted { color: var(--ink-soft); }
+  .small { font-size: 13.5px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; min-width: 0; }
+  .grid { display: grid; gap: 14px; }
+  .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 860px) { .g3, .g2 { grid-template-columns: minmax(0, 1fr); } }
+  .pill { display: inline-flex; align-items: center; gap: 3px; padding: 1px 9px; border-radius: 99px; font-size: 12px; font-weight: 800; border: 1px solid currentColor; white-space: nowrap; font-family: var(--mono); }
+  .s-RF { color: var(--RF); } .s-RL { color: var(--RL); } .s-RI { color: var(--RI); } .s-L { color: var(--L); } .s-W { color: var(--W); } .s-SL { color: var(--SL); }
+
+  .sec-head { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 22px; }
+  .sec-head .num { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; background: var(--accent); color: #fff; font-weight: 800; font-size: 17px; margin-top: 2px; }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; overflow: hidden; color: #eef0ff; background: radial-gradient(1200px 500px at 85% -10%, #3b2a8a 0%, transparent 60%), radial-gradient(800px 400px at 0% 110%, #7a1f5c 0%, transparent 55%), #070a1f; }
+  .hero::before, .screen::before { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(1.5px 1.5px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 70% 20%, #fff, transparent), radial-gradient(1.2px 1.2px at 40% 80%, #fff, transparent), radial-gradient(1px 1px at 85% 65%, #fff, transparent), radial-gradient(1.5px 1.5px at 10% 70%, #fff, transparent), radial-gradient(1px 1px at 55% 50%, #fff, transparent); background-size: 260px 260px; opacity: 0.6; }
+  .hero .wrap { position: relative; padding-top: 56px; padding-bottom: 44px; }
+  .kicker { font-size: 13px; letter-spacing: 0.12em; color: #b9b2ff; font-weight: 700; }
+  .hero h1 { font-size: clamp(32px, 5.4vw, 52px); margin: 8px 0 14px; line-height: 1.15; background: linear-gradient(90deg, #ffe08a, #ff9fd2 50%, #8fd8ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero .lead { font-size: 17px; color: #d4d8ff; margin: 0 0 24px; max-width: 40em; }
+  .toc { display: flex; flex-wrap: wrap; gap: 8px; }
+  .toc a { padding: 6px 12px; border-radius: 99px; font-size: 13px; font-weight: 700; color: #eef0ff; text-decoration: none; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18); }
+  .toc a:hover { background: rgba(255, 255, 255, 0.16); }
+  .toc a b { color: #ffd166; margin-right: 4px; }
+
+  /* ---------- 底层逻辑 ---------- */
+  .shift { display: grid; gap: 8px; align-content: start; }
+  .shift .en { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--ink-faint); text-transform: uppercase; }
+  .shift .to { margin-top: 4px; padding-top: 10px; border-top: 1px dashed var(--line); font-size: 14px; }
+  .shift .to b { color: var(--accent); }
+
+  .rope { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(48px, 1fr) minmax(150px, auto); align-items: center; gap: 0 14px; margin-top: 14px; }
+  .rope-labels { display: grid; }
+  .rg { height: 28px; display: flex; align-items: center; font-size: 13px; font-weight: 800; }
+  .rs { height: 30px; display: flex; align-items: center; gap: 6px; font-size: 14px; white-space: nowrap; overflow: hidden; }
+  .rs em { font-style: normal; font-size: 12px; color: var(--ink-faint); overflow: hidden; text-overflow: ellipsis; }
+  .rs .pill { margin-left: auto; font-size: 11px; }
+  .rsp { height: 14px; }
+  .rope-svg { width: 100%; height: 310px; display: block; }
+  .rope-svg path { fill: none; stroke-width: 3; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  .rope-out { padding: 14px 16px; border-radius: 16px; background: var(--surface-2); text-align: center; }
+  .rope-out b { display: block; font-size: 20px; }
+  .rope-out small { display: block; color: var(--ink-soft); font-size: 12px; }
+  .rope-out .formula { margin: 10px 0 4px; font-weight: 800; font-size: 14px; color: var(--accent); }
+  @media (max-width: 680px) {
+    .rope { grid-template-columns: minmax(0, 1fr) 44px; }
+    .rope-out { grid-column: 1 / -1; margin-top: 12px; }
+    .rs em { display: none; }
+  }
+
+  .gr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+  .gr div { padding: 10px; border-radius: 14px; background: var(--surface-2); font-size: 13px; }
+  .gr div b { display: block; font-size: 15px; }
+  .gr div span { color: var(--ink-soft); }
+  .gr-bar { display: flex; justify-content: space-between; margin-top: 10px; padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 700; color: #fff; background: linear-gradient(90deg, #6a4cff, #d6407f 55%, #e09b00); }
+  @media (max-width: 520px) { .gr { grid-template-columns: minmax(0, 1fr); } }
+
+  .spiral { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 6px; }
+  .spiral li { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 10px; align-items: baseline; font-size: 14px; }
+  .spiral li > b { font-family: var(--mono); font-size: 13px; color: var(--W); }
+  .spiral li i { display: block; color: var(--ink-soft); font-size: 13px; }
+  .finding { margin-top: 14px; padding: 12px 14px; border-radius: 14px; background: var(--gold-soft); font-size: 14px; }
+
+  /* ---------- 页面 + 注释 ---------- */
+  .screen-row { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+  @media (max-width: 900px) { .screen-row { grid-template-columns: minmax(0, 1fr); gap: 22px; } }
+  .notes { position: sticky; top: 16px; }
+  @media (max-width: 900px) { .notes { position: static; } }
+  .notes .covers { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 16px; }
+  .notes ol { list-style: none; counter-reset: n; padding: 0; margin: 0; display: grid; gap: 14px; }
+  .notes li { counter-increment: n; display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 10px; }
+  .notes li::before { content: counter(n); width: 22px; height: 22px; margin-top: 2px; border-radius: 50%; display: grid; place-items: center; background: #ffd166; color: #1b1440; font-size: 12px; font-weight: 800; }
+  .notes li b { display: block; }
+  .notes li p { margin: 2px 0 0; font-size: 14px; color: var(--ink-soft); }
+
+  /* ---------- 设备里的 App（和真实页面一样始终是深色太空风格） ---------- */
+  .device {
+    --a-ink: #f5f7ff; --a-soft: #b9c1e8; --a-faint: #7f89b8; --a-line: rgba(160, 175, 255, 0.2);
+    --a-gold: #ffd166; --a-ok: #4ade80; --a-bad: #ff6b8b; --a-info: #7cc8ff;
+    --RF: #ffb84d; --RL: #ff7eb6; --RI: #4cc9f0; --L: #b388ff; --W: #80ed99; --SL: #ffd166;
+    --c: #ffd166;
+    position: relative; padding: 10px; border-radius: 30px; background: #141833; color: var(--a-ink); color-scheme: dark;
+    box-shadow: 0 0 0 1px #2b3060, 0 24px 60px rgba(20, 16, 60, 0.22);
+  }
+  .screen { position: relative; border-radius: 22px; padding: 14px; background: radial-gradient(600px 300px at 95% -10%, #2b2370, transparent 60%), radial-gradient(500px 320px at -10% 110%, #561a48, transparent 60%), #070a1f; }
+  .screen > * { position: relative; }
+  .appbar { display: flex; align-items: center; gap: 8px; padding: 0 4px 12px; font-size: 12px; color: var(--a-soft); }
+  .appbar b { color: var(--a-ink); }
+  .appbar .tag { padding: 2px 9px; border-radius: 99px; border: 1px solid var(--a-line); }
+  .appbar .stars { margin-left: auto; font-weight: 800; color: var(--a-gold); }
+  .apanel { display: grid; gap: 14px; padding: 16px; border-radius: 20px; background: rgba(14, 19, 48, 0.92); border: 1px solid color-mix(in srgb, var(--c) 42%, transparent); box-shadow: 0 0 40px color-mix(in srgb, var(--c) 16%, transparent); }
+  .apanel > *, .apanel .row > * { min-width: 0; }
+  .eyebrow { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--a-faint); font-weight: 700; }
+  .ah { font-size: 20px; font-weight: 800; line-height: 1.3; }
+  .ah .zh { font-size: 14px; font-weight: 600; color: var(--a-soft); margin-left: 6px; }
+  .ph { display: flex; align-items: center; gap: 10px; }
+  .ph .pico { width: 40px; height: 40px; flex: none; display: grid; place-items: center; font-size: 21px; border-radius: 12px; background: color-mix(in srgb, var(--c) 20%, transparent); }
+  .ph > div { min-width: 0; }
+  .ph b { display: block; font-size: 16px; line-height: 1.3; }
+  .ph small { color: var(--a-soft); font-size: 12px; }
+  .ph .chip { margin-left: auto; }
+  .chip { display: inline-flex; align-items: center; gap: 3px; padding: 1px 8px; border-radius: 99px; font-size: 11px; font-weight: 800; border: 1px solid currentColor; white-space: nowrap; font-family: var(--mono); }
+  .ican { padding: 8px 12px; border-radius: 12px; background: rgba(255, 209, 102, 0.08); border: 1px dashed rgba(255, 209, 102, 0.4); font-size: 13px; }
+  .ican i { color: var(--a-ink); }
+  .ican span { display: block; font-size: 12px; color: var(--a-soft); }
+  .box { position: relative; padding: 11px 12px; border-radius: 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--a-line); }
+  .lbl { font-size: 12px; font-weight: 700; color: var(--a-soft); margin-bottom: 6px; }
+  .phases { display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px; }
+  .phases span { padding: 2px 10px; border-radius: 99px; border: 1px solid var(--a-line); color: var(--a-faint); }
+  .phases .ok { color: var(--a-ok); border-color: color-mix(in srgb, var(--a-ok) 50%, transparent); }
+  .phases .now { color: #1b1440; background: var(--a-gold); border-color: transparent; font-weight: 800; }
+  .abtn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 9px 14px; border-radius: 12px; border: 1px solid var(--a-line); background: rgba(255, 255, 255, 0.06); color: var(--a-ink); font-weight: 700; font-size: 14px; cursor: pointer; transition: transform 0.12s, background 0.15s; }
+  .abtn:hover { background: rgba(255, 255, 255, 0.12); }
+  .abtn:active { transform: scale(0.96); }
+  .abtn.gold { border: none; color: #1b1440; background: linear-gradient(180deg, #ffe08a, #ffb84d); box-shadow: 0 3px 0 #c77d16; }
+  .abtn.ok { border-color: var(--a-ok); background: rgba(74, 222, 128, 0.16); color: #c8ffdc; }
+  .abtn.bad { border-color: var(--a-bad); background: rgba(255, 107, 139, 0.14); }
+  .abtn.small { padding: 5px 10px; font-size: 12px; border-radius: 10px; }
+
+  /* 设计标注：页面上的金色数字对应右边的说明 */
+  [data-mk] { position: relative; }
+  [data-mk]::after { content: attr(data-mk); position: absolute; z-index: 3; top: -10px; right: -9px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: #ffd166; color: #1b1440; font: 800 12px/1 var(--font); box-shadow: 0 0 0 3px #070a1f; pointer-events: none; }
+
+  /* 1 单元主页 */
+  .eq .big { font-size: 17px; font-weight: 800; line-height: 1.35; }
+  .eq .zh { font-size: 13px; color: var(--a-soft); }
+  .texts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+  .tcard { display: grid; gap: 4px; align-content: start; padding: 10px; border-radius: 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--a-line); }
+  .tcard b { font-size: 13.5px; line-height: 1.3; }
+  .tcard small { font-size: 11.5px; color: var(--a-soft); }
+  .tcard .chip { justify-self: start; }
+  .tcard.today { border-color: var(--RL); box-shadow: inset 0 0 0 1px var(--RL); }
+  .wall { display: grid; gap: 8px; }
+  .wall .row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .wall .row > small { width: 100%; font-size: 11px; color: var(--a-faint); }
+  .wcard { padding: 4px 10px; border-radius: 10px; font-size: 13px; font-weight: 700; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--a-line); }
+  .wcard.lit { background: rgba(255, 209, 102, 0.14); border-color: rgba(255, 209, 102, 0.55); }
+  .week { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+  .day { display: grid; gap: 3px; justify-items: center; text-align: center; padding: 8px 4px; border-radius: 12px; background: rgba(255, 255, 255, 0.04); font-size: 11.5px; line-height: 1.3; }
+  .day b { font-size: 11px; color: var(--a-faint); }
+  .day i { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--a-line); }
+  .day.done i { background: var(--a-ok); border-color: var(--a-ok); }
+  .day.now { background: rgba(255, 126, 182, 0.14); outline: 1px solid var(--RL); }
+  .day.now i { border-color: var(--RL); box-shadow: 0 0 10px var(--RL); }
+  .day code { font-family: var(--mono); font-size: 10px; color: var(--a-soft); }
+  .utask { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; background: linear-gradient(90deg, rgba(128, 237, 153, 0.12), rgba(255, 209, 102, 0.1)); }
+  .utask b { font-size: 15px; }
+  .utask span.d { width: 100%; font-size: 12.5px; color: var(--a-soft); }
+
+  /* 2 学习路径 */
+  .rmeter { display: grid; gap: 8px; }
+  .rm { display: grid; grid-template-columns: 6.5em minmax(0, 1fr) 6.2em; align-items: center; gap: 10px; font-size: 13px; }
+  .rm .bar { height: 10px; border-radius: 99px; background: rgba(255, 255, 255, 0.1); overflow: hidden; }
+  .rm .bar i { display: block; height: 100%; border-radius: inherit; }
+  .rm em { font-style: normal; font-size: 12px; color: var(--a-soft); text-align: right; }
+  .path { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .path li { position: relative; display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 7px 10px 7px 6px; border-radius: 14px; }
+  .path li:not(:last-child)::before { content: ''; position: absolute; left: 22px; top: 36px; bottom: -10px; width: 2px; background: var(--a-line); }
+  .path .node { position: relative; z-index: 1; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 16px; background: #1a2050; border: 2px solid var(--sc, var(--a-line)); }
+  .path li.done .node::after { content: '✓'; position: absolute; right: -4px; bottom: -4px; width: 15px; height: 15px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; font-weight: 900; background: var(--a-ok); color: #06301a; }
+  .path li > div { min-width: 0; }
+  .path b { display: block; font-size: 14px; line-height: 1.3; }
+  .path small { display: block; font-size: 11.5px; color: var(--a-soft); line-height: 1.4; }
+  .path small code { font-family: var(--mono); color: var(--sc); }
+  .path em { font-style: normal; font-size: 12px; color: var(--a-faint); font-variant-numeric: tabular-nums; }
+  .path li.done { opacity: 0.62; }
+  .path li.now { background: rgba(255, 126, 182, 0.1); outline: 1px solid color-mix(in srgb, var(--RL) 60%, transparent); }
+  .path li.now .node { box-shadow: 0 0 14px var(--RL); }
+  .path li.now .phases { margin-top: 6px; }
+  .path li.ticket .node { border-style: dashed; }
+
+  /* 3 拼读 */
+  .pic-row { display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .pic { font-size: 54px; line-height: 1; width: 84px; height: 84px; display: grid; place-items: center; border-radius: 22px; background: rgba(255, 255, 255, 0.06); }
+  .sboxes { display: flex; justify-content: center; gap: 10px; padding-top: 4px; }
+  .sb { position: relative; width: 70px; height: 76px; border-radius: 16px; border: 2px solid var(--a-line); background: rgba(255, 255, 255, 0.06); color: var(--a-ink); font: 800 34px/1 var(--font); cursor: pointer; transition: transform 0.15s, background 0.2s, border-color 0.2s; }
+  .sb::before { content: ''; position: absolute; left: 50%; bottom: -16px; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: var(--a-faint); }
+  .sb.v { border-color: color-mix(in srgb, var(--RI) 70%, transparent); color: var(--RI); }
+  .sb.lit { background: rgba(255, 209, 102, 0.2); border-color: var(--a-gold); transform: translateY(-3px); }
+  .sb.lit::before { background: var(--a-gold); }
+  .sb.flash { animation: flash 0.7s ease; }
+  .sb .snd { position: absolute; left: 50%; top: -24px; transform: translateX(-50%); font-size: 12px; font-weight: 700; color: var(--a-gold); opacity: 0; transition: opacity 0.2s; white-space: nowrap; }
+  .sb.hear .snd { opacity: 1; }
+  @keyframes flash { 0%, 100% { box-shadow: none; } 30% { box-shadow: 0 0 0 4px var(--a-gold), 0 0 24px var(--a-gold); } }
+  .blend { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; margin-top: 12px; }
+  .blend .track { position: relative; height: 8px; border-radius: 99px; background: linear-gradient(90deg, rgba(255, 209, 102, 0.15), rgba(255, 209, 102, 0.6)); }
+  .blend .track::after { content: '▶'; position: absolute; right: -6px; top: 50%; transform: translateY(-50%); font-size: 12px; color: var(--a-gold); }
+  .blend .track i { position: absolute; top: 50%; left: 0; width: 18px; height: 18px; margin-top: -9px; border-radius: 50%; background: var(--a-gold); box-shadow: 0 0 12px var(--a-gold); transition: left 0.9s linear; }
+  .blend .track.go i { left: calc(100% - 18px); }
+  .blend .out { min-width: 3.2em; font-size: 22px; font-weight: 800; color: var(--a-gold); }
+  .chain { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .chain > span:not(.arr) { width: 100%; font-size: 12px; color: var(--a-soft); }
+  .chain .abtn.on { border-color: var(--a-gold); background: rgba(255, 209, 102, 0.16); }
+  .chain .arr { color: var(--a-faint); }
+  .decod { font-size: 24px; font-weight: 800; letter-spacing: 0.02em; text-align: center; padding-top: 22px; }
+  .heart { position: relative; text-decoration: underline wavy rgba(255, 126, 182, 0.7); text-underline-offset: 6px; }
+  .heart::before { content: '♥'; position: absolute; left: 50%; top: -15px; transform: translateX(-50%); font-size: 13px; color: var(--RL); }
+  .decod small { display: block; margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--a-soft); letter-spacing: 0; }
+
+  /* 4 精读 */
+  .reads { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 14px; background: rgba(255, 255, 255, 0.06); }
+  .reads button { padding: 7px 4px; border: none; border-radius: 10px; background: transparent; color: var(--a-soft); font-size: 12.5px; font-weight: 700; line-height: 1.3; cursor: pointer; }
+  .reads button b { display: block; font-size: 13.5px; color: var(--a-ink); }
+  .reads button[aria-selected="true"] { background: #ff7eb6; color: #3a0b25; }
+  .reads button[aria-selected="true"] b { color: #2a0619; }
+  .passage { padding: 14px; border-radius: 16px; background: #fbf7ee; color: #2a2340; font-size: 16.5px; line-height: 1.9; }
+  .passage h4 { margin: 0 0 4px; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+  .passage h4 .abtn { margin-left: auto; color: #2a2340; border-color: #d8cfb8; background: #fff; }
+  .sent { border-radius: 6px; padding: 1px 2px; transition: background 0.2s; }
+  .passage[data-read="2"] .sent { cursor: pointer; }
+  .passage[data-read="2"] .sent:hover { background: rgba(255, 126, 182, 0.18); }
+  .sent.reading { background: rgba(124, 200, 255, 0.35); }
+  .sent.zone { background: rgba(255, 209, 102, 0.25); }
+  .sent.evidence { background: #ffd166; box-shadow: 0 0 0 2px #e09b00; }
+  .sent.nope { animation: nope 0.4s; }
+  @keyframes nope { 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+  .vw { text-decoration: underline dotted #b39a5e; text-underline-offset: 4px; }
+  .passage[data-read="3"] .vw { background: rgba(179, 136, 255, 0.28); border-radius: 4px; text-decoration-color: #7b4fe0; }
+  .kw { transition: background 0.2s; }
+  .kw.hot { background: #ffd166; border-radius: 4px; }
+  .qcard { display: grid; gap: 10px; }
+  .qcard .q { font-size: 16px; font-weight: 800; }
+  .qcard .opts { display: flex; flex-wrap: wrap; gap: 6px; }
+  .qcard .status { font-size: 13px; padding: 8px 10px; border-radius: 10px; background: rgba(255, 255, 255, 0.05); }
+  .qcard .status.go { background: rgba(255, 209, 102, 0.14); color: #ffe7a6; }
+  .qcard .status.win { background: rgba(74, 222, 128, 0.15); color: #c8ffdc; }
+  .qcard .status.miss { background: rgba(255, 107, 139, 0.14); color: #ffd0da; }
+  .frame { font-size: 14.5px; line-height: 1.7; }
+  .frame u { text-decoration: none; padding: 0 6px; border-radius: 6px; background: rgba(255, 209, 102, 0.16); color: #ffe7a6; }
+  .hints { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .hints > span { font-size: 12px; color: var(--a-soft); margin-right: 2px; }
+  .hints .abtn.used { opacity: 0.55; text-decoration: line-through; }
+
+  /* 5 朗读 */
+  .stepper { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .step { position: relative; display: grid; justify-items: center; gap: 2px; padding: 8px 4px; border-radius: 14px; text-align: center; font-size: 12px; color: var(--a-soft); background: rgba(255, 255, 255, 0.04); }
+  .step b { font-size: 13px; color: var(--a-ink); }
+  .step .ic { font-size: 20px; }
+  .step.ok { background: rgba(74, 222, 128, 0.1); }
+  .step.ok b::after { content: ' ✓'; color: var(--a-ok); }
+  .step.now { background: rgba(255, 209, 102, 0.16); outline: 1px solid var(--a-gold); }
+  .fluent { font-size: 16px; line-height: 2; }
+  .fluent .w { padding: 1px 2px; border-radius: 5px; cursor: pointer; }
+  .fluent .w:hover { background: rgba(43, 35, 64, 0.08); }
+  .fluent .w.err { color: #c0213e; text-decoration: line-through 2px #d83a55; background: #ffe1e7; }
+  .fluent-foot { display: flex; justify-content: space-between; gap: 8px; margin-top: 6px; font-size: 12px; color: #6b6280; }
+  .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .metric { padding: 10px 8px; border-radius: 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--a-line); text-align: center; }
+  .metric small { display: block; font-size: 11.5px; color: var(--a-soft); }
+  .metric b { display: block; font-size: 22px; line-height: 1.25; font-variant-numeric: tabular-nums; }
+  .metric em { display: block; font-style: normal; font-size: 11px; color: var(--a-faint); }
+  .metric.main { border-color: var(--a-ok); background: rgba(74, 222, 128, 0.08); }
+  .bands { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin-top: 8px; font-size: 11px; text-align: center; }
+  .bands span { padding: 4px 2px; border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: var(--a-faint); line-height: 1.35; }
+  .bands span.on { color: #06301a; background: var(--a-ok); font-weight: 800; }
+  .bands span.on.mid { background: var(--a-gold); color: #3a2a00; }
+  .bands span.on.low { background: var(--a-bad); color: #3d0614; }
+  .faces { letter-spacing: 1px; color: var(--a-gold); }
+
+  /* 6 写作 */
+  .dtw { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .dtw > div { display: grid; gap: 4px; justify-items: center; padding: 8px 6px; border-radius: 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--a-line); font-size: 12px; text-align: center; }
+  .dtw b { font-size: 13px; }
+  .dtw .ok b::after { content: ' ✓'; color: var(--a-ok); }
+  .dtw .now { border-color: var(--a-gold); background: rgba(255, 209, 102, 0.1); }
+  .drawing { width: 100%; height: 46px; border-radius: 8px; background: #fbf7ee; display: grid; place-items: center; font-size: 22px; letter-spacing: 4px; }
+  .wave { display: flex; align-items: center; gap: 2px; height: 46px; }
+  .wave i { width: 3px; border-radius: 2px; background: var(--SL); }
+  .pen { font-size: 30px; height: 46px; display: grid; place-items: center; }
+  .bank { display: flex; flex-wrap: wrap; gap: 5px; }
+  .bank button { padding: 3px 9px; border-radius: 9px; border: 1px solid rgba(255, 209, 102, 0.45); background: rgba(255, 209, 102, 0.1); color: var(--a-ink); font-size: 13px; font-weight: 700; cursor: pointer; }
+  .paper { padding: 10px 12px 12px; border-radius: 14px; background: #fbf7ee; color: #2a2340; }
+  .paper small { font-size: 12px; color: #6b6280; }
+  .paper input { width: 100%; margin-top: 4px; padding: 6px 4px 2px; border: none; border-bottom: 2px dashed #c9b98f; background: repeating-linear-gradient(transparent 0 30px, rgba(106, 76, 255, 0.12) 30px 31px); color: #2a2340; font: 700 22px/1.4 var(--hand); outline: none; }
+  .paper input:focus { border-bottom-color: #6a4cff; }
+  .checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; font-size: 13.5px; }
+  .checks li { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+  .checks li::before { content: '○'; display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; font-size: 12px; color: var(--a-faint); border: 1px solid var(--a-line); }
+  .checks li.ok::before { content: '✓'; color: #06301a; background: var(--a-ok); border-color: var(--a-ok); font-weight: 900; }
+  .checks li.star::before { content: '☆'; color: var(--a-gold); border-color: rgba(255, 209, 102, 0.5); }
+  .checks li.star.ok::before { content: '★'; color: #3a2a00; background: var(--a-gold); border-color: var(--a-gold); }
+  .checks li .chip { font-size: 10px; }
+  .spell { font-size: 13px; }
+  .spell b { font-family: var(--hand); font-size: 15px; color: var(--a-gold); }
+
+  /* 7 家长报告 */
+  .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .strand { padding: 10px 12px; border-radius: 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--a-line); }
+  .strand small { display: block; font-size: 12px; color: var(--a-soft); }
+  .strand b { font-size: 16px; }
+  .lv { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 11.5px; font-weight: 800; }
+  .lv4 { background: #7cc8ff; color: #062a40; } .lv3 { background: #4ade80; color: #06301a; } .lv2 { background: #ffd166; color: #3a2a00; } .lv1 { background: #ff6b8b; color: #3d0614; } .lv0 { background: rgba(255, 255, 255, 0.1); color: var(--a-soft); }
+  .stds { display: grid; gap: 2px; }
+  .std { display: grid; grid-template-columns: 4.8em minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 6px 4px; border-bottom: 1px solid var(--a-line); font-size: 13px; }
+  .std:last-child { border-bottom: none; }
+  .std code { font-family: var(--mono); font-size: 11.5px; font-weight: 800; }
+  .std span small { display: block; font-size: 11px; color: var(--a-faint); }
+  .std .help { color: var(--a-gold); }
+  .pips { display: inline-flex; gap: 3px; margin-right: 6px; vertical-align: middle; }
+  .pips i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.14); }
+  .evid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 8px; }
+  .sample { padding: 10px 12px; border-radius: 12px; background: #fbf7ee; color: #2a2340; }
+  .sample p { margin: 0; font: 700 18px/1.4 var(--hand); }
+  .sample small { display: block; margin-top: 4px; font-size: 11.5px; color: #6b6280; }
+  .audio { display: grid; gap: 6px; align-content: center; padding: 10px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--a-line); font-size: 12px; color: var(--a-soft); }
+  .audio .wave { height: 26px; }
+  .next { background: rgba(255, 209, 102, 0.1); border-color: rgba(255, 209, 102, 0.45); }
+  .next b { color: #ffe7a6; }
+  .next p { margin: 4px 0 0; font-size: 13px; color: var(--a-soft); }
+  @media (max-width: 460px) { .evid, .two { grid-template-columns: minmax(0, 1fr); } .sb { width: 62px; height: 68px; } .metric b { font-size: 19px; } }
+
+  /* ---------- 落地 ---------- */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 13px; color: var(--ink-faint); font-weight: 600; white-space: nowrap; }
+  td code { font-family: var(--mono); font-size: 12.5px; background: var(--surface-2); padding: 1px 5px; border-radius: 5px; }
+  .table-card { padding: 4px 6px; overflow-x: auto; }
+  @media (max-width: 640px) {
+    .table-card thead { display: none; }
+    .table-card tr { display: grid; gap: 2px; padding: 10px 6px; border-bottom: 1px solid var(--line); }
+    .table-card tr:last-child { border-bottom: none; }
+    .table-card td { padding: 0; border: none; }
+    .table-card td:first-child { font-weight: 800; }
+    .table-card td:last-child { color: var(--ink-soft); }
+    td code { overflow-wrap: anywhere; }
+  }
+  .order { counter-reset: o; list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .order li { counter-increment: o; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; font-size: 14.5px; }
+  .order li::before { content: counter(o); width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; background: var(--surface-2); font-weight: 800; font-size: 13px; }
+  .order li span { color: var(--ink-soft); }
+  footer { padding: 48px 0 56px; color: var(--ink-faint); font-size: 13px; text-align: center; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">使命星球 · 英语页面设计稿 · Kindergarten</div>
+    <h1>按 Common Core 的底层逻辑<br />设计英语星球</h1>
+    <p class="lead">CCSS 只规定每个年级结束时要会什么，至于怎么教，美国课堂有一套固定做法：单元围绕一个核心问题展开；每天“认字解码”和“语言理解”两股能力一起练；每项任务先示范、再一起做、最后放手；成绩按每条标准评，不给总分。下面 7 个页面就是把这套做法搬进使命星球。</p>
+    <nav class="toc" aria-label="目录">
+      <a href="#logic"><b>0</b>底层逻辑</a>
+      <a href="#p1"><b>1</b>单元主页</a>
+      <a href="#p2"><b>2</b>今天的路径</a>
+      <a href="#p3"><b>3</b>拼读</a>
+      <a href="#p4"><b>4</b>精读</a>
+      <a href="#p5"><b>5</b>朗读</a>
+      <a href="#p6"><b>6</b>写作</a>
+      <a href="#p7"><b>7</b>家长报告</a>
+      <a href="#build"><b>→</b>落地顺序</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- 0 底层逻辑 -->
+  <section id="logic">
+    <div class="sec-head"><span class="num">0</span><div>
+      <h2>底层逻辑：先想清楚，再画页面</h2>
+      <p class="sub">CCSS 对 ELA 提出了三个“转变”（Key Shifts），课堂上又有两条大家公认的规律。后面每个页面的设计都能追溯到这里。</p>
+    </div></div>
+
+    <div class="grid g3">
+      <div class="card shift">
+        <div class="en">Shift 1 · Complex text &amp; academic language</div>
+        <h3>📖 经常读有难度的文本，积累学术词汇</h3>
+        <p class="muted small" style="margin:0">不只读为识字专门编的句子，而是读完整、有内容的文本，同一批词在单元里反复出现。</p>
+        <div class="to">→ <b>页面 1、4</b>：每个单元配一组同主题的书，词墙分“主题词”和“描述词”，学会的词会点亮。</div>
+      </div>
+      <div class="card shift">
+        <div class="en">Shift 2 · Evidence from text</div>
+        <h3>🔍 读、写、说都用文本证据</h3>
+        <p class="muted small" style="margin:0">问题只能从文章里找答案。回答完还要能指出“文章哪里这样说”。</p>
+        <div class="to">→ <b>页面 4、6</b>：答对后再点出证据句；用句子框架说 “The story says…”；写作用的是阅读里的词。</div>
+      </div>
+      <div class="card shift">
+        <div class="en">Shift 3 · Knowledge through nonfiction</div>
+        <h3>🔬 用说明文积累知识</h3>
+        <p class="muted small" style="margin:0">K–5 年级文学和信息类文本大约各占一半。同一个主题接连读几篇，背景知识会越积越多，读得也越来越轻松。</p>
+        <div class="to">→ <b>页面 1</b>：一周内先读故事、再读说明文、最后读儿歌，周五比较两篇（RI.K.9）。</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3>🪢 阅读之绳：读懂 = 认字解码 × 语言理解</h3>
+      <p class="muted small" style="margin:0;max-width:52em">Scarborough 的“阅读之绳”和“阅读简单观点”（Simple View of Reading）是现在美国各州阅读教学（Science of Reading）的共同底层。CCSS 的 RF 标准对应下面三股，RL / RI / L 对应上面五股，SL 和 W 是把理解说出来、写出来。两组相乘，哪一组是 0，结果都是 0，所以<b>每天两组都要练</b>。</p>
+      <div class="rope">
+        <div class="rope-labels">
+          <div class="rg" style="color:var(--RL)">💬 语言理解 · Language comprehension</div>
+          <div class="rs">背景知识 <em>Background knowledge</em><span class="pill s-RI">单元文本组</span></div>
+          <div class="rs">词汇 <em>Vocabulary</em><span class="pill s-L">L.4–6</span></div>
+          <div class="rs">句子结构 <em>Language structures</em><span class="pill s-L">L.1</span></div>
+          <div class="rs">推理 <em>Verbal reasoning</em><span class="pill s-RL">RL/RI.1–3</span></div>
+          <div class="rs">文体知识 <em>Literacy knowledge</em><span class="pill s-RL">RL.5 · RF.1</span></div>
+          <div class="rsp"></div>
+          <div class="rg" style="color:var(--RF)">🔤 认字解码 · Word recognition</div>
+          <div class="rs">音素意识 <em>Phonological awareness</em><span class="pill s-RF">RF.2</span></div>
+          <div class="rs">解码拼读 <em>Decoding</em><span class="pill s-RF">RF.3</span></div>
+          <div class="rs">高频词 <em>Sight recognition</em><span class="pill s-RF">RF.3c</span></div>
+        </div>
+        <svg class="rope-svg" viewBox="0 0 100 310" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 43 C 45 43, 55 150, 100 150" style="stroke:var(--RI)" />
+          <path d="M0 73 C 45 73, 55 152, 100 152" style="stroke:var(--L)" />
+          <path d="M0 103 C 45 103, 55 154, 100 154" style="stroke:var(--L);opacity:.7" />
+          <path d="M0 133 C 45 133, 55 156, 100 156" style="stroke:var(--RL)" />
+          <path d="M0 163 C 45 163, 55 158, 100 158" style="stroke:var(--RL);opacity:.7" />
+          <path d="M0 235 C 45 235, 55 160, 100 160" style="stroke:var(--RF)" />
+          <path d="M0 265 C 45 265, 55 162, 100 162" style="stroke:var(--RF);opacity:.8" />
+          <path d="M0 295 C 45 295, 55 164, 100 164" style="stroke:var(--RF);opacity:.6" />
+        </svg>
+        <div class="rope-out">
+          <b>熟练阅读</b><small>Skilled reading</small>
+          <div class="formula">理解 = 解码 × 语言理解</div>
+          <small>上面这一组越练越熟，下面这一组越练越自动</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card">
+        <h3>🧑‍🏫 每项任务：我做 → 我们做 → 你做</h3>
+        <p class="muted small" style="margin:0">美国课堂叫 Gradual Release of Responsibility：老师先示范，再带着做，最后放手。使命任务也按这个节奏来，不直接把一道题扔给孩子。</p>
+        <div class="gr">
+          <div><b>👂 I do</b><span>App 示范：听 n‑e‑t 三个音怎么连成 net</span></div>
+          <div><b>👫 We do</b><span>一起做：跟着高亮一格一格读，错了马上提示</span></div>
+          <div><b>🙋 You do</b><span>自己做：换一个词独立拼，结果记进报告</span></div>
+        </div>
+        <div class="gr-bar"><span>App / 家长示范</span><span>孩子独立完成</span></div>
+      </div>
+      <div class="card">
+        <h3>🌀 同一条标准，年级螺旋上升</h3>
+        <p class="muted small" style="margin:0">CCSS 的每条标准从 K 到 5 年级逐年加码。以观点写作 W.?.1 为例：</p>
+        <ol class="spiral">
+          <li><b>W.K.1</b><div>用画、口述、书写说出观点<i>My favorite season is spring.</i></div></li>
+          <li><b>W.1.1</b><div>+ 一个理由 + 结尾<i>…because I like the flowers.</i></div></li>
+          <li><b>W.2.1</b><div>+ 多个理由，用 because / and / also 连接，有结论句</div></li>
+          <li><b>W.3.1</b><div>+ 开头引入、理由分组，用 since / for example 等连接，有结论</div></li>
+        </ol>
+        <div class="finding">⚠️ <b>对照发现：</b>现在普通档的写作要求“必须用 because、至少 8 个词”，这其实是一年级 W.1.1 的要求，K 年级的 W.K.1 只要求说出观点。建议普通档只要求说出观点，because 放到挑战档（见页面 6）。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1 单元主页 -->
+  <section id="p1">
+    <div class="sec-head"><span class="num">1</span><div>
+      <h2>单元主页 · Unit hub</h2>
+      <p class="sub">点开英语星球后看到的第一个页面，说清三件事：这个单元在学什么、为什么学、今天学到哪了。</p>
+    </div></div>
+    <div class="screen-row">
+      <div class="device"><div class="screen" style="--c:#80ed99">
+        <div class="appbar"><span>🪐</span><b>小宇航员</b><span class="tag">⭐ 普通</span><span class="stars">⭐ 26</span></div>
+        <div class="apanel" style="--c:#80ed99">
+          <div>
+            <div class="eyebrow">Unit 3 · Week 2 of 3</div>
+            <div class="ah">🌦️ Seasons &amp; Weather<span class="zh">四季与天气</span></div>
+          </div>
+          <div class="box eq" data-mk="1">
+            <div class="lbl">❓ Big question · 核心问题</div>
+            <div class="big">How does the weather change from season to season?</div>
+            <div class="zh">每个季节的天气有什么不同？</div>
+          </div>
+          <div data-mk="2">
+            <div class="lbl">📚 Text set · 本单元的书</div>
+            <div class="texts">
+              <div class="tcard today"><span class="chip s-RL">📚 Story</span><b>What's Your Favorite Season?</b><small>故事 · 今天读</small></div>
+              <div class="tcard"><span class="chip s-RI">🔬 Info</span><b>Four Seasons</b><small>说明文 · 周四</small></div>
+              <div class="tcard"><span class="chip s-RL">🎵 Poem</span><b>The Weather Song</b><small>儿歌 · 周五</small></div>
+            </div>
+          </div>
+          <div class="wall" data-mk="3">
+            <div class="lbl" style="margin:0">🧱 Word wall · 词墙（学会的会亮）</div>
+            <div class="row"><small>主题词</small><span class="wcard lit">🌷 spring</span><span class="wcard lit">☀️ summer</span><span class="wcard lit">🍂 fall</span><span class="wcard lit">❄️ winter</span></div>
+            <div class="row"><small>描述词</small><span class="wcard lit">🔥 hot</span><span class="wcard lit">🧊 cold</span><span class="wcard">🌤️ warm</span><span class="wcard">🍃 cool</span><span class="wcard">❤️ favorite</span></div>
+          </div>
+          <div data-mk="4">
+            <div class="lbl">🗓️ This week · 本周</div>
+            <div class="week">
+              <div class="day done"><b>Mon</b><i></i>四季分类<code>L.K.5a</code></div>
+              <div class="day done"><b>Tue</b><i></i>冷热反义<code>L.K.5b</code></div>
+              <div class="day now"><b>Wed</b><i></i>故事找证据<code>RL.K.1</code></div>
+              <div class="day"><b>Thu</b><i></i>说明文主题<code>RI.K.2</code></div>
+              <div class="day"><b>Fri</b><i></i>比较两篇<code>RI.K.9</code></div>
+            </div>
+          </div>
+          <div class="box utask" data-mk="5">
+            <span>🎤</span><b>Unit task: My Season Book</b><span class="chip s-W">W.K.1</span><span class="chip s-SL">SL.K.4</span>
+            <span class="d">单元任务 · 第 3 周：画一页、讲一段、写一句，做成自己的季节小书</span>
+          </div>
+          <button class="abtn gold">▶ 开始今天的学习（约 25 分钟）</button>
+        </div>
+      </div></div>
+      <div class="notes">
+        <div class="covers"><span class="pill s-RL">RL</span><span class="pill s-RI">RI.K.9</span><span class="pill s-L">L.K.6</span><span class="pill s-W">W.K.1</span><span class="pill s-SL">SL.K.4</span></div>
+        <ol>
+          <li><div><b>核心问题（Essential Question）</b><p>美国课堂的单元从一个问题出发，单元里的读和写都在回答它。孩子知道为什么要学，家长也知道这几周在学什么。</p></div></li>
+          <li><div><b>文本组（Text set）</b><p>同一主题配故事、说明文和儿歌，文学和信息类大约各占一半，对应第三个转变“用说明文积累知识”。读第二篇时已经有了背景知识，理解起来更快。</p></div></li>
+          <li><div><b>词墙（Word wall）</b><p>主题词和描述词分开放。一个词在阅读、拼句、写作里都答对过才会点亮，对应 L.K.6“用上学过的词”。</p></div></li>
+          <li><div><b>一周的顺序</b><p>每天一个重点标准，按“词 → 句 → 故事 → 说明文 → 比较”的顺序往上走，周五做 RI.K.9“比较同一主题的两篇文本”。</p></div></li>
+          <li><div><b>单元任务（Performance task）</b><p>单元结束时做一个读、写、说综合的作品，保存在家长报告的“学习证据”里，比分数更直观。</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 学习路径 -->
+  <section id="p2">
+    <div class="sec-head"><span class="num">2</span><div>
+      <h2>今天的路径 · Daily literacy block</h2>
+      <p class="sub">把今天的任务排成美国课堂“读写时段”的固定顺序：先热身和拼读，再阅读，最后说和写，结尾做一道出门条。</p>
+    </div></div>
+    <div class="screen-row">
+      <div class="device"><div class="screen">
+        <div class="appbar"><span>🪐</span><b>小宇航员</b><span class="tag">Wed · Day 8</span><span class="stars">⭐ 26</span></div>
+        <div class="apanel">
+          <div>
+            <div class="eyebrow">Unit 3 · Seasons &amp; Weather</div>
+            <div class="ah">🧭 Today's path<span class="zh">今天的学习路径 · 约 25 分钟</span></div>
+          </div>
+          <div class="box rmeter" data-mk="1">
+            <div class="rm"><span>🔤 认字解码</span><div class="bar"><i style="width:67%;background:var(--RF)"></i></div><em>2 / 3 完成</em></div>
+            <div class="rm"><span>💬 语言理解</span><div class="bar"><i style="width:12%;background:var(--RL)"></i></div><em>0 / 4 进行中</em></div>
+          </div>
+          <ol class="path" data-mk="2">
+            <li class="done" style="--sc:var(--RF)"><span class="node">🔤</span><div><b>Warm-up: Rhyme time</b><small>押韵热身 · <code>RF.K.2a</code></small></div><em>2′</em></li>
+            <li class="done" style="--sc:var(--RF)"><span class="node">🔤</span><div><b>Phonics: Ee says /ĕ/</b><small>net · wet · vet · jet · <code>RF.K.3b</code></small></div><em>5′</em></li>
+            <li class="now" style="--sc:var(--RL)" data-mk="3"><span class="node">📚</span><div><b>Read: What's Your Favorite Season?</b><small>🎯 I can answer questions about key details. · <code>RL.K.1</code></small>
+              <div class="phases"><span class="ok">I do ✓</span><span class="now">We do</span><span>You do</span></div></div><em>6′</em></li>
+            <li style="--sc:var(--RF)"><span class="node">🔤</span><div><b>Read it again</b><small>朗读同一篇故事 · <code>RF.K.4</code></small></div><em>3′</em></li>
+            <li style="--sc:var(--L)"><span class="node">🧩</span><div><b>Words: hot ↔ cold</b><small>找反义词 · <code>L.K.5b</code></small></div><em>2′</em></li>
+            <li style="--sc:var(--SL)"><span class="node">🗣️</span><div><b>Talk: Ask a grown-up</b><small>问大人 “What's your favorite season?” · <code>SL.K.1</code></small></div><em>2′</em></li>
+            <li style="--sc:var(--W)"><span class="node">✍️</span><div><b>Write: My favorite season</b><small>画 · 说 · 写 · <code>W.K.1</code></small></div><em>4′</em></li>
+            <li class="ticket" style="--sc:var(--a-gold)" data-mk="4"><span class="node">🎫</span><div><b>Exit ticket</b><small>出门条：1 道题，只考今天的重点 RL.K.1</small></div><em>1′</em></li>
+          </ol>
+        </div>
+      </div></div>
+      <div class="notes">
+        <div class="covers"><span class="pill s-RF">RF</span><span class="pill s-RL">RL</span><span class="pill s-L">L</span><span class="pill s-SL">SL</span><span class="pill s-W">W</span></div>
+        <ol>
+          <li><div><b>阅读之绳进度条</b><p>今天的任务分成“认字解码”和“语言理解”两组，各自显示进度。家长一眼能看出今天的练习偏向哪一组，如果哪天全是拼读、没有阅读，也很容易发现。</p></div></li>
+          <li><div><b>固定顺序 = Literacy block</b><p>热身 → 拼读 → 阅读 → 朗读 → 词汇 → 说 → 写，每天都是这个顺序，孩子知道下一步做什么。拼读排在阅读前面，因为故事里马上会用到刚学的音。K 年级专注时间短，每段不超过 6 分钟。</p></div></li>
+          <li><div><b>任务内部按渐进释放</b><p>当前任务显示三个阶段：I do 示范、We do 一起做、You do 自己做。只有 You do 阶段的结果计入掌握程度，示范和一起做阶段答错不扣分。</p></div></li>
+          <li><div><b>出门条（Exit ticket）</b><p>最后只用一道题检查今天的重点标准，结果直接显示在家长报告的“今日重点”里，对应美国老师下课前收的小纸条。</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 拼读 -->
+  <section id="p3">
+    <div class="sec-head"><span class="num">3</span><div>
+      <h2>拼读 · Sound boxes</h2>
+      <p class="sub">先听出单词里的每一个音（音素意识），再把音和字母对上（自然拼读）。可以点一下格子、单词链和 Blend 按钮试试。</p>
+    </div></div>
+    <div class="screen-row">
+      <div class="device"><div class="screen" style="--c:#4cc9f0">
+        <div class="appbar"><span>🪐</span><b>小宇航员</b><span class="tag">字母 Ee</span><span class="stars">⭐ 26</span></div>
+        <div class="apanel" style="--c:#4cc9f0">
+          <div class="ph"><span class="pico">🔤</span><div><b>Phonics: Ee says /ĕ/</b><small>字母 Ee 的短音</small></div><span class="chip s-RF">RF.K.3b</span></div>
+          <div class="ican">🎯 <i>I can sound out and read words.</i><span>我能用自然拼读读出单词</span></div>
+          <div class="phases"><span class="ok">I do ✓</span><span class="now">We do</span><span>You do</span></div>
+          <div class="pic-row"><div class="pic" id="pic">🥅</div><button class="abtn small" id="say-word" type="button">🔊 net</button></div>
+          <div>
+            <div class="sboxes" id="sboxes" data-mk="1">
+              <button class="sb" type="button" data-snd="/n/"><span class="snd">/n/</span><span class="lt">n</span></button>
+              <button class="sb v" type="button" data-snd="/ĕ/"><span class="snd">/ĕ/</span><span class="lt">e</span></button>
+              <button class="sb" type="button" data-snd="/t/"><span class="snd">/t/</span><span class="lt">t</span></button>
+            </div>
+            <div class="blend" data-mk="2" style="margin-top:28px">
+              <button class="abtn small gold" id="blend" type="button">Blend 连起来</button>
+              <div class="track" id="track"><i></i></div>
+              <span class="out" id="blend-out"></span>
+            </div>
+          </div>
+          <div class="chain" id="chain" data-mk="3">
+            <span>🔗 Change one sound · 只换一个音</span>
+            <button class="abtn small on" type="button" data-w="net">net</button><span class="arr">→</span>
+            <button class="abtn small" type="button" data-w="wet">wet</button><span class="arr">→</span>
+            <button class="abtn small" type="button" data-w="vet">vet</button><span class="arr">→</span>
+            <button class="abtn small" type="button" data-w="jet">jet</button>
+          </div>
+          <div class="box decod" data-mk="4">
+            <span class="heart">The</span> vet <span class="heart">is</span> wet.
+            <small>可解码句子：只用学过的音，♥ 是要整体记住的高频词（RF.K.3c）</small>
+          </div>
+        </div>
+      </div></div>
+      <div class="notes">
+        <div class="covers"><span class="pill s-RF">RF.K.2d</span><span class="pill s-RF">RF.K.2e</span><span class="pill s-RF">RF.K.3b</span><span class="pill s-RF">RF.K.3c</span><span class="pill s-RF">RF.K.3d</span></div>
+        <ol>
+          <li><div><b>音素格（Elkonin boxes）</b><p>一格对应一个音，不是一个字母（比如 sh 只占一格）。点一下格子先听到这个音，再看到字母：先练 RF.K.2d 听出每个音，再练 RF.K.3 字母和发音对应。元音格用不同颜色标出来。</p></div></li>
+          <li><div><b>连读滑条（Blending）</b><p>圆点从左滑到右，格子依次亮起，最后读出整个词。把几个音连成一个词是解码最核心的动作，美国课堂叫 blending。</p></div></li>
+          <li><div><b>单词链</b><p>每次只换一个音（RF.K.2e 替换音素），换了哪一格，哪一格就闪一下。这样孩子会去注意形近词之间不同的那个字母（RF.K.3d），而不是只看整体字形瞎猜。</p></div></li>
+          <li><div><b>可解码句子（Decodable text）</b><p>马上在句子里用上今天的音：除了学过的拼读规律，只有少量“心形词”，也就是要整体记住的高频词，比如 The、is。</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 精读 -->
+  <section id="p4">
+    <div class="sec-head"><span class="num">4</span><div>
+      <h2>精读 · Close reading</h2>
+      <p class="sub">同一篇故事读三遍，每遍只有一个目标。第 2 遍答对后，还要在故事里点出证据句。可以切换上面三个标签，点句子试试。</p>
+    </div></div>
+    <div class="screen-row">
+      <div class="device"><div class="screen" style="--c:#ff7eb6">
+        <div class="appbar"><span>🪐</span><b>小宇航员</b><span class="tag">故事</span><span class="stars">⭐ 28</span></div>
+        <div class="apanel" style="--c:#ff7eb6">
+          <div class="ph"><span class="pico">📚</span><div><b>What's Your Favorite Season?</b><small>Story · 故事</small></div><span class="chip s-RL" id="read-chip">RL.K.1</span></div>
+          <div class="reads" role="tablist" id="reads" data-mk="1">
+            <button role="tab" type="button" data-read="1" aria-selected="false"><b>① Listen</b>听，说大意</button>
+            <button role="tab" type="button" data-read="2" aria-selected="true"><b>② Details</b>找细节</button>
+            <button role="tab" type="button" data-read="3" aria-selected="false"><b>③ Words</b>看词语</button>
+          </div>
+          <div class="passage" id="passage" data-read="2" data-mk="2">
+            <h4>📖 Tom and Mia <button class="abtn small" id="read-to-me" type="button">🔊 Read to me</button></h4>
+            <span class="sent">It is a sunny day.</span>
+            <span class="sent">Tom asks Mia, “What's your <span class="vw">favorite</span> <span class="vw">season</span>?”</span>
+            <span class="sent" data-ev="1">Mia says, “My favorite season is <span class="kw">spring</span>.</span>
+            <span class="sent">It's warm, and I like the <span class="vw">flowers</span>.”</span>
+            <span class="sent">Then Mia asks Tom, “What's your favorite season?”</span>
+            <span class="sent">Tom says, “My favorite season is winter.</span>
+            <span class="sent">It's cold, and I like the <span class="vw">snow</span>!”</span>
+            <span class="sent">They both smile.</span>
+            <span class="sent">Every season is fun.</span>
+          </div>
+          <div class="box qcard" id="qcard" data-mk="3"></div>
+          <div class="box frame" data-mk="4">
+            <div class="lbl">🎤 Say it in a full sentence · 用完整的句子说</div>
+            Mia's favorite season is <u>spring</u>. The story says, “<u>My favorite season is spring.</u>”
+          </div>
+          <div class="hints" id="hints" data-mk="5">
+            <span>需要帮忙？</span>
+            <button class="abtn small" type="button" data-h="1">💡 再听一遍</button>
+            <button class="abtn small" type="button" data-h="2">💡 看这里</button>
+            <button class="abtn small" type="button" data-h="3">💡 关键词</button>
+          </div>
+        </div>
+      </div></div>
+      <div class="notes">
+        <div class="covers"><span class="pill s-RL">RL.K.1</span><span class="pill s-RL">RL.K.2</span><span class="pill s-RL">RL.K.4</span><span class="pill s-L">L.K.1f</span></div>
+        <ol>
+          <li><div><b>三遍读，每遍一个目标</b><p>第 1 遍只听，说出大意（RL.K.2）；第 2 遍找关键细节（RL.K.1）；第 3 遍弄懂生词（RL.K.4）。每遍只问这一类问题，注意力不会分散。</p></div></li>
+          <li><div><b>文本放在中间，常驻屏幕</b><p>问题只能从文章里找答案（text-dependent questions），不问“你喜欢哪个季节”这类不看文章也能答的题。第 3 遍时生词会高亮出来。</p></div></li>
+          <li><div><b>证据两步走</b><p>先选答案，再点出证明答案的句子。这是第二个转变“用文本证据说话”在 K 年级的样子，到三年级会变成“明确引用原文”（RL.3.1）。</p></div></li>
+          <li><div><b>句子框架</b><p>K 年级要求在共同活动中说出完整的句子（L.K.1f）。框架把“答案 + 证据”都放进去，孩子说一遍，家长听一遍。</p></div></li>
+          <li><div><b>分层提示</b><p>K 年级标准原文写着“with prompting and support”（在提示和帮助下）。所以提示分三级，从最轻的开始给：再听一遍 → 圈出相关段落 → 标出关键词。用到第几级会记进报告。</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 朗读 -->
+  <section id="p5">
+    <div class="sec-head"><span class="num">5</span><div>
+      <h2>朗读 · Fluency</h2>
+      <p class="sub">流利度包括准确、速度、语调三项。K 年级最重要的是读得准、读得懂。可以点故事里的单词，模拟家长标记读错的词。</p>
+    </div></div>
+    <div class="screen-row">
+      <div class="device"><div class="screen" style="--c:#ffb84d">
+        <div class="appbar"><span>🪐</span><b>小宇航员</b><span class="tag">朗读</span><span class="stars">⭐ 30</span></div>
+        <div class="apanel" style="--c:#ffb84d">
+          <div class="ph"><span class="pico">🔤</span><div><b>Read it again</b><small>再读一遍：Tom and Mia</small></div><span class="chip s-RF">RF.K.4</span></div>
+          <div class="ican">🎯 <i>I can read with purpose and understanding.</i><span>我能读懂地朗读</span></div>
+          <div class="stepper" data-mk="1">
+            <div class="step ok"><span class="ic">👂</span><b>I do</b>听示范</div>
+            <div class="step ok"><span class="ic">👫</span><b>We do</b>一起读</div>
+            <div class="step now"><span class="ic">🙋</span><b>You do</b>自己读 · 1:20</div>
+          </div>
+          <div class="passage" data-mk="2">
+            <div class="fluent" id="fluent"></div>
+            <div class="fluent-foot"><span>👨‍👩‍👧 家长：听到读错的词，点一下</span><span id="err-count"></span></div>
+          </div>
+          <div data-mk="3">
+            <div class="metrics">
+              <div class="metric main"><small>🎯 准确率</small><b id="acc">96%</b><em id="acc-note">读错 2 个词</em></div>
+              <div class="metric"><small>🎭 语调</small><b class="faces">★★★<span style="opacity:.3">★</span></b><em>家长打分 3 / 4</em></div>
+              <div class="metric"><small>⏱ 读对词数/分</small><b id="wcpm">40</b><em>WCPM · 仅作参考</em></div>
+            </div>
+            <div class="bands" id="bands">
+              <span data-b="hi">≥ 95%<br />自己能读</span>
+              <span data-b="mid">90–94%<br />需要陪读</span>
+              <span data-b="low">&lt; 90%<br />这篇太难</span>
+            </div>
+          </div>
+          <div class="box qcard" data-mk="4">
+            <div class="q">❓ Who likes the snow?</div>
+            <div class="opts" id="fq">
+              <button class="abtn" type="button" data-ok="1">⛄ Tom</button>
+              <button class="abtn" type="button">🌷 Mia</button>
+            </div>
+          </div>
+        </div>
+      </div></div>
+      <div class="notes">
+        <div class="covers"><span class="pill s-RF">RF.K.4</span><span class="pill s-RF">RF.1.4</span><span class="pill s-RL">RL.10</span></div>
+        <ol>
+          <li><div><b>示范 → 合声读 → 独立读</b><p>先听标准示范，再跟着高亮一起读（choral reading），最后自己读并计时。如果跳过示范直接计时，孩子会只顾着读快。</p></div></li>
+          <li><div><b>家长点出读错的词</b><p>页面本身听不出孩子哪个词读错了，家长在旁边点一下就行。这样能算出准确率和“每分钟读对词数”（WCPM，DIBELS 等美国学校测评用的就是这个指标），比现在只算总速度（WPM）更准。</p></div></li>
+          <li><div><b>准确率比速度重要</b><p>RF.K.4 要求的是“有目的、能理解地读”，K 年级没有段落朗读的速度常模（Hasbrouck &amp; Tindal 常模从一年级开始），所以准确率放在第一位，速度只作参考。准确率还能反过来判断文本难度：≥ 95% 可以自己读，90–94% 需要大人陪读，低于 90% 说明这篇太难，应该换简单一点的。</p></div></li>
+          <li><div><b>读完马上问一道题</b><p>防止孩子读得很顺却没读懂。题目只能从刚读的文本里找答案。</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 写作 -->
+  <section id="p6">
+    <div class="sec-head"><span class="num">6</span><div>
+      <h2>写作 · Draw, Tell, Write</h2>
+      <p class="sub">K 年级观点写作的标准原文就是“画、口述、书写结合”。可以在横线上改句子，检查清单会实时更新。</p>
+    </div></div>
+    <div class="screen-row">
+      <div class="device"><div class="screen" style="--c:#80ed99">
+        <div class="appbar"><span>🪐</span><b>小宇航员</b><span class="tag">写作</span><span class="stars">⭐ 32</span></div>
+        <div class="apanel" style="--c:#80ed99">
+          <div class="ph"><span class="pico">✍️</span><div><b>Write: My favorite season</b><small>What's your favorite season?</small></div><span class="chip s-W">W.K.1</span></div>
+          <div class="ican">🎯 <i>I can tell my opinion.</i><span>我能说出自己的观点</span></div>
+          <div class="dtw" data-mk="1">
+            <div class="ok"><b>🎨 Draw</b><div class="drawing">🌷🌞🦋</div>画出来</div>
+            <div class="ok"><b>🗣️ Tell</b><div class="wave"><i style="height:30%"></i><i style="height:70%"></i><i style="height:45%"></i><i style="height:90%"></i><i style="height:55%"></i><i style="height:80%"></i><i style="height:35%"></i><i style="height:60%"></i><i style="height:25%"></i></div>说给大人听</div>
+            <div class="now"><b>✍️ Write</b><div class="pen">✏️</div>写一句</div>
+          </div>
+          <div data-mk="2">
+            <div class="lbl">🧱 从词墙拿词</div>
+            <div class="bank" id="bank"><button type="button">spring</button><button type="button">summer</button><button type="button">fall</button><button type="button">winter</button><button type="button">warm</button><button type="button">cold</button><button type="button">because</button></div>
+            <div class="paper" style="margin-top:8px">
+              <small>My favorite season is ______.</small>
+              <input id="write" type="text" value="my favrit season is spring" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="写一句话" />
+            </div>
+          </div>
+          <ul class="checks" id="checks" data-mk="3">
+            <li data-c="cap">开头字母大写 · Capital<span class="chip s-L">L.K.2a</span></li>
+            <li data-c="end">句末有句号 · End mark<span class="chip s-L">L.K.2b</span></li>
+            <li data-c="sp">单词之间有空格 · Spaces<span class="chip s-L">L.K.1</span></li>
+            <li data-c="op">说出了你的观点 · Opinion<span class="chip s-W">W.K.1</span></li>
+            <li data-c="bc" class="star">挑战：用 because 说原因<span class="chip s-W">W.1.1</span></li>
+          </ul>
+          <div class="box spell" id="spell" data-mk="4"></div>
+        </div>
+      </div></div>
+      <div class="notes">
+        <div class="covers"><span class="pill s-W">W.K.1</span><span class="pill s-W">W.1.1</span><span class="pill s-L">L.K.2</span><span class="pill s-L">L.K.6</span><span class="pill s-SL">SL.K.1</span></div>
+        <ol>
+          <li><div><b>画 → 说 → 写</b><p>W.K.1 原文要求结合“drawing, dictating, and writing”。先画、再说给大人听（大人可以帮忙记下来），最后写一句。孩子动笔前已经想好要写什么，写的时候只需要专心拼写。</p></div></li>
+          <li><div><b>句子框架 + 词墙</b><p>写作用的词直接从单元词墙里拿，阅读里学的词在写作里再用一次（L.K.6）。框架只给开头，观点要孩子自己写。</p></div></li>
+          <li><div><b>检查清单就是语言标准</b><p>大写、句号、空格都是 K 年级 L 标准的要求，写的时候实时打勾，不用等写完再批改。because 那一项标成⭐挑战，是一年级 W.1.1 的要求，普通档不强制。</p></div></li>
+          <li><div><b>允许按发音拼写</b><p>L.K.2d 明确要求 K 年级“根据字母和发音的对应，拼写简单的单词”。所以 favrit 不算写错，而是记为“按发音拼写 ✓”，同时给出正确写法。这样孩子敢写，不会因为怕写错就不写。</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 家长报告 -->
+  <section id="p7">
+    <div class="sec-head"><span class="num">7</span><div>
+      <h2>家长报告 · Standards-based report</h2>
+      <p class="sub">不给总分，按每条标准给出掌握程度，并且只给一个下一步建议。家长看完就知道今晚陪孩子练什么。</p>
+    </div></div>
+    <div class="screen-row">
+      <div class="device"><div class="screen" style="--c:#7cc8ff">
+        <div class="appbar"><span>🔒</span><b>家长模式</b><span class="tag">Week of Oct 19</span><span class="stars">🖨️ 打印</span></div>
+        <div class="apanel" style="--c:#7cc8ff">
+          <div>
+            <div class="eyebrow">Kindergarten · Unit 3 · Week 2</div>
+            <div class="ah">📋 小宇航员的英语周报</div>
+          </div>
+          <div class="two" data-mk="1">
+            <div class="strand"><small>🔤 认字解码</small><b>Meets</b> <span class="lv lv3">3 达标</span></div>
+            <div class="strand"><small>💬 语言理解</small><b>Approaching</b> <span class="lv lv2">2 接近</span></div>
+          </div>
+          <div class="box stds" data-mk="2">
+            <div class="std"><code class="s-RF">RF.K.2a</code><span>押韵<small>Rhyme</small></span><span><span class="pips" style="--p:#7cc8ff"><i style="background:#7cc8ff"></i><i style="background:#7cc8ff"></i><i style="background:#7cc8ff"></i><i style="background:#7cc8ff"></i></span><span class="lv lv4">优秀</span></span></div>
+            <div class="std"><code class="s-RF">RF.K.3b</code><span>短元音 e<small>net · wet · vet · jet</small></span><span><span class="pips"><i style="background:#4ade80"></i><i style="background:#4ade80"></i><i style="background:#4ade80"></i><i></i></span><span class="lv lv3">达标</span></span></div>
+            <div class="std"><code class="s-RF">RF.K.4</code><span>朗读<small>准确率 96% · 自己能读</small></span><span><span class="pips"><i style="background:#4ade80"></i><i style="background:#4ade80"></i><i style="background:#4ade80"></i><i></i></span><span class="lv lv3">达标</span></span></div>
+            <div class="std" data-mk="4"><code class="s-RL">RL.K.1</code><span>关键细节 + 证据<small class="help">💡 3 题里有 1 题用了第 2 级提示</small></span><span><span class="pips"><i style="background:#4ade80"></i><i style="background:#4ade80"></i><i style="background:#4ade80"></i><i></i></span><span class="lv lv3">达标</span></span></div>
+            <div class="std"><code class="s-L">L.K.5b</code><span>反义词<small>warm ↔ cool 还会混</small></span><span><span class="pips"><i style="background:#ffd166"></i><i style="background:#ffd166"></i><i></i><i></i></span><span class="lv lv2">接近</span></span></div>
+            <div class="std"><code class="s-W">W.K.1</code><span>观点写作<small>有 1 处按发音拼写</small></span><span><span class="pips"><i style="background:#4ade80"></i><i style="background:#4ade80"></i><i style="background:#4ade80"></i><i></i></span><span class="lv lv3">达标</span></span></div>
+            <div class="std"><code class="s-SL">SL.K.1</code><span>和大人对话<small>等你确认</small></span><span><span class="lv lv0">待确认</span></span></div>
+          </div>
+          <div data-mk="3">
+            <div class="lbl">🗂️ Evidence of learning · 学习证据</div>
+            <div class="evid">
+              <div class="sample"><p>My favrit season is spring.</p><small>✏️ 原样保存 · favrit = 按发音拼写 ✓</small></div>
+              <div class="audio"><span>🎙️ 朗读录音 1:20</span><div class="wave"><i style="height:30%"></i><i style="height:70%"></i><i style="height:45%"></i><i style="height:90%"></i><i style="height:55%"></i><i style="height:80%"></i><i style="height:35%"></i><i style="height:60%"></i><i style="height:40%"></i><i style="height:75%"></i></div><button class="abtn small" type="button">▶ 播放</button></div>
+            </div>
+          </div>
+          <div class="box next" data-mk="5">
+            <b>🏠 下一步只练一件事：反义词 L.K.5b</b>
+            <p>3 分钟游戏 “Opposite Freeze”：你说 <i>hot</i>，孩子说 <i>cold</i> 并做发抖的动作；再换 warm / cool、big / small。明天的热身会再出一次。</p>
+          </div>
+        </div>
+      </div></div>
+      <div class="notes">
+        <div class="covers"><span class="pill s-RF">RF</span><span class="pill s-RL">RL</span><span class="pill s-L">L</span><span class="pill s-W">W</span><span class="pill s-SL">SL</span></div>
+        <ol>
+          <li><div><b>按阅读之绳的两组汇总</b><p>解码弱和理解弱需要的帮助完全不同：解码弱要多做拼读练习，理解弱要多听多聊、积累词汇和背景知识。报告先给出这两组的结论。</p></div></li>
+          <li><div><b>每条标准一个 4 级</b><p>和美国的标准化成绩单（standards-based report card）一样：Exceeds 优秀 / Meets 达标 / Approaching 接近 / Beginning 起步，不给总分。每条下面写一句具体表现，比如“warm ↔ cool 还会混”。</p></div></li>
+          <li><div><b>学习证据（Evidence of learning）</b><p>写的句子和朗读录音都原样保存，比分数更能说明问题，也方便发给老师看。录音需要家长同意后才保存。</p></div></li>
+          <li><div><b>记录用了几级提示</b><p>K 年级的很多标准本来就允许在帮助下完成，所以报告会写清楚用了哪一级提示。下一步的目标是不用提示独立完成。</p></div></li>
+          <li><div><b>只给一个下一步</b><p>挑出最弱的一条标准，给一个 3 分钟能玩完的家庭游戏，第二天的热身再练一次，形成“发现 → 练习 → 复查”的循环。</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 落地 -->
+  <section id="build">
+    <div class="sec-head"><span class="num">→</span><div>
+      <h2>落地：改哪里、先做什么</h2>
+      <p class="sub">这些设计大部分在现有结构（homework.json + lesson.js）上扩展就能做，不需要后端。</p>
+    </div></div>
+    <div class="card table-card">
+      <table>
+        <thead><tr><th>页面</th><th>homework.json 里新增或修改</th><th>代码</th></tr></thead>
+        <tbody>
+          <tr><td>1 单元主页</td><td><code>unit: { title, question, week, texts[], wordWall[] }</code></td><td>ui.js 新增单元面板；词墙读 progress.js 的答对记录</td></tr>
+          <tr><td>2 今天的路径</td><td>任务加 <code>minutes</code>；按标准领域自动排序，也可以手动写 <code>order</code></td><td>data.js 排序；ui.js 路径列表和两组进度条</td></tr>
+          <tr><td>3 拼读</td><td>新题型 <code>sounds: ["n","e","t"]</code>、<code>chain: ["net","wet","vet","jet"]</code></td><td>lesson.js 新增音素格组件</td></tr>
+          <tr><td>4 精读</td><td>题目加 <code>read: 1 | 2 | 3</code>；提示改成数组 <code>hints: [...]</code></td><td>lesson.js 分遍显示；progress.js 记录提示级数</td></tr>
+          <tr><td>5 朗读</td><td>无需改动</td><td>lesson.js 加“点错词”，算准确率和 WCPM；standards.js 的 K 年级不再用速度目标</td></tr>
+          <tr><td>6 写作</td><td>普通档去掉 <code>require: ["because"]</code>；加 <code>steps: ["draw","tell","write"]</code></td><td>lesson.js 检查清单和按发音拼写提示</td></tr>
+          <tr><td>7 家长报告</td><td>无需改动</td><td>ui.js 按两组汇总、显示提示级数、学习证据、下一步建议</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <h3>建议的先后顺序（从改动小、收益大的开始）</h3>
+      <ol class="order">
+        <li><div><b>写作按年级对齐</b> <span>只改 homework.json：普通档不再要求 because，挑战档保留。</span></div></li>
+        <li><div><b>朗读改成以准确率为主</b> <span>家长点错词 → 准确率、WCPM、文本难度判断。</span></div></li>
+        <li><div><b>精读分三遍 + 分层提示</b> <span>沿用现有的证据句功能，只是把题目按遍数分组。</span></div></li>
+        <li><div><b>家长报告按两组汇总 + 下一步建议</b> <span>数据都已经有了，主要是换个展示方式。</span></div></li>
+        <li><div><b>音素格和单词链</b> <span>新题型，替换现在一部分的字母块拼词题。</span></div></li>
+        <li><div><b>今天的路径和单元主页</b> <span>需要新增 unit 字段，改动最大，放在最后。</span></div></li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer>使命星球 · 英语页面设计稿 · 标准原文见 <a href="https://www.thecorestandards.org/ELA-Literacy/">thecorestandards.org</a> · 故事主线见 <a href="story-design.html">story-design.html</a> · 整体设计说明见 <a href="design.html">design.html</a></footer>
+
+<script>
+(() => {
+  const say = (text, onend) => {
+    try {
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 0.8;
+      if (onend) u.onend = onend;
+      speechSynthesis.speak(u);
+      return u;
+    } catch (e) {
+      if (onend) onend();
+    }
+  };
+  const stopSpeech = () => { try { speechSynthesis.cancel(); } catch (e) {} };
+
+  // ---------- 3 拼读 ----------
+  const WORDS = { net: ['n', 'e', 't', '🥅'], wet: ['w', 'e', 't', '💦'], vet: ['v', 'e', 't', '🐶'], jet: ['j', 'e', 't', '✈️'] };
+  const SOUNDS = { n: '/n/', e: '/ĕ/', t: '/t/', w: '/w/', v: '/v/', j: '/j/' };
+  const boxes = [...document.querySelectorAll('#sboxes .sb')];
+  const chainBtns = [...document.querySelectorAll('#chain button')];
+  const pic = document.getElementById('pic');
+  const sayWord = document.getElementById('say-word');
+  const blendOut = document.getElementById('blend-out');
+  const track = document.getElementById('track');
+  let word = 'net';
+
+  boxes.forEach((b) => b.addEventListener('click', () => {
+    b.classList.add('hear', 'lit');
+    setTimeout(() => b.classList.remove('hear', 'lit'), 1100);
+  }));
+  chainBtns.forEach((btn) => btn.addEventListener('click', () => {
+    const next = WORDS[btn.dataset.w];
+    const prev = WORDS[word];
+    next.slice(0, 3).forEach((s, i) => {
+      boxes[i].querySelector('.lt').textContent = s;
+      boxes[i].querySelector('.snd').textContent = SOUNDS[s];
+      if (s !== prev[i]) {
+        boxes[i].classList.remove('flash');
+        void boxes[i].offsetWidth;
+        boxes[i].classList.add('flash');
+      }
+    });
+    word = btn.dataset.w;
+    pic.textContent = next[3];
+    sayWord.textContent = '🔊 ' + word;
+    blendOut.textContent = '';
+    track.classList.remove('go');
+    chainBtns.forEach((x) => x.classList.toggle('on', x === btn));
+  }));
+  sayWord.addEventListener('click', () => { stopSpeech(); say(word); });
+  document.getElementById('blend').addEventListener('click', () => {
+    blendOut.textContent = '';
+    track.classList.remove('go');
+    void track.offsetWidth;
+    track.classList.add('go');
+    boxes.forEach((b, i) => {
+      setTimeout(() => { b.classList.add('lit'); setTimeout(() => b.classList.remove('lit'), 380); }, i * 300);
+    });
+    setTimeout(() => { blendOut.textContent = word; stopSpeech(); say(word); }, 950);
+  });
+
+  // ---------- 4 精读 ----------
+  const passage = document.getElementById('passage');
+  const sents = [...passage.querySelectorAll('.sent')];
+  const qcard = document.getElementById('qcard');
+  const chip = document.getElementById('read-chip');
+  const READS = {
+    1: { std: 'RL.K.2', q: 'What is this story about?', opts: ['Two friends talk about seasons.', 'A trip to the beach.'], a: 0, tip: '第 1 遍：先听完整个故事，说出它讲了什么。' },
+    2: { std: 'RL.K.1', q: "What is Mia's favorite season?", opts: ['🌷 spring', '☀️ summer', '❄️ winter'], a: 0, evidence: true },
+    3: { std: 'RL.K.4', q: 'What does “favorite” mean?', opts: ['❤️ the one you like best', '🧊 very, very cold'], a: 0, tip: '第 3 遍：看高亮的词，用上下文猜意思。' },
+  };
+  const state = { read: 2, picked: { 2: 0 }, found: false };
+
+  function renderQ() {
+    const r = READS[state.read];
+    const picked = state.picked[state.read];
+    chip.textContent = r.std;
+    let status = '';
+    if (picked === undefined) status = `<div class="status">${r.tip || '选一个答案。'}</div>`;
+    else if (picked !== r.a) status = '<div class="status miss">再想想，回到故事里找一找。</div>';
+    else if (r.evidence && !state.found) status = '<div class="status go">✅ 答对了！第 2 步：🔍 <b>Show me in the text</b> —— 在故事里点出证明答案的句子。</div>';
+    else if (r.evidence) status = '<div class="status win">📌 找到证据了！⭐⭐ “My favorite season is spring.”</div>';
+    else status = '<div class="status win">✅ 答对了！⭐⭐</div>';
+    qcard.innerHTML = `<div class="q">${r.q}</div><div class="opts">${r.opts.map((o, i) => {
+      const cls = picked === i ? (i === r.a ? ' ok' : ' bad') : '';
+      return `<button class="abtn${cls}" type="button" data-i="${i}">${o}</button>`;
+    }).join('')}</div>${status}`;
+  }
+  qcard.addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-i]');
+    if (!b) return;
+    state.picked[state.read] = Number(b.dataset.i);
+    renderQ();
+  });
+  document.getElementById('reads').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-read]');
+    if (!b) return;
+    state.read = Number(b.dataset.read);
+    passage.dataset.read = state.read;
+    document.querySelectorAll('#reads button').forEach((x) => x.setAttribute('aria-selected', String(x === b)));
+    renderQ();
+  });
+  sents.forEach((s) => s.addEventListener('click', () => {
+    if (state.read !== 2 || state.picked[2] !== READS[2].a) return;
+    if (s.dataset.ev) {
+      state.found = true;
+      s.classList.add('evidence');
+      renderQ();
+    } else {
+      s.classList.remove('nope');
+      void s.offsetWidth;
+      s.classList.add('nope');
+      if (!state.found) {
+        const st = qcard.querySelector('.status');
+        st.className = 'status miss';
+        st.textContent = '这句没有说 Mia 喜欢哪个季节，再找找 Mia 说的话。';
+      }
+    }
+  }));
+  document.getElementById('read-to-me').addEventListener('click', () => {
+    stopSpeech();
+    sents.forEach((s, i) => {
+      const u = say(s.textContent.replace(/[“”]/g, ''), i === sents.length - 1 ? () => s.classList.remove('reading') : null);
+      if (u) {
+        u.onstart = () => { sents.forEach((x) => x.classList.remove('reading')); s.classList.add('reading'); };
+      }
+    });
+  });
+  document.getElementById('hints').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-h]');
+    if (!b) return;
+    b.classList.add('used');
+    const h = b.dataset.h;
+    if (h === '1') { stopSpeech(); say(sents[2].textContent.replace(/[“”]/g, '') + ' ' + sents[3].textContent.replace(/[“”]/g, '')); }
+    if (h === '2') { sents[2].classList.add('zone'); sents[3].classList.add('zone'); }
+    if (h === '3') passage.querySelector('.kw').classList.add('hot');
+  });
+  renderQ();
+
+  // ---------- 5 朗读 ----------
+  const TEXT = 'It is a sunny day. Tom asks Mia, “What\'s your favorite season?” Mia says, “My favorite season is spring. It\'s warm, and I like the flowers.” Then Mia asks Tom, “What\'s your favorite season?” Tom says, “My favorite season is winter. It\'s cold, and I like the snow!” They both smile. Every season is fun.';
+  const SECONDS = 80;
+  const fluent = document.getElementById('fluent');
+  const tokens = TEXT.split(' ');
+  fluent.innerHTML = tokens.map((t, i) => `<span class="w" data-i="${i}">${t}</span>`).join(' ');
+  const wordEls = [...fluent.querySelectorAll('.w')];
+  ['flowers.”', 'Every'].forEach((t) => { const el = wordEls.find((w) => w.textContent === t); if (el) el.classList.add('err'); });
+  function updateFluency() {
+    const n = wordEls.length;
+    const err = fluent.querySelectorAll('.err').length;
+    const acc = Math.round(((n - err) / n) * 100);
+    document.getElementById('acc').textContent = acc + '%';
+    document.getElementById('acc-note').textContent = err ? `读错 ${err} 个词` : '全部读对';
+    document.getElementById('wcpm').textContent = Math.round(((n - err) / SECONDS) * 60);
+    document.getElementById('err-count').textContent = `${n} 个词 · 错 ${err}`;
+    const band = acc >= 95 ? 'hi' : acc >= 90 ? 'mid' : 'low';
+    document.querySelectorAll('#bands span').forEach((s) => {
+      s.className = s.dataset.b === band ? 'on' + (band === 'hi' ? '' : ' ' + band) : '';
+    });
+  }
+  fluent.addEventListener('click', (e) => {
+    const w = e.target.closest('.w');
+    if (!w) return;
+    w.classList.toggle('err');
+    updateFluency();
+  });
+  updateFluency();
+  document.getElementById('fq').addEventListener('click', (e) => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    b.classList.add(b.dataset.ok ? 'ok' : 'bad');
+  });
+
+  // ---------- 6 写作 ----------
+  const input = document.getElementById('write');
+  const spell = document.getElementById('spell');
+  const PHONETIC = { favrit: 'favorite', faverit: 'favorite', favorit: 'favorite', favrite: 'favorite', sesun: 'season', seesun: 'season', sezon: 'season', seson: 'season', sumr: 'summer', sumer: 'summer', wintr: 'winter', wenter: 'winter', sprin: 'spring', spreng: 'spring', becuz: 'because', becos: 'because', bekuz: 'because', bcuz: 'because', flawrs: 'flowers', flowrs: 'flowers', sno: 'snow' };
+  const SEASON = /\b(spring|summer|fall|autumn|winter|sumr|sumer|wintr|wenter|sprin|spreng)\b/i;
+  function check() {
+    const v = input.value.trim();
+    const words = v.split(/\s+/).filter(Boolean);
+    const lower = words.map((w) => w.toLowerCase().replace(/[^a-z']/g, ''));
+    const bi = lower.findIndex((w) => w === 'because' || PHONETIC[w] === 'because');
+    const res = {
+      cap: /^[A-Z]/.test(v),
+      end: /[.!?]$/.test(v),
+      sp: words.length >= 4 && !words.some((w) => w.length > 12),
+      op: SEASON.test(v),
+      bc: bi >= 0 && words.length - bi > 2,
+    };
+    document.querySelectorAll('#checks li').forEach((li) => li.classList.toggle('ok', res[li.dataset.c]));
+    const found = [...new Set(lower.filter((w) => PHONETIC[w]))];
+    spell.innerHTML = found.length
+      ? '🔤 ' + found.map((w) => `<b>${w}</b> → ${PHONETIC[w]}`).join('，') + '<br>按发音拼的，算你会！家长报告里记为“按发音拼写 ✓”（L.K.2d）'
+      : '🔤 不会拼的词就按发音拼，K 年级的 L.K.2d 鼓励这样写。';
+  }
+  input.addEventListener('input', check);
+  document.getElementById('bank').addEventListener('click', (e) => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    const v = input.value.replace(/\s+$/, '');
+    input.value = (v ? v + ' ' : '') + b.textContent;
+    input.focus();
+    check();
+  });
+  check();
+})();
+</script>
+</body>
+</html>

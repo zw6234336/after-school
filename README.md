@@ -219,3 +219,11 @@ src/standards.js       CCSS 标准说明、“I can”目标、掌握等级
 src/lesson.js          英语课界面：阅读文章、字母块、写作清单、朗读计时、标准报告
 src/audio.js           音效和朗读
 ```
+
+## 设计文档
+
+直接用浏览器打开即可：
+
+- [docs/design.html](docs/design.html)：整体设计思路和可以直接点的交互 demo
+- [docs/english-design.html](docs/english-design.html)：英语部分按 Common Core 底层逻辑设计的 7 个页面
+- [docs/story-design.html](docs/story-design.html)：“星际破译”故事主线和每一层的开场动画
