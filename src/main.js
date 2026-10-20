@@ -5,7 +5,7 @@ import { OpeningPlayer } from './opening.js';
 import { Progress } from './progress.js';
 import { HomeworkScene } from './scene.js';
 import { stationize } from './stations.js';
-import { landedChapter, setLanded, resetStory } from './story.js';
+import { landedChapter, nextChapter, setLanded, resetStory, voyage, addFuelDay } from './story.js';
 import { BixSurface } from './surface.js';
 import { UI } from './ui.js';
 
@@ -57,6 +57,13 @@ async function start() {
     const scene = new HomeworkScene(document.getElementById('stage'), homework, progress);
     let view = landed ? new BixSurface(scene, forView(homework), progress) : scene;
 
+    // 航行期：今天的使命任务全部完成，就给飞船加一天燃料（加满就能降落）
+    const fuelUp = () => {
+      if (!landed && progress.remainingTasks() === 0) addFuelDay(homework.date);
+    };
+    progress.addEventListener('change', fuelUp);
+    fuelUp();
+
     /** 开场动画播完：记下已着陆，在开场留下的布景上显示地面地图 */
     const land = (chapter, stage) => {
       setLanded(chapter);
@@ -67,10 +74,53 @@ async function start() {
       ui.setView(view, hw);
     };
 
+    /** 降落：播放这一章的开场，播完着陆。正在播的时候再调用，返回同一个 Promise */
+    let landing = null;
+    const playOpening = (chapter) => {
+      if (landing) return landing;
+      ui.closePanel();
+      // 已经在地面地图上：先拆掉，开场会重新搭布景
+      if (view !== scene) view.dispose();
+      landing = new OpeningPlayer(scene, { keepStage: true })
+        .play(chapter)
+        .then(({ stage }) => land(chapter, stage))
+        .finally(() => (landing = null));
+      return landing;
+    };
+
+    /** 回到航行期：着陆和燃料清空，主界面换回太空里的科目星球 */
+    const backToVoyage = () => {
+      resetStory();
+      if (view !== scene) {
+        view.dispose();
+        view = scene;
+        landed = null;
+        progress.setHomework(homework);
+        ui.setView(scene, homework);
+      }
+      // 今天的任务已经全部完成的话，算航行的第 1 天
+      fuelUp();
+    };
+
     const ui = new UI({
       homework: forView(homework),
       progress,
       scene: view,
+      story: {
+        /** 航行进度和要降落的章节；已经着陆（或者没有能降落的章节）返回 null */
+        voyage: () => {
+          const chapter = !landed && nextChapter(STORY);
+          return chapter ? { ...voyage(), chapter } : null;
+        },
+        /** 已经着陆的章节；还在航行期返回 null */
+        landed: () => landed,
+        /** 降落 Bix 星：播放下一章的开场，播完换成地面地图 */
+        land: () => {
+          const chapter = nextChapter(STORY);
+          return chapter && playOpening(chapter);
+        },
+        reset: backToVoyage,
+      },
       levels: {
         /** 某个难度下有多少作业和题目，用来在选择界面上显示 */
         summary(level) {
@@ -95,20 +145,14 @@ async function start() {
     });
     requestAnimationFrame(() => loading.classList.add('hidden'));
 
-    // 开场动画：?opening=ch01-weather-station（或 ?opening=layer-1），播完就着陆
+    // 开发用：?opening=ch01-weather-station（或 ?opening=layer-1）直接播开场，播完就着陆
     const openingId = params.get('opening');
     if (openingId) {
       const chapter = STORY[openingId] || Object.values(STORY).find((c) => `layer-${c.layer}` === openingId);
       if (!chapter?.opening) {
         console.warn(`找不到开场动画 "${openingId}"，可用：${Object.keys(STORY).join('、')}`);
       } else {
-        // 已经在地面地图上：先拆掉，开场会重新搭布景
-        if (view !== scene) {
-          ui.closePanel();
-          view.dispose();
-        }
-        const { stage } = await new OpeningPlayer(scene, { keepStage: true }).play(chapter);
-        land(chapter, stage);
+        await playOpening(chapter);
       }
     }
   } catch (err) {
