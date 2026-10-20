@@ -67,8 +67,8 @@ export class UI {
     document.getElementById('btn-report').addEventListener('click', () => this.openReport());
     this.levelBtn.addEventListener('click', () => this.openLevelPicker());
 
-    scene.addEventListener('select', (e) => this.openSubject(e.detail.subjectId, e.detail.taskId));
-    scene.addEventListener('rocket', () => this.#onRocket());
+    this.fuelLabel = document.querySelector('.fuel-label span');
+    this.#listen(scene);
     progress.addEventListener('change', (e) => this.#onProgress(e.detail));
 
     this.panel.addEventListener('click', (e) => this.#onPanelClick(e));
@@ -88,6 +88,24 @@ export class UI {
 
     this.allDone = progress.remainingTasks() === 0;
     this.#renderHud();
+  }
+
+  #listen(view) {
+    view.addEventListener('select', (e) => this.openSubject(e.detail.subjectId, e.detail.taskId));
+    view.addEventListener('rocket', () => this.#onRocket());
+  }
+
+  /** 着陆以后：三维视图换成 Bix 星的地面地图，作业按站点分组 */
+  setView(view, homework) {
+    this.closePanel();
+    this.scene = view;
+    this.#listen(view);
+    this.setHomework(homework);
+  }
+
+  /** 着陆以后的地面地图模式：站点代替科目星球，信号塔代替火箭 */
+  #onSurface() {
+    return this.homework.mode === 'surface';
   }
 
   /** 换难度后：关掉面板，按新的作业刷新界面 */
@@ -211,10 +229,10 @@ export class UI {
       <header class="panel-head">
         <span class="ph-icon" aria-hidden="true">${esc(subject.icon)}</span>
         <div class="ph-text">
-          <h2>${esc(subject.name)}星球</h2>
-          <p>${done === subject.tasks.length ? '全部完成，星球被点亮啦！' : `完成了 ${done} / ${subject.tasks.length} 项任务`}</p>
+          <h2>${esc(subject.name)}${this.#onSurface() ? '' : '星球'}</h2>
+          <p>${done === subject.tasks.length ? `全部完成，${this.#onSurface() ? '站点' : '星球'}被点亮啦！` : `完成了 ${done} / ${subject.tasks.length} 项任务`}</p>
         </div>
-        <button class="icon-btn close" data-action="close" aria-label="返回太空">✕</button>
+        <button class="icon-btn close" data-action="close" aria-label="${this.#onSurface() ? '返回地图' : '返回太空'}">✕</button>
       </header>
       <div class="meter"><i style="width:${p.subjectFraction(subject) * 100}%"></i></div>
       <ul class="task-list">${items}</ul>`;
@@ -789,7 +807,7 @@ export class UI {
     sound.complete();
     const subjectDone = subject.tasks.every((t) => this.progress.isDone(t));
     this.scene.celebrate(subject.id, subjectDone ? 'subject' : 'task');
-    if (subjectDone) this.toast(`🎉 ${subject.name}星球全部点亮啦！`);
+    if (subjectDone) this.toast(this.#onSurface() ? `🎉 ${subject.name}的任务全部完成啦！` : `🎉 ${subject.name}星球全部点亮啦！`);
     else this.toast(`🌕 完成「${detail.task.title}」`);
 
     const allDone = this.progress.remainingTasks() === 0;
@@ -801,7 +819,7 @@ export class UI {
     if (this.progress.remainingTasks() !== 0) return;
     this.closePanel();
     this.#closeModal();
-    this.hint.textContent = '🚀 燃料加满，火箭发射！';
+    this.hint.textContent = this.#onSurface() ? '📡 信号塔向地球发送信号！' : '🚀 燃料加满，火箭发射！';
     sound.launch();
     await this.scene.launch();
     this.#renderHud();
@@ -827,7 +845,7 @@ export class UI {
     } else {
       sound.click();
       this.scene.nudgeRocket();
-      this.toast(`⛽ 还差 ${left} 项任务，燃料就加满啦！`);
+      this.toast(this.#onSurface() ? `📡 还差 ${left} 项任务，信号塔就能向地球发信号啦！` : `⛽ 还差 ${left} 项任务，燃料就加满啦！`);
     }
   }
 
@@ -856,7 +874,8 @@ export class UI {
   openReport() {
     sound.click();
     const p = this.progress;
-    const subjects = this.homework.subjects;
+    // 家长报告按学校的科目分组；着陆后界面按站点分组，原来的科目保存在 schoolSubjects
+    const subjects = this.homework.schoolSubjects || this.homework.subjects;
     let asked = 0;
     let firstRight = 0;
     const mistakes = [];
@@ -1064,6 +1083,17 @@ export class UI {
     this.fuelText.textContent = `${pct}%`;
     this.fuelFill.style.width = `${pct}%`;
     const left = p.remainingTasks();
+    if (this.#onSurface()) {
+      this.fuelLabel.textContent = '📡 信号塔能量';
+      this.hint.textContent =
+        left === 0
+          ? '🎉 全部完成！点一下使命号，再向地球发一次信号吧'
+          : pct === 0
+            ? '👆 点一个站点，开始使命任务吧！完成任务给信号塔充能'
+            : `还差 ${left} 项任务，信号塔就能向地球发信号啦！`;
+      return;
+    }
+    this.fuelLabel.textContent = '🔥 火箭燃料';
     this.hint.textContent =
       left === 0
         ? '🎉 全部完成！点一下火箭，再发射一次吧'

@@ -738,7 +738,7 @@ export function disposeTree(root) {
   });
 }
 
-function makeLabel(subject, onClick) {
+export function makeLabel(subject, onClick) {
   const el = document.createElement('button');
   el.type = 'button';
   el.className = 'planet-label';

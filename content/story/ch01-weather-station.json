@@ -3,6 +3,11 @@
   "title": "第 1 章 · 气象站",
   "layer": 1,
   "unit": "k-seasons-weather",
+  "surface": {
+    "stations": {
+      "RI": { "name": "气象站", "icon": "🌦️" }
+    }
+  },
   "opening": {
     "title": "第 1 层 · 着陆区",
     "subtitle": "🌦️ 气象站 · Seasons and Weather",

@@ -2402,3 +2402,13 @@ body.cinematic .toast {
 .op-ask .hintbox:empty {
   display: none;
 }
+
+/* ---------- 着陆后的地面地图 ---------- */
+
+.station-label.empty {
+  opacity: 0.45;
+}
+
+.station-label.empty .pl-count {
+  color: var(--ink-faint);
+}
