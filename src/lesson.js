@@ -213,7 +213,7 @@ export function writeHtml(task, text, checks, done) {
     <h4 class="checklist-title">✔️ My writing checklist · 写完检查一下</h4>
     <ul class="checklist">${checklistHtml(checks)}</ul>
     <div class="feedback" role="status">${done ? '✅ 已交给爸爸妈妈检查，还可以继续修改' : ''}</div>
-    <button class="btn primary wide" data-action="write-submit">${done ? 'Update · 更新' : 'Turn it in · 交作业'}</button>`;
+    <button class="btn primary wide" data-action="write-submit">${done ? 'Update · 更新' : 'Turn it in · 提交任务'}</button>`;
 }
 
 // ---------- 朗读计时 ----------

@@ -15,6 +15,10 @@ content/
   ATTRIBUTION.md                   来源和署名汇总
   units/
     k-seasons-weather/unit.json    K 年级 · 四季与天气（改编自 CKLA Domain 8）
+  story/
+    ch01-weather-station.json      故事第 1 章：第 1 层开场动画
+  wordlists/
+    dolch.json                     Dolch 高频词表（公有领域），检查开场字幕用
 ```
 
 ## 在作业里使用一个单元
@@ -64,6 +68,32 @@ content/
 ```
 
 任务和题目的写法见根目录 README 的“英语作业的写法”。单元里的任务 id 要在所有单元里唯一，建议用单元缩写开头，比如 `sw-l1-read`。
+
+## 故事章节和开场动画
+
+`content/story/<id>.json` 是“星际破译”故事的章节，每章引用一个单元，带一段进入这一层时播放的开场动画（`opening`）：
+
+```jsonc
+{
+  "id": "ch01-weather-station", "title": "第 1 章 · 气象站", "layer": 1, "unit": "k-seasons-weather",
+  "opening": {
+    "title": "第 1 层 · 着陆区", "subtitle": "🌦️ 气象站 · Seasons and Weather", "intro": "开始卡片上的一句话",
+    "vocab": { "school": ["jet", "wet"], "names": ["zib"], "extra": ["hi"] },   // 字幕里允许用的额外词
+    "shots": [
+      { "type": "fly", "camera": "approach", "action": "approach", "zh": "中文旁白", "ms": 5200 },
+      { "type": "say", "camera": "zib", "action": "zib-appear", "text": "A jet! It is wet!" },
+      { "type": "ask", "camera": "zib", "q": "Listen. Which word?", "speak": "wet", "options": ["net", "wet", "jet"], "a": "wet",
+        "hint": "w … e … t — wet", "review": { "source": "学校本周 · 字母 Ee", "standard": "RF.K.3" } },
+      { "type": "preview", "camera": "sign", "action": "sign", "word": "weather", "text": "What is this? Let's find out!" },
+      { "type": "title", "camera": "station", "ms": 3200 }
+    ]
+  }
+}
+```
+
+- `camera` 和 `action` 是 `src/bix.js` 里的镜头预设和动作名。
+- 字幕（`text`、`q`、`options`、`hint`）只能用 [`wordlists/dolch.json`](wordlists/dolch.json) 里的高频词（Dolch 词表，公有领域）、更浅的层里学过的单元词，以及 `vocab` 里声明的词；`preview` 的新词必须是本章单元要学的词，每段最多一个。`npm run check:content` 会检查这些。
+- 开发时打开 `http://localhost:5173/?opening=ch01-weather-station`（或 `?opening=layer-1`）预览。
 
 ## 检查内容
 

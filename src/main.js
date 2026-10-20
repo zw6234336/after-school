@@ -1,6 +1,7 @@
 import './style.css';
 import { fetchHomework, normalizeHomework, resolveUnits, defaultLevel, LEVELS } from './data.js';
-import { UNITS } from './content.js';
+import { UNITS, STORY } from './content.js';
+import { OpeningPlayer } from './opening.js';
 import { Progress } from './progress.js';
 import { HomeworkScene } from './scene.js';
 import { UI } from './ui.js';
@@ -69,12 +70,25 @@ async function start() {
       },
     });
     requestAnimationFrame(() => loading.classList.add('hidden'));
+
+    // 开场动画原型：?opening=ch01-weather-station（或 ?opening=layer-1）
+    const openingId = new URLSearchParams(location.search).get('opening');
+    if (openingId) playOpening(openingId, scene);
   } catch (err) {
     console.error(err);
     loading.classList.add('error');
     loading.innerHTML = `<div class="loading-rocket">🛸</div><p>出了点小问题：</p><pre></pre>`;
     loading.querySelector('pre').textContent = err.message;
   }
+}
+
+function playOpening(id, scene) {
+  const chapter = STORY[id] || Object.values(STORY).find((c) => `layer-${c.layer}` === id);
+  if (!chapter?.opening) {
+    console.warn(`找不到开场动画 "${id}"，可用：${Object.keys(STORY).join('、')}`);
+    return;
+  }
+  new OpeningPlayer(scene).play(chapter);
 }
 
 start();

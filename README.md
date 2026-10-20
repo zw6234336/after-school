@@ -1,6 +1,8 @@
-# 🚀 作业星球
+# 🚀 使命星球
 
 用 [three.js](https://threejs.org/) 做的 3D 家庭作业小站：每个科目是一颗星球，每项作业是绕着星球转的小卫星。孩子在页面上答题、自动批改，完成作业给中间的火箭“加燃料”，全部完成后火箭发射、放烟花。家长可以看报告和错题本。
+
+孩子在页面上看到的都叫“使命任务”，不会出现“作业”两个字，和“星际破译”的故事主线一致；家长这边（家长报告、这份说明、`homework.json`）仍然叫作业。
 
 ## 功能
 
@@ -27,7 +29,7 @@ npm run dev
 
 ```jsonc
 {
-  "title": "作业星球",
+  "title": "使命星球",
   "child": "小明",              // 显示在左上角
   "difficulty": "normal",       // 默认难度：easy（简单）/ normal（普通）/ hard（挑战）
   "lockDifficulty": false,      // true：孩子不能自己换难度
@@ -97,9 +99,9 @@ npm run dev
 
 ## 英语：按 Common Core 设计
 
-美国小学英语（ELA）以 [Common Core State Standards](https://www.thecorestandards.org/ELA-Literacy/) 为底层框架：每个技能对应一条标准代码，比如 `RI.1.1` 表示 Reading: Informational Text、一年级、第 1 条。作业星球的英语部分照这个逻辑来设计：
+美国小学英语（ELA）以 [Common Core State Standards](https://www.thecorestandards.org/ELA-Literacy/) 为底层框架：每个技能对应一条标准代码，比如 `RI.1.1` 表示 Reading: Informational Text、一年级、第 1 条。使命星球的英语部分照这个逻辑来设计：
 
-| CCSS 领域 | 在作业星球里的样子 |
+| CCSS 领域 | 在使命星球里的样子 |
 |---|---|
 | 🔤 **RF** 阅读基础（Foundational Skills） | 自然拼读：点字母块拼单词（`tiles`）；朗读流利度：听示范 → 跟读 → 自己计时读，算出每分钟词数（WPM），对照年级目标 |
 | 📚 **RL** 文学阅读 / 🔬 **RI** 信息类阅读 | 以一篇短文为中心：读前先认识生词，读时点单词听发音、“Read to me” 逐句朗读；读后回答问题，并且**在文中点出证明答案的句子**（文本证据，CCSS 的核心要求） |
@@ -169,6 +171,14 @@ npm run dev
 
 修改或新增单元后运行 `npm run check:content`，它会用和页面一样的规则在三档难度下检查每个单元。
 
+### 开场动画（原型）
+
+“星际破译”故事里，进入星球的每一层前会播一段开场动画：使命号着陆、原住民 Zib 用学过的词打招呼、中途停下来复习两道题、最后预告这一层的新词。开场的台词和题目写在 [`content/story/`](content/README.md#故事章节和开场动画) 里。现在还没有接进使命任务的流程，开发时这样预览：
+
+```
+http://localhost:5173/?opening=ch01-weather-station
+```
+
 ## 部署到 Cloudflare
 
 项目已经配好 [Cloudflare Workers 静态资源](https://developers.cloudflare.com/workers/static-assets/)（见 `wrangler.jsonc`），不需要写任何后端代码。
@@ -200,7 +210,9 @@ src/scene.js           three.js 场景：星球、卫星、火箭、相机动画
 src/particles.js       烟花和星星粒子
 src/ui.js              作业面板、答题、家长报告
 src/data.js            读取作业文件、展开内容库单元、生成口算题
-src/content.js         把 content/units 里的单元打包进页面
+src/content.js         把 content/units 和 content/story 打包进页面
+src/opening.js         开场动画播放器：字幕、复习停顿、标题卡、跳过
+src/bix.js             开场动画的三维布景：Bix 星、使命号、气象站、Zib、镜头预设
 src/checker.js         判断答案对错
 src/progress.js        进度和星星（localStorage）
 src/standards.js       CCSS 标准说明、“I can”目标、掌握等级

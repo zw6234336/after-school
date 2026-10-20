@@ -1,0 +1,44 @@
+{
+  "id": "ch01-weather-station",
+  "title": "第 1 章 · 气象站",
+  "layer": 1,
+  "unit": "k-seasons-weather",
+  "opening": {
+    "title": "第 1 层 · 着陆区",
+    "subtitle": "🌦️ 气象站 · Seasons and Weather",
+    "intro": "小宇航员，使命号已经飞到 Bix 星上空。准备好着陆了吗？",
+    "vocab": {
+      "school": ["jet", "wet", "net", "cold", "hot"],
+      "names": ["zib"],
+      "extra": ["hi", "brr", "listen", "which", "word"]
+    },
+    "shots": [
+      { "type": "fly", "camera": "approach", "action": "approach", "zh": "使命号正在飞向 Bix 星……", "ms": 5200 },
+      { "type": "fly", "camera": "descent", "action": "land", "zh": "翻身 · 减速 · 着陆", "ms": 7000 },
+      { "type": "say", "camera": "zib", "action": "zib-appear", "text": "A jet! It is wet!", "zh": "一个原住民跑过来看我们的飞船" },
+      { "type": "say", "camera": "zib", "action": "zib-wave", "text": "Hi! I am Zib." },
+      {
+        "type": "ask",
+        "camera": "zib",
+        "q": "Listen. Which word?",
+        "speak": "wet",
+        "options": ["net", "wet", "jet"],
+        "a": "wet",
+        "hint": "w … e … t — wet",
+        "review": { "source": "学校本周 · 字母 Ee", "standard": "RF.K.3" }
+      },
+      { "type": "say", "camera": "rain", "action": "zib-shiver", "text": "Brr! It is cold." },
+      {
+        "type": "ask",
+        "camera": "rain",
+        "q": "❄️ It is ___.",
+        "options": ["cold", "hot"],
+        "a": "cold",
+        "hint": "Brr! It is cold.",
+        "review": { "source": "学校本周 · 天气", "standard": "L.K.5" }
+      },
+      { "type": "preview", "camera": "sign", "action": "sign", "word": "weather", "text": "What is this? Let's find out!", "zh": "告示上的词还看不懂，这一层就要学它" },
+      { "type": "title", "camera": "station", "ms": 3200 }
+    ]
+  }
+}

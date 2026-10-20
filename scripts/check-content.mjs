@@ -107,6 +107,65 @@ function checkGrade(code, level, grade, where) {
   );
 }
 
+// ---------- 故事章节和开场动画 ----------
+
+const STORY_DIR = join(UNITS_DIR, '..', 'story');
+const SHOT_TYPES = ['fly', 'say', 'ask', 'preview', 'title'];
+const dolch = JSON.parse(readFileSync(join(UNITS_DIR, '..', 'wordlists', 'dolch.json'), 'utf8'));
+const DOLCH = new Set(Object.values(dolch.lists).flat());
+const chapters = existsSync(STORY_DIR)
+  ? readdirSync(STORY_DIR).filter((f) => f.endsWith('.json')).map((f) => ({ file: f, ...JSON.parse(readFileSync(join(STORY_DIR, f), 'utf8')) }))
+  : [];
+
+/** 字幕里的词：小写，去掉标点；let's → let，Zib's → zib；单个字母（拼读提示里的 w、e、t）不算 */
+const wordsOf = (text) =>
+  String(text)
+    .toLowerCase()
+    .split(/[^a-z']+/)
+    .map((w) => w.replace(/^'+|'+$/g, '').replace(/'s$/, ''))
+    .filter((w) => w.length > 1 || w === 'a' || w === 'i');
+
+/** 一个单元里孩子学过的词：词墙 + 每篇文章的生词 */
+const unitWords = (unit) => [
+  ...(unit.wordWall || []).map((w) => w.word),
+  ...(unit.lessons || []).flatMap((l) => (l.tasks || []).flatMap((t) => (t.passage?.vocab || []).map((v) => v.word))),
+].map((w) => String(w).toLowerCase());
+
+for (const ch of chapters) {
+  const at = (msg) => errors.push(`story/${ch.file}：${msg}`);
+  if (`${ch.id}.json` !== ch.file) at(`id "${ch.id}" 和文件名不一致`);
+  if (!units[ch.unit]) at(`引用的单元 "${ch.unit}" 不存在`);
+  if (!Number.isInteger(ch.layer) || ch.layer < 1) at('layer 需要是从 1 开始的整数');
+  const op = ch.opening;
+  if (!op) continue;
+  if (!Array.isArray(op.shots) || op.shots.length === 0) {
+    at('opening 缺少 shots');
+    continue;
+  }
+
+  // 能用的词：高频词表 + 章节声明的词（学校本周、名字等）+ 更浅的层里学过的单元词
+  const earlier = chapters.filter((c) => c.layer < ch.layer && units[c.unit]).flatMap((c) => unitWords(units[c.unit]));
+  const allowed = new Set([...DOLCH, ...Object.values(op.vocab || {}).flat().map((w) => w.toLowerCase()), ...earlier]);
+  const thisUnit = units[ch.unit] ? unitWords(units[ch.unit]) : [];
+
+  op.shots.forEach((s, i) => {
+    const where = `第 ${i + 1} 个镜头（${s.type}）`;
+    if (!SHOT_TYPES.includes(s.type)) at(`${where}的 type 只能是 ${SHOT_TYPES.join(' / ')}`);
+    if (!s.camera) at(`${where}缺少 camera`);
+    const texts = [s.text, s.q, s.hint, s.speak, ...(s.options || [])].filter(Boolean);
+    for (const w of texts.flatMap(wordsOf)) {
+      if (!allowed.has(w)) at(`${where}用到了没学过的词 "${w}"。只能用高频词、前面学过的词，或者在 opening.vocab 里声明`);
+    }
+    if (s.type === 'ask' && !(s.options || []).includes(s.a)) at(`${where}的答案 "${s.a}" 不在选项里`);
+    if (s.type === 'preview') {
+      if (!s.word) at(`${where}缺少要预告的 word`);
+      else if (!thisUnit.includes(s.word.toLowerCase())) at(`${where}预告的 "${s.word}" 不是单元 ${ch.unit} 要学的词`);
+    }
+  });
+  const previews = op.shots.filter((s) => s.type === 'preview').length;
+  if (previews > 1) at(`每段开场最多预告一个新词，现在有 ${previews} 个`);
+}
+
 // ---------- 汇总 ----------
 
 for (const unit of Object.values(units)) {
@@ -131,9 +190,17 @@ for (const unit of Object.values(units)) {
   console.log(`   文学 ${counts.literature} 课 · 说明文 ${counts.informational} 课`);
 }
 
+for (const ch of chapters) {
+  const shots = ch.opening?.shots || [];
+  const asks = shots.filter((s) => s.type === 'ask').length;
+  const preview = shots.find((s) => s.type === 'preview')?.word;
+  console.log(`\n🎬 ${ch.id} · 第 ${ch.layer} 层 · 单元 ${ch.unit}`);
+  console.log(`   开场：${shots.length} 个镜头 · ${asks} 道复习题${preview ? ` · 预告新词 ${preview}` : ''}`);
+}
+
 if (errors.length) {
   console.error(`\n❌ ${errors.length} 个问题：`);
   for (const e of errors) console.error(`   - ${e}`);
   process.exit(1);
 }
-console.log(`\n✅ ${Object.keys(units).length} 个单元，${taskIds.size} 项任务，检查通过`);
+console.log(`\n✅ ${Object.keys(units).length} 个单元，${taskIds.size} 项任务，${chapters.length} 个故事章节，检查通过`);
