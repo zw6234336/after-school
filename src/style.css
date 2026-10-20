@@ -1030,6 +1030,45 @@ button {
   justify-content: center;
 }
 
+/* 航行进度：一格一天燃料，加满就能降落 Bix 星 */
+.voyage {
+  margin: 18px auto 0;
+  padding: 14px 16px 12px;
+  max-width: 24em;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+}
+
+.voyage.ready {
+  border-color: rgba(255, 209, 102, 0.6);
+  box-shadow: 0 0 18px rgba(255, 180, 80, 0.25);
+}
+
+.voyage-cells {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.voyage-cells i {
+  flex: 0 1 38px;
+  height: 12px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.voyage-cells i.on {
+  background: linear-gradient(90deg, #ff6b35, #ffd166);
+  box-shadow: 0 0 10px rgba(255, 180, 80, 0.7);
+}
+
+.celebrate .voyage p {
+  margin: 10px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
 .levels header p {
   max-width: 34em;
   line-height: 1.5;

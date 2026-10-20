@@ -31,11 +31,13 @@ const RETRY_EN = ['Try again! 再想想～', 'So close! 差一点点！', 'Look 
 const pick = (list) => list[(Math.random() * list.length) | 0];
 
 export class UI {
-  constructor({ homework, progress, scene, levels }) {
+  constructor({ homework, progress, scene, levels, story }) {
     this.homework = homework;
     this.progress = progress;
     this.scene = scene;
     this.levels = levels;
+    this.story = story;
+    this.listening = new WeakSet();
     this.view = null;
     this.introSeen = new Set();
     this.drafts = {};
@@ -91,11 +93,14 @@ export class UI {
   }
 
   #listen(view) {
+    // 回到航行期时太空场景会再交给 UI 一次，事件只绑一次
+    if (this.listening.has(view)) return;
+    this.listening.add(view);
     view.addEventListener('select', (e) => this.openSubject(e.detail.subjectId, e.detail.taskId));
     view.addEventListener('rocket', () => this.#onRocket());
   }
 
-  /** 着陆以后：三维视图换成 Bix 星的地面地图，作业按站点分组 */
+  /** 着陆以后：三维视图换成 Bix 星的地面地图，作业按站点分组；回到航行期时换回太空 */
   setView(view, homework) {
     this.closePanel();
     this.scene = view;
@@ -823,22 +828,40 @@ export class UI {
     sound.launch();
     await this.scene.launch();
     this.#renderHud();
+    // 航行期：今天加了一天燃料；加满了就可以降落 Bix 星
+    const voyage = this.#onSurface() ? null : this.story?.voyage();
     this.#openModal(`
       <div class="modal-card celebrate">
         <div class="celebrate-emoji">🎉</div>
         <h2>今天的使命任务全部完成！</h2>
         <p>一共获得 <b>${this.progress.stars()}</b> 颗星星，你真是太棒了！</p>
+        ${voyage ? voyageHtml(voyage) : ''}
         <div class="modal-actions">
           <button class="btn ghost" data-action="report">给爸爸妈妈看报告</button>
-          <button class="btn primary" data-action="close-modal">好耶！</button>
+          ${
+            voyage?.ready
+              ? '<button class="btn primary" data-action="land">🛬 降落 Bix 星</button>'
+              : '<button class="btn primary" data-action="close-modal">好耶！</button>'
+          }
         </div>
       </div>`);
+  }
+
+  /** 降落 Bix 星：关掉弹窗，播放开场，播完换成地面地图 */
+  #land() {
+    if (this.scene.isLaunching) return;
+    this.#closeModal();
+    sound.click();
+    this.story.land();
   }
 
   #onRocket() {
     if (this.scene.isLaunching) return;
     const left = this.progress.remainingTasks();
-    if (left === 0) {
+    // 燃料加满还没降落：再发射一次，然后问要不要降落
+    if (left === 0 && this.story?.voyage()?.ready) {
+      this.#finale();
+    } else if (left === 0) {
       this.closePanel();
       sound.launch();
       this.scene.launch();
@@ -972,11 +995,40 @@ export class UI {
         <ul class="report-list">${checkList}</ul>
         <h3>📕 错题本 <small>（第一次答错的题）</small></h3>
         <ul class="report-list mistakes">${mistakeList}</ul>
+        ${this.#storyReportHtml()}
         <div class="modal-actions">
           <button class="btn danger" data-action="reset">清空今天的进度</button>
           <button class="btn ghost" data-action="print">打印</button>
         </div>
       </div>`);
+  }
+
+  /** 家长报告里的故事进度：航行期可以直接降落，着陆后可以回到航行期 */
+  #storyReportHtml() {
+    if (!this.story) return '';
+    const chapter = this.story.landed();
+    const voyage = this.story.voyage();
+    let title;
+    let detail;
+    let action = '';
+    if (chapter) {
+      title = `已降落 Bix 星 · ${chapter.title}`;
+      detail = '主界面是这一层的地面地图，作业按站点分组。回到航行期会清空着陆和燃料天数，做题记录不受影响';
+      action = '<button class="btn small ghost" data-action="story-reset">回到航行期</button>';
+    } else if (voyage) {
+      title = `航行中 · 燃料 ${voyage.days}/${voyage.target} 天`;
+      detail = voyage.ready
+        ? '燃料已经加满，孩子下次完成全部作业时就能降落 Bix 星'
+        : `孩子每天完成全部作业给飞船加一天燃料，再坚持 ${voyage.target - voyage.days} 天就能降落 Bix 星`;
+      action = `<button class="btn small ghost" data-action="land" ${this.scene.isLaunching ? 'disabled' : ''}>直接降落</button>`;
+    } else {
+      return '';
+    }
+    return `
+      <h3>🚀 故事进度 <small>（星际破译）</small></h3>
+      <ul class="report-list">
+        <li><div><b>${esc(title)}</b><small>${esc(detail)}</small></div>${action}</li>
+      </ul>`;
   }
 
   #onModalClick(e) {
@@ -1005,6 +1057,15 @@ export class UI {
       case 'reset':
         if (window.confirm('确定要清空今天的所有做题记录吗？这个操作不能撤销。')) {
           this.progress.reset();
+          this.openReport();
+        }
+        break;
+      case 'land':
+        this.#land();
+        break;
+      case 'story-reset':
+        if (window.confirm('确定回到航行期吗？已经降落的进度和燃料天数都会清空，做题记录不受影响。')) {
+          this.story.reset();
           this.openReport();
         }
         break;
@@ -1094,12 +1155,7 @@ export class UI {
       return;
     }
     this.fuelLabel.textContent = '🔥 火箭燃料';
-    this.hint.textContent =
-      left === 0
-        ? '🎉 全部完成！点一下火箭，再发射一次吧'
-        : pct === 0
-          ? '👆 点一颗星球，开始使命任务吧！完成任务给火箭加燃料'
-          : `还差 ${left} 项任务，火箭就能发射啦！`;
+    this.hint.textContent = spaceHint(left, pct, this.story?.voyage());
   }
 
   #flyStars(count, from) {
@@ -1153,6 +1209,33 @@ export class UI {
     if (SHEET_MQ.matches) this.scene.setInset({ right: 0, bottom: this.panel.offsetHeight });
     else this.scene.setInset({ right: this.panel.offsetWidth + 24, bottom: 0 });
   }
+}
+
+/** 航行进度：一格一天燃料 */
+function voyageHtml({ days, target, ready }) {
+  const cells = Array.from({ length: target }, (_, i) => `<i class="${i < days ? 'on' : ''}"></i>`).join('');
+  return `
+    <div class="voyage ${ready ? 'ready' : ''}">
+      <div class="voyage-cells" aria-hidden="true">${cells}</div>
+      <p>${ready ? `⛽ 燃料 ${days}/${target} 天，加满啦！可以降落 Bix&nbsp;星了` : `⛽ 燃料 ${days}/${target} 天，再坚持 ${target - days} 天就能降落 Bix&nbsp;星`}</p>
+    </div>`;
+}
+
+/** 太空里的提示：今天还差什么；用得着的时候说一下航行进度（voyage 为 null 时不提） */
+function spaceHint(left, pct, voyage) {
+  if (left === 0) {
+    if (voyage?.ready) return '🛬 燃料加满啦！点一下火箭，降落 Bix 星';
+    if (voyage) return `🎉 全部完成！燃料 ${voyage.days}/${voyage.target} 天，再坚持 ${voyage.target - voyage.days} 天就能降落 Bix 星`;
+    return '🎉 全部完成！点一下火箭，再发射一次吧';
+  }
+  if (voyage?.ready) return `🛬 燃料已经加满，完成今天的 ${left} 项任务就能降落 Bix 星！`;
+  if (voyage && voyage.days === voyage.target - 1) return `还差 ${left} 项任务！今天加满最后一天燃料，就能降落 Bix 星`;
+  if (pct === 0) {
+    return voyage
+      ? `👆 点一颗星球，开始使命任务吧！燃料 ${voyage.days}/${voyage.target} 天，加满就能降落 Bix 星`
+      : '👆 点一颗星球，开始使命任务吧！完成任务给火箭加燃料';
+  }
+  return `还差 ${left} 项任务，火箭就能发射啦！`;
 }
 
 function keypadHtml() {
