@@ -1,0 +1,567 @@
+{
+  "id": "k-phonics-digraphs",
+  "grade": "K",
+  "title": "Digraphs",
+  "titleZh": "二合字母拼读",
+  "icon": "🔡",
+  "color": "#b388ff",
+  "question": "What sound do two letters make together?",
+  "questionZh": "两个字母在一起发什么音？",
+  "license": "CC BY-NC-SA 4.0",
+  "wordWall": [
+    { "word": "ship", "meaning": "船", "emoji": "🚢", "lesson": "l1-sh" },
+    { "word": "fish", "meaning": "鱼", "emoji": "🐟", "lesson": "l1-sh" },
+    { "word": "shell", "meaning": "贝壳", "emoji": "🐚", "lesson": "l1-sh" },
+    { "word": "dish", "meaning": "盘子", "emoji": "🍽️", "lesson": "l1-sh" },
+    { "word": "shop", "meaning": "商店", "emoji": "🏪", "lesson": "l1-sh" },
+    { "word": "chick", "meaning": "小鸡", "emoji": "🐥", "lesson": "l2-ch" },
+    { "word": "chip", "meaning": "薯条", "emoji": "🍟", "lesson": "l2-ch" },
+    { "word": "chest", "meaning": "箱子", "emoji": "🧰", "lesson": "l2-ch" },
+    { "word": "chop", "meaning": "砍", "emoji": "🪓", "lesson": "l2-ch" },
+    { "word": "check", "meaning": "打勾", "emoji": "✔️", "lesson": "l2-ch" },
+    { "word": "bath", "meaning": "洗澡", "emoji": "🛁", "lesson": "l3-th" },
+    { "word": "path", "meaning": "小路", "emoji": "🛤️", "lesson": "l3-th" },
+    { "word": "math", "meaning": "数学", "emoji": "🧮", "lesson": "l3-th" },
+    { "word": "moth", "meaning": "飞蛾", "emoji": "🦋", "lesson": "l3-th" },
+    { "word": "duck", "meaning": "鸭子", "emoji": "🦆", "lesson": "l4-ck" },
+    { "word": "sock", "meaning": "袜子", "emoji": "🧦", "lesson": "l4-ck" },
+    { "word": "rock", "meaning": "石头", "emoji": "🪨", "lesson": "l4-ck" },
+    { "word": "lock", "meaning": "锁", "emoji": "🔒", "lesson": "l4-ck" },
+    { "word": "clock", "meaning": "钟", "emoji": "🕒", "lesson": "l4-ck" }
+  ],
+  "lessons": [
+    {
+      "id": "l1-sh",
+      "title": "sh",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "dg-sh-sounds",
+          "title": "Sounds: sh /sh/",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "🚢 Which word is it?",
+              "options": ["chip", "ship", "sip"],
+              "a": "ship",
+              "speak": "ship",
+              "hint": "s 和 h 在一起，读 /sh/"
+            },
+            {
+              "q": "Which word has sh /sh/?",
+              "options": ["fit", "fish", "fix"],
+              "a": "fish",
+              "speak": "Which word has the sh sound? fit, fish, or fix?"
+            },
+            {
+              "q": "Which word rhymes with “fish”?",
+              "options": ["shop", "dish", "fan"],
+              "a": "dish",
+              "speak": "Which word rhymes with fish?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: ship → change /sh/ to /ch/ → ?",
+              "options": ["shop", "chip", "chin"],
+              "a": "chip",
+              "speak": "Change the first sound of ship.",
+              "hint": "把 ship 开头的音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "dg-sh-build",
+          "title": "Build words with sh /sh/",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🚢",
+              "tiles": ["sh", "i", "p", "ch"],
+              "a": "ship",
+              "speak": "ship"
+            },
+            {
+              "q": "Build the word: 🐟",
+              "tiles": ["f", "i", "sh", "a"],
+              "a": "fish",
+              "speak": "fish"
+            },
+            {
+              "q": "Build the word: 🐚",
+              "tiles": ["sh", "e", "ll", "o"],
+              "a": "shell",
+              "speak": "shell"
+            },
+            {
+              "q": "Build the word: 🍽️",
+              "tiles": ["d", "i", "sh", "o"],
+              "a": "dish",
+              "speak": "dish",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Build the word: 🏪",
+              "tiles": ["sh", "o", "p", "u"],
+              "a": "shop",
+              "speak": "shop",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "dg-sh-read",
+          "title": "Read: Shep the Fish",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "Shep the Fish",
+            "genre": "literature",
+            "decodable": { "vowels": "aeiou", "names": ["Shep"] },
+            "text": "Shep is a fish. Shep has a red shell. Shep can swim fast. A big ship is on top. Shep gets in the shell. Then Shep can swim and swish!"
+          },
+          "questions": [
+            {
+              "q": "What is Shep?",
+              "options": ["a fish", "a ship", "a shell"],
+              "a": "a fish",
+              "evidence": "Shep is a fish",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What does Shep have?",
+              "options": ["a red shell", "a big ship", "a dish"],
+              "a": "a red shell",
+              "evidence": "Shep has a red shell",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Where does Shep go?",
+              "options": ["in the shell", "on the ship", "in a dish"],
+              "a": "in the shell",
+              "evidence": "Shep gets in the shell",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["fast.", "Shep", "swim", "can"],
+              "a": "Shep can swim fast.",
+              "speak": "Shep can swim fast.",
+              "standard": "RF.K.3c",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "dg-sh-fluency",
+          "title": "Fluency: Shep the Fish",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "dg-sh-read"
+          }
+        }
+      ]
+    },
+    {
+      "id": "l2-ch",
+      "title": "ch",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "dg-ch-sounds",
+          "title": "Sounds: ch /ch/",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "🐥 Which word is it?",
+              "options": ["thick", "chick", "sick"],
+              "a": "chick",
+              "speak": "chick",
+              "hint": "c 和 h 在一起，读 /ch/"
+            },
+            {
+              "q": "Which word has ch /ch/?",
+              "options": ["shin", "chin", "tin"],
+              "a": "chin",
+              "speak": "Which word has the ch sound? shin, chin, or tin?"
+            },
+            {
+              "q": "Which word rhymes with “chip”?",
+              "options": ["chop", "ship", "bat"],
+              "a": "ship",
+              "speak": "Which word rhymes with chip?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: chop → change /ch/ to /sh/ → ?",
+              "options": ["ship", "shop", "chip"],
+              "a": "shop",
+              "speak": "Change the first sound of chop.",
+              "hint": "把 chop 开头的音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "dg-ch-build",
+          "title": "Build words with ch /ch/",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🐥",
+              "tiles": ["ch", "i", "ck", "sh"],
+              "a": "chick",
+              "speak": "chick"
+            },
+            {
+              "q": "Build the word: 🍟",
+              "tiles": ["ch", "i", "p", "th"],
+              "a": "chip",
+              "speak": "chip"
+            },
+            {
+              "q": "Build the word: 🧰",
+              "tiles": ["ch", "e", "s", "t", "a"],
+              "a": "chest",
+              "speak": "chest"
+            },
+            {
+              "q": "Build the word: 🪓",
+              "tiles": ["ch", "o", "p", "u"],
+              "a": "chop",
+              "speak": "chop",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Build the word: ✔️",
+              "tiles": ["ch", "e", "ck", "a"],
+              "a": "check",
+              "speak": "check",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "dg-ch-read",
+          "title": "Read: Chip the Chick",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "Chip the Chick",
+            "genre": "literature",
+            "decodable": { "vowels": "aeiou", "names": ["Chip"] },
+            "text": "Chip is a chick. Chip sits on a chest. Chip can chop at a nut. Chip gets a bit of nut. Yum! Chip is a rich chick!"
+          },
+          "questions": [
+            {
+              "q": "What is Chip?",
+              "options": ["a chick", "a chip", "a duck"],
+              "a": "a chick",
+              "evidence": "Chip is a chick",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Where does Chip sit?",
+              "options": ["on a chest", "in a dish", "on a rock"],
+              "a": "on a chest",
+              "evidence": "Chip sits on a chest",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What does Chip get?",
+              "options": ["a bit of nut", "a red shell", "a sock"],
+              "a": "a bit of nut",
+              "evidence": "Chip gets a bit of nut",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["chick.", "Chip", "a", "is"],
+              "a": "Chip is a chick.",
+              "speak": "Chip is a chick.",
+              "standard": "RF.K.3c",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "dg-ch-fluency",
+          "title": "Fluency: Chip the Chick",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "dg-ch-read"
+          }
+        }
+      ]
+    },
+    {
+      "id": "l3-th",
+      "title": "th",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "dg-th-sounds",
+          "title": "Sounds: th /th/",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "🛁 Which word is it?",
+              "options": ["bat", "bath", "bash"],
+              "a": "bath",
+              "speak": "bath",
+              "hint": "t 和 h 在一起，舌头放在牙齿中间读 /th/"
+            },
+            {
+              "q": "Which word has th /th/?",
+              "options": ["pat", "path", "pass"],
+              "a": "path",
+              "speak": "Which word has the th sound? pat, path, or pass?"
+            },
+            {
+              "q": "Which word rhymes with “bath”?",
+              "options": ["moth", "path", "bed"],
+              "a": "path",
+              "speak": "Which word rhymes with bath?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: bath → change /b/ to /m/ → ?",
+              "options": ["moth", "math", "mat"],
+              "a": "math",
+              "speak": "Change the first sound of bath.",
+              "hint": "把 bath 开头的音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "dg-th-build",
+          "title": "Build words with th /th/",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🛁",
+              "tiles": ["b", "a", "th", "sh"],
+              "a": "bath",
+              "speak": "bath"
+            },
+            {
+              "q": "Build the word: 🛤️",
+              "tiles": ["p", "a", "th", "i"],
+              "a": "path",
+              "speak": "path"
+            },
+            {
+              "q": "Build the word: 🧮",
+              "tiles": ["m", "a", "th", "ch"],
+              "a": "math",
+              "speak": "math"
+            },
+            {
+              "q": "Build the word: 🦋",
+              "tiles": ["m", "o", "th", "a"],
+              "a": "moth",
+              "speak": "moth",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "dg-th-read",
+          "title": "Read: Seth and the Moth",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "Seth and the Moth",
+            "genre": "literature",
+            "decodable": { "vowels": "aeiou", "names": ["Seth"] },
+            "text": "Seth has a bath in a tub. A moth is on the path. The moth is thin. The moth sat on the tub. Seth and the moth had fun. Then Seth got out of the bath."
+          },
+          "questions": [
+            {
+              "q": "Where is Seth?",
+              "options": ["in a bath", "on a path", "in a shop"],
+              "a": "in a bath",
+              "evidence": "Seth has a bath in a tub",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What is on the path?",
+              "options": ["a moth", "a duck", "a fish"],
+              "a": "a moth",
+              "evidence": "A moth is on the path",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What did Seth and the moth have?",
+              "options": ["fun", "a nap", "a snack"],
+              "a": "fun",
+              "evidence": "Seth and the moth had fun",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["thin.", "The", "is", "moth"],
+              "a": "The moth is thin.",
+              "speak": "The moth is thin.",
+              "standard": "RF.K.3c",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "dg-th-fluency",
+          "title": "Fluency: Seth and the Moth",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "dg-th-read"
+          }
+        }
+      ]
+    },
+    {
+      "id": "l4-ck",
+      "title": "ck",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "dg-ck-sounds",
+          "title": "Sounds: ck /k/",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "🦆 Which word is it?",
+              "options": ["dug", "duck", "dusk"],
+              "a": "duck",
+              "speak": "duck",
+              "hint": "c 和 k 在一起，只读一个 /k/"
+            },
+            {
+              "q": "Which word has ck /k/?",
+              "options": ["rob", "rock", "rot"],
+              "a": "rock",
+              "speak": "Which word has the ck sound? rob, rock, or rot?"
+            },
+            {
+              "q": "Which word rhymes with “sock”?",
+              "options": ["sack", "rock", "bed"],
+              "a": "rock",
+              "speak": "Which word rhymes with sock?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: lock → change /l/ to /s/ → ?",
+              "options": ["sick", "sock", "luck"],
+              "a": "sock",
+              "speak": "Change the first sound of lock.",
+              "hint": "把 lock 开头的音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "dg-ck-build",
+          "title": "Build words with ck /k/",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🦆",
+              "tiles": ["d", "u", "ck", "a"],
+              "a": "duck",
+              "speak": "duck"
+            },
+            {
+              "q": "Build the word: 🧦",
+              "tiles": ["s", "o", "ck", "e"],
+              "a": "sock",
+              "speak": "sock"
+            },
+            {
+              "q": "Build the word: 🪨",
+              "tiles": ["r", "o", "ck", "i"],
+              "a": "rock",
+              "speak": "rock"
+            },
+            {
+              "q": "Build the word: 🔒",
+              "tiles": ["l", "o", "ck", "a"],
+              "a": "lock",
+              "speak": "lock",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Build the word: 🕒",
+              "tiles": ["c", "l", "o", "ck", "sh"],
+              "a": "clock",
+              "speak": "clock",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "dg-ck-read",
+          "title": "Read: The Duck and the Sock",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "The Duck and the Sock",
+            "genre": "literature",
+            "decodable": { "vowels": "aeiou", "names": ["Jack"] },
+            "text": "A duck is on a rock. The duck has a black sock. The duck gets the sock wet. Jack picks up the duck and the sock. Then the duck is back on the rock."
+          },
+          "questions": [
+            {
+              "q": "Where is the duck?",
+              "options": ["on a rock", "in a shop", "on a bed"],
+              "a": "on a rock",
+              "evidence": "A duck is on a rock",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What does the duck have?",
+              "options": ["a black sock", "a red shell", "a big ship"],
+              "a": "a black sock",
+              "evidence": "The duck has a black sock",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Who picks up the duck?",
+              "options": ["Jack", "Seth", "Chip"],
+              "a": "Jack",
+              "evidence": "Jack picks up the duck",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["sock.", "The", "has", "duck", "a", "black"],
+              "a": "The duck has a black sock.",
+              "speak": "The duck has a black sock.",
+              "standard": "RF.K.3c",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "dg-ck-fluency",
+          "title": "Fluency: The Duck and the Sock",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "dg-ck-read"
+          }
+        }
+      ]
+    }
+  ]
+}

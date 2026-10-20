@@ -247,6 +247,16 @@
       "id": "unit-seasons",
       "unit": "k-seasons-weather",
       "lessons": "daily"
+    },
+    {
+      "id": "unit-digraphs",
+      "unit": "k-phonics-digraphs",
+      "lessons": "daily"
+    },
+    {
+      "id": "unit-senses",
+      "unit": "k-five-senses",
+      "lessons": "daily"
     }
   ]
 }

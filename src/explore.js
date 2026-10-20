@@ -98,7 +98,8 @@ class ZoneMap {
     this.list = [...zones]
       .sort((a, b) => a.lon - b.lon)
       .map((z) => {
-        const look = LOOKS[z.id] || DEFAULT_LOOK;
+        // 地带的样子：内置的几个地带有默认样子，章节数据里的 look 可以覆盖（新的层不用改代码）
+        const look = { ...DEFAULT_LOOK, ...(LOOKS[z.id] || {}), ...(z.look || {}) };
         return { ...z, look, rgb: hexRgb(z.color), sky: new THREE.Color(look.sky), light: new THREE.Color(look.light) };
       });
     this.byId = new Map(this.list.map((z) => [z.id, z]));
@@ -136,8 +137,8 @@ class ZoneMap {
   }
 }
 
-/** 星球表面的贴图（经纬度展开）：北极是着陆区原来的蓝色，往外慢慢变成各个地带的颜色 */
-function groundTexture(zones) {
+/** 星球表面的贴图（经纬度展开）：北极是着陆区的颜色（每一层不一样），往外慢慢变成各个地带的颜色 */
+function groundTexture(zones, home = '#4a8fc8') {
   const W = 1024;
   const H = 512;
   const canvas = document.createElement('canvas');
@@ -146,7 +147,7 @@ function groundTexture(zones) {
   const g = canvas.getContext('2d');
   const img = g.createImageData(W, H);
   const data = img.data;
-  const base = hexRgb('#4a8fc8');
+  const base = hexRgb(home);
   // 贴图的横坐标只和经度有关：先算好每一列的地带颜色（SphereGeometry 的 u=0 在 -x，经度 = 270° - u·360°）
   const cols = new Float32Array(W * 3);
   for (let x = 0; x < W; x++) {
@@ -1133,7 +1134,7 @@ export class BixExplore extends EventTarget {
     this.rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
     this.hitMat = new THREE.MeshBasicMaterial({ visible: false });
 
-    stage.setGroundTexture(groundTexture(this.zones));
+    stage.setGroundTexture(groundTexture(this.zones, chapter.surface?.ground));
 
     // 着陆区里不能穿过去的东西：飞船、站点、通往下一层的门和旁边的气象塔
     this.obstacles = [{ dir: siteDir(0, 0), r: 0.75 }];
@@ -1384,7 +1385,8 @@ export class BixExplore extends EventTarget {
     };
     this.discoveries = list.map((data) => {
       const zone = this.zones.byId.get(data.zone);
-      const build = DISCOVERY_BUILDERS[data.id];
+      // model：借用一个已有的模型（比如新的一层的发现物借用风车花）；都没有就是一簇水晶
+      const build = DISCOVERY_BUILDERS[data.model || data.id];
       const part = build ? build(ctx) : mysteryCrystals(ctx, zone?.color || '#b388ff');
       const dir = dirAt(data.at[0], data.at[1]);
       plant(part.group, dir, this.rand() * Math.PI * 2);

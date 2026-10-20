@@ -6,7 +6,7 @@
 // 每把锁只看这一次孩子自己做的结果：没有提示、不计时、不扣星星。没打开就记下“收集到的数据”
 // （哪些词没认出来、哪道题没答对），练完再来；锁打开以后一直开着。两把锁都开了，门打开，升起这一层的设计。
 
-import { UNITS } from './content.js';
+import { UNITS, STORY } from './content.js';
 import { normalizeHomework } from './data.js';
 import { sound, speak, speakSequence, stopSpeaking, canSpeak } from './audio.js';
 import { esc, icanHtml, standardChip, passageHtml } from './lesson.js';
@@ -22,6 +22,11 @@ const shuffle = (list) => {
   return a;
 };
 const dayText = (date) => new Date(`${date}T00:00:00`).toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' });
+
+/** 门后面的那一层（有开场动画的下一章）；最后一层的门通往星核，返回 null */
+function nextChapterOf(door) {
+  return door.to.layer ? Object.values(STORY).find((c) => c.layer === door.to.layer && c.opening) || null : null;
+}
 
 /**
  * 门现在的样子：哪几课还没读、两把锁开没开、能不能试飞；这一章没有门返回 null。
@@ -107,7 +112,7 @@ function flightData(f, unit) {
 }
 
 export class DoorHud {
-  /** ui：toast、openModal（开门以后的解锁卡片）、closePanel、date（今天的日期） */
+  /** ui：toast、openModal（开门以后的解锁卡片）、closePanel、date（今天的日期）、descend（下到下一层：播放下一章的开场） */
   constructor(ui) {
     this.ui = ui;
     this.view = null;
@@ -200,7 +205,9 @@ export class DoorHud {
     let body;
     if (s.opened) {
       const u = door.unlock;
-      body = u ? `<div class="door-unlocked"><span aria-hidden="true">${esc(u.emoji)}</span><div><b>门已经打开，解锁了${esc(u.name)}</b><small>${esc(u.note)}</small></div></div>` : '';
+      const next = nextChapterOf(door);
+      body = `${u ? `<div class="door-unlocked"><span aria-hidden="true">${esc(u.emoji)}</span><div><b>门已经打开，解锁了${esc(u.name)}</b><small>${esc(u.note)}</small></div></div>` : ''}
+        ${next ? `<button class="btn primary wide door-down" data-act="descend">🛗 下到第 ${door.to.layer} 层 · ${esc(door.to.icon || '')} ${esc(door.to.name)}</button>` : ''}`;
     } else if (s.open) {
       body = '<button class="btn primary wide" data-act="unlock">🚪 两把锁都开了，开门！</button>';
     } else if (!s.ready) {
@@ -215,7 +222,7 @@ export class DoorHud {
     return `
       <header>
         <div>
-          <h2>🚪 通往第 ${door.to.layer} 层 · ${esc(door.to.icon || '')} ${esc(door.to.name)}</h2>
+          <h2>${door.to.layer ? `🚪 通往第 ${door.to.layer} 层` : '🚪 通往'} · ${esc(door.to.icon || '')} ${esc(door.to.name)}</h2>
           <p>两把锁都打开，门就开了。试飞不计分、不扣星星：没打开就收集数据，练完再来。</p>
         </div>
         <button class="icon-btn" data-act="close" aria-label="关闭">✕</button>
@@ -487,13 +494,22 @@ export class DoorHud {
     setDoorOpened(ch.id);
     this.render();
     const { unlock: u, to } = s.door;
+    const next = nextChapterOf(s.door);
+    // 最后一层：通往星核，K 年级学完了；其他层：可以下到下一层（还没做好的层显示“正在建造中”）
+    const ending = to.final
+      ? `<div class="next-layer final">🎓 ${esc(to.note || '走到星核，K 年级就学完了！')}</div>`
+      : next
+        ? `<div class="next-layer">${esc(to.icon || '')} 第 ${to.layer} 层 · ${esc(to.name)}：${esc(next.opening.intro || '新的一层在等你')}</div>`
+        : `<div class="next-layer">${esc(to.icon || '')} 第 ${to.layer} 层 · ${esc(to.name)}正在建造中，敬请期待！</div>`;
     this.ui.openModal(`
       <div class="modal-card celebrate door-unlock">
         <div class="celebrate-emoji">${esc(u?.emoji || '🚪')}</div>
-        <h2>第 ${ch.layer} 层的门打开了！</h2>
+        <h2>${to.final ? `${esc(to.icon || '💎')} 到达${esc(to.name)}！` : `第 ${ch.layer} 层的门打开了！`}</h2>
         ${u ? `<p>解锁了 <b>${esc(u.name)}</b></p><p class="unlock-note">${esc(u.note)}</p>` : ''}
-        <div class="next-layer">${esc(to.icon || '')} 第 ${to.layer} 层 · ${esc(to.name)}正在建造中，敬请期待！</div>
-        <div class="modal-actions"><button class="btn primary" data-action="close-modal">好耶！</button></div>
+        ${ending}
+        <div class="modal-actions">
+          ${next ? `<button class="btn ghost" data-action="close-modal">先在这一层逛逛</button><button class="btn primary" data-action="land">🛗 下到第 ${to.layer} 层</button>` : '<button class="btn primary" data-action="close-modal">好耶！</button>'}
+        </div>
       </div>`);
   }
 
@@ -565,6 +581,10 @@ export class DoorHud {
         break;
       case 'unlock':
         this.#unlock();
+        break;
+      case 'descend':
+        this.close();
+        this.ui.descend();
         break;
     }
   }

@@ -87,6 +87,7 @@ export class UI {
       openModal: (html) => this.#openModal(html),
       closePanel: () => this.closePanel(),
       date: () => this.homework.date,
+      descend: () => this.#land(),
     });
     this.door.setView(scene);
     this.wardrobe = new WardrobeHud({

@@ -3,6 +3,7 @@
   "title": "第 1 章 · 气象站",
   "layer": 1,
   "unit": "k-seasons-weather",
+  "voyage": ["k-phonics-short-vowels"],
   "surface": {
     "stations": {
       "RI": { "name": "气象站", "icon": "🌦️" }

@@ -24,6 +24,7 @@ export class OpeningPlayer {
 
   /** 播放一章的开场；看完点“开始探索”或者跳过后 resolve({ stage })，keepStage 时 stage 是留下来的布景 */
   play(chapter) {
+    this.chapter = chapter;
     const op = chapter.opening;
     this.op = op;
     this.school = new Set((op.vocab?.school || []).map((w) => w.toLowerCase()));
@@ -77,6 +78,7 @@ export class OpeningPlayer {
     sound.click();
     this.el.querySelector('.op-start').hidden = true;
     this.stage = new BixStage(this.scene);
+    this.stage.setTheme(this.chapter?.surface);
     this.scene.startCinematic(this.stage);
     this.#run();
   }
