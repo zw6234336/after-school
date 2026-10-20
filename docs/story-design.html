@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>星际破译故事主线</title>
+<style>
+  :root {
+    --bg: #f6f5fb;
+    --surface: #ffffff;
+    --surface-2: #f0eef8;
+    --ink: #1d1b2f;
+    --ink-soft: #5d5a78;
+    --ink-faint: #8a87a6;
+    --line: #e2dfef;
+    --accent: #6a4cff;
+    --gold-soft: #fff3cf;
+    --ok: #15924d;
+    --ok-soft: #dcf7e7;
+    --bad: #d83a55;
+    --RF: #e08a00; --RL: #d6407f; --RI: #0b8fc4; --L: #7b4fe0; --W: #1f9a55; --SL: #b58900;
+    --radius: 18px;
+    --font: 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0c0f24; --surface: #151a38; --surface-2: #1c2248; --ink: #eef0ff; --ink-soft: #b0b6dd; --ink-faint: #7c83b3;
+      --line: #2a3163; --accent: #a594ff; --gold-soft: #3a3214; --ok: #4ade80; --ok-soft: #12351f; --bad: #ff6b8b;
+      --RF: #ffb84d; --RL: #ff7eb6; --RI: #4cc9f0; --L: #b388ff; --W: #80ed99; --SL: #ffd166;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0c0f24; --surface: #151a38; --surface-2: #1c2248; --ink: #eef0ff; --ink-soft: #b0b6dd; --ink-faint: #7c83b3;
+    --line: #2a3163; --accent: #a594ff; --gold-soft: #3a3214; --ok: #4ade80; --ok-soft: #12351f; --bad: #ff6b8b;
+    --RF: #ffb84d; --RL: #ff7eb6; --RI: #4cc9f0; --L: #b388ff; --W: #80ed99; --SL: #ffd166;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); }
+  button { font: inherit; color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  section { padding: 56px 0 8px; scroll-margin-top: 8px; }
+  h2 { font-size: 26px; line-height: 1.3; margin: 0 0 4px; }
+  h3 { font-size: 17px; margin: 0 0 6px; }
+  p { margin: 0; }
+  .sub { color: var(--ink-soft); max-width: 46em; }
+  .muted { color: var(--ink-soft); }
+  .small { font-size: 13.5px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; min-width: 0; }
+  .grid { display: grid; gap: 14px; }
+  .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  @media (max-width: 960px) { .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 860px) { .g3, .g2 { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 520px) { .g4 { grid-template-columns: minmax(0, 1fr); } }
+  .pill { display: inline-flex; align-items: center; gap: 3px; padding: 1px 9px; border-radius: 99px; font-size: 12px; font-weight: 800; border: 1px solid currentColor; white-space: nowrap; font-family: var(--mono); }
+  .s-RF { color: var(--RF); } .s-RL { color: var(--RL); } .s-RI { color: var(--RI); } .s-L { color: var(--L); } .s-W { color: var(--W); } .s-SL { color: var(--SL); }
+  .sec-head { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 22px; }
+  .sec-head .num { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; background: var(--accent); color: #fff; font-weight: 800; font-size: 17px; margin-top: 2px; }
+  .note { padding: 12px 14px; border-radius: 14px; background: var(--gold-soft); font-size: 14px; }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; overflow: hidden; color: #eef0ff; background: radial-gradient(1100px 500px at 85% -10%, #3b2a8a 0%, transparent 60%), radial-gradient(800px 400px at 0% 110%, #7a1f5c 0%, transparent 55%), #070a1f; }
+  .hero::before, .screen::before { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(1.5px 1.5px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 70% 20%, #fff, transparent), radial-gradient(1.2px 1.2px at 40% 80%, #fff, transparent), radial-gradient(1px 1px at 85% 65%, #fff, transparent), radial-gradient(1.5px 1.5px at 10% 70%, #fff, transparent), radial-gradient(1px 1px at 55% 50%, #fff, transparent); background-size: 260px 260px; opacity: 0.6; }
+  .hero .wrap { position: relative; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px; align-items: center; padding-top: 52px; padding-bottom: 44px; }
+  @media (max-width: 820px) { .hero .wrap { grid-template-columns: minmax(0, 1fr); } .hero svg { max-width: 260px; margin: 0 auto; } }
+  .kicker { font-size: 13px; letter-spacing: 0.12em; color: #b9b2ff; font-weight: 700; }
+  .hero h1 { font-size: clamp(34px, 5.6vw, 54px); margin: 8px 0 14px; line-height: 1.15; background: linear-gradient(90deg, #ffe08a, #ff9fd2 50%, #8fd8ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero .lead { font-size: 17px; color: #d4d8ff; margin-bottom: 22px; max-width: 36em; }
+  .toc { display: flex; flex-wrap: wrap; gap: 8px; }
+  .toc a { padding: 6px 12px; border-radius: 99px; font-size: 13px; font-weight: 700; color: #eef0ff; text-decoration: none; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18); }
+  .toc a:hover { background: rgba(255, 255, 255, 0.16); }
+  .toc a b { color: #ffd166; margin-right: 4px; }
+  .hero svg { width: 100%; height: auto; display: block; }
+
+  /* 一句话 */
+  .equals { display: grid; gap: 6px; align-content: start; }
+  .equals .big { font-size: 19px; font-weight: 800; line-height: 1.35; }
+  .equals .big span { color: var(--accent); }
+
+  /* 借鉴星舰 */
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 13px; color: var(--ink-faint); font-weight: 600; white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 700; }
+  .table-card { padding: 4px 6px; overflow-x: auto; }
+  @media (max-width: 680px) {
+    .table-card thead { display: none; }
+    .table-card tr { display: grid; gap: 3px; padding: 12px 8px; border-bottom: 1px solid var(--line); }
+    .table-card tr:last-child { border-bottom: none; }
+    .table-card td { padding: 0; border: none; }
+    .table-card td[data-k]::before { content: attr(data-k) '：'; color: var(--ink-faint); font-weight: 600; }
+  }
+
+  /* 星球剖面 */
+  .planet { display: grid; gap: 6px; }
+  .layer { --i: 0; position: relative; margin-inline: calc(var(--i) * 4.5%); padding: 14px 16px; border-radius: 26px 26px 14px 14px; color: #f5f7ff; background: var(--lc); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25); }
+  @media (max-width: 640px) { .layer { margin-inline: calc(var(--i) * 2%); } }
+  .layer header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+  .layer header b { font-size: 16px; }
+  .layer header small { color: rgba(245, 247, 255, 0.78); font-size: 13px; }
+  .layer .what { margin-top: 4px; font-size: 13.5px; color: rgba(245, 247, 255, 0.88); }
+  .layer .row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .district { padding: 3px 10px; border-radius: 99px; font-size: 12.5px; font-weight: 700; background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.22); }
+  .district.ready { background: #ffd166; color: #3a2a00; border-color: transparent; }
+  .locks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(255, 255, 255, 0.3); font-size: 12.5px; }
+  .lock { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 10px; background: rgba(0, 0, 0, 0.22); }
+  .lock code { font-family: var(--mono); font-size: 11.5px; color: #ffe08a; }
+  .surface-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-faint); padding: 0 6px; }
+
+  /* 角色 */
+  .who { display: grid; gap: 6px; align-content: start; text-align: center; }
+  .who .face { font-size: 44px; line-height: 1.2; }
+  .who b { font-size: 16px; }
+  .who small { color: var(--ink-faint); font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
+  .who p { font-size: 13.5px; color: var(--ink-soft); text-align: left; }
+
+  /* 设备里的 App：始终深色 */
+  .screen { --a-ink: #f5f7ff; --a-soft: #b9c1e8; --a-faint: #7f89b8; --a-line: rgba(160, 175, 255, 0.2); --a-gold: #ffd166; --a-ok: #4ade80; --a-bad: #ff6b8b;
+    position: relative; border-radius: 20px; padding: 14px; color: var(--a-ink); color-scheme: dark; overflow: hidden;
+    background: radial-gradient(500px 260px at 95% -10%, #2b2370, transparent 60%), radial-gradient(420px 280px at -10% 110%, #561a48, transparent 60%), #070a1f;
+    box-shadow: 0 0 0 1px #2b3060, 0 18px 44px rgba(20, 16, 60, 0.2); }
+  .screen > * { position: relative; }
+  .apanel { display: grid; gap: 12px; padding: 14px; border-radius: 16px; background: rgba(14, 19, 48, 0.92); border: 1px solid rgba(124, 200, 255, 0.35); }
+  .apanel > * { min-width: 0; }
+  .lbl { font-size: 12px; font-weight: 700; color: var(--a-soft); }
+  .abtn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 11px; border: 1px solid var(--a-line); background: rgba(255, 255, 255, 0.06); color: var(--a-ink); font-weight: 700; font-size: 13px; cursor: pointer; }
+  .abtn[aria-pressed="true"] { border-color: var(--a-gold); background: rgba(255, 209, 102, 0.18); }
+
+  /* 翻译机 demo */
+  .msg { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 10px; align-items: start; }
+  .msg .av { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; font-size: 26px; background: rgba(128, 237, 153, 0.18); }
+  .bubble { padding: 12px 14px; border-radius: 4px 16px 16px 16px; background: #fbf7ee; color: #2a2340; font: 600 19px/1.8 Georgia, 'Times New Roman', serif; }
+  .tk { display: inline-block; padding: 0 2px; border-radius: 5px; cursor: pointer; transition: background 0.2s; }
+  .tk.alien { color: #7b4fe0; font-family: var(--font); letter-spacing: 1px; font-size: 16px; background: rgba(123, 79, 224, 0.1); }
+  .tk.alien:hover, .tk.hear { background: rgba(123, 79, 224, 0.22); }
+  .tk.fresh { animation: fresh 0.8s ease; }
+  @keyframes fresh { 0% { background: #ffd166; } 100% { background: transparent; } }
+  .zh { margin-top: 6px; font: 500 13.5px/1.5 var(--font); color: #6b6280; }
+  .tip { min-height: 1.5em; font-size: 13px; color: #ffe7a6; }
+  .meter { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; font-size: 13px; }
+  .meter input { width: 100%; accent-color: #ffd166; }
+  .meter b { color: var(--a-gold); font-variant-numeric: tabular-nums; }
+  .levels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; font-size: 12px; text-align: center; }
+  .levels span { padding: 6px 4px; border-radius: 10px; background: rgba(255, 255, 255, 0.05); color: var(--a-faint); line-height: 1.35; }
+  .levels span.on { background: rgba(255, 209, 102, 0.18); color: #ffe7a6; outline: 1px solid rgba(255, 209, 102, 0.6); }
+
+  /* 两把锁的门 */
+  .door { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .lockcard { padding: 10px 12px; border-radius: 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--a-line); font-size: 13px; }
+  .lockcard b { display: block; font-size: 14px; }
+  .lockcard code { font-family: var(--mono); font-size: 11px; color: #ffe08a; }
+  .lockcard .bar { height: 8px; margin: 8px 0 4px; border-radius: 99px; background: rgba(255, 255, 255, 0.1); overflow: hidden; }
+  .lockcard .bar i { display: block; height: 100%; border-radius: inherit; }
+  .lockcard.open { border-color: var(--a-ok); background: rgba(74, 222, 128, 0.08); }
+  .flights { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 13px; }
+  .flights li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; padding: 8px 10px; border-radius: 12px; background: rgba(255, 255, 255, 0.04); }
+  .flights li.ok { background: rgba(74, 222, 128, 0.1); }
+  .flights small { display: block; color: var(--a-soft); font-size: 12px; }
+  @media (max-width: 460px) { .door { grid-template-columns: minmax(0, 1fr); } }
+
+  /* 开场动画 */
+  .op-row { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .op-row { grid-template-columns: minmax(0, 1fr); } }
+  .stage { position: relative; aspect-ratio: 16 / 10; min-height: 300px; border-radius: 20px; overflow: hidden; color: #f5f7ff;
+    background: radial-gradient(500px 260px at 90% -10%, #2b2370, transparent 60%), #070a1f; box-shadow: 0 0 0 1px #2b3060, 0 18px 44px rgba(20, 16, 60, 0.2); }
+  .stage > * { position: absolute; transition: opacity 0.6s, transform 0.8s; }
+  @media (max-width: 600px) { .stage { aspect-ratio: auto; min-height: 0; height: 340px; } }
+  .strata { inset: 0; opacity: 0; background: repeating-linear-gradient(180deg, #3a2a52 0 34px, #4b3566 34px 60px, #2e2247 60px 96px, #5a3d6e 96px 120px); background-size: 100% 240px; }
+  .stage[data-scene="fly"] .strata { opacity: 1; animation: rise 1.2s linear infinite; }
+  @keyframes rise { to { background-position: 0 -240px; } }
+  .capsule { left: 50%; top: 38%; font-size: 56px; transform: translate(-50%, -50%) rotate(180deg); opacity: 0; filter: drop-shadow(0 0 16px rgba(255, 184, 77, 0.7)); }
+  .stage[data-scene="fly"] .capsule { opacity: 1; animation: bob 1.6s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translate(-50%, -44%) rotate(180deg); } }
+  .cave { inset: 0; opacity: 0; background: radial-gradient(60% 50% at 50% 100%, rgba(124, 200, 255, 0.25), transparent 70%), linear-gradient(180deg, #1a1440, #2b1f55 70%, #3a2a66); }
+  .stage:is([data-scene="zib"], [data-scene="ask"], [data-scene="market"], [data-scene="sign"]) .cave { opacity: 1; }
+  .stalls { left: 4%; right: 4%; bottom: 26%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3%; opacity: 0; transform: translateY(20px); }
+  .stage:is([data-scene="market"], [data-scene="ask2"], [data-scene="sign"]) .stalls { opacity: 1; transform: none; }
+  .stage[data-scene="ask2"] .cave { opacity: 1; }
+  .stall { position: relative; display: grid; place-items: center; height: clamp(54px, 12vw, 92px); border-radius: 0 0 12px 12px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16); font-size: clamp(22px, 5vw, 36px); }
+  .stall i { position: absolute; left: -6%; right: -6%; top: -16px; height: 18px; border-radius: 10px 10px 4px 4px; background: repeating-linear-gradient(90deg, #ff7eb6 0 14px, #ffe08a 14px 28px); }
+  .zib { left: 50%; bottom: 24%; display: flex; align-items: flex-end; gap: 2px; transform: translateX(-50%) scale(0.6); opacity: 0; }
+  .zib .body { font-size: clamp(54px, 11vw, 84px); line-height: 1; }
+  .zib .mitts { font-size: clamp(22px, 4.5vw, 34px); animation: wave 1s ease-in-out infinite; }
+  @keyframes wave { 50% { transform: rotate(-18deg) translateY(-4px); } }
+  .stage:is([data-scene="zib"], [data-scene="ask"]) .zib { opacity: 1; transform: translateX(-50%) scale(1); }
+  .stage:is([data-scene="market"], [data-scene="ask2"], [data-scene="sign"]) .zib { opacity: 1; left: 86%; bottom: 52%; transform: translateX(-50%) scale(0.62); }
+  .sign { left: 50%; top: 10%; transform: translateX(-50%) rotate(-2deg) scale(0.8); opacity: 0; padding: 10px 18px; border-radius: 12px; background: #3b2a12; border: 3px solid #a07a3a; color: #ffe08a; font-size: clamp(22px, 5vw, 34px); letter-spacing: 4px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); }
+  .stage[data-scene="sign"] .sign { opacity: 1; transform: translateX(-50%) rotate(-2deg) scale(1); }
+  .title-card { inset: 0; display: grid; place-content: center; justify-items: center; gap: 4px; text-align: center; opacity: 0; transform: scale(0.94);
+    background: radial-gradient(closest-side, rgba(255, 209, 102, 0.2), transparent), rgba(7, 10, 31, 0.86); pointer-events: none; }
+  .title-card small { font-size: 14px; letter-spacing: 0.2em; color: #b9b2ff; }
+  .title-card b { font-size: clamp(30px, 6vw, 44px); }
+  .title-card span { font-size: 15px; color: #ffe7a6; }
+  .stage[data-scene="title"] .title-card { opacity: 1; transform: none; }
+  .subtitle { left: 3%; right: 3%; bottom: 4%; padding: 10px 14px; border-radius: 14px; background: rgba(7, 10, 31, 0.78); backdrop-filter: blur(6px); text-align: center; opacity: 0; }
+  .subtitle.show { opacity: 1; }
+  .subtitle .en { font: 700 clamp(17px, 3.4vw, 22px)/1.5 Georgia, 'Times New Roman', serif; }
+  .subtitle .zh { font-size: 12.5px; color: #b9c1e8; }
+  .subtitle .w { padding: 0 1px; border-radius: 4px; cursor: pointer; transition: background 0.15s, color 0.15s; }
+  .subtitle .w.learned { text-decoration: underline 2px rgba(255, 209, 102, 0.75); text-underline-offset: 5px; }
+  .subtitle .w.school { text-decoration: underline 2px rgba(124, 200, 255, 0.85); text-underline-offset: 5px; }
+  .subtitle .w.on { background: #ffd166; color: #1b1440; text-decoration: none; }
+  .ask { left: 50%; top: 46%; transform: translate(-50%, -50%); width: min(92%, 440px); max-height: 88%; overflow-y: auto; padding: 14px; border-radius: 16px; background: rgba(14, 19, 48, 0.95); border: 1px solid rgba(255, 209, 102, 0.6); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5); text-align: center; z-index: 2; }
+  .stage[data-scene="ask2"] .ask { top: 26%; }
+  .ask .q { font: 700 clamp(16px, 3.2vw, 20px)/1.4 Georgia, 'Times New Roman', serif; }
+  .ask .tag { display: block; margin-bottom: 4px; font-size: 11.5px; color: #b9b2ff; font-weight: 700; }
+  .ask .opts { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+  .ask .opts button { min-width: 96px; padding: 10px 16px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.25); background: rgba(255, 255, 255, 0.08); color: #f5f7ff; font: 700 18px/1 Georgia, serif; cursor: pointer; }
+  .ask .opts button.school { text-decoration: underline 2px rgba(124, 200, 255, 0.85); text-underline-offset: 5px; }
+  .ask .opts button.learned { text-decoration: underline 2px rgba(255, 209, 102, 0.75); text-underline-offset: 5px; }
+  .ask .opts button.ok { background: #4ade80; color: #06301a; border-color: transparent; }
+  .ask .opts button.no { opacity: 0.45; text-decoration: line-through; }
+  .ask .ev { margin-top: 10px; padding: 8px 10px; border-radius: 10px; background: #fbf7ee; color: #2a2340; font: 15px/1.5 Georgia, serif; text-align: left; }
+  .ask .ev small { display: block; font: 600 11.5px/1.4 var(--font); color: #6b6280; margin-bottom: 2px; }
+  .ask .ev mark { background: #ffd166; padding: 0 2px; border-radius: 3px; }
+  .play { left: 50%; top: 50%; transform: translate(-50%, -50%); display: grid; gap: 2px; padding: 14px 22px; border: none; border-radius: 18px; background: linear-gradient(180deg, #ffe08a, #ffb84d); color: #1b1440; font-weight: 800; font-size: 17px; cursor: pointer; box-shadow: 0 4px 0 #c77d16, 0 0 40px rgba(255, 209, 102, 0.4); z-index: 3; }
+  .play small { font-size: 12px; font-weight: 600; }
+  .play[hidden] { display: none; }
+  .op-bar { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  .dots { display: flex; gap: 5px; margin-right: auto; }
+  .dots i { width: 22px; height: 6px; border-radius: 99px; background: var(--line); }
+  .dots i.done { background: var(--accent); }
+  .dots i.now { background: #e09b00; }
+  .ghost { padding: 6px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-size: 13px; font-weight: 700; cursor: pointer; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 10px; font-size: 12.5px; color: var(--ink-soft); }
+  .lg::before { content: ''; display: inline-block; width: 18px; height: 4px; margin-right: 6px; vertical-align: middle; border-radius: 2px; background: var(--line); }
+  .lg.learned::before { background: #e0a800; }
+  .lg.school::before { background: #3fa7e0; }
+  .lg.preview::before { background: #7b4fe0; }
+  .op-side h3 { margin-bottom: 10px; }
+  .reviews { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 10px; }
+  .reviews li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px; align-items: start; }
+  .reviews li > span { font-size: 20px; line-height: 1.2; }
+  .reviews b { display: block; font-size: 14.5px; }
+  .reviews small { color: var(--ink-faint); font-size: 12.5px; }
+  .reviews code { font-family: var(--mono); font-size: 11.5px; }
+  td code { font-family: var(--mono); font-size: 12.5px; background: var(--surface-2); padding: 1px 6px; border-radius: 5px; }
+
+  /* 分镜 */
+  .board { counter-reset: beat; }
+  .beat { display: grid; gap: 10px; align-content: start; }
+  .beat .frame { position: relative; aspect-ratio: 4 / 3; border-radius: 16px; overflow: hidden; display: grid; place-items: center; background: radial-gradient(260px 180px at 80% 0%, #2b2370, transparent 70%), #070a1f; color: #f5f7ff; text-align: center; padding: 10px; }
+  .beat .frame::before { counter-increment: beat; content: counter(beat); position: absolute; top: 8px; left: 8px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: #ffd166; color: #1b1440; font-size: 12px; font-weight: 800; }
+  .beat .art { font-size: 40px; line-height: 1.2; }
+  .beat .say { margin-top: 6px; font-size: 12.5px; color: #d4d8ff; }
+  .beat .say i { color: #ffe08a; font-style: normal; }
+  .beat b { font-size: 15px; }
+  .beat p { font-size: 13.5px; color: var(--ink-soft); }
+  .beat .tags { display: flex; flex-wrap: wrap; gap: 4px; }
+
+  /* 数据 */
+  pre { margin: 0; padding: 16px; border-radius: 14px; background: #0f1330; color: #dfe3ff; font: 12.5px/1.6 var(--mono); overflow-x: auto; }
+  pre .c { color: #8a92c8; }
+
+  .rules { list-style: none; counter-reset: r; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .rules li { counter-increment: r; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; }
+  .rules li::before { content: counter(r); width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; background: var(--surface-2); font-weight: 800; font-size: 13px; }
+  .rules li b { display: block; }
+  .rules li span { color: var(--ink-soft); font-size: 14px; }
+  footer { padding: 48px 0 56px; color: var(--ink-faint); font-size: 13px; text-align: center; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="kicker">使命星球 · 故事主线设计稿</div>
+      <h1>星际破译<br />Mission to Planet Bix</h1>
+      <p class="lead">小宇航员乘着不锈钢星舰降落在 Bix 星，发现原住民说的话一句都听不懂。只有学会他们的语言，才能一层层走进星球内部，见到更多原住民，参观他们的设计。而他们说的语言，其实就是英语。</p>
+      <nav class="toc" aria-label="目录">
+        <a href="#idea"><b>1</b>一句话</a>
+        <a href="#ship"><b>2</b>借鉴星舰</a>
+        <a href="#planet"><b>3</b>星球剖面</a>
+        <a href="#cast"><b>4</b>角色</a>
+        <a href="#mech"><b>5</b>核心机制</a>
+        <a href="#opening"><b>6</b>开场动画</a>
+        <a href="#ch1"><b>7</b>第一章分镜</a>
+        <a href="#data"><b>8</b>数据</a>
+        <a href="#rules"><b>9</b>规则和落地</a>
+      </nav>
+    </div>
+    <svg viewBox="0 0 260 300" role="img" aria-label="不锈钢星舰立在发射塔旁，塔上有两只机械臂">
+      <defs>
+        <linearGradient id="steel" x1="0" x2="1">
+          <stop offset="0" stop-color="#8d96b3" /><stop offset="0.35" stop-color="#f3f5fb" /><stop offset="0.6" stop-color="#c9cfe0" /><stop offset="1" stop-color="#7c86a6" />
+        </linearGradient>
+        <linearGradient id="flame" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#fff3b0" /><stop offset="0.5" stop-color="#ffb84d" /><stop offset="1" stop-color="#ff6b35" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+      <!-- 发射塔 -->
+      <g stroke="#5b6390" stroke-width="2" fill="none">
+        <rect x="186" y="40" width="26" height="236" />
+        <path d="M186 60 L212 84 M212 60 L186 84 M186 108 L212 132 M212 108 L186 132 M186 156 L212 180 M212 156 L186 180 M186 204 L212 228 M212 204 L186 228" />
+      </g>
+      <!-- 机械臂（“筷子”） -->
+      <g fill="#7b84ad">
+        <rect x="136" y="96" width="52" height="7" rx="3" />
+        <rect x="136" y="114" width="52" height="7" rx="3" />
+      </g>
+      <!-- 船身 -->
+      <path d="M100 74 Q100 22 126 10 Q152 22 152 74 L152 250 L100 250 Z" fill="url(#steel)" stroke="#6b7398" stroke-width="1.5" />
+      <path d="M100 82 L84 104 L100 112 Z M152 82 L168 104 L152 112 Z" fill="#3a4064" />
+      <path d="M100 214 L80 250 L100 246 Z M152 214 L172 250 L152 246 Z" fill="#3a4064" />
+      <path d="M100 150 L152 150" stroke="#9aa3c2" stroke-width="1" />
+      <circle cx="126" cy="64" r="7" fill="#7cc8ff" stroke="#3a4064" stroke-width="2" />
+      <text x="126" y="200" text-anchor="middle" font-size="12" font-weight="800" fill="#3a4064" font-family="ui-monospace, Menlo, monospace" transform="rotate(-90 126 200)">MISSION-1</text>
+      <!-- 火焰 -->
+      <path d="M106 250 Q126 300 146 250 Z" fill="url(#flame)" />
+      <rect x="20" y="276" width="220" height="6" rx="3" fill="#2b3060" />
+    </svg>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- 1 一句话 -->
+  <section id="idea">
+    <div class="sec-head"><span class="num">1</span><div>
+      <h2>一句话：外星语就是英语</h2>
+      <p class="sub">故事不是另外加的一层游戏。故事里要做的每件事，都正好是孩子要学的东西，所以“推进剧情”和“学会英语”是同一件事。</p>
+    </div></div>
+    <div class="grid g3">
+      <div class="card equals"><div class="big">破译外星语 <span>=</span> 认字解码</div><p class="muted small">原住民的话一开始是看不懂的符号。孩子学会一个词，翻译机就把这个词显示成英文。对应 RF：音素意识、自然拼读、高频词。</p></div>
+      <div class="card equals"><div class="big">走进星球深处 <span>=</span> 掌握标准</div><p class="muted small">每一层的门有两把锁，要拿出掌握的证据才能打开，看的不是分数和速度。对应逆向设计：先定目标，再定证据。</p></div>
+      <div class="card equals"><div class="big">给原住民讲地球 <span>=</span> 说和写</div><p class="muted small">Bix 星没有四季，原住民很好奇。孩子用读到的知识回答他们、给他们写信，说和写就有了真实的理由。对应 W、SL 和文本证据。</p></div>
+    </div>
+  </section>
+
+  <!-- 2 借鉴星舰 -->
+  <section id="ship">
+    <div class="sec-head"><span class="num">2</span><div>
+      <h2>借鉴星舰：拿来做法，不拿名字</h2>
+      <p class="sub">真实的星舰项目有几种很适合讲给孩子听的做法。我们把它们变成游戏机制，飞船、人物和名字都用自己的。</p>
+    </div></div>
+    <div class="card table-card">
+      <table>
+        <thead><tr><th>真实星舰的做法</th><th>故事里</th><th>学习上的作用</th></tr></thead>
+        <tbody>
+          <tr><td>一次次试飞，出问题就改进再飞</td><td data-k="故事里">每次挑战门锁叫一次“试飞”。没成功就“收集数据”：告诉孩子具体是哪个词、哪条标准，练完再飞</td><td data-k="作用">成长型思维：失败是正常的，不扣星星</td></tr>
+          <tr><td>飞向深空前要在轨道上加注燃料</td><td data-k="故事里">每天完成使命任务就给飞船加一次燃料（现在页面上的燃料条），燃料够了才能飞往下一站</td><td data-k="作用">每天坚持，比一次做很多更重要</td></tr>
+          <tr><td>发射塔的机械臂把返回的助推器接住</td><td data-k="故事里">当天的使命任务全部完成，助推器返回、被机械臂稳稳接住，作为庆祝动画</td><td data-k="作用">一天的收尾仪式</td></tr>
+          <tr><td>发射前逐项确认 Go / No-go</td><td data-k="故事里">今天的学习路径就是发射前检查，每完成一项，地面控制中心（家长）喊一声 “Go”</td><td data-k="作用">任务清单变成仪式，家长参与</td></tr>
+          <tr><td>不锈钢船体，降落前翻身减速</td><td data-k="故事里">飞船的外观和着陆动画，三维场景里的火箭换成银色不锈钢风格</td><td data-k="作用">好看，有真实感</td></tr>
+          <tr><td>目标是去另一颗星球建立家园</td><td data-k="故事里">我们的目标是和 Bix 星原住民成为朋友，走到星核</td><td data-k="作用">给一整年的学习一个大目标</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note" style="margin-top:14px">📌 <b>边界：</b>马斯克本人不进故事，SpaceX、Starship 这些名字和标志也不用。我们借鉴的是做事方式（不断试飞、改进）和梦想（去别的星球）。飞船叫“使命号”（MISSION‑1），应用叫“使命星球”。</p>
+    <p class="note" style="margin-top:10px">🏷️ <b>叫法：</b>孩子看到的地方一律叫“使命任务”（短句里叫“任务”，比如“还差 3 项任务”），不出现“作业”两个字。家长报告、README 和作业文件的说明里仍然叫“作业”，因为家长布置的确实是学校作业。</p>
+  </section>
+
+  <!-- 3 星球剖面 -->
+  <section id="planet">
+    <div class="sec-head"><span class="num">3</span><div>
+      <h2>星球剖面：往深处 = 能力，往四周 = 知识</h2>
+      <p class="sub">Bix 星从外到里分成五层，大约对应 K 年级一整年。每一层有几个街区，每个街区是一个知识单元，同一层的街区可以按任意顺序去，跟着学校的进度走就行。每一层的门有两把锁：解码锁（RF）和理解锁（RL / RI / W / SL），这正好对应“理解 = 解码 × 语言理解”。</p>
+    </div></div>
+    <div class="planet">
+      <div class="surface-label"><span>☀️ 地表</span><span>越往下越深 ↓</span></div>
+      <div class="layer" style="--i:0;--lc:linear-gradient(135deg,#1d6fa5,#2a4f9a)">
+        <header><b>🛬 第 1 层 · 着陆区</b><small>认识字母和发音，读短信</small></header>
+        <p class="what">原住民的告示和来信，先认出词，再读懂信里说了什么。</p>
+        <div class="row"><span class="district ready">🌦️ 气象站 · Seasons and Weather ✓ 内容已就绪</span><span class="district">🌱 温室 · Plants</span><span class="district">🐄 农场 · Farms</span></div>
+        <div class="locks"><span class="lock">🔤 解码锁 <code>RF.K.3</code></span><span class="lock">🔍 理解锁 <code>RI.K.1</code></span></div>
+      </div>
+      <div class="layer" style="--i:1;--lc:linear-gradient(135deg,#3b3aa0,#5a3aa8)">
+        <header><b>🛍️ 第 2 层 · 集市</b><small>高频词和句子</small></header>
+        <p class="what">和摊主对话，用完整的句子问和答。</p>
+        <div class="row"><span class="district">👂 感官馆 · The Five Senses</span><span class="district">🏰 城堡 · Kings and Queens</span></div>
+        <div class="locks"><span class="lock">🔤 解码锁 <code>RF.K.3c</code></span><span class="lock">🧩 理解锁 <code>L.K.1</code></span></div>
+      </div>
+      <div class="layer" style="--i:2;--lc:linear-gradient(135deg,#6a2f9a,#8a2f84)">
+        <header><b>📚 第 3 层 · 图书馆</b><small>故事和寓言</small></header>
+        <p class="what">原住民收藏的地球故事，读完讲给管理员听。</p>
+        <div class="row"><span class="district">🦗 寓言厅 · Fables</span><span class="district">📖 故事厅 · Stories</span></div>
+        <div class="locks"><span class="lock">🔤 解码锁 <code>RF.K.4</code></span><span class="lock">📚 理解锁 <code>RL.K.2</code></span></div>
+      </div>
+      <div class="layer" style="--i:3;--lc:linear-gradient(135deg,#8a2f5a,#a8442f)">
+        <header><b>🏛️ 第 4 层 · 设计院</b><small>说明文和原住民的设计</small></header>
+        <p class="what">参观原住民的建筑和发明。展品说明讲的都是地球上的真实知识，因为原住民在研究地球。</p>
+        <div class="row"><span class="district">🌍 地球研究所 · Taking Care of the Earth</span></div>
+        <div class="locks"><span class="lock">🔤 解码锁 <code>RF.K.3</code></span><span class="lock">🔬 理解锁 <code>RI.K.2</code></span></div>
+      </div>
+      <div class="layer" style="--i:4;--lc:linear-gradient(135deg,#a8622f,#c9932f)">
+        <header><b>💎 第 5 层 · 星核议会</b><small>当地球大使</small></header>
+        <p class="what">给议会写信、做一次发言，介绍地球。走到这里，K 年级就学完了，下一颗星球对应一年级。</p>
+        <div class="locks"><span class="lock">🔤 解码锁 <code>RF.K.4</code></span><span class="lock">✍️ 理解锁 <code>W.K.2 · SL.K.4</code></span></div>
+      </div>
+    </div>
+    <p class="muted small" style="margin-top:12px">街区名后面的英文是 CKLA K 年级的单元，内容库里目前只做好了 Seasons and Weather，其余待改编。门锁里的标准是示意，具体每层考哪几条，等单元做出来再定。</p>
+  </section>
+
+  <!-- 4 角色 -->
+  <section id="cast">
+    <div class="sec-head"><span class="num">4</span><div>
+      <h2>角色</h2>
+      <p class="sub">角色少而固定，每个都承担一个学习上的作用。</p>
+    </div></div>
+    <div class="grid g4">
+      <div class="card who"><div class="face">🧑‍🚀</div><b>小宇航员</b><small>孩子 · 舰长</small><p>就是作业文件里的 “child”。在故事里既是学习者，也是地球派来的大使。</p></div>
+      <div class="card who"><div class="face">👽</div><b>Zib</b><small>原住民小向导</small><p>和孩子一样在学一门听不懂的语言。它带孩子参观星球，孩子给它讲地球。名字是 z‑i‑b 三个音，K 年级就能拼读出来。</p></div>
+      <div class="card who"><div class="face">🎧</div><b>地面控制中心</b><small>家长</small><p>发射前喊 “Go”，确认打卡和写作，看报告。对应现在的家长模式，只是换了个身份。</p></div>
+      <div class="card who"><div class="face">📟</div><b>翻译机</b><small>辅助工具</small><p>帮孩子听懂原住民的话，帮助的多少随孩子的掌握程度减少，就是渐进释放（I do → We do → You do）。</p></div>
+    </div>
+  </section>
+
+  <!-- 5 核心机制 -->
+  <section id="mech">
+    <div class="sec-head"><span class="num">5</span><div>
+      <h2>核心机制：翻译机和两把锁的门</h2>
+      <p class="sub">左边可以拖动滑块试试：孩子学会的词越多，翻译机能翻出来的越多，给的帮助越少。点紫色的外星符号可以听这个词。</p>
+    </div></div>
+    <div class="grid g2">
+      <div class="screen">
+        <div class="apanel">
+          <div class="lbl">📟 翻译机 · 来自 Zib 的消息</div>
+          <div class="msg">
+            <div class="av">👽</div>
+            <div>
+              <div class="bubble" id="bubble"></div>
+              <div class="zh" id="zh"></div>
+            </div>
+          </div>
+          <div class="tip" id="tip"></div>
+          <div class="meter"><span>已经学会</span><input id="known" type="range" min="0" max="2" step="1" value="1" aria-label="已经学会的词" /><b id="known-label"></b></div>
+          <div class="levels" id="levels">
+            <span data-l="0">👂 I do<br />全部朗读 + 中文翻译</span>
+            <span data-l="1">👫 We do<br />点不认识的词才帮忙</span>
+            <span data-l="2">🙋 You do<br />不再翻译</span>
+          </div>
+        </div>
+      </div>
+      <div class="screen">
+        <div class="apanel">
+          <div class="lbl">🚪 第 1 层的门 · 两把锁都打开才能下去</div>
+          <div class="door">
+            <div class="lockcard open"><b>🔤 解码锁 🔓</b><code>RF.K.3</code> 读对本层的 10 个词<div class="bar"><i style="width:90%;background:#4ade80"></i></div>9 / 10 · 达到 8 个就开</div>
+            <div class="lockcard"><b>🔍 理解锁 🔒</b><code>RI.K.1</code> 出门条：答对并找到证据<div class="bar"><i style="width:50%;background:#ffd166"></i></div>2 题里答对 1 题</div>
+          </div>
+          <div class="lbl">🛰️ 试飞记录</div>
+          <ol class="flights">
+            <li><span>🧪</span><div>试飞 1 · 解码锁没打开<small>收集到的数据：thermometer、mittens 读错了 → 回气象站练这两个词</small></div></li>
+            <li class="ok"><span>✅</span><div>试飞 2 · 解码锁打开<small>9 / 10，飞船记下了进步</small></div></li>
+            <li><span>🧪</span><div>试飞 3 · 理解锁还差一点<small>收集到的数据：证据句没找对 → 换一篇短信再练找证据</small></div></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div class="grid g3" style="margin-top:14px">
+      <div class="card"><h3>📟 翻译机认识的词 = 孩子掌握的词</h3><p class="muted small">翻译机的词库来自进度记录：一个词在阅读、拼词、写作里独立答对过，就算掌握了。原住民的信用学过的词来写，所以孩子越学，看得懂的越多。</p></div>
+      <div class="card"><h3>🚪 门锁看证据，不看分数</h3><p class="muted small">门锁只看 You do 阶段和出门条的结果。示范和一起做的阶段答错不算。没有倒计时，也不和别人比。</p></div>
+      <div class="card"><h3>🧪 试飞失败不扣星星</h3><p class="muted small">没打开门就给出具体的“数据”，说明是哪个词、哪条标准没过，然后自动排进第二天的热身和练习里，练完再试。</p></div>
+    </div>
+  </section>
+
+  <!-- 6 开场动画 -->
+  <section id="opening">
+    <div class="sec-head"><span class="num">6</span><div>
+      <h2>每一层的开场动画：用学过的内容介绍新地方</h2>
+      <p class="sub">进入每一层之前，先播一段 40–60 秒的开场动画。动画里的英语全部来自孩子已经学过的内容；中途停下来问两三个复习问题；最后留一个还看不懂的新词，作为这一层的悬念。下面是进入第 2 层（集市）的样例，可以点播放试试。</p>
+    </div></div>
+    <div class="op-row">
+      <div>
+        <div class="stage" id="stage" data-scene="start">
+          <div class="strata" aria-hidden="true"></div>
+          <div class="capsule" aria-hidden="true">🚀</div>
+          <div class="cave" aria-hidden="true"></div>
+          <div class="stalls" aria-hidden="true">
+            <div class="stall"><i></i><span>❄️</span></div>
+            <div class="stall"><i></i><span>🌷</span></div>
+            <div class="stall"><i></i><span>☀️</span></div>
+            <div class="stall"><i></i><span>🍂</span></div>
+          </div>
+          <div class="zib" aria-hidden="true"><span class="body">👽</span><span class="mitts">🧤</span></div>
+          <div class="sign" id="sign"></div>
+          <div class="title-card" id="title-card"><small>第 2 层</small><b>🛍️ 集市</b><span>👂 感官馆 · The Five Senses</span></div>
+          <div class="ask" id="ask" hidden></div>
+          <div class="subtitle" id="sub" aria-live="polite"><div class="en" id="sub-en"></div><div class="zh" id="sub-zh"></div></div>
+          <button class="play" id="play" type="button">▶ 播放开场动画<small>约 45 秒 · 会朗读</small></button>
+        </div>
+        <div class="op-bar">
+          <div class="dots" id="dots"></div>
+          <button class="ghost" id="replay" type="button">↺ 重播</button>
+          <button class="ghost" id="skip" type="button">⏭ 跳过</button>
+        </div>
+        <div class="legend"><span class="lg hf">高频词</span><span class="lg learned">前面学过的课</span><span class="lg school">学校本周作业</span><span class="lg preview">新词预告（外星符号）</span></div>
+      </div>
+      <div class="card op-side">
+        <h3>这段开场复习了什么</h3>
+        <ul class="reviews">
+          <li><span>🧤</span><div><b>mittens 是用来保暖的</b><small>第 1 层 · Winter 课 · <code>RI.K.1</code></small></div></li>
+          <li><span>🔄</span><div><b>四季的顺序</b><small>第 1 层 · What's the Weather Like? · <code>RI.K.3</code></small></div></li>
+          <li><span>🔤</span><div><b>干扰项 wet</b><small>学校本周的短元音 e · <code>RF.K.3</code></small></div></li>
+          <li><span>🔮</span><div><b>预告新词 taste</b><small>第 2 层感官馆的第一个词，用外星符号显示</small></div></li>
+        </ul>
+        <p class="muted small">答错不扣分：屏幕上会出现当时那篇文章里的原句（文本证据）并朗读一遍，孩子再选一次。复习题优先从错题本和用过提示的题里挑，这就是间隔复习。</p>
+      </div>
+    </div>
+
+    <div class="card table-card" style="margin-top:14px">
+      <table>
+        <thead><tr><th>开场</th><th>画面</th><th>复习的内容（来自哪里）</th><th>新词预告</th></tr></thead>
+        <tbody>
+          <tr><td>🛬 第 1 层 · 着陆区</td><td data-k="画面">飞船翻身减速，在雨里降落在气象站。“A jet! It is wet!”</td><td data-k="复习">故事里还没学过东西，就用学校本周的作业：短元音 e（jet、wet、net）、四季和天气词</td><td data-k="预告"><code>weather</code></td></tr>
+          <tr><td>🛍️ 第 2 层 · 集市</td><td data-k="画面">胶囊穿过岩层，Zib 戴着孩子“送”的连指手套，集市里有四个季节摊位</td><td data-k="复习">第 1 层：冬天穿什么、四季的顺序</td><td data-k="预告"><code>taste</code></td></tr>
+          <tr><td>📚 第 3 层 · 图书馆</td><td data-k="画面">书页在书架间飞过，大厅里有蚱蜢和蚂蚁的雕像</td><td data-k="复习">第 1 层的寓言：人物是谁、先后顺序（RL.K.2）；第 2 层的感官词</td><td data-k="预告"><code>once</code></td></tr>
+          <tr><td>🏛️ 第 4 层 · 设计院</td><td data-k="画面">第 1 层解锁的气象塔被搬进展厅中央</td><td data-k="复习">第 1 层的温度计（冷的时候液体在下面）；第 3 层故事里的场景</td><td data-k="预告"><code>trash</code></td></tr>
+          <tr><td>💎 第 5 层 · 星核议会</td><td data-k="画面">星核发光，议员们在读孩子写给 Zib 的信</td><td data-k="复习"><b>孩子自己写过的句子</b>原样出现在开场里，再加上各层的词</td><td data-k="预告"><code>speech</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card">
+        <h3>开场的固定结构（四拍）</h3>
+        <ol class="rules">
+          <li><div><b>下降或飞入</b><span>建立场景，没有台词，或者只有中文旁白。</span></div></li>
+          <li><div><b>Zib 用学过的话介绍</b><span>字幕逐词高亮并朗读，点任何一个词都能再听一遍。</span></div></li>
+          <li><div><b>两三个复习停顿</b><span>像 CKLA 朗读课里的 “pause for students to respond”，答对继续，答错看原文证据。</span></div></li>
+          <li><div><b>一个新词悬念 + 标题卡</b><span>一块看不懂的告示，Zib 说 “Let's find out!”，然后进入这一层的主页。</span></div></li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>开场动画的规则</h3>
+        <ol class="rules">
+          <li><div><b>字幕只用学过的词</b><span>来源只有三种：高频词表、前面各层学过的课、学校本周的作业。新词每段最多一个，用外星符号显示。由 <code>check:content</code> 自动检查。</span></div></li>
+          <li><div><b>复习题来自孩子自己的记录</b><span>优先挑错题本和用过提示的题；第 5 层直接用孩子写过的句子。</span></div></li>
+          <li><div><b>短，而且可以跳过</b><span>40–60 秒。家长可以设置第一次就允许跳过；看过的开场可以从层主页随时重看。</span></div></li>
+          <li><div><b>不用视频文件</b><span>用现有的 three.js 场景加字幕和系统朗读实现；系统开了“减少动态效果”时，换成静态画面加朗读。</span></div></li>
+        </ol>
+      </div>
+    </div>
+
+    <pre style="margin-top:14px"><span class="c">// 开场动画的数据（写在章节文件里，草案）</span>
+"opening": {
+  "layer": 2,
+  "shots": [
+    { "type": "fly", "scene": "descend", "zh": "下到第 2 层……" },
+    { "type": "say", "who": "zib", "text": "Look! I have mittens. Thank you!" },
+    { "type": "ask", "q": "Mittens help you stay ___.", "options": ["warm", "wet"], "a": "warm",
+      "review": { "lesson": "l2-winter", "standard": "RI.K.1", "evidence": "to stay warm" } },  <span class="c">// 答错时显示这句原文</span>
+    { "type": "say", "who": "zib", "text": "Look! Four seasons!", "scene": "market" },
+    { "type": "ask", "q": "Winter, spring, summer, and ___?", "options": ["autumn", "snow"], "a": "autumn",
+      "review": { "lesson": "l1-weather", "standard": "RI.K.3" } },
+    { "type": "preview", "word": "taste", "text": "What is this? Let's find out!" },
+    { "type": "title", "zh": "第 2 层 · 集市", "en": "The Five Senses" }
+  ]
+}</pre>
+  </section>
+
+  <!-- 7 第一章分镜 -->
+  <section id="ch1">
+    <div class="sec-head"><span class="num">7</span><div>
+      <h2>第一章分镜 · 气象站</h2>
+      <p class="sub">用已经做好的 Seasons and Weather 单元做第一章，大约一周，从发射到打开第一层的门。</p>
+    </div></div>
+    <div class="grid g4 board">
+      <div class="beat"><div class="frame"><div><div class="art">🧑‍🚀🎧</div><div class="say">“Mission‑1, you are <i>Go</i> for launch!”</div></div></div><b>发射前检查</b><p>今天的学习路径就是发射前检查清单，每做完一项，地面控制中心喊一声 Go。</p><div class="tags"><span class="pill s-RF">RF</span><span class="pill s-RI">RI</span></div></div>
+      <div class="beat"><div class="frame"><div><div class="art">🚀⛽🌍</div><div class="say">燃料 ■■■■□ 再加一次就能出发</div></div></div><b>加注燃料</b><p>每天完成使命任务给飞船加一次燃料，一周加满后飞往 Bix 星。中途完成当天的任务时，播放助推器被机械臂接住的动画。</p></div>
+      <div class="beat"><div class="frame"><div><div class="art">🪐🔄🛬</div><div class="say">“A <i>jet</i>! It is <i>wet</i>!”</div></div></div><b>第 1 层开场动画</b><p>飞船翻身减速，在雨里降落在气象站。开场用学校本周学的短元音 e 和天气词介绍这里，最后出现一块看不懂的告示（weather）。</p></div>
+      <div class="beat"><div class="frame"><div><div class="art">👽💬</div><div class="say">“◇○ ! ☉ ◐■ <i>Zib</i>.”</div></div></div><b>Zib 出场</b><p>翻译机只认出 I 和 Zib。Zib 说：Bix 星没有四季，它想知道地球的冬天是什么样。</p><div class="tags"><span class="pill s-RF">RF.K.3</span></div></div>
+      <div class="beat"><div class="frame"><div><div class="art">🌦️📚</div><div class="say">任务：两封信 + 一个寓言</div></div></div><b>气象站的任务</b><p>三项任务就是单元里的三课：What's the Weather Like?、Winter、The Grasshopper and the Ants。</p><div class="tags"><span class="pill s-RI">RI.K.1</span><span class="pill s-RL">RL.K.2</span></div></div>
+      <div class="beat"><div class="frame"><div><div class="art">✉️👽</div><div class="say">“In winter, people wear <i>mittens</i>.”</div></div></div><b>给 Zib 回信</b><p>用学过的词写一句话告诉 Zib 冬天是什么样，就是 Winter 那一课的写作任务。Zib 回信道谢，又问了一个新问题。</p><div class="tags"><span class="pill s-W">W.K.2</span></div></div>
+      <div class="beat"><div class="frame"><div><div class="art">🚪🔤🔍</div><div class="say">解码锁 🔓 · 理解锁 🔒</div></div></div><b>两把锁的门</b><p>读对本层的词，再做一张出门条。没打开就算一次试飞，收集数据，练完再来。</p><div class="tags"><span class="pill s-RF">RF.K.3</span><span class="pill s-RI">RI.K.1</span></div></div>
+      <div class="beat"><div class="frame"><div><div class="art">🏛️🌡️✨</div><div class="say">解锁：Bix 气象塔</div></div></div><b>参观第一座设计</b><p>门打开，三维场景里升起原住民的气象塔，得到一张图鉴卡。预告第 2 层：集市。</p></div>
+    </div>
+  </section>
+
+  <!-- 7 数据 -->
+  <section id="data">
+    <div class="sec-head"><span class="num">8</span><div>
+      <h2>数据：故事只引用单元，不复制内容</h2>
+      <p class="sub">故事章节也放进内容库（<code>content/story/</code>），每章引用一个单元和它的课。单元本身照样可以不带故事单独使用，故事改了也不影响题目。</p>
+    </div></div>
+    <pre><span class="c">// content/story/ch01-weather-station.json（草案）</span>
+{
+  "id": "ch01-weather-station",
+  "title": "第 1 章 · 气象站",
+  "layer": 1,
+  "unit": "k-seasons-weather",            <span class="c">// 引用内容库里的单元</span>
+  "beats": [
+    { "type": "launch", "fuel": 5 },        <span class="c">// 5 天的燃料</span>
+    { "type": "message", "from": "zib",
+      "text": "Hi! I am Zib. Is it cold on Earth in winter?",
+      "zh": "嗨！我是 Zib。地球的冬天冷吗？" },   <span class="c">// 只用学过的词，没学过的显示成外星符号</span>
+    { "type": "lesson", "lesson": "l1-weather" },
+    { "type": "lesson", "lesson": "l2-winter" },
+    { "type": "reply", "task": "sw-l2-write" },   <span class="c">// 给 Zib 回信 = 写作任务</span>
+    { "type": "lesson", "lesson": "l6-grasshopper" },
+    { "type": "door", "locks": [
+      { "kind": "decode", "standard": "RF.K.3", "words": "unit", "need": 0.8 },
+      { "kind": "comprehend", "standard": "RI.K.1", "exitTicket": true }
+    ] },
+    { "type": "unlock", "design": "weather-tower", "card": "Bix 气象塔" }
+  ]
+}</pre>
+  </section>
+
+  <!-- 8 规则和落地 -->
+  <section id="rules">
+    <div class="sec-head"><span class="num">9</span><div>
+      <h2>规则和落地顺序</h2>
+      <p class="sub">故事是为学习服务的，下面这些规则不能破。</p>
+    </div></div>
+    <div class="grid g2">
+      <div class="card">
+        <h3>六条规则</h3>
+        <ol class="rules">
+          <li><div><b>门只锁故事，不锁使命任务</b><span>当天的使命任务（也就是学校布置的作业）永远可以直接做，故事进度卡住也不影响。</span></div></li>
+          <li><div><b>过关看掌握的证据</b><span>只看 You do 阶段和出门条，不看分数和速度，没有倒计时。</span></div></li>
+          <li><div><b>失败不扣分</b><span>试飞失败只给出具体的“数据”，然后安排练习。</span></div></li>
+          <li><div><b>翻译机按渐进释放</b><span>帮助随掌握程度减少，从朗读加中文翻译，到点了才帮，再到不翻译。</span></div></li>
+          <li><div><b>英语只放在要学的地方</b><span>原住民说的话用学过的词写；剧情交代用中文语音或漫画格子，不增加阅读负担。</span></div></li>
+          <li><div><b>外星符号只表示“还没破译”</b><span>破译后显示正常的英文字母，不让孩子学一套假字母，以免和正在学的字母混淆。</span></div></li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>建议的落地顺序</h3>
+        <ol class="rules">
+          <li><div><b>故事数据格式和校验</b><span>定好 <code>content/story</code> 的格式，<code>check:content</code> 检查每条消息只用到学过的词。</span></div></li>
+          <li><div><b>翻译机组件</b><span>外星符号和英文之间的切换，词库来自进度记录。</span></div></li>
+          <li><div><b>开场动画播放器</b><span>按 <code>opening.shots</code> 播放：镜头、逐词字幕、复习停顿、新词预告；校验字幕只用学过的词。</span></div></li>
+          <li><div><b>第一章的消息和门</b><span>复用现有的题目、写作和出门条，加上门锁判断和试飞记录。</span></div></li>
+          <li><div><b>三维场景</b><span>银色不锈钢飞船、机械臂接住助推器、着陆动画、解锁建筑。</span></div></li>
+          <li><div><b>家长端改成地面控制中心</b><span>发射前 Go / No-go、确认打卡，报告里加上故事进度。</span></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>使命星球 · 故事主线设计稿 · 英语页面设计见 <a href="english-design.html">english-design.html</a> · 整体设计说明见 <a href="design.html">design.html</a></footer>
+
+<script>
+(() => {
+  // 外星符号：每个字母对应一个符号，词的长度不变（只用来表示“还没破译”）
+  const GLYPHS = '◇◆○●◐◑△▽▲▼□■◈◉◎⊕⊗⊙✦✧☉☽★☆⬡⬢';
+  const alien = (w) => [...w.toLowerCase()].map((c) => (/[a-z]/.test(c) ? GLYPHS[c.charCodeAt(0) - 97] : c)).join('');
+  // tier：0 一开始就会（高频词、名字），1 学完高频词后会，2 学完气象站单元后会
+  const MSG = [
+    ['Hi!', 1], ['I', 0], ['am', 0], ['Zib.', 0], ['Is', 1], ['it', 1], ['cold', 2], ['on', 1], ['Earth', 2], ['in', 1], ['winter?', 2],
+    ['We', 1], ['do', 1], ['not', 1], ['have', 1], ['winter', 2], ['on', 1], ['Bix.', 0],
+  ];
+  const ZH = '嗨！我是 Zib。地球的冬天冷吗？我们 Bix 星没有冬天。';
+  const MEANING = { hi: '你好', is: '是', it: '它', cold: '冷', on: '在…上', earth: '地球', in: '在…里', winter: '冬天', we: '我们', do: '（助动词）', not: '不', have: '有' };
+  const LABELS = ['刚着陆', '学会高频词', '学完气象站'];
+
+  const bubble = document.getElementById('bubble');
+  const zh = document.getElementById('zh');
+  const tip = document.getElementById('tip');
+  const known = document.getElementById('known');
+  const label = document.getElementById('known-label');
+  let prev = Number(known.value);
+
+  const say = (text) => {
+    try {
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 0.8;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(u);
+    } catch (e) {}
+  };
+
+  function render() {
+    const lv = Number(known.value);
+    label.textContent = LABELS[lv];
+    bubble.innerHTML = MSG.map(([w, tier], i) => {
+      const clean = w.replace(/[^A-Za-z]/g, '');
+      const trail = w.slice(clean.length);
+      const decoded = tier <= lv;
+      const fresh = decoded && tier > prev ? ' fresh' : '';
+      return decoded
+        ? `<span class="tk${fresh}" data-w="${clean}">${clean}</span>${trail}`
+        : `<span class="tk alien" data-w="${clean}" data-i="${i}">${alien(clean)}</span>${trail}`;
+    }).join(' ');
+    zh.textContent = lv === 0 ? '📟 翻译机：' + ZH : '';
+    tip.textContent = lv === 0 ? '翻译机会把整句读出来，并给出中文。' : lv === 1 ? '点紫色的符号，翻译机才帮你读出这个词。' : '全部破译！不用翻译机也能读懂。';
+    document.querySelectorAll('#levels span').forEach((s) => s.classList.toggle('on', Number(s.dataset.l) === lv));
+    prev = lv;
+  }
+  bubble.addEventListener('click', (e) => {
+    const t = e.target.closest('.tk');
+    if (!t) return;
+    const w = t.dataset.w;
+    say(w);
+    if (t.classList.contains('alien')) {
+      t.classList.add('hear');
+      setTimeout(() => t.classList.remove('hear'), 900);
+      tip.textContent = `📟 这个词是 “${w}”${MEANING[w.toLowerCase()] ? `，意思是“${MEANING[w.toLowerCase()]}”` : ''}。学会它，它就会变成英文。`;
+    }
+  });
+  known.addEventListener('input', render);
+  render();
+})();
+
+// ---------- 开场动画样例：进入第 2 层 ----------
+(() => {
+  const GLYPHS = '◇◆○●◐◑△▽▲▼□■◈◉◎⊕⊗⊙✦✧☉☽★☆⬡⬢';
+  const alien = (w) => [...w.toLowerCase()].map((c) => (/[a-z]/.test(c) ? GLYPHS[c.charCodeAt(0) - 97] : c)).join('');
+  // 字幕里每个词的来源：高频词 / 前面学过的课 / 学校本周作业
+  const SRC = {
+    look: 'hf', i: 'hf', have: 'hf', thank: 'hf', you: 'hf', yes: 'hf', four: 'hf', what: 'hf', is: 'hf', this: 'hf', "let's": 'hf', find: 'hf', out: 'hf',
+    mittens: ['learned', 'Winter'], warm: ['learned', 'Winter'],
+    seasons: ['learned', "What's the Weather Like?"], autumn: ['learned', "What's the Weather Like?"],
+    wet: ['school', '学校本周作业'],
+  };
+  const SHOTS = [
+    { scene: 'fly', zh: '下到第 2 层……', ms: 3200 },
+    { scene: 'zib', say: 'Look! I have mittens. Thank you!', zh: 'Zib 戴上了你“送”的连指手套' },
+    { scene: 'ask', ask: {
+      q: 'Mittens help you stay ___.', options: ['warm', 'wet'], a: 'warm', after: 'Yes! Warm.',
+      from: '复习 · Winter 课 · RI.K.1', ev: 'In winter, people wear hats, mittens, and scarves to stay warm.', mark: 'to stay warm',
+    } },
+    { scene: 'market', say: 'Look! Four seasons!', zh: '集市里有四个季节摊位' },
+    { scene: 'ask2', ask: {
+      q: 'Winter, spring, summer, and ___?', options: ['autumn', 'snow'], a: 'autumn', after: 'Yes! Autumn.',
+      from: "复习 · What's the Weather Like? · RI.K.3", ev: 'There are four seasons in a year: winter, spring, summer, and autumn.', mark: 'winter, spring, summer, and autumn',
+    } },
+    { scene: 'sign', preview: 'taste', say: "What is this? Let's find out!", zh: '告示上的词还看不懂，这一层就要学它' },
+    { scene: 'title', ms: 2600 },
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const stage = $('stage');
+  const sub = $('sub');
+  const subEn = $('sub-en');
+  const subZh = $('sub-zh');
+  const ask = $('ask');
+  const sign = $('sign');
+  const playBtn = $('play');
+  const dots = $('dots');
+  dots.innerHTML = SHOTS.map(() => '<i></i>').join('');
+  let run = 0;
+
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  const stop = () => { try { speechSynthesis.cancel(); } catch (e) {} };
+  const say = (text) => {
+    try {
+      stop();
+      const u = new SpeechSynthesisUtterance(text.replace(/___/g, 'blank'));
+      u.lang = 'en-US';
+      u.rate = 0.85;
+      speechSynthesis.speak(u);
+    } catch (e) {}
+  };
+  const setDots = (n) => [...dots.children].forEach((d, i) => { d.className = i < n ? 'done' : i === n ? 'now' : ''; });
+
+  function tokens(line) {
+    return line.split(' ').map((tok) => {
+      const word = tok.replace(/[^A-Za-z']/g, '');
+      const src = SRC[word.toLowerCase()] || 'hf';
+      const [kind, from] = Array.isArray(src) ? src : [src];
+      const title = kind === 'hf' ? '高频词' : `来自 ${from} 课`;
+      return `<span class="w ${kind}" data-w="${esc(word)}" title="${esc(title)}">${esc(tok)}</span>`;
+    }).join(' ');
+  }
+
+  async function sayLine(line, zh, id) {
+    subEn.innerHTML = tokens(line);
+    subZh.textContent = zh || '';
+    sub.classList.add('show');
+    say(line);
+    const ws = [...subEn.querySelectorAll('.w')];
+    for (const w of ws) {
+      if (id !== run) return;
+      ws.forEach((x) => x.classList.remove('on'));
+      w.classList.add('on');
+      await wait(430);
+    }
+    ws.forEach((x) => x.classList.remove('on'));
+    await wait(900);
+  }
+
+  function doAsk(a, id) {
+    return new Promise((resolve) => {
+      ask.hidden = false;
+      ask.innerHTML = `<span class="tag">⏸ ${esc(a.from)}</span><div class="q">${esc(a.q)}</div>
+        <div class="opts">${a.options.map((o) => `<button type="button" class="${Array.isArray(SRC[o]) ? SRC[o][0] : ''}" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div><div class="evbox"></div>`;
+      say(a.q);
+      ask.querySelector('.opts').addEventListener('click', async (e) => {
+        const b = e.target.closest('button');
+        if (!b || id !== run) return;
+        if (b.dataset.o === a.a) {
+          b.classList.add('ok');
+          ask.querySelectorAll('.opts button').forEach((x) => { x.disabled = true; });
+          await sayLine(a.after, '', id);
+          if (id !== run) return;
+          ask.hidden = true;
+          resolve();
+        } else {
+          b.classList.add('no');
+          b.disabled = true;
+          const html = esc(a.ev).replace(esc(a.mark), `<mark>${esc(a.mark)}</mark>`);
+          ask.querySelector('.evbox').innerHTML = `<div class="ev"><small>📖 再看看原文里怎么说的：</small>${html}</div>`;
+          say(a.ev);
+        }
+      });
+    });
+  }
+
+  async function play() {
+    const id = ++run;
+    playBtn.hidden = true;
+    for (let i = 0; i < SHOTS.length; i++) {
+      if (id !== run) return;
+      const s = SHOTS[i];
+      setDots(i);
+      stage.dataset.scene = s.scene;
+      ask.hidden = true;
+      sub.classList.remove('show');
+      sign.textContent = s.preview ? alien(s.preview) : '';
+      if (!s.say && s.zh) {
+        subEn.textContent = '';
+        subZh.textContent = s.zh;
+        sub.classList.add('show');
+      }
+      if (s.say) await sayLine(s.say, s.zh, id);
+      if (s.ask) await doAsk(s.ask, id);
+      if (s.ms) await wait(s.ms);
+    }
+    if (id === run) setDots(SHOTS.length);
+  }
+
+  function skip() {
+    run++;
+    stop();
+    playBtn.hidden = true;
+    ask.hidden = true;
+    sub.classList.remove('show');
+    stage.dataset.scene = 'title';
+    setDots(SHOTS.length);
+  }
+
+  playBtn.addEventListener('click', play);
+  $('replay').addEventListener('click', () => { stop(); play(); });
+  $('skip').addEventListener('click', skip);
+  subEn.addEventListener('click', (e) => {
+    const w = e.target.closest('.w');
+    if (w) say(w.dataset.w);
+  });
+})();
+</script>
+</body>
+</html>

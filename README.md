@@ -2,7 +2,7 @@
 
 用 [three.js](https://threejs.org/) 做的 3D 家庭作业小站：每个科目是一颗星球，每项作业是绕着星球转的小卫星。孩子在页面上答题、自动批改，完成作业给中间的火箭“加燃料”，全部完成后火箭发射、放烟花。家长可以看报告和错题本。
 
-设计思路和可以直接点的交互 demo 见 [docs/design.html](docs/design.html)（直接用浏览器打开即可）。
+设计思路和可以直接点的交互 demo 见 [docs/design.html](docs/design.html)（直接用浏览器打开即可）。英语部分按 Common Core 底层逻辑重新设计的 7 个页面见 [docs/english-design.html](docs/english-design.html)，“星际破译”故事主线见 [docs/story-design.html](docs/story-design.html)。
 
 ## 功能
 
