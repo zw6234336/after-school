@@ -112,6 +112,8 @@ function checkGrade(code, level, grade, where) {
 
 const STORY_DIR = join(UNITS_DIR, '..', 'story');
 const SHOT_TYPES = ['fly', 'say', 'ask', 'preview', 'title'];
+/** 着陆区：离北极这么多度以内（和 src/explore.js 的 HOME_COLAT 一致），发现物不能放在里面 */
+const HOME_COLAT = 26;
 const STATION_KEYS = STATION_TYPES.map((t) => t.key);
 const dolch = JSON.parse(readFileSync(join(UNITS_DIR, '..', 'wordlists', 'dolch.json'), 'utf8'));
 const DOLCH = new Set(Object.values(dolch.lists).flat());
@@ -141,6 +143,7 @@ for (const ch of chapters) {
   for (const key of Object.keys(ch.surface?.stations || {})) {
     if (!STATION_KEYS.includes(key)) at(`surface.stations 里的 "${key}" 不是站点，可用：${STATION_KEYS.join(' / ')}`);
   }
+  if (ch.explore) checkExplore(ch, at);
   const op = ch.opening;
   if (!op) continue;
   if (!Array.isArray(op.shots) || op.shots.length === 0) {
@@ -169,6 +172,71 @@ for (const ch of chapters) {
   });
   const previews = op.shots.filter((s) => s.type === 'preview').length;
   if (previews > 1) at(`每段开场最多预告一个新词，现在有 ${previews} 个`);
+}
+
+/**
+ * 闲逛：地带和发现物。发现物的名字要能“破译”：学校本周的词，或者某一课文章里的词；
+ * Zib 介绍它的话只能用高频词、章节声明的词、前面几层学过的词，加上这一课文章里的词
+ */
+function checkExplore(ch, at) {
+  const ex = ch.explore;
+  const unit = units[ch.unit];
+  const zones = Array.isArray(ex.zones) ? ex.zones : [];
+  if (!zones.length) at('explore 缺少 zones');
+  const zoneIds = new Set();
+  zones.forEach((z, i) => {
+    const where = `explore 第 ${i + 1} 个地带`;
+    if (!z.id) at(`${where}缺少 id`);
+    else if (zoneIds.has(z.id)) at(`${where}的 id "${z.id}" 重复`);
+    zoneIds.add(z.id);
+    if (!z.name) at(`${where}缺少 name`);
+    if (!/^#[0-9a-f]{6}$/i.test(z.color || '')) at(`${where}的 color 要写成 #rrggbb`);
+    if (!(z.lon >= 0 && z.lon < 360)) at(`${where}的 lon（经度）要在 0–360 之间`);
+  });
+
+  const earlier = chapters.filter((c) => c.layer < ch.layer && units[c.unit]).flatMap((c) => unitWords(units[c.unit]));
+  const base = [...DOLCH, ...Object.values(ch.opening?.vocab || {}).flat().map((w) => w.toLowerCase()), ...earlier];
+  const lessonWords = (lesson) =>
+    (lesson.tasks || []).flatMap((t) => [...wordsOf(t.passage?.text || ''), ...(t.passage?.vocab || []).map((v) => String(v.word).toLowerCase())]);
+  const ids = new Set();
+  const dirs = [];
+  (ex.discoveries || []).forEach((d, i) => {
+    const where = `explore 第 ${i + 1} 个发现物${d.id ? `（${d.id}）` : ''}`;
+    if (!d.id) at(`${where}缺少 id`);
+    else if (ids.has(d.id)) at(`${where}的 id 重复`);
+    ids.add(d.id);
+    for (const key of ['emoji', 'zh', 'word', 'say']) if (!d[key]) at(`${where}缺少 ${key}`);
+    if (!zoneIds.has(d.zone)) at(`${where}的 zone "${d.zone}" 不在 zones 里`);
+    const word = String(d.word || '').toLowerCase();
+    const allowed = new Set([...base, word]);
+    if (d.from?.lesson) {
+      const lesson = unit?.lessons.find((l) => l.id === d.from.lesson);
+      if (!lesson) at(`${where}的 from.lesson "${d.from.lesson}" 在单元 ${ch.unit} 里找不到`);
+      else {
+        const words = lessonWords(lesson);
+        if (!words.includes(word)) at(`${where}的名字 "${d.word}" 不在《${lesson.title}》的文章里，读完这一课也破译不了`);
+        for (const w of words) allowed.add(w);
+      }
+    } else if (!d.from?.school) {
+      at(`${where}要写 from.lesson（读完哪一课破译）或 from.school（学校本周教过）`);
+    }
+    if (d.say) {
+      for (const w of wordsOf(d.say)) if (!allowed.has(w)) at(`${where}的 say 用到了没学过的词 "${w}"`);
+      if (!wordsOf(d.say).includes(word)) at(`${where}的 say 里要说出它的名字 "${d.word}"`);
+    }
+    const [lat, lon] = Array.isArray(d.at) ? d.at : [];
+    if (!(lat >= -90 && lat <= 90) || !(lon >= 0 && lon < 360)) at(`${where}的 at 要写成 [纬度, 经度]`);
+    else if (90 - lat < HOME_COLAT + 4) at(`${where}离北极太近，在着陆区里了（纬度最多 ${90 - HOME_COLAT - 4}）`);
+    else {
+      const c = ((90 - lat) * Math.PI) / 180;
+      const l = (lon * Math.PI) / 180;
+      const dir = [Math.sin(c) * Math.sin(l), Math.cos(c), -Math.sin(c) * Math.cos(l)];
+      for (const o of dirs) {
+        if (Math.hypot(dir[0] - o.dir[0], dir[1] - o.dir[1], dir[2] - o.dir[2]) * 14 < 3.5) at(`${where}和 ${o.id} 挨得太近`);
+      }
+      dirs.push({ id: d.id, dir });
+    }
+  });
 }
 
 // ---------- 汇总 ----------
@@ -201,6 +269,11 @@ for (const ch of chapters) {
   const preview = shots.find((s) => s.type === 'preview')?.word;
   console.log(`\n🎬 ${ch.id} · 第 ${ch.layer} 层 · 单元 ${ch.unit}`);
   console.log(`   开场：${shots.length} 个镜头 · ${asks} 道复习题${preview ? ` · 预告新词 ${preview}` : ''}`);
+  if (ch.explore) {
+    const finds = ch.explore.discoveries || [];
+    const school = finds.filter((d) => d.from?.school).length;
+    console.log(`   闲逛：${ch.explore.zones?.length || 0} 个地带 · ${finds.length} 个发现物（${school} 个是学校本周的词，${finds.length - school} 个读完课文才能破译）`);
+  }
 }
 
 if (errors.length) {

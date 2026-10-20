@@ -8,6 +8,25 @@
       "RI": { "name": "气象站", "icon": "🌦️" }
     }
   },
+  "explore": {
+    "zones": [
+      { "id": "wind", "icon": "🌬️", "name": "风之原", "color": "#3a7bd5", "lon": 0 },
+      { "id": "sun", "icon": "☀️", "name": "晴之丘", "color": "#f2b84b", "lon": 72 },
+      { "id": "rain", "icon": "🌧️", "name": "雨之林", "color": "#3f8f8a", "lon": 144 },
+      { "id": "snow", "icon": "❄️", "name": "雪之谷", "color": "#c7dcff", "lon": 216 },
+      { "id": "leaves", "icon": "🍂", "name": "叶之坡", "color": "#c96a3a", "lon": 288 }
+    ],
+    "discoveries": [
+      { "id": "pinwheel-flowers", "zone": "wind", "emoji": "🌬️", "zh": "风车花", "word": "windy", "say": "It is windy!", "note": "花瓣像风车一样，一直在风里转", "from": { "lesson": "l1-weather" }, "at": [49, 346] },
+      { "id": "follow-cloud", "zone": "wind", "emoji": "☁️", "zh": "会跟着你走的小云", "word": "cloudy", "say": "It is cloudy! It will go with you!", "note": "一小朵云跟在小宇航员头顶，走到哪儿跟到哪儿", "from": { "lesson": "l1-weather" }, "at": [30, 18] },
+      { "id": "two-suns", "zone": "sun", "emoji": "☀️", "zh": "两个太阳", "word": "sunny", "say": "It is sunny! Look up! One, two!", "note": "天上同时挂着两个太阳，地上有两道影子", "from": { "lesson": "l1-weather" }, "at": [49, 62] },
+      { "id": "hot-spring", "zone": "sun", "emoji": "♨️", "zh": "冒泡的温泉", "word": "hot", "say": "It is hot! Hot, hot, hot!", "note": "泡泡一个接一个冒出来，碰到就“噗”地变成小星星", "from": { "school": "学校本周 · 天气（L.K.5）" }, "at": [30, 88] },
+      { "id": "up-rain", "zone": "rain", "emoji": "🌧️", "zh": "往上下的雨", "word": "rainy", "say": "It is rainy! Look up!", "note": "雨滴从地面往天上飞", "from": { "lesson": "l1-weather" }, "at": [52, 130] },
+      { "id": "jelly-storm", "zone": "rain", "emoji": "⛈️", "zh": "水母雷云", "word": "stormy", "say": "It is stormy!", "note": "一团像水母的云，触须一闪一闪是小闪电", "from": { "lesson": "l1-weather" }, "at": [47, 162] },
+      { "id": "up-snow", "zone": "snow", "emoji": "❄️", "zh": "往上飘的雪", "word": "snow", "say": "Look! Snow! It is cold!", "note": "雪花从地上往天上飘，摸一下凉凉的", "from": { "school": "学校本周 · 故事（生词）" }, "at": [50, 226] },
+      { "id": "dancing-leaves", "zone": "leaves", "emoji": "🍂", "zh": "会跳舞的落叶", "word": "autumn", "say": "Autumn leaves! Look, they jump!", "note": "一堆落叶，走近就跳起来转圈", "from": { "lesson": "l1-weather" }, "at": [50, 280] }
+    ]
+  },
   "opening": {
     "title": "第 1 层 · 着陆区",
     "subtitle": "🌦️ 气象站 · Seasons and Weather",

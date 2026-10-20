@@ -6,6 +6,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { planetTexture, glowMaterial, disposeTree } from './scene.js';
 
 const R = 14; // Bix 星半径；着陆点在星球正上方
+export const BIX_RADIUS = R;
 const WORLD = new THREE.Vector3(70, 6, -60);
 const UP = new THREE.Vector3(0, 1, 0);
 const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -35,6 +36,9 @@ const CAMERAS = {
   // 标题卡在画面中间，镜头往下看一点，让飞船和气象站留在卡片上方
   station: { pos: [[1, 5.5, 14], [0, 9, 22]], look: [[0.4, -3.2, 0]] },
 };
+
+/** Zib 在着陆区里待着的地方（相对着陆点） */
+const ZIB_HOME = { x: 1.4, z: 1.0, yaw: -0.25 };
 
 /** 地面高度：着陆点附近的星球表面（球面） */
 const ground = (x, z) => Math.sqrt(Math.max(0, R * R - x * x - z * z)) - R;
@@ -301,13 +305,47 @@ export class BixStage {
 
   /** 摆相机：竖屏时画面变窄，镜头往后退一些；再按相机位置决定光晕和雨显不显示 */
   placeCamera(camera, pos, look) {
-    const back = Math.max(1, Math.min(2.2, 1.25 / camera.aspect));
-    camera.position.copy(pos).sub(look).multiplyScalar(back).add(look);
+    camera.position.copy(this.framePose(pos, look, camera.aspect));
     camera.lookAt(look);
+    this.updateVisibility(camera.position);
+  }
+
+  /** 竖屏时镜头沿着视线往后退（改的是 pos，返回 pos） */
+  framePose(pos, look, aspect) {
+    const back = Math.max(1, Math.min(2.2, 1.25 / aspect));
+    return pos.sub(look).multiplyScalar(back).add(look);
+  }
+
+  updateVisibility(cameraPos) {
     // 镜头进到大气层里面时，大气光晕会糊满整个画面，先藏起来
-    this.glow.visible = camera.position.distanceTo(this.root.position) > R * 1.45;
+    this.glow.visible = cameraPos.distanceTo(this.root.position) > R * 1.45;
     // 雨只在着陆点附近看得见，从太空里看会变成一团白点
-    this.rain.visible = camera.position.distanceTo(this.siteWorld) < 26;
+    this.rain.visible = cameraPos.distanceTo(this.siteWorld) < 26;
+  }
+
+  /** 换一张星球表面的贴图（闲逛的天气地带），旧的贴图释放掉 */
+  setGroundTexture(texture) {
+    const m = this.planet.material;
+    m.map?.dispose();
+    m.map = texture;
+    m.needsUpdate = true;
+  }
+
+  /**
+   * 闲逛时 Zib 离开着陆区：挂到星球上，由闲逛模式摆位置和朝向；
+   * 回来时挂回着陆点，站回原来的地方
+   */
+  freeZib(on) {
+    const z = this.zib;
+    z.goal = null;
+    z.walking = false;
+    if (on) {
+      this.root.attach(z.group);
+    } else {
+      this.site.attach(z.group);
+      z.group.position.set(ZIB_HOME.x, ground(ZIB_HOME.x, ZIB_HOME.z), ZIB_HOME.z);
+      z.group.rotation.set(0, ZIB_HOME.yaw, 0);
+    }
   }
 
   dispose() {
@@ -321,10 +359,11 @@ export class BixStage {
   #buildPlanet() {
     const color = new THREE.Color('#4a8fc8');
     const planet = new THREE.Mesh(
-      new THREE.SphereGeometry(R, 96, 64),
+      new THREE.SphereGeometry(R, 128, 96),
       new THREE.MeshStandardMaterial({ map: planetTexture(color, 7), roughness: 0.9, metalness: 0.02, emissive: color, emissiveIntensity: 0.05 }),
     );
     this.root.add(planet);
+    this.planet = planet;
     this.glow = new THREE.Mesh(new THREE.SphereGeometry(R * 1.22, 64, 32), glowMaterial(new THREE.Color('#7cc8ff')));
     this.root.add(this.glow);
 
@@ -654,8 +693,8 @@ export class BixStage {
     const glow = new THREE.MeshBasicMaterial({ color: new THREE.Color('#ffd166').multiplyScalar(2.5) });
 
     const group = new THREE.Group();
-    place(group, 1.4, 1.0);
-    group.rotation.y = -0.25;
+    place(group, ZIB_HOME.x, ZIB_HOME.z);
+    group.rotation.y = ZIB_HOME.yaw;
     this.site.add(group);
     const inner = new THREE.Group();
     group.add(inner);
@@ -791,8 +830,8 @@ export class BixStage {
     z.shown += (z.target - z.shown) * Math.min(1, dt * (this.reduced ? 60 : 5));
     z.group.scale.setScalar(Math.max(0.0001, z.target > 0 ? easeOutBack(clamp01(z.shown)) : z.shown));
     z.hop = Math.max(0, z.hop - dt * 1.4);
-    // 走向目标站点：顺着地面走，走的时候脚步快一点，到了转身朝着镜头
-    let walking = false;
+    // 走向目标站点：顺着地面走，走的时候脚步快一点，到了转身朝着镜头（闲逛时由闲逛模式设 walking）
+    let walking = !!z.walking;
     if (z.goal) {
       const p = z.group.position;
       const dx = z.goal.x - p.x;

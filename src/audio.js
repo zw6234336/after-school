@@ -96,6 +96,16 @@ class Sound {
   pop() {
     this.#tone(900 + Math.random() * 600, 0, 0.12, { type: 'square', gain: 0.03, slideTo: 300 });
   }
+
+  /** 闲逛时走近一个新奇的东西：亮晶晶的一串高音 */
+  sparkle() {
+    [1318.5, 1760, 2093, 2637].forEach((f, i) => this.#tone(f, i * 0.06, 0.25, { type: 'sine', gain: 0.05 }));
+  }
+
+  /** 收进图鉴 */
+  collect() {
+    [783.99, 1046.5, 1318.5].forEach((f, i) => this.#tone(f, i * 0.08, 0.3, { type: 'triangle', gain: 0.12 }));
+  }
 }
 
 export const sound = new Sound();
