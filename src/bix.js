@@ -39,6 +39,25 @@ const CAMERAS = {
 /** 地面高度：着陆点附近的星球表面（球面） */
 const ground = (x, z) => Math.sqrt(Math.max(0, R * R - x * x - z * z)) - R;
 
+/**
+ * 着陆后地面地图上的站点位置（相对着陆点）。labelY 是站点名牌的高度。
+ * 拼读站就是开场里的告示牌（符号墙），研究站就是气象站。
+ */
+export const STATION_SPOTS = {
+  RF: { x: -2.6, z: -0.8, labelY: 2.5 },
+  RI: { x: 3.3, z: -1.9, labelY: 3.2 },
+  RL: { x: -3.4, z: 2.6, labelY: 1.9 },
+  L: { x: 3.3, z: 2.7, labelY: 2.0 },
+  WSL: { x: 2.3, z: -4.5, labelY: 4.9 },
+};
+/** 数学、语文等科目的站点，按顺序摆在地图两边 */
+export const EXTRA_SPOTS = [
+  { x: -5.8, z: 0.6, labelY: 1.9 },
+  { x: 5.9, z: 0.5, labelY: 1.9 },
+  { x: -5.2, z: -3.6, labelY: 1.9 },
+  { x: 5.4, z: -3.9, labelY: 1.9 },
+];
+
 export class BixStage {
   constructor(host) {
     this.host = host;
@@ -58,6 +77,7 @@ export class BixStage {
     this.#buildPad();
     this.#buildStation();
     this.#buildSign();
+    this.#buildStations();
     this.#buildRocks();
     this.#buildShip();
     this.#buildZib();
@@ -141,8 +161,128 @@ export class BixStage {
     this.zib.talking = on;
   }
 
-  /** 场景每一帧调用：更新动画并摆好相机 */
+  // ---------- 地面地图用 ----------
+
+  /** 开场结束或直接进入地图：飞船停在发射台上，Zib 站在旁边 */
+  enterMap() {
+    this.mapMode = true;
+    this.move = null;
+    for (const a of this.anims) a.resolve();
+    this.anims = [];
+    this.ship.position.set(0, 0.12, 0);
+    this.ship.rotation.set(0, 0, 0);
+    this.flameGoal = 0;
+    this.zib.target = 1;
+    this.zib.shiver = 0;
+    this.talking = false;
+  }
+
+  /** 第 n 个其他科目站点：在地图边上搭一个小亭子 */
+  addKiosk(n, color) {
+    const spot = EXTRA_SPOTS[n];
+    if (!spot) return null;
+    const kiosk = new THREE.Group();
+    place(kiosk, spot.x, spot.z);
+    const c = new THREE.Color(color);
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.5, 0.7, 20), new THREE.MeshStandardMaterial({ color: '#e3e9f7', roughness: 0.5 }));
+    base.position.y = 0.35;
+    const roof = new THREE.Mesh(new THREE.ConeGeometry(0.7, 0.55, 20), new THREE.MeshStandardMaterial({ color: c, roughness: 0.45, emissive: c, emissiveIntensity: 0.15 }));
+    roof.position.y = 0.98;
+    kiosk.add(base, roof);
+    this.site.add(kiosk);
+    return spot;
+  }
+
+  /** 站点在世界坐标里的位置（名牌和粒子用） */
+  stationWorld(spot, y = 0, target = new THREE.Vector3()) {
+    return this.site.localToWorld(target.set(spot.x, ground(spot.x, spot.z) + y, spot.z));
+  }
+
+  /** 站点完成后，地面上亮一圈金色光环 */
+  setStationDone(spot, done) {
+    let ring = this.doneRings.get(spot);
+    if (!ring && done) {
+      ring = new THREE.Mesh(new THREE.RingGeometry(1.0, 1.15, 48), new THREE.MeshBasicMaterial({ color: new THREE.Color('#ffd166').multiplyScalar(2), transparent: true, opacity: 0.9, side: THREE.DoubleSide }));
+      place(ring, spot.x, spot.z);
+      ring.rotateX(-Math.PI / 2);
+      ring.position.y += 0.03;
+      this.site.add(ring);
+      this.doneRings.set(spot, ring);
+    }
+    if (ring) ring.visible = done;
+  }
+
+  /** 让 Zib 走到某个站点门口（站点靠镜头的一侧） */
+  zibGo(spot) {
+    const toward = new THREE.Vector2(-spot.x, 3 - spot.z).normalize();
+    this.zib.goal = { x: spot.x + toward.x * 1.15, z: spot.z + toward.y * 1.15 };
+  }
+
+  /** 点了飞船：晃一晃 */
+  wiggle() {
+    this.shipWiggle = 1;
+  }
+
+  /** 全部任务完成：广播站的信号塔向地球发信号 */
+  signal() {
+    const top = this.stationWorld(STATION_SPOTS.WSL, 3.5, new THREE.Vector3());
+    const rings = [0, 1, 2].map(() => {
+      const ring = new THREE.Mesh(
+        new THREE.TorusGeometry(0.5, 0.05, 8, 48),
+        new THREE.MeshBasicMaterial({ color: new THREE.Color('#80ed99').multiplyScalar(2.5), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }),
+      );
+      ring.rotation.x = Math.PI / 2;
+      ring.visible = false;
+      this.host.scene.add(ring);
+      return ring;
+    });
+    let nextFirework = 0.4;
+    return this.#anim(3.4, (k) => {
+      const T = k * 3.4;
+      this.beaconBoost = 1;
+      rings.forEach((ring, i) => {
+        const p = clamp01((T - i * 0.45) / 1.6);
+        ring.visible = p > 0 && p < 1;
+        ring.position.copy(top).y += p * 4;
+        ring.scale.setScalar(0.4 + p * 4);
+        ring.material.opacity = 1 - p;
+      });
+      if (T >= nextFirework && T < 3) {
+        nextFirework += 0.45;
+        const at = top.clone().add(v1.set((Math.random() - 0.5) * 4, 3 + Math.random() * 3, (Math.random() - 0.5) * 2));
+        this.host.particles.firework(at, [['#80ed99', '#ffd166'], ['#7cc8ff', '#ffffff'], ['#ff7eb6', '#ffd166']][Math.floor(Math.random() * 3)]);
+      }
+      if (k >= 1) {
+        this.beaconBoost = 0;
+        rings.forEach((ring) => {
+          ring.removeFromParent();
+          ring.geometry.dispose();
+          ring.material.dispose();
+        });
+      }
+    });
+  }
+
+  /** 开场动画每一帧调用：更新动画，并按镜头预设摆好相机 */
   update(dt, t, camera) {
+    this.animate(dt, t);
+    const m = this.move;
+    if (m) {
+      m.t += dt;
+      const k = m.dur > 0 ? easeInOut(clamp01(m.t / m.dur)) : 1;
+      this.camPos.copy(m.pos(k));
+      if (m.track === 'ship') {
+        this.ship.getWorldPosition(v1).y += 1.2;
+        this.lookPos.lerp(v1, 1 - Math.exp(-dt * 5));
+      } else if (m.look) {
+        this.lookPos.copy(m.look(k));
+      }
+    }
+    this.placeCamera(camera, this.camPos, this.lookPos);
+  }
+
+  /** 只更新动画（飞船、Zib、站点、雨），不动相机；地面地图也用它 */
+  animate(dt, t) {
     this.time += dt;
     for (const a of [...this.anims]) {
       a.t += dt;
@@ -157,23 +297,13 @@ export class BixStage {
     this.#updateZib(dt, t);
     this.#updateProps(dt, t);
     this.#updateRain(dt);
+  }
 
-    const m = this.move;
-    if (m) {
-      m.t += dt;
-      const k = m.dur > 0 ? easeInOut(clamp01(m.t / m.dur)) : 1;
-      this.camPos.copy(m.pos(k));
-      if (m.track === 'ship') {
-        this.ship.getWorldPosition(v1).y += 1.2;
-        this.lookPos.lerp(v1, 1 - Math.exp(-dt * 5));
-      } else if (m.look) {
-        this.lookPos.copy(m.look(k));
-      }
-    }
-    // 竖屏时画面变窄，镜头往后退一些，让飞船和 Zib 都在画面里
+  /** 摆相机：竖屏时画面变窄，镜头往后退一些；再按相机位置决定光晕和雨显不显示 */
+  placeCamera(camera, pos, look) {
     const back = Math.max(1, Math.min(2.2, 1.25 / camera.aspect));
-    camera.position.copy(this.camPos).sub(this.lookPos).multiplyScalar(back).add(this.lookPos);
-    camera.lookAt(this.lookPos);
+    camera.position.copy(pos).sub(look).multiplyScalar(back).add(look);
+    camera.lookAt(look);
     // 镜头进到大气层里面时，大气光晕会糊满整个画面，先藏起来
     this.glow.visible = camera.position.distanceTo(this.root.position) > R * 1.45;
     // 雨只在着陆点附近看得见，从太空里看会变成一团白点
@@ -315,6 +445,120 @@ export class BixStage {
     this.signTexture.needsUpdate = true;
   }
 
+  #buildStations() {
+    this.doneRings = new Map();
+    this.beaconBoost = 0;
+    const dark = new THREE.MeshStandardMaterial({ color: '#2b3150', roughness: 0.6 });
+    const white = new THREE.MeshStandardMaterial({ color: '#e3e9f7', roughness: 0.45, metalness: 0.1 });
+
+    // 拼读站：给告示牌搭一个雨棚，变成“雨棚下的符号墙”
+    const awningMat = new THREE.MeshStandardMaterial({ color: '#ffb84d', roughness: 0.5 });
+    for (const side of [-1, 1]) {
+      const post = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.0, 8), dark);
+      post.position.set(side * 0.95, 1.0, 0.25);
+      this.sign.group.add(post);
+    }
+    const awning = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.07, 0.8), awningMat);
+    awning.position.set(0, 2.02, 0.15);
+    awning.rotation.x = 0.18;
+    this.sign.group.add(awning);
+
+    // 故事屋：粉色圆顶小屋，屋顶一本打开的书，门口有蚱蜢雕像
+    const rl = STATION_SPOTS.RL;
+    const house = new THREE.Group();
+    place(house, rl.x, rl.z);
+    house.rotation.y = 0.5;
+    this.site.add(house);
+    const pink = new THREE.MeshStandardMaterial({ color: '#e9a9c6', roughness: 0.7 });
+    house.add(new THREE.Mesh(new THREE.SphereGeometry(0.8, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2), pink));
+    const door = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.48, 0.1), new THREE.MeshStandardMaterial({ color: '#7a3b5e', roughness: 0.6 }));
+    door.position.set(0, 0.24, 0.76);
+    house.add(door);
+    const win = new THREE.Mesh(new THREE.CircleGeometry(0.12, 20), new THREE.MeshBasicMaterial({ color: new THREE.Color('#ffd166').multiplyScalar(1.6) }));
+    win.position.set(0.42, 0.45, 0.6);
+    win.rotation.y = 0.6;
+    house.add(win);
+    const pageMat = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.4 });
+    const coverMat = new THREE.MeshStandardMaterial({ color: '#ff7eb6', roughness: 0.4 });
+    for (const side of [-1, 1]) {
+      const page = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.03, 0.46), pageMat);
+      page.position.set(side * 0.17, 0.92, 0);
+      page.rotation.z = side * -0.35;
+      const cover = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.02, 0.48), coverMat);
+      cover.position.set(side * 0.17, 0.9, 0);
+      cover.rotation.z = side * -0.35;
+      house.add(page, cover);
+    }
+    const pedestal = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.2, 0.25, 12), white);
+    pedestal.position.set(0.9, 0.12, 0.5);
+    const bug = new THREE.Mesh(new THREE.CapsuleGeometry(0.07, 0.28, 4, 8), new THREE.MeshStandardMaterial({ color: '#6fcf6a', roughness: 0.5 }));
+    bug.rotation.z = Math.PI / 2.4;
+    bug.position.set(0.9, 0.38, 0.5);
+    house.add(pedestal, bug);
+
+    // 词语站：条纹遮阳棚的小摊，挂着彩色词卡
+    const l = STATION_SPOTS.L;
+    const stall = new THREE.Group();
+    place(stall, l.x, l.z);
+    stall.rotation.y = -0.5;
+    this.site.add(stall);
+    const wood = new THREE.MeshStandardMaterial({ color: '#8a6a3e', roughness: 0.8 });
+    const table = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.5, 0.6), wood);
+    table.position.y = 0.25;
+    stall.add(table);
+    for (const [px, pz] of [[-0.6, -0.25], [0.6, -0.25], [-0.6, 0.25], [0.6, 0.25]]) {
+      const post = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 1.35, 8), wood);
+      post.position.set(px, 0.67, pz);
+      stall.add(post);
+    }
+    const stripes = document.createElement('canvas');
+    stripes.width = 128;
+    stripes.height = 8;
+    const sg = stripes.getContext('2d');
+    for (let i = 0; i < 8; i++) {
+      sg.fillStyle = i % 2 ? '#d9cdf5' : '#8e63e0';
+      sg.fillRect(i * 16, 0, 16, 8);
+    }
+    const stripeTex = new THREE.CanvasTexture(stripes);
+    stripeTex.colorSpace = THREE.SRGBColorSpace;
+    const roof = new THREE.Mesh(new THREE.BoxGeometry(1.55, 0.08, 0.85), new THREE.MeshStandardMaterial({ map: stripeTex, roughness: 0.85 }));
+    roof.position.y = 1.38;
+    stall.add(roof);
+    ['#ffd166', '#80ed99', '#7cc8ff', '#ff7eb6', '#b388ff'].forEach((color, i) => {
+      const card = new THREE.Mesh(new THREE.PlaneGeometry(0.2, 0.26), new THREE.MeshStandardMaterial({ color, roughness: 0.5, side: THREE.DoubleSide }));
+      card.position.set(-0.5 + i * 0.25, 1.12, 0.43);
+      card.rotation.z = (i % 2 ? 1 : -1) * 0.08;
+      stall.add(card);
+    });
+
+    // 广播站：信号塔、碟形天线、塔顶的绿灯
+    const w = STATION_SPOTS.WSL;
+    const tower = new THREE.Group();
+    place(tower, w.x, w.z);
+    this.site.add(tower);
+    const metal = new THREE.MeshStandardMaterial({ color: '#7d86a8', roughness: 0.4, metalness: 0.6 });
+    const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.1, 3.4, 10), metal);
+    mast.position.y = 1.7;
+    tower.add(mast);
+    for (let i = 0; i < 3; i++) {
+      const a = (i / 3) * Math.PI * 2;
+      const strut = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 1.8, 6), metal);
+      strut.position.set(Math.cos(a) * 0.35, 0.8, Math.sin(a) * 0.35);
+      strut.rotation.set(Math.sin(a) * 0.4, 0, -Math.cos(a) * 0.4);
+      tower.add(strut);
+    }
+    const hut = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.5, 0.6), white);
+    hut.position.set(0.55, 0.25, 0.3);
+    tower.add(hut);
+    const dish = new THREE.Mesh(new THREE.SphereGeometry(0.45, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2.8), new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.35, side: THREE.DoubleSide }));
+    dish.position.set(0, 2.6, 0.12);
+    dish.rotation.x = -1.1;
+    tower.add(dish);
+    this.towerBeacon = new THREE.Mesh(new THREE.SphereGeometry(0.1, 12, 8), new THREE.MeshBasicMaterial({ color: '#80ed99' }));
+    this.towerBeacon.position.y = 3.48;
+    tower.add(this.towerBeacon);
+  }
+
   #buildRocks() {
     const mat = new THREE.MeshStandardMaterial({ color: '#3d5a80', roughness: 0.85, flatShading: true });
     const crystal = new THREE.MeshStandardMaterial({ color: '#9be7ff', emissive: '#4cc9f0', emissiveIntensity: 0.6, roughness: 0.2, flatShading: true });
@@ -327,7 +571,8 @@ export class BixStage {
       const d = 2.4 + rand() * 8;
       const x = Math.cos(a) * d;
       const z = Math.sin(a) * d;
-      if (Math.hypot(x - 3.3, z + 1.9) < 1.4 || Math.hypot(x + 2.6, z + 0.8) < 0.8 || Math.hypot(x - 1.4, z - 1.0) < 0.9) continue;
+      const spots = [...Object.values(STATION_SPOTS), ...EXTRA_SPOTS, { x: 1.4, z: 1.0 }];
+      if (Math.hypot(x, z) < 2 || spots.some((s) => Math.hypot(x - s.x, z - s.z) < 1.5)) continue;
       const isCrystal = i % 5 === 0;
       const rock = new THREE.Mesh(isCrystal ? crystalGeo : geo, isCrystal ? crystal : mat);
       const s = isCrystal ? 0.18 + rand() * 0.2 : 0.12 + rand() * 0.35;
@@ -531,6 +776,10 @@ export class BixStage {
   }
 
   #updateShip(dt, t) {
+    if (this.mapMode) {
+      this.shipWiggle = Math.max(0, (this.shipWiggle || 0) - dt * 1.6);
+      this.ship.rotation.z = Math.sin(t * 30) * 0.06 * this.shipWiggle;
+    }
     this.flameSize += (this.flameGoal - this.flameSize) * Math.min(1, dt * 6);
     const flicker = 1 + Math.sin(t * 40) * 0.08 + Math.sin(t * 23) * 0.06;
     const s = Math.max(0.0001, this.flameSize);
@@ -542,7 +791,26 @@ export class BixStage {
     z.shown += (z.target - z.shown) * Math.min(1, dt * (this.reduced ? 60 : 5));
     z.group.scale.setScalar(Math.max(0.0001, z.target > 0 ? easeOutBack(clamp01(z.shown)) : z.shown));
     z.hop = Math.max(0, z.hop - dt * 1.4);
-    const idle = this.reduced ? 0 : Math.abs(Math.sin(t * 2.6)) * 0.04;
+    // 走向目标站点：顺着地面走，走的时候脚步快一点，到了转身朝着镜头
+    let walking = false;
+    if (z.goal) {
+      const p = z.group.position;
+      const dx = z.goal.x - p.x;
+      const dz = z.goal.z - p.z;
+      const dist = Math.hypot(dx, dz);
+      if (dist > 0.03) {
+        walking = true;
+        const step = this.reduced ? dist : Math.min(dist, dt * 2.6);
+        p.x += (dx / dist) * step;
+        p.z += (dz / dist) * step;
+        p.y = ground(p.x, p.z);
+        z.group.rotation.set(0, Math.atan2(dx, dz), 0);
+      } else {
+        const face = Math.atan2(-p.x, 6 - p.z);
+        z.group.rotation.set(0, z.group.rotation.y + (face - z.group.rotation.y) * Math.min(1, dt * 6), 0);
+      }
+    }
+    const idle = this.reduced ? 0 : Math.abs(Math.sin(t * (walking ? 9 : 2.6))) * (walking ? 0.1 : 0.04);
     z.inner.position.y = Math.sin(z.hop * Math.PI) * 0.5 + idle;
 
     // 眨眼
@@ -578,6 +846,9 @@ export class BixStage {
     this.vane.rotation.y = Math.sin(t * 0.5) * 0.7 + Math.sin(t * 1.3) * 0.15;
     this.cups.rotation.y += dt * 5;
     this.beacon.visible = Math.sin(t * 4) > 0;
+    this.towerBeacon.visible = this.beaconBoost > 0 || Math.sin(t * 2.5) > -0.3;
+    this.towerBeacon.scale.setScalar(this.beaconBoost > 0 ? 1.8 + Math.sin(t * 20) * 0.4 : 1);
+    for (const ring of this.doneRings.values()) ring.material.opacity = 0.6 + Math.sin(t * 3) * 0.3;
     this.padLights.forEach((m, i) => (m.visible = Math.sin(t * 3 - i * 0.8) > -0.2));
     const s = this.sign;
     s.pop = Math.max(0, s.pop - dt * 1.6);

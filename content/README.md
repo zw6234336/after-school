@@ -92,6 +92,7 @@ content/
 ```
 
 - `camera` 和 `action` 是 `src/bix.js` 里的镜头预设和动作名。
+- `surface.stations` 可以改这一层站点的名字和图标，比如 `{ "RI": { "name": "气象站", "icon": "🌦️" } }`。站点的键是 `RF`、`RL`、`RI`、`L`、`WSL`（写作和听说共用广播站）。
 - 字幕（`text`、`q`、`options`、`hint`）只能用 [`wordlists/dolch.json`](wordlists/dolch.json) 里的高频词（Dolch 词表，公有领域）、更浅的层里学过的单元词，以及 `vocab` 里声明的词；`preview` 的新词必须是本章单元要学的词，每段最多一个。`npm run check:content` 会检查这些。
 - 开发时打开 `http://localhost:5173/?opening=ch01-weather-station`（或 `?opening=layer-1`）预览。
 

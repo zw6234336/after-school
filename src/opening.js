@@ -13,14 +13,16 @@ const noEmoji = (text) => String(text).replace(/\p{Extended_Pictographic}️?/gu
 const capital = (w) => w.charAt(0).toUpperCase() + w.slice(1);
 
 export class OpeningPlayer {
-  constructor(scene) {
+  /** keepStage：播完不拆布景，交给调用方（着陆后直接在这个布景上显示地面地图） */
+  constructor(scene, { keepStage = false } = {}) {
     this.scene = scene;
+    this.keepStage = keepStage;
     this.stage = null;
     this.run = 0;
     this.question = null;
   }
 
-  /** 播放一章的开场；看完点“开始探索”或者跳过后 resolve */
+  /** 播放一章的开场；看完点“开始探索”或者跳过后 resolve({ stage })，keepStage 时 stage 是留下来的布景 */
   play(chapter) {
     const op = chapter.opening;
     this.op = op;
@@ -235,12 +237,12 @@ export class OpeningPlayer {
     this.el.classList.add('leaving');
     setTimeout(() => this.el.remove(), 600);
     document.body.classList.remove('cinematic');
-    if (this.stage) {
+    if (this.stage && !this.keepStage) {
       this.scene.endCinematic();
       // 相机飞回使命星球的路上还看得见 Bix 星，飞远了再拆掉
       const stage = this.stage;
       setTimeout(() => stage.dispose(), 4000);
     }
-    this.resolve?.();
+    this.resolve?.({ stage: this.keepStage ? this.stage : null });
   }
 }

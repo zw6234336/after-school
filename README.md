@@ -171,12 +171,17 @@ npm run dev
 
 修改或新增单元后运行 `npm run check:content`，它会用和页面一样的规则在三档难度下检查每个单元。
 
-### 开场动画（原型）
+### 开场动画和着陆后的地面地图（原型）
 
-“星际破译”故事里，进入星球的每一层前会播一段开场动画：使命号着陆、原住民 Zib 用学过的词打招呼、中途停下来复习两道题、最后预告这一层的新词。开场的台词和题目写在 [`content/story/`](content/README.md#故事章节和开场动画) 里。现在还没有接进使命任务的流程，开发时这样预览：
+“星际破译”故事里，进入星球的每一层前会播一段开场动画：使命号着陆、原住民 Zib 用学过的词打招呼、中途停下来复习两道题、最后预告这一层的新词。开场的台词和题目写在 [`content/story/`](content/README.md#故事章节和开场动画) 里。
+
+开场播完（或跳过）就算**着陆**，主界面从太空里的科目星球换成这一层的**地面地图**：当天的任务按 CCSS 领域自动分到五个站点——🔤 拼读站（RF）、📚 故事屋（RL）、🔬 研究站（RI，第 1 层叫气象站）、🧩 词语站（L）、📡 广播站（W、SL）；数学、语文等没有 CCSS 标准的科目各开一个站点。全部完成后由广播站的信号塔向地球发信号。家长报告仍然按学校的科目分组。着陆状态保存在浏览器里。
+
+现在还没有在使命任务的流程里自动触发着陆，开发时这样操作：
 
 ```
-http://localhost:5173/?opening=ch01-weather-station
+http://localhost:5173/?opening=ch01-weather-station   播放开场，播完着陆
+http://localhost:5173/?story=reset                     回到航行期（太空里的科目星球）
 ```
 
 ## 部署到 Cloudflare
@@ -212,7 +217,10 @@ src/ui.js              作业面板、答题、家长报告
 src/data.js            读取作业文件、展开内容库单元、生成口算题
 src/content.js         把 content/units 和 content/story 打包进页面
 src/opening.js         开场动画播放器：字幕、复习停顿、标题卡、跳过
-src/bix.js             开场动画的三维布景：Bix 星、使命号、气象站、Zib、镜头预设
+src/bix.js             Bix 星的三维布景：使命号、五个站点、Zib、镜头预设
+src/surface.js         着陆后的地面地图：站点名牌、点击、镜头、信号塔
+src/stations.js        按 CCSS 领域把当天任务分到站点
+src/story.js           故事进度（是否已着陆）
 src/checker.js         判断答案对错
 src/progress.js        进度和星星（localStorage）
 src/standards.js       CCSS 标准说明、“I can”目标、掌握等级

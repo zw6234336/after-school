@@ -6,6 +6,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { resolveUnits, normalizeHomework, LEVELS } from '../src/data.js';
 import { parseStandard } from '../src/standards.js';
+import { STATION_TYPES } from '../src/stations.js';
 
 const UNITS_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'content', 'units');
 const GRADES = ['K', '1', '2', '3', '4', '5'];
@@ -111,6 +112,7 @@ function checkGrade(code, level, grade, where) {
 
 const STORY_DIR = join(UNITS_DIR, '..', 'story');
 const SHOT_TYPES = ['fly', 'say', 'ask', 'preview', 'title'];
+const STATION_KEYS = STATION_TYPES.map((t) => t.key);
 const dolch = JSON.parse(readFileSync(join(UNITS_DIR, '..', 'wordlists', 'dolch.json'), 'utf8'));
 const DOLCH = new Set(Object.values(dolch.lists).flat());
 const chapters = existsSync(STORY_DIR)
@@ -136,6 +138,9 @@ for (const ch of chapters) {
   if (`${ch.id}.json` !== ch.file) at(`id "${ch.id}" 和文件名不一致`);
   if (!units[ch.unit]) at(`引用的单元 "${ch.unit}" 不存在`);
   if (!Number.isInteger(ch.layer) || ch.layer < 1) at('layer 需要是从 1 开始的整数');
+  for (const key of Object.keys(ch.surface?.stations || {})) {
+    if (!STATION_KEYS.includes(key)) at(`surface.stations 里的 "${key}" 不是站点，可用：${STATION_KEYS.join(' / ')}`);
+  }
   const op = ch.opening;
   if (!op) continue;
   if (!Array.isArray(op.shots) || op.shots.length === 0) {
