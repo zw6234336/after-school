@@ -329,6 +329,8 @@ export class BixStage {
     const top = t.orb.getWorldPosition(new THREE.Vector3());
     SEASON_COLORS.forEach((c, i) => setTimeout(() => this.host.particles.firework(top.clone().add(v1.set((i - 1.5) * 0.9, 1 + (i % 2) * 0.6, 0)), [c, '#ffffff']), i * 260));
     await wait(this.reduced ? 0 : 1200);
+    // Zib 跑回原来的地方：站在塔前面的话，从地图上看会被拼读站挡住
+    this.zib.goal = { x: ZIB_HOME.x, z: ZIB_HOME.z };
     this.doorOpening = false;
   }
 
