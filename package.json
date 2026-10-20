@@ -2,7 +2,7 @@
   "name": "after-school",
   "private": true,
   "version": "0.1.0",
-  "description": "作业星球：用 three.js 为孩子展示和检查家庭作业",
+  "description": "使命星球：用 three.js 为孩子展示和检查家庭作业",
   "type": "module",
   "scripts": {
     "dev": "vite",

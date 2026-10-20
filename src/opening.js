@@ -237,7 +237,7 @@ export class OpeningPlayer {
     document.body.classList.remove('cinematic');
     if (this.stage) {
       this.scene.endCinematic();
-      // 相机飞回作业星球的路上还看得见 Bix 星，飞远了再拆掉
+      // 相机飞回使命星球的路上还看得见 Bix 星，飞远了再拆掉
       const stage = this.stage;
       setTimeout(() => stage.dispose(), 4000);
     }

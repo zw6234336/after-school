@@ -171,7 +171,7 @@ export class HomeworkScene extends EventTarget {
 
   /**
    * 开场动画：把相机交给 cinematic（需要有 update(dt, t, camera)），期间不能点星球。
-   * 结束后相机从当前位置平滑飞回作业星球。
+   * 结束后相机从当前位置平滑飞回使命星球。
    */
   startCinematic(cinematic) {
     this.cinematic = cinematic;
@@ -756,7 +756,7 @@ function makeLabel(subject, onClick) {
   const bar = document.createElement('i');
   track.appendChild(bar);
   el.append(icon, name, count, track);
-  el.setAttribute('aria-label', `打开${subject.name}作业`);
+  el.setAttribute('aria-label', `打开${subject.name}的使命任务`);
   el.addEventListener('click', (e) => {
     e.stopPropagation();
     onClick();

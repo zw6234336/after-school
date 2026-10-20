@@ -115,7 +115,7 @@ export function normalizeHomework(raw, { level = defaultLevel(raw), today = loca
     .filter((s) => s.tasks.length > 0);
   if (subjects.length === 0) throw new Error(`“${levelInfo(level).name}”难度下没有任何作业`);
   return {
-    title: raw.title || '作业星球',
+    title: raw.title || '使命星球',
     child: raw.child || '',
     date,
     level,

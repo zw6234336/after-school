@@ -1,5 +1,5 @@
-// Bix 星着陆区：开场动画用的三维布景（星球、作业号、发射台、气象站、告示牌、Zib、雨）。
-// 和作业星球放在同一个场景里，离中间的太阳系远一些，播放时镜头飞过来拍，播完拆掉。
+// Bix 星着陆区：开场动画用的三维布景（星球、使命号、发射台、气象站、告示牌、Zib、雨）。
+// 和使命星球放在同一个场景里，离中间的太阳系远一些，播放时镜头飞过来拍，播完拆掉。
 
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
@@ -350,7 +350,7 @@ export class BixStage {
   }
 
   #buildShip() {
-    // 作业号：不锈钢船身、一侧黑色隔热瓦、前后两对襟翼（借鉴星舰的外形，不照搬）
+    // 使命号（MISSION-1）：不锈钢船身、一侧黑色隔热瓦、前后两对襟翼（借鉴星舰的外形，不照搬）
     const steel = new THREE.MeshStandardMaterial({ color: '#a7aebd', roughness: 0.45, metalness: 0.75, envMap: this.env, envMapIntensity: 0.3 });
     const tile = new THREE.MeshStandardMaterial({ color: '#1d2033', roughness: 0.7, metalness: 0.1, side: THREE.DoubleSide });
     const flapMat = new THREE.MeshStandardMaterial({ color: '#5b6178', roughness: 0.4, metalness: 0.7, envMap: this.env });

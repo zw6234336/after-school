@@ -6,14 +6,14 @@
   "opening": {
     "title": "第 1 层 · 着陆区",
     "subtitle": "🌦️ 气象站 · Seasons and Weather",
-    "intro": "小宇航员，作业号已经飞到 Bix 星上空。准备好着陆了吗？",
+    "intro": "小宇航员，使命号已经飞到 Bix 星上空。准备好着陆了吗？",
     "vocab": {
       "school": ["jet", "wet", "net", "cold", "hot"],
       "names": ["zib"],
       "extra": ["hi", "brr", "listen", "which", "word"]
     },
     "shots": [
-      { "type": "fly", "camera": "approach", "action": "approach", "zh": "作业号正在飞向 Bix 星……", "ms": 5200 },
+      { "type": "fly", "camera": "approach", "action": "approach", "zh": "使命号正在飞向 Bix 星……", "ms": 5200 },
       { "type": "fly", "camera": "descent", "action": "land", "zh": "翻身 · 减速 · 着陆", "ms": 7000 },
       { "type": "say", "camera": "zib", "action": "zib-appear", "text": "A jet! It is wet!", "zh": "一个原住民跑过来看我们的飞船" },
       { "type": "say", "camera": "zib", "action": "zib-wave", "text": "Hi! I am Zib." },

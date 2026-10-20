@@ -212,7 +212,7 @@ export class UI {
         <span class="ph-icon" aria-hidden="true">${esc(subject.icon)}</span>
         <div class="ph-text">
           <h2>${esc(subject.name)}星球</h2>
-          <p>${done === subject.tasks.length ? '全部完成，星球被点亮啦！' : `完成了 ${done} / ${subject.tasks.length} 项作业`}</p>
+          <p>${done === subject.tasks.length ? '全部完成，星球被点亮啦！' : `完成了 ${done} / ${subject.tasks.length} 项任务`}</p>
         </div>
         <button class="icon-btn close" data-action="close" aria-label="返回太空">✕</button>
       </header>
@@ -808,7 +808,7 @@ export class UI {
     this.#openModal(`
       <div class="modal-card celebrate">
         <div class="celebrate-emoji">🎉</div>
-        <h2>今天的作业全部完成！</h2>
+        <h2>今天的使命任务全部完成！</h2>
         <p>一共获得 <b>${this.progress.stars()}</b> 颗星星，你真是太棒了！</p>
         <div class="modal-actions">
           <button class="btn ghost" data-action="report">给爸爸妈妈看报告</button>
@@ -827,7 +827,7 @@ export class UI {
     } else {
       sound.click();
       this.scene.nudgeRocket();
-      this.toast(`⛽ 还差 ${left} 项作业，燃料就加满啦！`);
+      this.toast(`⛽ 还差 ${left} 项任务，燃料就加满啦！`);
     }
   }
 
@@ -1016,7 +1016,7 @@ export class UI {
     const cards = LEVELS.map((level) => {
       const sum = this.levels.summary(level.id);
       const current = level.id === this.homework.level;
-      const detail = sum ? `${sum.tasks} 项作业 · ${sum.questions} 道题` : '这个难度下没有作业';
+      const detail = sum ? `${sum.tasks} 项任务 · ${sum.questions} 道题` : '这个难度下没有任务';
       return `
         <button class="level-card ${current ? 'current' : ''}" data-action="level" data-level="${level.id}" ${sum ? '' : 'disabled'}
                 aria-pressed="${current}">
@@ -1068,8 +1068,8 @@ export class UI {
       left === 0
         ? '🎉 全部完成！点一下火箭，再发射一次吧'
         : pct === 0
-          ? '👆 点一颗星球，开始做作业吧！完成作业给火箭加燃料'
-          : `还差 ${left} 项作业，火箭就能发射啦！`;
+          ? '👆 点一颗星球，开始使命任务吧！完成任务给火箭加燃料'
+          : `还差 ${left} 项任务，火箭就能发射啦！`;
   }
 
   #flyStars(count, from) {
