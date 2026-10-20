@@ -10,6 +10,10 @@ const GOLD = new THREE.Color('#ffd166');
 const MOON_IDLE = new THREE.Color('#56618f');
 const PLANET_RADIUS = 1.3;
 const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/** 自适应清晰度：帧率低于这个就降低渲染分辨率，高于 RAISE_FPS 一段时间再升回去；最低降到 MIN_RATIO */
+const LOWER_FPS = 40;
+const RAISE_FPS = 57;
+const MIN_RATIO = 0.75;
 const FIREWORK_COLORS = [
   ['#ff4d6d', '#ffd166'],
   ['#4cc9f0', '#ffffff'],
@@ -35,7 +39,11 @@ export class HomeworkScene extends EventTarget {
     this.progress = progress;
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // 清晰度（像素比）：先用屏幕的（最多 2 倍），帧率低的设备会自动往下调，见 #adapt
+    this.maxRatio = Math.min(window.devicePixelRatio, 2);
+    this.ratio = this.maxRatio;
+    this.perf = { frames: 0, time: 0, good: 0 };
+    this.renderer.setPixelRatio(this.ratio);
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     container.appendChild(this.renderer.domElement);
 
@@ -555,8 +563,38 @@ export class HomeworkScene extends EventTarget {
 
   // ---------- 动画 ----------
 
+  /**
+   * 自适应清晰度：每 2 秒算一次帧率。低于 LOWER_FPS（老平板、手机、软件渲染）就把渲染分辨率降一档，
+   * 连续 3 次高于 RAISE_FPS 再升回一档。三维画面会稍微柔一点，但动画跟手、不卡
+   */
+  #adapt(frame) {
+    const p = this.perf;
+    // 页面切到后台再回来的第一帧不算
+    if (document.hidden || !(frame > 0) || frame > 0.5) return;
+    p.frames += 1;
+    p.time += frame;
+    if (p.time < 2) return;
+    const fps = p.frames / p.time;
+    p.frames = 0;
+    p.time = 0;
+    let next = this.ratio;
+    if (fps < LOWER_FPS) {
+      next = Math.max(MIN_RATIO, this.ratio - 0.25);
+      p.good = 0;
+    } else if (fps > RAISE_FPS && this.ratio < this.maxRatio && ++p.good >= 3) {
+      next = Math.min(this.maxRatio, this.ratio + 0.25);
+      p.good = 0;
+    }
+    if (next === this.ratio) return;
+    this.ratio = next;
+    this.renderer.setPixelRatio(next);
+    this.composer.setPixelRatio(next);
+    this.#resize();
+  }
+
   #tick() {
     const now = performance.now();
+    this.#adapt((now - this.last) / 1000);
     const dt = Math.min(0.05, (now - this.last) / 1000);
     this.last = now;
     this.time += dt;
