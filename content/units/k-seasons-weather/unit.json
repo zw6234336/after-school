@@ -36,7 +36,13 @@
     { "word": "shed", "meaning": "（树）掉落（叶子）", "emoji": "🍂", "lesson": "l5-autumn" },
     { "word": "harvest", "meaning": "收获，收庄稼", "emoji": "🌽", "lesson": "l5-autumn" },
     { "word": "grasshopper", "meaning": "蚱蜢", "emoji": "🦗", "lesson": "l6-grasshopper" },
-    { "word": "hungry", "meaning": "饿", "emoji": "😋", "lesson": "l6-grasshopper" }
+    { "word": "hungry", "meaning": "饿", "emoji": "😋", "lesson": "l6-grasshopper" },
+    { "word": "thunderstorm", "meaning": "雷雨", "emoji": "⛈️", "lesson": "l7-storms" },
+    { "word": "lightning", "meaning": "闪电", "emoji": "⚡", "lesson": "l7-storms" },
+    { "word": "hail", "meaning": "冰雹", "emoji": "🌨️", "lesson": "l7-storms" },
+    { "word": "meteorologist", "meaning": "气象学家，研究天气的人", "emoji": "🧑‍🔬", "lesson": "l8-meteorology" },
+    { "word": "predict", "meaning": "预测，猜一猜以后会怎样", "emoji": "🔮", "lesson": "l8-meteorology" },
+    { "word": "satellites", "meaning": "卫星", "emoji": "🛰️", "lesson": "l8-meteorology" }
   ],
   "lessons": [
     {
@@ -557,6 +563,194 @@
           "title": "Retell the story to a grown-up",
           "standard": "RL.K.2",
           "note": "用 First… Then… At the end… 把蚱蜢和蚂蚁的故事讲给大人听，讲完请大人点“完成啦”。"
+        }
+      ]
+    },
+    {
+      "id": "l7-storms",
+      "title": "Safety in Storms",
+      "genre": "informational",
+      "from": "Lesson 7: Safety in Storms",
+      "changes": "Shortened and simplified; kept storm clouds, lightning and thunder, staying indoors or in a car, never standing under a tree, getting out of the pool, hail, and rain gear; removed the explanation of electricity, the lightning-struck tree, lying flat outdoors and hailstone sizes; questions rewritten with text evidence; added a safe-or-not-safe sort.",
+      "tasks": [
+        {
+          "id": "sw-l7-read",
+          "title": "Read: Safety in Storms",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Safety in Storms",
+            "genre": "informational",
+            "text": "Dear Kindergartners, Today I will tell you how to stay safe in a thunderstorm. Big, dark clouds mean a storm is coming. During a thunderstorm, lightning flashes in the sky. Then you hear a loud clap of thunder. Thunder cannot hurt you, but lightning can. Lightning likes to strike tall things, like trees. So the best place to be in a storm is indoors. A car is safe, too. Never stand under a tree in a storm! If you are in a pool, get out right away. Sometimes a storm brings hail. Hail is little balls of ice that fall from the clouds. If you must go out in the rain, wear the right gear: a raincoat, boots, and a hat. Your friend, Annie",
+            "vocab": [
+              { "word": "thunderstorm", "meaning": "雷雨", "emoji": "⛈️" },
+              { "word": "lightning", "meaning": "闪电", "emoji": "⚡" },
+              { "word": "hail", "meaning": "冰雹", "emoji": "🌨️" },
+              { "word": "gear", "meaning": "（做某件事要用的）衣服和用具", "emoji": "🧥" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What is the best place to be in a storm?",
+              "options": ["indoors", "under a tree", "in a pool"],
+              "a": "indoors",
+              "evidence": "the best place to be in a storm is indoors"
+            },
+            {
+              "q": "What can hurt you in a storm?",
+              "options": ["lightning", "thunder", "clouds"],
+              "a": "lightning",
+              "evidence": "Thunder cannot hurt you, but lightning can"
+            },
+            {
+              "q": "What is hail?",
+              "options": ["little balls of ice", "big drops of rain", "a loud clap of thunder"],
+              "a": "little balls of ice",
+              "evidence": "Hail is little balls of ice"
+            },
+            {
+              "q": "Why should you never stand under a tree in a storm?",
+              "options": ["Lightning likes to strike tall things.", "Trees are too cold.", "Trees make thunder."],
+              "a": "Lightning likes to strike tall things.",
+              "evidence": "Lightning likes to strike tall things",
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Put the storm in order.",
+              "order": ["Big, dark clouds come.", "Lightning flashes in the sky.", "You hear a loud clap of thunder."],
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Wear the right gear: a raincoat, boots, and a hat. Gear means ___.",
+              "options": ["the clothes you need", "a kind of storm", "a tall tree"],
+              "a": "the clothes you need",
+              "evidence": "wear the right gear",
+              "standard": "RI.K.4",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sw-l7-safe",
+          "title": "Sort: Safe or not safe in a storm?",
+          "standard": "L.K.5",
+          "questions": [
+            {
+              "q": "🏠 Stay indoors.",
+              "options": ["✅ safe", "❌ not safe"],
+              "a": "✅ safe",
+              "speak": "Stay indoors. Is it safe in a storm?"
+            },
+            {
+              "q": "🌳 Stand under a tree.",
+              "options": ["✅ safe", "❌ not safe"],
+              "a": "❌ not safe",
+              "speak": "Stand under a tree. Is it safe in a storm?"
+            },
+            {
+              "q": "🏊 Swim in the pool.",
+              "options": ["✅ safe", "❌ not safe"],
+              "a": "❌ not safe",
+              "speak": "Swim in the pool. Is it safe in a storm?"
+            },
+            {
+              "q": "🚗 Sit in a car.",
+              "options": ["✅ safe", "❌ not safe"],
+              "a": "✅ safe",
+              "speak": "Sit in a car. Is it safe in a storm?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🪁 Fly a kite.",
+              "options": ["✅ safe", "❌ not safe"],
+              "a": "❌ not safe",
+              "speak": "Fly a kite. Is it safe in a storm?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🧥 Wear a raincoat, boots, and a hat in the rain.",
+              "options": ["✅ safe", "❌ not safe"],
+              "a": "✅ safe",
+              "speak": "Wear a raincoat, boots, and a hat in the rain. Is it safe?",
+              "level": "hard"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l8-meteorology",
+      "title": "Meteorology",
+      "genre": "informational",
+      "from": "Lesson 8: Meteorology",
+      "changes": "Shortened and simplified; kept what a meteorologist does, predicting the weather for what to wear and for farmers, satellites, reading white and dark clouds, warnings, and Annie's goodbye; removed weathermen on TV, weather records, the three cloud types by name and the hurricane; questions rewritten with text evidence, one asking for the author's reason (RI.K.8); weather-report speaking task added.",
+      "tasks": [
+        {
+          "id": "sw-l8-read",
+          "title": "Read: Meteorology",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Meteorology",
+            "genre": "informational",
+            "text": "Dear Kindergartners, This is my last letter about seasons and weather. A meteorologist is a person who studies the weather. Meteorologists try to predict, or guess, what the weather will be like tomorrow. This helps people know what to wear. Will you need an umbrella or sunscreen? Farmers need to know when it will rain, too. Satellites high up in space take pictures of the clouds. The pictures help meteorologists see storms coming. You can look at the clouds, too! White, puffy clouds mean nice weather. Big, dark clouds may bring a storm. Meteorologists also warn people when a big storm is on the way. Thank you for helping me with my weather project! Your friend, Annie",
+            "vocab": [
+              { "word": "meteorologist", "meaning": "气象学家，研究天气的人", "emoji": "🧑‍🔬" },
+              { "word": "predict", "meaning": "预测，猜一猜以后会怎样", "emoji": "🔮" },
+              { "word": "satellites", "meaning": "卫星", "emoji": "🛰️" },
+              { "word": "warn", "meaning": "提醒大家有危险", "emoji": "⚠️" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What does a meteorologist study?",
+              "options": ["the weather", "the stars", "the ocean"],
+              "a": "the weather",
+              "evidence": "A meteorologist is a person who studies the weather"
+            },
+            {
+              "q": "What do satellites do?",
+              "options": ["They take pictures of the clouds.", "They make the rain.", "They plant seeds."],
+              "a": "They take pictures of the clouds.",
+              "evidence": "Satellites high up in space take pictures of the clouds"
+            },
+            {
+              "q": "Big, dark clouds may bring a ___.",
+              "options": ["storm", "rainbow", "sunny day"],
+              "a": "storm",
+              "evidence": "Big, dark clouds may bring a storm"
+            },
+            {
+              "q": "Meteorologists try to predict the weather. Predict means ___.",
+              "options": ["guess what will happen", "take a picture", "go to space"],
+              "a": "guess what will happen",
+              "evidence": "predict, or guess",
+              "standard": "RI.K.4",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Why is it good to predict the weather?",
+              "options": ["It helps people know what to wear.", "It makes the sun come out.", "It stops the rain."],
+              "a": "It helps people know what to wear.",
+              "evidence": "This helps people know what to wear",
+              "standard": "RI.K.8",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is this letter mostly about?",
+              "options": ["meteorologists and how they predict the weather", "a trip to the beach", "how to build a snowman"],
+              "a": "meteorologists and how they predict the weather",
+              "evidence": "A meteorologist is a person who studies the weather",
+              "standard": "RI.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sw-l8-report",
+          "title": "Be a meteorologist: give a weather report",
+          "standard": "SL.K.6",
+          "note": "看看窗外，像电视上的天气预报员一样大声告诉大人：Today it is sunny / cloudy / rainy… 再说该穿什么：Wear your ___. 说完请大人点“完成啦”。"
         }
       ]
     }
