@@ -680,6 +680,212 @@ const DISCOVERY_BUILDERS = {
       },
     };
   },
+
+  /** 彩虹桥：一道小彩虹从两个水洼之间拱起来，人走近颜色一圈一圈地亮 */
+  'rainbow-bridge'(ctx) {
+    const group = new THREE.Group();
+    const bands = ['#ff5d5d', '#ff9f43', '#ffd166', '#80ed99', '#4cc9f0', '#7c83ff', '#b388ff'].map((c, i) => {
+      const mat = std(c, { emissive: c, emissiveIntensity: 0.35, roughness: 0.4 });
+      group.add(new THREE.Mesh(new THREE.TorusGeometry(1.35 - i * 0.1, 0.052, 8, 48, Math.PI), mat));
+      return mat;
+    });
+    const water = std('#4fb3c8', { roughness: 0.05, metalness: 0.4, transparent: true, opacity: 0.8 });
+    for (const side of [-1, 1]) {
+      const puddle = new THREE.Mesh(new THREE.CircleGeometry(0.48, 24), water);
+      puddle.rotation.x = -Math.PI / 2;
+      puddle.position.set(side * 1.05, 0.025, 0);
+      group.add(puddle);
+    }
+    const hit = ctx.hit(new THREE.CylinderGeometry(1.4, 1.4, 1.6, 10), 0.8);
+    group.add(hit);
+    return {
+      group,
+      hits: [hit],
+      bubbleAt: new THREE.Vector3(0, 1.9, 0),
+      reach: 1.7,
+      update(dt, t, near) {
+        bands.forEach((m, i) => {
+          m.emissiveIntensity = 0.35 + near * (REDUCED_MOTION ? 0.6 : 0.6 + 0.6 * Math.sin(t * 4 - i * 0.7));
+        });
+      },
+    };
+  },
+
+  /** 会融化的冰块：一大块冰，人走近就慢慢化开，露出里面的小花；走开又慢慢冻回去 */
+  'thaw-ice'(ctx) {
+    const group = new THREE.Group();
+    const iceGeo = new THREE.DodecahedronGeometry(0.62, 0);
+    iceGeo.translate(0, 0.62, 0);
+    const iceMat = std('#cfeeff', { roughness: 0.1, emissive: '#4cc9f0', emissiveIntensity: 0.35, transparent: true, opacity: 0.6, flatShading: true, depthWrite: false });
+    const ice = new THREE.Mesh(iceGeo, iceMat);
+    ice.scale.set(1.1, 1.25, 1.1);
+    ice.rotation.y = ctx.rand() * 3;
+    const puddle = new THREE.Mesh(new THREE.CircleGeometry(1, 32), std('#8fdcf2', { roughness: 0.05, metalness: 0.3, transparent: true, opacity: 0.7 }));
+    puddle.rotation.x = -Math.PI / 2;
+    puddle.position.y = 0.025;
+    const flower = new THREE.Group();
+    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.03, 0.6, 6), std('#3f9e5a'));
+    stem.position.y = 0.3;
+    flower.add(stem);
+    const petal = std('#ff8fc8', { emissive: '#ff5fa8', emissiveIntensity: 0.25, roughness: 0.5 });
+    for (let i = 0; i < 5; i++) {
+      const a = (i / 5) * Math.PI * 2;
+      const p = new THREE.Mesh(ball(0.09, 10, 8), petal);
+      p.scale.set(1, 0.5, 1);
+      p.position.set(Math.cos(a) * 0.11, 0.62, Math.sin(a) * 0.11);
+      flower.add(p);
+    }
+    const middle = new THREE.Mesh(ball(0.065, 10, 8), glow('#ffd166', 1.3));
+    middle.position.y = 0.64;
+    flower.add(middle);
+    group.add(puddle, flower, ice);
+    let melt = 0;
+    const hit = ctx.hit(new THREE.CylinderGeometry(1.0, 1.0, 1.6, 10), 0.8);
+    group.add(hit);
+    return {
+      group,
+      hits: [hit],
+      bubbleAt: new THREE.Vector3(0, 1.95, 0),
+      reach: 1.5,
+      update(dt, t, near) {
+        const goal = near > 0.55 ? 1 : 0;
+        melt += (goal - melt) * Math.min(1, dt * (goal ? 0.9 : 0.25));
+        if (REDUCED_MOTION) melt = goal;
+        const k = 1 - melt * 0.82;
+        ice.scale.set(1.1 * k, 1.25 * k * k, 1.1 * k);
+        iceMat.opacity = 0.6 * (1 - melt * 0.5);
+        puddle.scale.setScalar(0.35 + melt * 0.75);
+        flower.scale.setScalar(0.75 + melt * 0.55);
+        flower.rotation.y = REDUCED_MOTION ? 0 : Math.sin(t * 1.5) * 0.3 * melt;
+      },
+    };
+  },
+
+  /** 放烟花的花：一丛花苞，隔一会儿就有一个飞上天，炸成一朵小烟花；人走近放得更勤 */
+  'firework-flowers'(ctx) {
+    const group = new THREE.Group();
+    const stemMat = std('#4f8f3f');
+    const palettes = [['#ff5d5d', '#ffd166'], ['#4cc9f0', '#ffffff'], ['#b388ff', '#ff7eb6'], ['#80ed99', '#ffd166']];
+    const buds = Array.from({ length: 7 }, (_, i) => {
+      const a = i * 2.4 + ctx.rand();
+      const d = i === 0 ? 0 : 0.3 + ctx.rand() * 0.5;
+      const h = 0.6 + ctx.rand() * 0.5;
+      const x = Math.cos(a) * d;
+      const z = Math.sin(a) * d;
+      const s = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.026, h, 6), stemMat);
+      s.position.set(x, h / 2, z);
+      group.add(s);
+      const colors = palettes[i % palettes.length];
+      const mesh = new THREE.Mesh(ball(0.11, 12, 10), glow(colors[0], 1.2));
+      mesh.position.set(x, h + 0.06, z);
+      group.add(mesh);
+      return { mesh, colors, grow: 1, ph: ctx.rand() * 6 };
+    });
+    const sparks = Array.from({ length: 3 }, () => {
+      const m = new THREE.Mesh(ball(0.07, 10, 8), glow('#ffffff', 2));
+      m.visible = false;
+      group.add(m);
+      return { m, k: -1, bud: null };
+    });
+    let next = 1.2;
+    const hit = ctx.hit(new THREE.CylinderGeometry(1.0, 1.0, 1.4, 10), 0.7);
+    group.add(hit);
+    return {
+      group,
+      hits: [hit],
+      bubbleAt: new THREE.Vector3(0, 1.7, 0),
+      reach: 1.4,
+      update(dt, t, near) {
+        next -= dt * (1 + near * 2.5);
+        const spark = sparks.find((s) => s.k < 0);
+        const ready = buds.filter((b) => b.grow >= 1);
+        if (next <= 0 && spark && ready.length && !REDUCED_MOTION) {
+          next = 0.9 + ctx.rand() * 1.6;
+          spark.bud = ready[(ctx.rand() * ready.length) | 0];
+          spark.bud.grow = 0;
+          spark.k = 0;
+          spark.m.visible = true;
+        }
+        for (const b of buds) {
+          b.grow = Math.min(1, b.grow + dt * 0.45);
+          b.mesh.scale.setScalar((0.2 + 0.8 * b.grow) * (1 + near * 0.12 * Math.sin(t * 5 + b.ph)));
+        }
+        for (const s of sparks) {
+          if (s.k < 0) continue;
+          s.k += dt / 0.8;
+          const from = s.bud.mesh.position;
+          s.m.position.set(from.x, from.y + (1 - (1 - Math.min(1, s.k)) ** 2) * 2.4, from.z);
+          if (s.k >= 1) {
+            ctx.burst(group, s.m.position.clone(), s.bud.colors);
+            s.k = -1;
+            s.m.visible = false;
+          }
+        }
+      },
+    };
+  },
+
+  /** 会长大的南瓜：一片南瓜田，人走近南瓜就一个个鼓起来；走开又慢慢缩回去 */
+  'pumpkin-patch'(ctx) {
+    const group = new THREE.Group();
+    // 南瓜：压扁的球，按经度挤出 8 道棱
+    const geo = ball(1, 32, 16);
+    const p = geo.attributes.position;
+    for (let i = 0; i < p.count; i++) {
+      const x = p.getX(i);
+      const z = p.getZ(i);
+      const k = 1 - 0.09 * Math.abs(Math.sin(Math.atan2(z, x) * 4));
+      p.setXYZ(i, x * k, p.getY(i) * 0.72, z * k);
+    }
+    geo.computeVertexNormals();
+    geo.translate(0, 0.66, 0);
+    const orange = std('#f28c28', { roughness: 0.55, emissive: '#c4561a', emissiveIntensity: 0.15 });
+    const stalk = std('#6b8f3a', { roughness: 0.8 });
+    const pumpkins = [[0, 0, 0.42], [0.8, 0.35, 0.26], [-0.68, 0.48, 0.3], [0.2, -0.8, 0.22], [-0.52, -0.58, 0.2]].map(([x, z, s], i) => {
+      const pk = new THREE.Group();
+      pk.position.set(x, 0, z);
+      pk.rotation.y = ctx.rand() * 3;
+      const body = new THREE.Mesh(geo, orange);
+      pk.add(body);
+      const top = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.09, 0.28, 6), stalk);
+      top.position.set(0, 1.42, 0);
+      top.rotation.z = 0.25;
+      pk.add(top);
+      pk.scale.setScalar(s);
+      group.add(pk);
+      return { pk, s, i };
+    });
+    const leaf = std('#4f9e48', { side: THREE.DoubleSide, roughness: 0.7 });
+    const leafGeo = new THREE.CircleGeometry(0.2, 7);
+    for (let i = 0; i < 9; i++) {
+      const a = (i / 9) * Math.PI * 2 + ctx.rand() * 0.4;
+      const r = 0.55 + ctx.rand() * 0.6;
+      const l = new THREE.Mesh(leafGeo, leaf);
+      l.rotation.set(-Math.PI / 2 + (ctx.rand() - 0.5) * 0.5, 0, ctx.rand() * 6);
+      l.position.set(Math.cos(a) * r, 0.04, Math.sin(a) * r);
+      group.add(l);
+    }
+    let grow = 0;
+    const hit = ctx.hit(new THREE.CylinderGeometry(1.25, 1.25, 1.3, 10), 0.65);
+    group.add(hit);
+    return {
+      group,
+      hits: [hit],
+      bubbleAt: new THREE.Vector3(0, 1.9, 0),
+      reach: 1.6,
+      update(dt, t, near) {
+        const goal = near > 0.55 ? 1 : 0;
+        grow += (goal - grow) * Math.min(1, dt * (goal ? 1.4 : 0.5));
+        if (REDUCED_MOTION) grow = goal;
+        for (const { pk, s, i } of pumpkins) {
+          // 一个接一个鼓起来，鼓的时候轻轻弹一下
+          const g = clamp01(grow * 1.6 - i * 0.15);
+          const wobble = REDUCED_MOTION ? 0 : Math.sin(t * 6 + i) * 0.05 * g * (1 - g);
+          pk.scale.set(s * (1 + g * 0.55 + wobble), s * (1 + g * 0.55 - wobble), s * (1 + g * 0.55 + wobble));
+        }
+      },
+    };
+  },
 };
 
 /** 章节里有、但还没做专门模型的发现物：一簇发光的水晶，颜色跟着地带 */
@@ -1096,6 +1302,10 @@ export class BixExplore extends EventTarget {
       pop: (group, local) => {
         if (Math.random() > 0.5) return;
         this.host.particles.emit(group.localToWorld(local), { count: 10, colors: ['#ffd166', '#ffffff', '#7cc8ff'], speed: 1.3, gravity: 0, life: 0.8 });
+      },
+      /** 一朵小烟花：没有重力（星球上的“下”不是世界坐标的 -y），靠阻力停下来 */
+      burst: (group, local, colors) => {
+        this.host.particles.emit(group.localToWorld(local), { count: 36, colors, speed: 2.6, gravity: 0, life: 1.1, drag: 0.93 });
       },
     };
     this.discoveries = list.map((data) => {
