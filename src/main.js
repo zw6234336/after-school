@@ -45,12 +45,13 @@ function initialHomework(raw) {
 }
 
 /**
- * 翻译机词库：读完一课（这一课带文章的任务做完了），就把这一课记下来，以后每天都算学过。
+ * 读过的课：读完一课（这一课带文章的任务做完了），就把这一课记下来，以后每天都算学过。
+ * 翻译机、衣柜、门和每天一课都看它；所有单元都记（拼读单元不属于故事章节，门的解码锁也要用到）。
  * 返回这次新读完的课（单元 id → 课的 id 列表）
  */
 function syncLearned(progress) {
   const fresh = {};
-  for (const unit of new Set(Object.values(STORY).map((c) => UNITS[c.unit]).filter(Boolean))) {
+  for (const unit of Object.values(UNITS)) {
     for (const lesson of unit.lessons) {
       const reads = lesson.tasks.filter((t) => t.passage);
       const ids = new Set((reads.length ? reads : lesson.tasks).map((t) => t.id));
@@ -160,13 +161,11 @@ async function start() {
           return chapter && playOpening(chapter);
         },
         reset: backToVoyage,
-        /** 每天一课的进度（家长报告用）；作业文件里没有写 "lessons": "daily" 的单元返回 null */
-        plan: () => {
-          const subject = source.subjects?.find((s) => s?.lessons === 'daily' && UNITS[s.unit]);
-          if (!subject) return null;
-          const unit = UNITS[subject.unit];
-          return { unit, ...planStatus(unit, planContext(unit, subject)) };
-        },
+        /** 每天一课的进度（家长报告用）：作业文件里每个写了 "lessons": "daily" 的单元一条 */
+        plans: () =>
+          (source.subjects || [])
+            .filter((s) => s?.lessons === 'daily' && UNITS[s.unit])
+            .map((s) => ({ unit: UNITS[s.unit], ...planStatus(UNITS[s.unit], planContext(UNITS[s.unit], s)) })),
       },
       levels: {
         /** 某个难度下有多少作业和题目，用来在选择界面上显示 */

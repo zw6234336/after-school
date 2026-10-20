@@ -1,0 +1,720 @@
+{
+  "id": "k-phonics-short-vowels",
+  "grade": "K",
+  "title": "Short Vowels",
+  "titleZh": "短元音拼读",
+  "icon": "🔤",
+  "color": "#4cc9f0",
+  "question": "How do the letters in a word tell us how to say it?",
+  "questionZh": "单词里的字母怎么告诉我们它的读音？",
+  "license": "CC BY-NC-SA 4.0",
+  "wordWall": [
+    { "word": "cat", "meaning": "猫", "emoji": "🐱", "lesson": "l1-short-a" },
+    { "word": "hat", "meaning": "帽子", "emoji": "🎩", "lesson": "l1-short-a" },
+    { "word": "map", "meaning": "地图", "emoji": "🗺️", "lesson": "l1-short-a" },
+    { "word": "pan", "meaning": "平底锅", "emoji": "🍳", "lesson": "l1-short-a" },
+    { "word": "bat", "meaning": "蝙蝠", "emoji": "🦇", "lesson": "l1-short-a" },
+    { "word": "net", "meaning": "网", "emoji": "🥅", "lesson": "l2-short-e" },
+    { "word": "hen", "meaning": "母鸡", "emoji": "🐔", "lesson": "l2-short-e" },
+    { "word": "pen", "meaning": "笔", "emoji": "🖊️", "lesson": "l2-short-e" },
+    { "word": "bed", "meaning": "床", "emoji": "🛏️", "lesson": "l2-short-e" },
+    { "word": "ten", "meaning": "十", "emoji": "🔟", "lesson": "l2-short-e" },
+    { "word": "pig", "meaning": "猪", "emoji": "🐷", "lesson": "l3-short-i" },
+    { "word": "pin", "meaning": "图钉", "emoji": "📌", "lesson": "l3-short-i" },
+    { "word": "six", "meaning": "六", "emoji": "6️⃣", "lesson": "l3-short-i" },
+    { "word": "lip", "meaning": "嘴唇", "emoji": "👄", "lesson": "l3-short-i" },
+    { "word": "bin", "meaning": "垃圾桶", "emoji": "🗑️", "lesson": "l3-short-i" },
+    { "word": "fox", "meaning": "狐狸", "emoji": "🦊", "lesson": "l4-short-o" },
+    { "word": "box", "meaning": "盒子", "emoji": "📦", "lesson": "l4-short-o" },
+    { "word": "dog", "meaning": "狗", "emoji": "🐶", "lesson": "l4-short-o" },
+    { "word": "log", "meaning": "木头", "emoji": "🪵", "lesson": "l4-short-o" },
+    { "word": "pot", "meaning": "锅", "emoji": "🍲", "lesson": "l4-short-o" },
+    { "word": "bug", "meaning": "虫子", "emoji": "🐛", "lesson": "l5-short-u" },
+    { "word": "sun", "meaning": "太阳", "emoji": "☀️", "lesson": "l5-short-u" },
+    { "word": "cup", "meaning": "杯子", "emoji": "☕", "lesson": "l5-short-u" },
+    { "word": "bus", "meaning": "公共汽车", "emoji": "🚌", "lesson": "l5-short-u" },
+    { "word": "nut", "meaning": "坚果", "emoji": "🥜", "lesson": "l5-short-u" }
+  ],
+  "lessons": [
+    {
+      "id": "l1-short-a",
+      "title": "Short a",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "sv-a-sounds",
+          "title": "Sounds: short a /ă/",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "🐱 Which word is it?",
+              "options": ["cut", "cat", "cot"],
+              "a": "cat",
+              "speak": "cat",
+              "hint": "中间的字母是 a，读 /ă/"
+            },
+            {
+              "q": "Which word has the short a sound /ă/?",
+              "options": ["hot", "hat", "hit"],
+              "a": "hat",
+              "speak": "Which word has the short a sound? hot, hat, or hit?"
+            },
+            {
+              "q": "Which word rhymes with “cat”?",
+              "options": ["dog", "hat", "sun"],
+              "a": "hat",
+              "speak": "Which word rhymes with cat?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: cat → change /k/ to /h/ → ?",
+              "options": ["cap", "hat", "bat"],
+              "a": "hat",
+              "speak": "Change the first sound of cat.",
+              "hint": "把 cat 的第一个音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sv-a-build",
+          "title": "Build words with short a",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🐱",
+              "tiles": ["c", "a", "t", "o"],
+              "a": "cat",
+              "speak": "cat"
+            },
+            {
+              "q": "Build the word: 🎩",
+              "tiles": ["h", "a", "t", "i"],
+              "a": "hat",
+              "speak": "hat"
+            },
+            {
+              "q": "Build the word: 🗺️",
+              "tiles": ["m", "a", "p", "u"],
+              "a": "map",
+              "speak": "map"
+            },
+            {
+              "q": "Build the word: 🍳",
+              "tiles": ["p", "a", "n", "e"],
+              "a": "pan",
+              "speak": "pan",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Build the word: 🦇",
+              "tiles": ["b", "a", "t", "o"],
+              "a": "bat",
+              "speak": "bat",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sv-a-read",
+          "title": "Read: The Cat and the Hat",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "The Cat and the Hat",
+            "genre": "literature",
+            "decodable": { "vowels": "a", "names": [] },
+            "text": "A cat sat on a mat. The cat has a red hat. A man ran to the cat. The man had a fan. Then the cat and the man sat in the van."
+          },
+          "questions": [
+            {
+              "q": "What does the cat have?",
+              "options": ["a red hat", "a big dog", "a hot pot"],
+              "a": "a red hat",
+              "evidence": "The cat has a red hat",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Who ran to the cat?",
+              "options": ["a man", "a pig", "a hen"],
+              "a": "a man",
+              "evidence": "A man ran to the cat",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Where did the cat and the man sit?",
+              "options": ["in the van", "on the bus", "in a box"],
+              "a": "in the van",
+              "evidence": "sat in the van",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["hat.", "The", "has", "cat", "a"],
+              "a": "The cat has a hat.",
+              "speak": "The cat has a hat.",
+              "standard": "RF.K.3c",
+              "hint": "The、a、has 这些是要整体记住的高频词",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "sv-a-fluency",
+          "title": "Fluency: The Cat and the Hat",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "sv-a-read"
+          }
+        }
+      ]
+    },
+    {
+      "id": "l2-short-e",
+      "title": "Short e",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "sv-e-sounds",
+          "title": "Sounds: short e /ĕ/",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "🥅 Which word is it?",
+              "options": ["nut", "net", "not"],
+              "a": "net",
+              "speak": "net",
+              "hint": "中间的字母是 e，读 /ĕ/"
+            },
+            {
+              "q": "Which word has the short e sound /ĕ/?",
+              "options": ["bad", "bed", "bud"],
+              "a": "bed",
+              "speak": "Which word has the short e sound? bad, bed, or bud?"
+            },
+            {
+              "q": "Which word rhymes with “hen”?",
+              "options": ["hat", "ten", "sun"],
+              "a": "ten",
+              "speak": "Which word rhymes with hen?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: pen → change /p/ to /t/ → ?",
+              "options": ["pan", "ten", "pet"],
+              "a": "ten",
+              "speak": "Change the first sound of pen.",
+              "hint": "把 pen 的第一个音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sv-e-build",
+          "title": "Build words with short e",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🥅",
+              "tiles": ["n", "e", "t", "a"],
+              "a": "net",
+              "speak": "net"
+            },
+            {
+              "q": "Build the word: 🐔",
+              "tiles": ["h", "e", "n", "i"],
+              "a": "hen",
+              "speak": "hen"
+            },
+            {
+              "q": "Build the word: 🖊️",
+              "tiles": ["p", "e", "n", "u"],
+              "a": "pen",
+              "speak": "pen"
+            },
+            {
+              "q": "Build the word: 🛏️",
+              "tiles": ["b", "e", "d", "o"],
+              "a": "bed",
+              "speak": "bed",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Build the word: 🔟",
+              "tiles": ["t", "e", "n", "a"],
+              "a": "ten",
+              "speak": "ten",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sv-e-read",
+          "title": "Read: Ten Hens",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "Ten Hens",
+            "genre": "literature",
+            "decodable": { "vowels": "ae", "names": ["Ben"] },
+            "text": "Ten hens sat in a pen. Ben fed the hens. One hen is wet. Ben gets a red net. The wet hen sat in the net. Then Ben and the hens went to bed."
+          },
+          "questions": [
+            {
+              "q": "How many hens sat in the pen?",
+              "options": ["ten", "two", "one"],
+              "a": "ten",
+              "evidence": "Ten hens sat in a pen",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What does Ben get?",
+              "options": ["a red net", "a big pot", "a hat"],
+              "a": "a red net",
+              "evidence": "Ben gets a red net",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Where did the wet hen sit?",
+              "options": ["in the net", "on the bed", "in the sun"],
+              "a": "in the net",
+              "evidence": "The wet hen sat in the net",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["hens.", "Ben", "the", "fed"],
+              "a": "Ben fed the hens.",
+              "speak": "Ben fed the hens.",
+              "standard": "RF.K.3c",
+              "hint": "The、a、has 这些是要整体记住的高频词",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "sv-e-fluency",
+          "title": "Fluency: Ten Hens",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "sv-e-read"
+          }
+        }
+      ]
+    },
+    {
+      "id": "l3-short-i",
+      "title": "Short i",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "sv-i-sounds",
+          "title": "Sounds: short i /ĭ/",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "🐷 Which word is it?",
+              "options": ["peg", "pig", "pug"],
+              "a": "pig",
+              "speak": "pig",
+              "hint": "中间的字母是 i，读 /ĭ/"
+            },
+            {
+              "q": "Which word has the short i sound /ĭ/?",
+              "options": ["sat", "sit", "set"],
+              "a": "sit",
+              "speak": "Which word has the short i sound? sat, sit, or set?"
+            },
+            {
+              "q": "Which word rhymes with “pig”?",
+              "options": ["pot", "dig", "cat"],
+              "a": "dig",
+              "speak": "Which word rhymes with pig?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: pin → change /p/ to /f/ → ?",
+              "options": ["fan", "fin", "pit"],
+              "a": "fin",
+              "speak": "Change the first sound of pin.",
+              "hint": "把 pin 的第一个音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sv-i-build",
+          "title": "Build words with short i",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🐷",
+              "tiles": ["p", "i", "g", "a"],
+              "a": "pig",
+              "speak": "pig"
+            },
+            {
+              "q": "Build the word: 📌",
+              "tiles": ["p", "i", "n", "e"],
+              "a": "pin",
+              "speak": "pin"
+            },
+            {
+              "q": "Build the word: 6️⃣",
+              "tiles": ["s", "i", "x", "o"],
+              "a": "six",
+              "speak": "six"
+            },
+            {
+              "q": "Build the word: 👄",
+              "tiles": ["l", "i", "p", "u"],
+              "a": "lip",
+              "speak": "lip",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Build the word: 🗑️",
+              "tiles": ["b", "i", "n", "a"],
+              "a": "bin",
+              "speak": "bin",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sv-i-read",
+          "title": "Read: The Big Pig",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "The Big Pig",
+            "genre": "literature",
+            "decodable": { "vowels": "aei", "names": ["Tim"] },
+            "text": "Tim has a big pig. The pig can dig. It digs a big pit. Then the pig sits in the pit. Tim fed the pig a fig. The pig is not sad. It is a big, fit pig!"
+          },
+          "questions": [
+            {
+              "q": "What can the pig do?",
+              "options": ["dig", "swim", "fly"],
+              "a": "dig",
+              "evidence": "The pig can dig",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Where does the pig sit?",
+              "options": ["in the pit", "on the bed", "in a box"],
+              "a": "in the pit",
+              "evidence": "the pig sits in the pit",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What did Tim feed the pig?",
+              "options": ["a fig", "a hat", "a net"],
+              "a": "a fig",
+              "evidence": "Tim fed the pig a fig",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["dig.", "The", "can", "pig"],
+              "a": "The pig can dig.",
+              "speak": "The pig can dig.",
+              "standard": "RF.K.3c",
+              "hint": "The、a、has 这些是要整体记住的高频词",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "sv-i-fluency",
+          "title": "Fluency: The Big Pig",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "sv-i-read"
+          }
+        }
+      ]
+    },
+    {
+      "id": "l4-short-o",
+      "title": "Short o",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "sv-o-sounds",
+          "title": "Sounds: short o /ŏ/",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "🐶 Which word is it?",
+              "options": ["dig", "dog", "dug"],
+              "a": "dog",
+              "speak": "dog",
+              "hint": "中间的字母是 o，读 /ŏ/"
+            },
+            {
+              "q": "Which word has the short o sound /ŏ/?",
+              "options": ["hat", "hot", "hut"],
+              "a": "hot",
+              "speak": "Which word has the short o sound? hat, hot, or hut?"
+            },
+            {
+              "q": "Which word rhymes with “fox”?",
+              "options": ["fan", "box", "sun"],
+              "a": "box",
+              "speak": "Which word rhymes with fox?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: dog → change /d/ to /l/ → ?",
+              "options": ["leg", "log", "dot"],
+              "a": "log",
+              "speak": "Change the first sound of dog.",
+              "hint": "把 dog 的第一个音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sv-o-build",
+          "title": "Build words with short o",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🦊",
+              "tiles": ["f", "o", "x", "a"],
+              "a": "fox",
+              "speak": "fox"
+            },
+            {
+              "q": "Build the word: 📦",
+              "tiles": ["b", "o", "x", "e"],
+              "a": "box",
+              "speak": "box"
+            },
+            {
+              "q": "Build the word: 🐶",
+              "tiles": ["d", "o", "g", "i"],
+              "a": "dog",
+              "speak": "dog"
+            },
+            {
+              "q": "Build the word: 🪵",
+              "tiles": ["l", "o", "g", "u"],
+              "a": "log",
+              "speak": "log",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Build the word: 🍲",
+              "tiles": ["p", "o", "t", "a"],
+              "a": "pot",
+              "speak": "pot",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sv-o-read",
+          "title": "Read: The Fox and the Box",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "The Fox and the Box",
+            "genre": "literature",
+            "decodable": { "vowels": "aeio", "names": [] },
+            "text": "A fox got on a log. The fox had a box. In the box was a pot. The pot was hot! The fox sat on top of the box. Then the fox and the box fell in a pit."
+          },
+          "questions": [
+            {
+              "q": "What did the fox have?",
+              "options": ["a box", "a bus", "a bed"],
+              "a": "a box",
+              "evidence": "The fox had a box",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What was in the box?",
+              "options": ["a pot", "a pig", "a hat"],
+              "a": "a pot",
+              "evidence": "In the box was a pot",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Where did the fox sit?",
+              "options": ["on top of the box", "in the pot", "under the log"],
+              "a": "on top of the box",
+              "evidence": "The fox sat on top of the box",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["hot!", "The", "was", "pot"],
+              "a": "The pot was hot!",
+              "speak": "The pot was hot!",
+              "standard": "RF.K.3c",
+              "hint": "The、a、has 这些是要整体记住的高频词",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "sv-o-fluency",
+          "title": "Fluency: The Fox and the Box",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "sv-o-read"
+          }
+        }
+      ]
+    },
+    {
+      "id": "l5-short-u",
+      "title": "Short u",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "sv-u-sounds",
+          "title": "Sounds: short u /ŭ/",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "☕ Which word is it?",
+              "options": ["cap", "cup", "cop"],
+              "a": "cup",
+              "speak": "cup",
+              "hint": "中间的字母是 u，读 /ŭ/"
+            },
+            {
+              "q": "Which word has the short u sound /ŭ/?",
+              "options": ["bag", "bug", "big"],
+              "a": "bug",
+              "speak": "Which word has the short u sound? bag, bug, or big?"
+            },
+            {
+              "q": "Which word rhymes with “sun”?",
+              "options": ["sit", "fun", "hot"],
+              "a": "fun",
+              "speak": "Which word rhymes with sun?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: bug → change /b/ to /r/ → ?",
+              "options": ["rag", "rug", "bud"],
+              "a": "rug",
+              "speak": "Change the first sound of bug.",
+              "hint": "把 bug 的第一个音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sv-u-build",
+          "title": "Build words with short u",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🐛",
+              "tiles": ["b", "u", "g", "a"],
+              "a": "bug",
+              "speak": "bug"
+            },
+            {
+              "q": "Build the word: ☀️",
+              "tiles": ["s", "u", "n", "e"],
+              "a": "sun",
+              "speak": "sun"
+            },
+            {
+              "q": "Build the word: ☕",
+              "tiles": ["c", "u", "p", "o"],
+              "a": "cup",
+              "speak": "cup"
+            },
+            {
+              "q": "Build the word: 🚌",
+              "tiles": ["b", "u", "s", "i"],
+              "a": "bus",
+              "speak": "bus",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Build the word: 🥜",
+              "tiles": ["n", "u", "t", "a"],
+              "a": "nut",
+              "speak": "nut",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "sv-u-read",
+          "title": "Read: The Bug and the Pup",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "The Bug and the Pup",
+            "genre": "literature",
+            "decodable": { "vowels": "aeiou", "names": ["Gus"] },
+            "text": "A bug sat in the sun. The bug had a cup. Up, up, up went the bug! Then the bug ran to a rug. Gus the pup ran to the bug. The bug and the pup had fun in the mud."
+          },
+          "questions": [
+            {
+              "q": "Where did the bug sit?",
+              "options": ["in the sun", "in a box", "on a bed"],
+              "a": "in the sun",
+              "evidence": "A bug sat in the sun",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Who ran to the bug?",
+              "options": ["Gus the pup", "a red hen", "a big pig"],
+              "a": "Gus the pup",
+              "evidence": "Gus the pup ran to the bug",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What did the bug and the pup have?",
+              "options": ["fun in the mud", "a hot pot", "a nap in bed"],
+              "a": "fun in the mud",
+              "evidence": "had fun in the mud",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["cup.", "The", "had", "bug", "a"],
+              "a": "The bug had a cup.",
+              "speak": "The bug had a cup.",
+              "standard": "RF.K.3c",
+              "hint": "The、a、has 这些是要整体记住的高频词",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "sv-u-fluency",
+          "title": "Fluency: The Bug and the Pup",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "sv-u-read"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1056,7 +1056,7 @@ export class UI {
       <h3>🚀 故事进度 <small>（星际破译）</small></h3>
       <ul class="report-list">
         <li><div><b>${esc(title)}</b><small>${esc(detail)}</small></div>${action}</li>
-        ${planHtml(this.story.plan?.())}
+        ${(this.story.plans?.() || []).map(planHtml).join('')}
         ${chapter ? this.exploreHud.reportHtml() : ''}
         ${chapter ? this.wardrobe.reportHtml() : ''}
         ${chapter ? this.door.reportHtml() : ''}
@@ -1262,7 +1262,7 @@ function planHtml(plan) {
   if (!plan) return '';
   const { unit, total, read, today, waiting, startsTomorrow, perDay } = plan;
   let detail;
-  if (waiting) detail = '航行期只做学校作业，不排单元的课；降落 Bix 星以后的第二天开始';
+  if (waiting) detail = '这个单元属于 Bix 星的故事，航行期不排它的课，降落以后的第二天开始';
   else if (startsTomorrow) detail = '今天刚着陆，明天开始';
   else if (today.length) detail = `今天：${today.map((t) => `《${t}》`).join('')}`;
   else if (read === total) detail = '课都读完了，可以去门口试飞';

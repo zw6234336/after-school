@@ -11,6 +11,9 @@ import { STATION_TYPES } from '../src/stations.js';
 const UNITS_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'content', 'units');
 const GRADES = ['K', '1', '2', '3', '4', '5'];
 const GENRES = ['literature', 'informational'];
+/** Dolch 高频词表：开场字幕、Zib 的话、门的短信、可解码短文都用它 */
+const dolch = JSON.parse(readFileSync(join(UNITS_DIR, '..', 'wordlists', 'dolch.json'), 'utf8'));
+const DOLCH = new Set(Object.values(dolch.lists).flat());
 
 const errors = [];
 const units = {};
@@ -67,6 +70,7 @@ for (const unit of Object.values(units)) {
       for (const q of task.questions || []) checkGrade(q.standard, q.level ?? task.level, unit.grade, `${where} / ${task.id}「${q.q}」`);
 
       const p = task.passage;
+      if (p?.decodable) checkDecodable(p, `${where} / ${task.id}`);
       if (p?.text) {
         const tokens = p.text.toLowerCase().split(/[^a-z'’-]+/).filter(Boolean);
         for (const v of p.vocab || []) {
@@ -93,6 +97,19 @@ for (const unit of Object.values(units)) {
   }
 }
 
+/**
+ * 可解码短文（passage.decodable）：每个词要么是 Dolch 高频词，要么是 vowels 里教过的短元音拼出来的
+ * “辅音-元音-辅音”词（开头、结尾可以是两个辅音，可以加复数 s），要么是 names 里的人名
+ */
+function checkDecodable(p, where) {
+  const vowels = String(p.decodable.vowels || '');
+  if (!/^[aeiou]+$/.test(vowels)) return errors.push(`${where}：decodable.vowels 要写教过的元音，比如 "ae"`);
+  const names = new Set((p.decodable.names || []).map((n) => String(n).toLowerCase()));
+  const cvc = new RegExp(`^[^aeiou]{1,2}[${vowels}][^aeiouwy]{1,2}s?$`);
+  const bad = [...new Set(String(p.text).toLowerCase().match(/[a-z']+/g).filter((w) => !DOLCH.has(w) && !names.has(w) && !cvc.test(w)))];
+  if (bad.length) errors.push(`${where}：可解码短文里有还不会拼读的词：${bad.join('、')}（只能用高频词和短元音 ${vowels} 的词）`);
+}
+
 /** 标准年级要和单元一致；挑战难度可以用高一个年级的标准 */
 function checkGrade(code, level, grade, where) {
   if (!code) return;
@@ -115,8 +132,6 @@ const SHOT_TYPES = ['fly', 'say', 'ask', 'preview', 'title'];
 /** 着陆区：离北极这么多度以内（和 src/explore.js 的 HOME_COLAT 一致），发现物不能放在里面 */
 const HOME_COLAT = 26;
 const STATION_KEYS = STATION_TYPES.map((t) => t.key);
-const dolch = JSON.parse(readFileSync(join(UNITS_DIR, '..', 'wordlists', 'dolch.json'), 'utf8'));
-const DOLCH = new Set(Object.values(dolch.lists).flat());
 const chapters = existsSync(STORY_DIR)
   ? readdirSync(STORY_DIR).filter((f) => f.endsWith('.json')).map((f) => ({ file: f, ...JSON.parse(readFileSync(join(STORY_DIR, f), 'utf8')) }))
   : [];
@@ -295,9 +310,12 @@ function checkDoor(ch, at) {
 
   const dec = door.decode || {};
   if (!parseStandard(dec.standard || '')) at(`door.decode.standard "${dec.standard}" 不是 CCSS 代码`);
+  // 解码锁的词来自 decode.unit（比如拼读单元），没写就是这一层的单元
+  const decodeUnit = dec.unit ? units[dec.unit] : unit;
+  if (!decodeUnit) return at(`door.decode.unit "${dec.unit}" 在内容库里找不到`);
   const pics = new Map();
-  for (const w of unit.wordWall || []) pics.set(String(w.word).toLowerCase(), w.emoji);
-  for (const l of unit.lessons) {
+  for (const w of decodeUnit.wordWall || []) pics.set(String(w.word).toLowerCase(), w.emoji);
+  for (const l of decodeUnit.lessons) {
     for (const t of l.tasks || []) for (const v of t.passage?.vocab || []) if (!pics.has(String(v.word).toLowerCase())) pics.set(String(v.word).toLowerCase(), v.emoji);
   }
   const words = Array.isArray(dec.words) ? dec.words : [];
@@ -305,7 +323,7 @@ function checkDoor(ch, at) {
   const byPic = new Map();
   for (const w of words) {
     const pic = pics.get(String(w).toLowerCase());
-    if (!pic) at(`door.decode.words 里的 "${w}" 不是单元 ${ch.unit} 词墙或生词表里带图的词`);
+    if (!pic) at(`door.decode.words 里的 "${w}" 不是单元 ${decodeUnit.id} 词墙或生词表里带图的词`);
     else if (byPic.has(pic)) at(`door.decode.words 里 "${w}" 和 "${byPic.get(pic)}" 的图一样（${pic}），看图分不出来`);
     else byPic.set(pic, w);
   }
@@ -383,7 +401,7 @@ for (const ch of chapters) {
   }
   if (ch.door) {
     const { to, decode, comprehend } = ch.door;
-    console.log(`   门：通往第 ${to?.layer} 层 ${to?.name} · 解码锁 ${decode?.words?.length ?? 0} 个词认出 ${decode?.need} 个 · 理解锁 ${comprehend?.tickets?.length ?? 0} 封短信`);
+    console.log(`   门：通往第 ${to?.layer} 层 ${to?.name} · 解码锁 ${decode?.words?.length ?? 0} 个${decode?.unit ? ` ${decode.unit} 的` : ''}词认出 ${decode?.need} 个 · 理解锁 ${comprehend?.tickets?.length ?? 0} 封短信`);
   }
 }
 

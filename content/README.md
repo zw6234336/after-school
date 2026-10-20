@@ -15,6 +15,7 @@ content/
   ATTRIBUTION.md                   来源和署名汇总
   units/
     k-seasons-weather/unit.json    K 年级 · 四季与天气（改编自 CKLA Domain 8）
+    k-phonics-short-vowels/unit.json   K 年级 · 短元音拼读（原创，5 课）
   story/
     ch01-weather-station.json      故事第 1 章：第 1 层开场动画
   wordlists/
@@ -70,6 +71,17 @@ content/
 ```
 
 任务和题目的写法见根目录 README 的“英语作业的写法”。单元里的任务 id 要在所有单元里唯一，建议用单元缩写开头，比如 `sw-l1-read`。
+
+拼读课的小故事要写成**可解码**的：只用孩子已经会拼读的词。在文章上标一下教过哪些元音，`npm run check:content` 会逐个词检查（Dolch 高频词、教过的短元音拼成的“辅音-元音-辅音”词、`names` 里的人名才算可以）：
+
+```jsonc
+"passage": {
+  "title": "Ten Hens", "genre": "literature",
+  "decodable": { "vowels": "ae", "names": ["Ben"] },   // 已经教过短元音 a、e；Ben 是人名
+  "text": "Ten hens sat in a pen. Ben fed the hens. …"
+}
+```
+
 
 ## 故事章节和开场动画
 
@@ -154,7 +166,8 @@ content/
   "decode": {                                                // 🔤 解码锁：看词选图
     "standard": "RF.K.3",
     "need": 8,                                               // 认出几个就开
-    "words": ["thermometer", "mittens", "snowmen", …]        // 单元词墙或生词表里带图的词，图不能重复
+    "unit": "k-phonics-short-vowels",                         // 词来自哪个单元；不写就是这一层的单元。这个单元的课也要读完才能试飞
+    "words": ["cat", "hat", "hen", …]                         // 那个单元词墙或生词表里带图的词，图不能重复
   },
   "comprehend": {                                            // 🔍 理解锁：读 Zib 的短信，答对并找到证据
     "standard": "RI.K.1",
@@ -185,6 +198,7 @@ npm run check:content
 - 有 `source` 的单元，每一课都写了 `from` 和 `changes`
 - 任务 id 在所有单元里不重复
 - 生词表里的词在文章里出现过
+- 标了 `decodable` 的小故事只用高频词和教过的短元音拼成的词
 - 故事章节：开场字幕只用学过的词；闲逛的发现物名字能破译、Zib 的话只用学过的词、位置不在着陆区里
 - 衣柜：衣服的名字在那一课的文章里；地带和衣服的 id 对得上，`feel` 是 cold / wet / hot；Zib 的话只用学过的词
 - 门：解码锁的词都有图、图不重复，`need` 不超过词数；理解锁的短信能正常加载（答案在选项里、证据句找得到）、每道题都有证据句、正文只用学过的词
