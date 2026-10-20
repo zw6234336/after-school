@@ -1255,6 +1255,27 @@ button {
   line-height: 1.75;
 }
 
+.reader-credit {
+  padding: 0 14px 10px;
+  font-size: 11.5px;
+  color: #7a7090;
+}
+
+.reader-credit summary {
+  cursor: pointer;
+  list-style-position: outside;
+}
+
+.reader-credit p {
+  margin: 6px 0 0;
+  line-height: 1.5;
+}
+
+.reader-credit a {
+  color: #5b3fd6;
+}
+
+.reader.collapsed .reader-credit,
 .reader.collapsed .reader-text,
 .reader.collapsed .reader-tip {
   display: none;

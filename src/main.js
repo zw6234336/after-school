@@ -1,5 +1,6 @@
 import './style.css';
-import { fetchHomework, normalizeHomework, defaultLevel, LEVELS } from './data.js';
+import { fetchHomework, normalizeHomework, resolveUnits, defaultLevel, LEVELS } from './data.js';
+import { UNITS } from './content.js';
 import { Progress } from './progress.js';
 import { HomeworkScene } from './scene.js';
 import { UI } from './ui.js';
@@ -39,7 +40,7 @@ function initialHomework(raw) {
 async function start() {
   const loading = document.getElementById('loading');
   try {
-    const raw = await fetchHomework();
+    const raw = resolveUnits(await fetchHomework(), UNITS);
     const homework = initialHomework(raw);
     const progress = new Progress(homework);
     const scene = new HomeworkScene(document.getElementById('stage'), homework, progress);

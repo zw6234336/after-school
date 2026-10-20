@@ -22,6 +22,64 @@ export async function fetchHomework(url = `${import.meta.env.BASE_URL}homework.j
   }
 }
 
+const LICENSE_URLS = {
+  'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+  'CC BY-NC 4.0': 'https://creativecommons.org/licenses/by-nc/4.0/',
+  'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+};
+
+/**
+ * 把引用内容库单元的科目（写了 "unit"）展开成普通任务：
+ *   { "id": "unit-seasons", "unit": "k-seasons-weather", "lessons": ["l1-weather"], "tasks": [] }
+ * lessons 不写就是整个单元；tasks 里手写的任务排在单元任务后面。
+ * 改编内容的任务会带上 credit，文章下面显示署名。
+ */
+export function resolveUnits(raw, units = {}) {
+  if (!raw || !Array.isArray(raw.subjects)) return raw;
+  return {
+    ...raw,
+    subjects: raw.subjects.map((s, si) => {
+      if (!s?.unit) return s;
+      const where = `第 ${si + 1} 个科目`;
+      const unit = units[s.unit];
+      if (!unit) throw new Error(`${where}的 unit "${s.unit}" 在内容库里找不到，可用：${Object.keys(units).join('、') || '（还没有单元）'}`);
+      const ids = s.lessons ?? unit.lessons.map((l) => l.id);
+      if (!Array.isArray(ids) || ids.length === 0) throw new Error(`${where}的 "lessons" 需要是课的 id 列表，比如 ["${unit.lessons[0]?.id}"]`);
+      const tasks = ids.flatMap((id) => {
+        const lesson = unit.lessons.find((l) => l.id === id);
+        if (!lesson) throw new Error(`${where}的 lessons 里 "${id}" 在单元 ${unit.id} 里找不到，可用：${unit.lessons.map((l) => l.id).join('、')}`);
+        const credit = creditOf(unit, lesson);
+        return lesson.tasks.map((t) => (credit ? { ...t, credit } : t));
+      });
+      return {
+        ...s,
+        name: s.name || unit.titleZh || unit.title,
+        icon: s.icon || unit.icon,
+        color: s.color || unit.color,
+        tasks: [...tasks, ...(s.tasks || [])],
+      };
+    }),
+  };
+}
+
+/** 改编内容的署名；完全原创的单元（没有 source）返回 null */
+function creditOf(unit, lesson) {
+  const src = unit.source;
+  if (!src) return null;
+  return {
+    work: String(src.short || src.work),
+    part: lesson.from ? String(lesson.from) : '',
+    author: String(src.author || ''),
+    year: src.year ? String(src.year) : '',
+    url: src.url ? String(src.url) : '',
+    notice: src.notice ? String(src.notice) : '',
+    license: String(src.license || ''),
+    licenseUrl: src.licenseUrl ? String(src.licenseUrl) : '',
+    adaptedLicense: String(unit.license || ''),
+    adaptedLicenseUrl: LICENSE_URLS[unit.license] || '',
+  };
+}
+
 /** 文件里设置的默认难度 */
 export function defaultLevel(raw) {
   const level = raw?.difficulty ?? 'normal';
@@ -97,7 +155,7 @@ function normalizeTask(t, { fallbackId, date, level, siblings, where }) {
   const show = inLevel(t.level, level, where);
   const id = String(t.id || fallbackId);
   const standard = t.standard ? standardOf(t.standard, where) : null;
-  const passage = t.passage ? normalizePassage(t.passage, standard, where) : null;
+  const passage = t.passage ? normalizePassage(t.passage, standard, where, t.credit) : null;
   if (passage && !Array.isArray(t.questions)) throw new Error(`${where}的 "passage" 需要和 "questions" 一起使用`);
   const base = { id, title: t.title, note: t.note || '', standard, passage };
 
@@ -214,7 +272,7 @@ function canBuild(target, tiles, used = new Set()) {
   return tiles.some((tile, i) => !used.has(i) && target.startsWith(tile) && canBuild(target.slice(tile.length), tiles, new Set(used).add(i)));
 }
 
-function normalizePassage(p, standard, where) {
+function normalizePassage(p, standard, where, credit = null) {
   if (!p || typeof p !== 'object' || !p.text) throw new Error(`${where}的 "passage" 需要 "text"`);
   const text = String(p.text).replace(/\s+/g, ' ').trim();
   const sentences = text.split(/(?<=[.!?]["'”’)]?)\s+/).filter(Boolean);
@@ -224,7 +282,7 @@ function normalizePassage(p, standard, where) {
     if (!v.word) throw new Error(`${where}的 passage.vocab 第 ${i + 1} 个缺少 "word"`);
     return { word: String(v.word), meaning: String(v.meaning || ''), emoji: v.emoji ? String(v.emoji) : '' };
   });
-  return { title: p.title ? String(p.title) : '', genre, sentences, vocab, words: countWords(text) };
+  return { title: p.title ? String(p.title) : '', genre, sentences, vocab, words: countWords(text), credit: credit || null };
 }
 
 function normalizeWrite(w, where) {
@@ -242,7 +300,7 @@ function normalizeFluency(f, standard, siblings, where) {
   if (f.passage) {
     const source = siblings.find((t) => String(t.id) === String(f.passage));
     if (!source?.passage) throw new Error(`${where}的 fluency.passage "${f.passage}" 找不到：需要是同一科目里带 passage 的任务 id`);
-    passage = normalizePassage(source.passage, null, where);
+    passage = normalizePassage(source.passage, null, where, source.credit);
   } else if (f.text) {
     passage = normalizePassage({ title: f.title, text: f.text, genre: f.genre }, standard, where);
   } else {

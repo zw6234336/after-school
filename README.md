@@ -157,6 +157,18 @@ npm run dev
 
 `standard` 写错格式时页面会提示。示例作业是一年级的，换成其他年级只要改代码里的年级数字（比如 `RI.2.1`）和内容。
 
+### 内容库：直接用整个单元
+
+英语课程按单元放在 [`content/`](content/README.md) 里，每个单元包含几课文章、题目和写作任务，写一次就能反复用。在 `homework.json` 里加一个带 `unit` 的科目，就会把这个单元的课展开成作业：
+
+```jsonc
+{ "id": "unit-seasons", "unit": "k-seasons-weather", "lessons": ["l1-weather"] }   // lessons 不写就是整个单元
+```
+
+现在有一个单元：K 年级 **Seasons and Weather（四季与天气）**，改编自 Core Knowledge Language Arts（CKLA）的开放课程。内容的授权是 CC BY-NC-SA 4.0，和代码的授权不同，详见 [content/LICENSE.md](content/LICENSE.md) 和 [content/ATTRIBUTION.md](content/ATTRIBUTION.md)。改编内容的文章下面会显示署名。
+
+修改或新增单元后运行 `npm run check:content`，它会用和页面一样的规则在三档难度下检查每个单元。
+
 ## 部署到 Cloudflare
 
 项目已经配好 [Cloudflare Workers 静态资源](https://developers.cloudflare.com/workers/static-assets/)（见 `wrangler.jsonc`），不需要写任何后端代码。
@@ -181,11 +193,14 @@ npm run deploy
 
 ```
 public/homework.json   今天的作业（家长编辑这里）
+content/               英语内容库：按单元组织的文章和题目（授权 CC BY-NC-SA 4.0）
+scripts/               check-content.mjs：检查内容库
 examples/              完整示例作业
 src/scene.js           three.js 场景：星球、卫星、火箭、相机动画
 src/particles.js       烟花和星星粒子
 src/ui.js              作业面板、答题、家长报告
-src/data.js            读取作业文件、生成口算题
+src/data.js            读取作业文件、展开内容库单元、生成口算题
+src/content.js         把 content/units 里的单元打包进页面
 src/checker.js         判断答案对错
 src/progress.js        进度和星星（localStorage）
 src/standards.js       CCSS 标准说明、“I can”目标、掌握等级
