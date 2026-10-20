@@ -31,34 +31,42 @@ const LICENSE_URLS = {
 /**
  * 把引用内容库单元的科目（写了 "unit"）展开成普通任务：
  *   { "id": "unit-seasons", "unit": "k-seasons-weather", "lessons": ["l1-weather"], "tasks": [] }
- * lessons 不写就是整个单元；tasks 里手写的任务排在单元任务后面。
+ * lessons 不写就是整个单元；写 "daily" 就每天自动排课（由页面传进来的 daily(unit, subject) 决定今天排哪几课，见 plan.js），
+ * 今天没排课、也没有手写任务的话，这个科目今天不出现。tasks 里手写的任务排在单元任务后面。
  * 改编内容的任务会带上 credit，文章下面显示署名。
  */
-export function resolveUnits(raw, units = {}) {
+export function resolveUnits(raw, units = {}, { daily } = {}) {
   if (!raw || !Array.isArray(raw.subjects)) return raw;
   return {
     ...raw,
-    subjects: raw.subjects.map((s, si) => {
-      if (!s?.unit) return s;
-      const where = `第 ${si + 1} 个科目`;
-      const unit = units[s.unit];
-      if (!unit) throw new Error(`${where}的 unit "${s.unit}" 在内容库里找不到，可用：${Object.keys(units).join('、') || '（还没有单元）'}`);
-      const ids = s.lessons ?? unit.lessons.map((l) => l.id);
-      if (!Array.isArray(ids) || ids.length === 0) throw new Error(`${where}的 "lessons" 需要是课的 id 列表，比如 ["${unit.lessons[0]?.id}"]`);
-      const tasks = ids.flatMap((id) => {
-        const lesson = unit.lessons.find((l) => l.id === id);
-        if (!lesson) throw new Error(`${where}的 lessons 里 "${id}" 在单元 ${unit.id} 里找不到，可用：${unit.lessons.map((l) => l.id).join('、')}`);
-        const credit = creditOf(unit, lesson);
-        return lesson.tasks.map((t) => (credit ? { ...t, credit } : t));
-      });
-      return {
-        ...s,
-        name: s.name || unit.titleZh || unit.title,
-        icon: s.icon || unit.icon,
-        color: s.color || unit.color,
-        tasks: [...tasks, ...(s.tasks || [])],
-      };
-    }),
+    subjects: raw.subjects
+      .map((s, si) => {
+        if (!s?.unit) return s;
+        const where = `第 ${si + 1} 个科目`;
+        const unit = units[s.unit];
+        if (!unit) throw new Error(`${where}的 unit "${s.unit}" 在内容库里找不到，可用：${Object.keys(units).join('、') || '（还没有单元）'}`);
+        const isDaily = s.lessons === 'daily';
+        // 没有排课函数（比如在 Node 里检查内容）时，daily 当作整个单元
+        const ids = isDaily ? (daily ? daily(unit, s) : unit.lessons.map((l) => l.id)) : s.lessons ?? unit.lessons.map((l) => l.id);
+        if (!Array.isArray(ids) || (ids.length === 0 && !isDaily)) {
+          throw new Error(`${where}的 "lessons" 需要是课的 id 列表（比如 ["${unit.lessons[0]?.id}"]），或者 "daily"（每天自动排一课）`);
+        }
+        if (isDaily && ids.length === 0 && !(s.tasks || []).length) return null;
+        const tasks = ids.flatMap((id) => {
+          const lesson = unit.lessons.find((l) => l.id === id);
+          if (!lesson) throw new Error(`${where}的 lessons 里 "${id}" 在单元 ${unit.id} 里找不到，可用：${unit.lessons.map((l) => l.id).join('、')}`);
+          const credit = creditOf(unit, lesson);
+          return lesson.tasks.map((t) => (credit ? { ...t, credit } : t));
+        });
+        return {
+          ...s,
+          name: s.name || unit.titleZh || unit.title,
+          icon: s.icon || unit.icon,
+          color: s.color || unit.color,
+          tasks: [...tasks, ...(s.tasks || [])],
+        };
+      })
+      .filter(Boolean),
   };
 }
 

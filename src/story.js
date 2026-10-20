@@ -37,10 +37,16 @@ export function isLanded(chapter) {
   return !!chapter && !!load().landed?.[chapter.id];
 }
 
-export function setLanded(chapter) {
+/** 记下着陆和着陆的日期（每天一课从第二天开始排） */
+export function setLanded(chapter, date = true) {
   const state = load();
-  state.landed = { ...state.landed, [chapter.id]: true };
+  state.landed = { ...state.landed, [chapter.id]: date };
   save(state);
+}
+
+/** 这一章哪天着陆的（'YYYY-MM-DD'；老存档只记了 true）；还没着陆返回 null */
+export function landedOn(chapterId) {
+  return load().landed?.[chapterId] || null;
 }
 
 /** 航行进度：加了几天燃料、一共要几天、是不是可以降落了 */
