@@ -1,11 +1,12 @@
 import './style.css';
-import { fetchHomework, normalizeHomework, resolveUnits, defaultLevel, LEVELS } from './data.js';
+import { fetchHomework, normalizeHomework, resolveUnits, defaultLevel, localDate, LEVELS } from './data.js';
 import { UNITS, STORY } from './content.js';
 import { OpeningPlayer } from './opening.js';
 import { Progress } from './progress.js';
 import { HomeworkScene } from './scene.js';
 import { stationize } from './stations.js';
-import { landedChapter, nextChapter, setLanded, resetStory, voyage, addFuelDay, learnLesson } from './story.js';
+import { landedChapter, nextChapter, setLanded, landedOn, resetStory, voyage, addFuelDay, learnLesson, learnedLessons } from './story.js';
+import { dailyLessons, planStatus } from './plan.js';
 import { newlyDecoded } from './explore-hud.js';
 import { newItems } from './wardrobe.js';
 import { BixSurface } from './surface.js';
@@ -67,7 +68,15 @@ async function start() {
     // 回到航行期：?story=reset
     if (params.get('story') === 'reset') resetStory();
 
-    const raw = resolveUnits(await fetchHomework(), UNITS);
+    const source = await fetchHomework();
+    const today = source.date || localDate();
+    // 每天一课（"lessons": "daily"）：单元所在的章节着陆以后才排课，见 plan.js
+    const planContext = (unit, subject) => {
+      const chapter = Object.values(STORY).find((c) => c.unit === unit.id);
+      return { today, landedOn: chapter ? landedOn(chapter.id) : undefined, learned: learnedLessons(unit.id), perDay: Number(subject?.perDay) || 1 };
+    };
+    const resolve = () => resolveUnits(source, UNITS, { daily: (unit, subject) => dailyLessons(unit, planContext(unit, subject)) });
+    let raw = resolve();
     let homework = initialHomework(raw);
     // 已经着陆：主界面是那一层的地面地图，作业按站点分组；还在航行：太空里的科目星球
     let landed = landedChapter(STORY);
@@ -94,7 +103,7 @@ async function start() {
 
     /** 开场动画播完：记下已着陆，在开场留下的布景上显示地面地图 */
     const land = (chapter, stage) => {
-      setLanded(chapter);
+      setLanded(chapter, homework.date);
       landed = chapter;
       const hw = forView(homework);
       progress.setHomework(hw);
@@ -116,14 +125,17 @@ async function start() {
       return landing;
     };
 
-    /** 回到航行期：着陆和燃料清空，主界面换回太空里的科目星球 */
+    /** 回到航行期：着陆和燃料清空，主界面换回太空里的科目星球；每天一课的单元航行期不排课，今天的作业重新算一遍 */
     const backToVoyage = () => {
       resetStory();
       if (view !== scene) {
         view.dispose();
         view = scene;
         landed = null;
+        raw = resolve();
+        homework = normalizeHomework(raw, { level: homework.level });
         progress.setHomework(homework);
+        scene.setHomework(homework);
         ui.setView(scene, homework);
       }
       // 今天的任务已经全部完成的话，算航行的第 1 天
@@ -148,6 +160,13 @@ async function start() {
           return chapter && playOpening(chapter);
         },
         reset: backToVoyage,
+        /** 每天一课的进度（家长报告用）；作业文件里没有写 "lessons": "daily" 的单元返回 null */
+        plan: () => {
+          const subject = source.subjects?.find((s) => s?.lessons === 'daily' && UNITS[s.unit]);
+          if (!subject) return null;
+          const unit = UNITS[subject.unit];
+          return { unit, ...planStatus(unit, planContext(unit, subject)) };
+        },
       },
       levels: {
         /** 某个难度下有多少作业和题目，用来在选择界面上显示 */

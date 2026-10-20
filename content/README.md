@@ -29,7 +29,9 @@ content/
 {
   "id": "unit-seasons",              // 科目 id，进度按它保存
   "unit": "k-seasons-weather",       // 单元 id，对应 content/units/<id>/unit.json
-  "lessons": ["l1-weather"],         // 今天做哪几课；不写就是整个单元
+  "lessons": "daily",                // 每天自动排一课（还没读完的第一课，着陆第二天开始）；
+                                     // 也可以写课的 id 列表自己挑，比如 ["l1-weather"]；不写就是整个单元
+  "perDay": 1,                       // 可选：daily 时每天排几课
   "tasks": []                        // 可选：再加几项手写的任务，排在单元任务后面
 }
 ```

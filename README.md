@@ -164,10 +164,18 @@ npm run dev
 英语课程按单元放在 [`content/`](content/README.md) 里，每个单元包含几课文章、题目和写作任务，写一次就能反复用。在 `homework.json` 里加一个带 `unit` 的科目，就会把这个单元的课展开成作业：
 
 ```jsonc
-{ "id": "unit-seasons", "unit": "k-seasons-weather", "lessons": ["l1-weather"] }   // lessons 不写就是整个单元
+{ "id": "unit-seasons", "unit": "k-seasons-weather", "lessons": "daily" }          // 每天自动排一课（推荐）
+{ "id": "unit-seasons", "unit": "k-seasons-weather", "lessons": ["l1-weather"] }   // 自己挑今天做哪几课；不写就是整个单元
 ```
 
-现在有一个单元：K 年级 **Seasons and Weather（四季与天气）**，改编自 Core Knowledge Language Arts（CKLA）的开放课程。内容的授权是 CC BY-NC-SA 4.0，和代码的授权不同，详见 [content/LICENSE.md](content/LICENSE.md) 和 [content/ATTRIBUTION.md](content/ATTRIBUTION.md)。改编内容的文章下面会显示署名。
+`"daily"` 的排课规则：
+
+- 航行期不排课，着陆的第二天开始排。
+- 每天排单元里还没读完的第一课（读完 = 这一课带文章的阅读题做完），当天排好就固定，做完也不会马上换下一课。没读完的第二天接着排。
+- 想一天两课就再写 `"perDay": 2`。课都读完了就不再排，孩子可以去门口试飞。
+- 家长报告的故事进度里能看到读完几课、今天排的是哪一课。
+
+现在有一个单元：K 年级 **Seasons and Weather（四季与天气）**，一共 8 课，改编自 Core Knowledge Language Arts（CKLA）的开放课程。内容的授权是 CC BY-NC-SA 4.0，和代码的授权不同，详见 [content/LICENSE.md](content/LICENSE.md) 和 [content/ATTRIBUTION.md](content/ATTRIBUTION.md)。改编内容的文章下面会显示署名。
 
 修改或新增单元后运行 `npm run check:content`，它会用和页面一样的规则在三档难度下检查每个单元。
 
@@ -227,6 +235,23 @@ http://localhost:5173/?opening=ch01-weather-station   直接播放开场，播�
 http://localhost:5173/?explore                         着陆以后直接去逛逛
 http://localhost:5173/?story=reset                     回到航行期（着陆、燃料天数、图鉴、门锁和身上的衣服清空）
 ```
+
+## 学习计划：第 1 章怎么用
+
+孩子每天打开页面做“使命任务”，家长只需要每天把学校作业写进 `homework.json`（单元的课用 `"daily"` 自动排）。第 1 章大约两周半：
+
+| 阶段 | 孩子做什么 | 每天大约 | 家长做什么 |
+|---|---|---|---|
+| 🚀 航行期（5 天） | 只做学校作业，全部做完给使命号加 1 天燃料 | 学校作业的时间 | 每天写好学校作业；看报告、确认打卡和写作 |
+| 🛬 降落（燃料加满那天） | 庆祝弹窗里点“降落 Bix 星”，看 1 分钟开场动画，复习 2 道题 | 2 分钟 | 不用做什么（也可以在报告里“直接降落”） |
+| 🗺️ 着陆后（8 个上学日） | 学校作业加一课单元（读 Annie 的信或寓言、答题找证据，再做一项写作、分类或讲给大人听）。任务按能力分到地图上的五个站点 | 学校作业 + 10–15 分钟 | 打卡任务（讲给大人听、天气预报员）听孩子说完再点“完成啦”；写作看完点“检查通过” |
+| 🧭 随时 | 去逛逛：找发现物、读完课破译名字、给小宇航员穿对衣服 | 不限，不计分 | 报告里能看到逛了多久、找到了什么 |
+| 🚪 8 课读完 | 去门口试飞：解码锁（看词选图）和理解锁（读 Zib 的短信、找证据），没打开就看“收集到的数据”练一练再来 | 5 分钟一次 | 按报告里的数据陪孩子重读那一课 |
+| 🎉 两把锁都开 | 门打开，Bix 气象塔升起来；第 1 层完成 | — | — |
+
+- **漏了一天**：没读完的课第二天接着排，燃料也只在“当天作业全部做完”时加。
+- **想快一点或慢一点**：`"perDay": 2` 一天两课；或者把 `"daily"` 换成课的 id 列表自己挑。
+- **从头再来**：家长报告里的“回到航行期”清空着陆、燃料、图鉴、门锁和衣服，做题记录和读过的课保留。
 
 ## 部署到 Cloudflare
 

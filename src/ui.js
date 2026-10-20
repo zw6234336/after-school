@@ -1056,6 +1056,7 @@ export class UI {
       <h3>🚀 故事进度 <small>（星际破译）</small></h3>
       <ul class="report-list">
         <li><div><b>${esc(title)}</b><small>${esc(detail)}</small></div>${action}</li>
+        ${planHtml(this.story.plan?.())}
         ${chapter ? this.exploreHud.reportHtml() : ''}
         ${chapter ? this.wardrobe.reportHtml() : ''}
         ${chapter ? this.door.reportHtml() : ''}
@@ -1254,6 +1255,21 @@ export class UI {
     if (SHEET_MQ.matches) this.scene.setInset({ right: 0, bottom: this.panel.offsetHeight });
     else this.scene.setInset({ right: this.panel.offsetWidth + 24, bottom: 0 });
   }
+}
+
+/** 家长报告里的“每天一课”：读完几课、今天排的是哪一课、什么时候开始 */
+function planHtml(plan) {
+  if (!plan) return '';
+  const { unit, total, read, today, waiting, startsTomorrow, perDay } = plan;
+  let detail;
+  if (waiting) detail = '航行期只做学校作业，不排单元的课；降落 Bix 星以后的第二天开始';
+  else if (startsTomorrow) detail = '今天刚着陆，明天开始';
+  else if (today.length) detail = `今天：${today.map((t) => `《${t}》`).join('')}`;
+  else if (read === total) detail = '课都读完了，可以去门口试飞';
+  else detail = '今天没有新课';
+  return `
+    <li><div><b>📅 每天${perDay > 1 ? ` ${perDay} ` : '一'}课 · ${esc(unit.titleZh || unit.title)}：读完 ${read}/${total} 课</b>
+    <small>${esc(detail)}。排的是还没读完的第一课，没读完第二天接着排；想自己挑课，就把作业文件里的 "daily" 换成课的 id 列表</small></div></li>`;
 }
 
 /** 航行进度：一格一天燃料 */
