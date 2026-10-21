@@ -1042,6 +1042,7 @@ export class BixStage {
     const flicker = 1 + Math.sin(t * 40) * 0.08 + Math.sin(t * 23) * 0.06;
     const s = Math.max(0.0001, this.flameSize);
     this.flame.scale.set(s, s * flicker, s);
+    this.flame.visible = s > 0.002;
   }
 
   #updateZib(dt, t) {
@@ -1129,17 +1130,26 @@ export class BixStage {
   }
 
   #updateRain(dt) {
+    // 看不见的时候（镜头在太空里、地下的层、闲逛走远了）不用算
+    if (!this.rain.visible) return;
     const pos = this.rain.geometry.attributes.position;
     const a = pos.array;
-    this.drops.forEach((d, i) => {
+    for (let i = 0; i < this.drops.length; i++) {
+      const d = this.drops[i];
       d.y -= d.v * dt;
       d.x += 0.8 * dt;
       if (d.y < ground(d.x, d.z) || d.x > 11) {
         d.y = 9 + Math.random() * 4;
         d.x = (Math.random() - 0.5) * 22;
       }
-      a.set([d.x, d.y, d.z, d.x - 0.03, d.y + 0.32, d.z], i * 6);
-    });
+      const j = i * 6;
+      a[j] = d.x;
+      a[j + 1] = d.y;
+      a[j + 2] = d.z;
+      a[j + 3] = d.x - 0.03;
+      a[j + 4] = d.y + 0.32;
+      a[j + 5] = d.z;
+    }
     pos.needsUpdate = true;
   }
 }

@@ -1065,7 +1065,8 @@ class Weather {
     for (const pool of this.pools) {
       const pos = pool.obj.geometry.attributes.position.array;
       const col = pool.obj.geometry.attributes.color.array;
-      pool.list.forEach((s, i) => {
+      for (let i = 0; i < pool.list.length; i++) {
+        const s = pool.list[i];
         s.age += REDUCED_MOTION ? 0 : dt;
         if (s.age >= s.life || s.p.distanceTo(astroPos) > 10) this.#spawn(s, pool.line, astroPos, fwd, right);
         const k = s.kind;
@@ -1079,16 +1080,31 @@ class Weather {
         const r = s.c.r * e;
         const g = s.c.g * e;
         const b = s.c.b * e;
+        // 直接写进数组：每一帧几百个粒子，不再每个都新建一个临时数组
         if (pool.line) {
           const len = k === FX.wind ? 0.7 : 0.32;
           const dir = k === FX.wind ? this.#windAt(up) : up;
-          pos.set([s.p.x, s.p.y, s.p.z, s.p.x - dir.x * len, s.p.y - dir.y * len, s.p.z - dir.z * len], i * 6);
-          col.set([r, g, b, 0, 0, 0], i * 6);
+          const j = i * 6;
+          pos[j] = s.p.x;
+          pos[j + 1] = s.p.y;
+          pos[j + 2] = s.p.z;
+          pos[j + 3] = s.p.x - dir.x * len;
+          pos[j + 4] = s.p.y - dir.y * len;
+          pos[j + 5] = s.p.z - dir.z * len;
+          col[j] = r;
+          col[j + 1] = g;
+          col[j + 2] = b;
+          col[j + 3] = col[j + 4] = col[j + 5] = 0;
         } else {
-          pos.set([s.p.x, s.p.y, s.p.z], i * 3);
-          col.set([r, g, b], i * 3);
+          const j = i * 3;
+          pos[j] = s.p.x;
+          pos[j + 1] = s.p.y;
+          pos[j + 2] = s.p.z;
+          col[j] = r;
+          col[j + 1] = g;
+          col[j + 2] = b;
         }
-      });
+      }
       pool.obj.geometry.attributes.position.needsUpdate = true;
       pool.obj.geometry.attributes.color.needsUpdate = true;
     }

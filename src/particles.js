@@ -14,12 +14,15 @@ export class Particles {
     this.maxLife = new Float32Array(max);
     this.grav = new Float32Array(max);
     this.drag = new Float32Array(max);
+    this.scale = new Float32Array(max);
 
     const geometry = new THREE.BufferGeometry();
     this.posAttr = new THREE.BufferAttribute(this.pos, 3).setUsage(THREE.DynamicDrawUsage);
     this.colAttr = new THREE.BufferAttribute(this.col, 3).setUsage(THREE.DynamicDrawUsage);
+    this.scaleAttr = new THREE.BufferAttribute(this.scale, 1).setUsage(THREE.DynamicDrawUsage);
     geometry.setAttribute('position', this.posAttr);
     geometry.setAttribute('color', this.colAttr);
+    geometry.setAttribute('aScale', this.scaleAttr);
 
     const material = new THREE.PointsMaterial({
       size: 0.24,
@@ -29,8 +32,16 @@ export class Particles {
       depthWrite: false,
       blending: THREE.AdditiveBlending,
     });
+    // 每个粒子自己的大小：快熄灭的火星越变越小，不是一直一样大地淡掉
+    material.onBeforeCompile = (shader) => {
+      shader.vertexShader = shader.vertexShader
+        .replace('void main() {', 'attribute float aScale;\nvoid main() {')
+        .replace('gl_PointSize = size;', 'gl_PointSize = size * aScale;');
+    };
     this.points = new THREE.Points(geometry, material);
     this.points.frustumCulled = false;
+    // 没有活着的粒子就不画（不然 max 个黑点每一帧照样要过一遍 GPU）
+    this.points.visible = false;
   }
 
   emit(origin, { count = 100, colors = ['#ffd166'], speed = 5, dir = null, spread = 1, gravity = -4, life = 1.4, drag = 0.97, intensity = 2.2 } = {}) {
@@ -60,10 +71,12 @@ export class Particles {
       this.base[i3 + 1] = c.g;
       this.base[i3 + 2] = c.b;
       this.life[i] = this.maxLife[i] = life * (0.6 + Math.random() * 0.4);
+      this.scale[i] = 1;
       this.grav[i] = gravity;
       this.drag[i] = drag;
     }
     this.alive = this.max;
+    this.points.visible = true;
   }
 
   firework(origin, colors) {
@@ -96,10 +109,13 @@ export class Particles {
       this.col[i3] = this.base[i3] * f;
       this.col[i3 + 1] = this.base[i3 + 1] * f;
       this.col[i3 + 2] = this.base[i3 + 2] * f;
+      this.scale[i] = 0.35 + 0.65 * Math.sqrt(k);
     }
     this.alive = alive;
+    this.points.visible = alive > 0;
     this.posAttr.needsUpdate = true;
     this.colAttr.needsUpdate = true;
+    this.scaleAttr.needsUpdate = true;
   }
 }
 
