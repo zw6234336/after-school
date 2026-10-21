@@ -5,7 +5,7 @@ import { OpeningPlayer } from './opening.js';
 import { Progress } from './progress.js';
 import { HomeworkScene } from './scene.js';
 import { stationize } from './stations.js';
-import { landedChapter, nextChapter, setLanded, landedOn, resetStory, voyage, addFuelDay, learnLesson, learnedLessons } from './story.js';
+import { landedChapter, nextChapter, isNewVisitor, setLanded, landedOn, resetStory, voyage, addFuelDay, learnLesson, learnedLessons } from './story.js';
 import { dailyLessons, planStatus } from './plan.js';
 import { newlyDecoded } from './explore-hud.js';
 import { newItems } from './wardrobe.js';
@@ -71,6 +71,11 @@ async function start() {
 
     const source = await fetchHomework();
     const today = source.date || localDate();
+    // 新访客跳过航行期，直接着陆在第 1 层（不播开场）；要在排课之前记下着陆日期
+    if (isNewVisitor()) {
+      const first = nextChapter(STORY);
+      if (first) setLanded(first, today);
+    }
     // 每天一课（"lessons": "daily"）：单元属于哪一层（那一层的知识单元，或者那一层门上解码锁的拼读单元），
     // 就等那一层着陆以后才排；章节的 voyage 里列出的单元在飞往这一层的航行期就开始（第 1 层的拼读）。见 plan.js
     const planContext = (unit, subject) => {

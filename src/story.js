@@ -37,6 +37,15 @@ export function isLanded(chapter) {
   return !!chapter && !!load().landed?.[chapter.id];
 }
 
+/** 新访客：浏览器里还没有故事存档（“回到航行期”以后存档还在，不算新访客） */
+export function isNewVisitor() {
+  try {
+    return localStorage.getItem(KEY) === null;
+  } catch {
+    return false;
+  }
+}
+
 /** 记下着陆和着陆的日期（每天一课从第二天开始排） */
 export function setLanded(chapter, date = true) {
   const state = load();
