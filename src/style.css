@@ -58,6 +58,11 @@ button {
   pointer-events: none;
 }
 
+/* 名牌每一帧都跟着三维画面挪：放在单独的合成层上，挪的时候只改位置，不用重画 */
+.label-layer > * {
+  will-change: transform;
+}
+
 /* ---------- 星球标签 ---------- */
 
 .planet-label {
@@ -69,18 +74,19 @@ button {
   padding: 8px 14px 9px;
   border: 1.5px solid color-mix(in srgb, var(--c) 55%, transparent);
   border-radius: 999px;
-  background: rgba(10, 14, 40, 0.72);
-  backdrop-filter: blur(6px);
+  /* 不用 backdrop-filter：名牌底下的三维画面每一帧都在变，模糊也得每一帧重算，平板上很费；底色调深一点代替 */
+  background: rgba(10, 14, 40, 0.8);
   cursor: pointer;
   white-space: nowrap;
   font-size: 15px;
   box-shadow: 0 0 18px color-mix(in srgb, var(--c) 30%, transparent);
-  transition: transform 0.2s, box-shadow 0.2s;
+  /* 不能过渡 transform：CSS2D 每一帧都用 transform 摆名牌，一过渡名牌就慢半拍拖在星球后面 */
+  transition: box-shadow 0.2s, border-color 0.2s;
 }
 
 .planet-label:hover,
 .planet-label:focus-visible {
-  transform: scale(1.08);
+  border-color: var(--c);
   box-shadow: 0 0 26px color-mix(in srgb, var(--c) 60%, transparent);
   outline: none;
 }

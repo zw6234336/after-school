@@ -24,6 +24,8 @@ const FIREWORK_COLORS = [
 
 const v1 = new THREE.Vector3();
 const v2 = new THREE.Vector3();
+const s1 = new THREE.Vector3();
+const s2 = new THREE.Vector3();
 
 /**
  * 三维太空场景：每个科目是一颗星球，每项作业是围着星球转的小卫星，
@@ -38,11 +40,12 @@ export class HomeworkScene extends EventTarget {
     this.homework = homework;
     this.progress = progress;
 
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+    // 画面先画到后期处理（泛光）的渲染目标里再上屏，画布自己的抗锯齿用不上，白白多一份多重采样：关掉，改在渲染目标上做，见 #applySamples
+    this.renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
     // 清晰度（像素比）：先用屏幕的（最多 2 倍），帧率低的设备会自动往下调，见 #adapt
     this.maxRatio = Math.min(window.devicePixelRatio, 2);
     this.ratio = this.maxRatio;
-    this.perf = { frames: 0, time: 0, good: 0 };
+    this.perf = { frames: 0, time: 0, good: 0, tried: null, floor: 0 };
     this.renderer.setPixelRatio(this.ratio);
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     container.appendChild(this.renderer.domElement);
@@ -58,8 +61,12 @@ export class HomeworkScene extends EventTarget {
     this.composer = new EffectComposer(this.renderer);
     this.composer.addPass(new RenderPass(this.scene, this.camera));
     this.bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), 0.7, 0.5, 0.8);
+    // 泛光本来就是糊的：按 CSS 像素算分辨率，2 倍屏上少算四分之三的像素，看起来一样
+    const bloomSize = this.bloom.setSize.bind(this.bloom);
+    this.bloom.setSize = (w, h) => bloomSize(w / Math.max(1, this.ratio), h / Math.max(1, this.ratio));
     this.composer.addPass(this.bloom);
     this.composer.addPass(new OutputPass());
+    this.#applySamples();
 
     this.particles = new Particles(5000);
     this.scene.add(this.particles.points);
@@ -79,6 +86,7 @@ export class HomeworkScene extends EventTarget {
     this.orbitSpeed = REDUCED_MOTION ? 0 : 0.03;
     this.camPos = new THREE.Vector3(0, 26, 58);
     this.camLook = new THREE.Vector3(0, 0, 0);
+    this.camVel = { pos: new THREE.Vector3(), look: new THREE.Vector3() };
     this.goalPos = new THREE.Vector3();
     this.goalLook = new THREE.Vector3();
     this.pointer = new THREE.Vector2(9, 9);
@@ -97,7 +105,8 @@ export class HomeworkScene extends EventTarget {
 
     progress.addEventListener('change', () => this.refresh());
     this.refresh();
-    this.renderer.setAnimationLoop(() => this.#tick());
+    // 用这一帧开始的时间（跟着屏幕刷新走）算 dt，比回调里现取的时间均匀，动起来不会一顿一顿的
+    this.renderer.setAnimationLoop((time) => this.#tick(time));
   }
 
   // ---------- 对外接口 ----------
@@ -193,6 +202,8 @@ export class HomeworkScene extends EventTarget {
     this.cinematic = null;
     this.camPos.copy(this.camera.position);
     this.camLook.copy(this.camera.getWorldDirection(v1)).multiplyScalar(12).add(this.camera.position);
+    this.camVel.pos.set(0, 0, 0);
+    this.camVel.look.set(0, 0, 0);
     this.parallax.set(0, 0);
   }
 
@@ -313,7 +324,28 @@ export class HomeworkScene extends EventTarget {
     );
     track.rotation.x = -Math.PI / 2;
     this.base.add(track);
-    this.fuelRing = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshBasicMaterial({ color: GOLD.clone().multiplyScalar(2.2) }));
+    // 燃料环：整圈的几何体只建一次，着色器按 uv 把燃料以外的部分裁掉（以前每一帧都重建一次几何体）
+    this.fuelRing = new THREE.Mesh(
+      new THREE.TorusGeometry(2.05, 0.09, 10, 128),
+      new THREE.ShaderMaterial({
+        uniforms: { uColor: { value: GOLD.clone().multiplyScalar(2.2) }, uArc: { value: 0 } },
+        vertexShader: /* glsl */ `
+          varying float vArc;
+          void main() {
+            vArc = uv.x;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }`,
+        fragmentShader: /* glsl */ `
+          uniform vec3 uColor;
+          uniform float uArc;
+          varying float vArc;
+          void main() {
+            if (vArc > uArc) discard;
+            gl_FragColor = vec4(uColor, 1.0);
+          }`,
+      }),
+    );
+    this.fuelRing.visible = false;
     this.fuelRing.rotation.x = -Math.PI / 2;
     this.fuelRing.rotation.z = -Math.PI / 2;
     this.fuelRing.position.y = 0.01;
@@ -383,6 +415,7 @@ export class HomeworkScene extends EventTarget {
     this.flame.add(outer, inner);
     this.flame.scale.setScalar(0.0001);
     rocket.add(this.flame);
+    this.flame.visible = false;
     this.flameSize = 0;
 
     this.rocketHit = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.1, 3.6, 12), new THREE.MeshBasicMaterial({ visible: false }));
@@ -470,17 +503,16 @@ export class HomeworkScene extends EventTarget {
   #bindPointer() {
     const el = this.renderer.domElement;
     let down = null;
+    // 鼠标一帧里可能动好几次：只记下位置，每一帧最多做一次射线检测（见 #updateHover）
     el.addEventListener('pointermove', (e) => {
       this.#setPointer(e);
-      if (e.pointerType === 'mouse') {
-        const hit = this.#pick();
-        this.hovered = hit?.object.userData.subjectId ?? (hit?.object.userData.rocket ? 'rocket' : null);
-        el.style.cursor = this.hovered ? 'pointer' : '';
-      }
+      if (e.pointerType === 'mouse') this.hoverDirty = true;
     });
     el.addEventListener('pointerleave', () => {
       this.hovered = null;
+      this.hoverDirty = false;
       this.pointer.set(9, 9);
+      el.style.cursor = '';
     });
     el.addEventListener('pointerdown', (e) => (down = { x: e.clientX, y: e.clientY }));
     el.addEventListener('pointerup', (e) => {
@@ -493,6 +525,15 @@ export class HomeworkScene extends EventTarget {
       if (rocket) this.dispatchEvent(new CustomEvent('rocket'));
       else this.dispatchEvent(new CustomEvent('select', { detail: { subjectId, taskId } }));
     });
+  }
+
+  #updateHover() {
+    if (!this.hoverDirty) return;
+    this.hoverDirty = false;
+    const hit = this.#pick();
+    this.hovered = hit?.object.userData.subjectId ?? (hit?.object.userData.rocket ? 'rocket' : null);
+    const cursor = this.hovered ? 'pointer' : '';
+    if (this.renderer.domElement.style.cursor !== cursor) this.renderer.domElement.style.cursor = cursor;
   }
 
   #setPointer(e) {
@@ -565,7 +606,9 @@ export class HomeworkScene extends EventTarget {
 
   /**
    * 自适应清晰度：每 2 秒算一次帧率。低于 LOWER_FPS（老平板、手机、软件渲染）就把渲染分辨率降一档，
-   * 连续 3 次高于 RAISE_FPS 再升回一档。三维画面会稍微柔一点，但动画跟手、不卡
+   * 连续 3 次高于 RAISE_FPS 再升回一档。三维画面会稍微柔一点，但动画跟手、不卡。
+   * 降了一档帧率却没上去（系统把帧率锁在 30，比如 iPhone 的低电量模式；或者慢在 CPU 上），说明降分辨率没用：
+   * 退回原来的清晰度，以后也不再降到那么低
    */
   #adapt(frame) {
     const p = this.perf;
@@ -577,9 +620,16 @@ export class HomeworkScene extends EventTarget {
     const fps = p.frames / p.time;
     p.frames = 0;
     p.time = 0;
+    const tried = p.tried;
+    p.tried = null;
     let next = this.ratio;
-    if (fps < LOWER_FPS) {
-      next = Math.max(MIN_RATIO, this.ratio - 0.25);
+    if (tried && fps < LOWER_FPS && fps < tried.fps * 1.15) {
+      next = tried.from;
+      p.floor = tried.from;
+      p.good = 0;
+    } else if (fps < LOWER_FPS && this.ratio > Math.max(MIN_RATIO, p.floor)) {
+      next = Math.max(MIN_RATIO, p.floor, this.ratio - 0.25);
+      p.tried = { from: this.ratio, fps };
       p.good = 0;
     } else if (fps > RAISE_FPS && this.ratio < this.maxRatio && ++p.good >= 3) {
       next = Math.min(this.maxRatio, this.ratio + 0.25);
@@ -589,13 +639,26 @@ export class HomeworkScene extends EventTarget {
     this.ratio = next;
     this.renderer.setPixelRatio(next);
     this.composer.setPixelRatio(next);
+    this.#applySamples();
     this.#resize();
   }
 
-  #tick() {
-    const now = performance.now();
+  /**
+   * 场景渲染目标的多重采样抗锯齿（4 倍）：只在 1 倍屏上、清晰度没被降过的时候开。
+   * 2 倍屏本来就细，用不着；清晰度被降过说明设备已经很吃力了
+   */
+  #applySamples() {
+    const samples = this.maxRatio < 1.5 && this.ratio === this.maxRatio ? 4 : 0;
+    for (const target of [this.composer.renderTarget1, this.composer.renderTarget2]) {
+      if (target.samples === samples) continue;
+      target.samples = samples;
+      target.dispose();
+    }
+  }
+
+  #tick(now = performance.now()) {
     this.#adapt((now - this.last) / 1000);
-    const dt = Math.min(0.05, (now - this.last) / 1000);
+    const dt = Math.min(0.05, Math.max(0, (now - this.last) / 1000));
     this.last = now;
     this.time += dt;
     const t = this.time;
@@ -649,10 +712,12 @@ export class HomeworkScene extends EventTarget {
     }
 
     // 相机
+    this.#updateHover();
     this.#computeGoal();
-    const k = 1 - Math.exp(-dt * (this.focused ? 2.6 : 1.8));
-    this.camPos.lerp(this.goalPos, k);
-    this.camLook.lerp(this.goalLook, k);
+    const rate = this.focused ? 2.6 : 1.8;
+    const k = 1 - Math.exp(-dt * rate);
+    springTo(this.camPos, this.goalPos, this.camVel.pos, rate, dt);
+    springTo(this.camLook, this.goalLook, this.camVel.look, rate, dt);
     const px = this.focused ? 0.25 : 1;
     if (Math.abs(this.pointer.x) <= 1 && !REDUCED_MOTION) {
       this.parallax.x += (this.pointer.x - this.parallax.x) * dt * 2;
@@ -672,11 +737,9 @@ export class HomeworkScene extends EventTarget {
     const target = this.fuel ?? 0;
     if (this.fuelShown < 0) this.fuelShown = target;
     const next = this.fuelShown + (target - this.fuelShown) * Math.min(1, dt * 3);
-    if (Math.abs(next - this.fuelShown) > 0.0005 || !this.fuelRing.geometry.attributes.position) {
-      this.fuelShown = Math.abs(target - next) < 0.001 ? target : next;
-      this.fuelRing.geometry.dispose();
-      this.fuelRing.geometry = new THREE.TorusGeometry(2.05, 0.09, 10, 128, Math.max(0.0001, this.fuelShown * Math.PI * 2));
-    }
+    this.fuelShown = Math.abs(target - next) < 0.001 ? target : next;
+    this.fuelRing.material.uniforms.uArc.value = this.fuelShown;
+    this.fuelRing.visible = this.fuelShown > 0.001;
     this.windowMat.emissiveIntensity = 0.3 + this.fuelShown * 2.2;
     this.coreLight.intensity = 18 + this.fuelShown * 30;
   }
@@ -733,6 +796,7 @@ export class HomeworkScene extends EventTarget {
     const flicker = 1 + Math.sin(t * 40) * 0.08 + Math.sin(t * 23) * 0.06;
     const s = Math.max(0.0001, this.flameSize);
     this.flame.scale.set(s, s * flicker, s);
+    this.flame.visible = s > 0.002;
   }
 
   #updateShootingStar(dt) {
@@ -766,6 +830,21 @@ function easeOutBack(x) {
   const c1 = 1.70158;
   const c3 = c1 + 1;
   return x <= 0 ? 0.0001 : 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+}
+
+/**
+ * 镜头用的弹簧（临界阻尼）：value 追着 goal 走，起步和停下都是缓的，不会像指数插值那样一开始就猛地冲出去；
+ * 目标中途变了也是顺着原来的速度拐过去。vel 是 value 自己的速度（会被改写），
+ * rate 和原来指数插值的系数一样用（快慢差不多）。改的是 value，返回 value
+ */
+export function springTo(value, goal, vel, rate, dt) {
+  const w = rate * 1.6;
+  const x = w * dt;
+  const decay = 1 / (1 + x + 0.48 * x * x + 0.235 * x * x * x);
+  const change = s1.copy(value).sub(goal);
+  const push = s2.copy(vel).addScaledVector(change, w).multiplyScalar(dt);
+  vel.addScaledVector(push, -w).multiplyScalar(decay);
+  return value.copy(goal).add(change.add(push).multiplyScalar(decay));
 }
 
 export function disposeTree(root) {

@@ -10,7 +10,7 @@ import * as THREE from 'three';
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 import { BixStage, STATION_SPOTS, BIX_RADIUS, DOOR_SPOT, DOOR_SHOTS } from './bix.js';
 import { BixExplore } from './explore.js';
-import { makeLabel } from './scene.js';
+import { makeLabel, springTo } from './scene.js';
 import { foundDiscoveries } from './story.js';
 
 /** 总览镜头（相对着陆点）：从发射台前上方俯看整个着陆区 */
@@ -63,6 +63,7 @@ export class BixSurface extends EventTarget {
     this.camPos = new THREE.Vector3();
     this.camLook = new THREE.Vector3();
     this.camUp = new THREE.Vector3(0, 1, 0);
+    this.camVel = { pos: new THREE.Vector3(), look: new THREE.Vector3(), up: new THREE.Vector3() };
     this.goalPos = new THREE.Vector3();
     this.goalLook = new THREE.Vector3();
     this.goalUp = new THREE.Vector3(0, 1, 0);
@@ -312,13 +313,16 @@ export class BixSurface extends EventTarget {
     this.stage.animate(dt, t);
     this.explore?.update(dt, t, camera);
     this.#computeGoal(camera.aspect);
-    const k = 1 - Math.exp(-dt * (this.exploring ? 3.2 : this.focused ? 2.6 : 1.8));
+    const rate = this.exploring ? 3.2 : this.focused ? 2.6 : 1.8;
+    const k = 1 - Math.exp(-dt * rate);
     if (this.flight) {
+      // 飞行是按曲线直接摆的：弹簧的速度清零，飞完从静止接上
       this.#updateFlight(dt);
+      for (const vel of Object.values(this.camVel)) vel.set(0, 0, 0);
     } else {
-      this.camPos.lerp(this.goalPos, k);
-      this.camLook.lerp(this.goalLook, k);
-      this.camUp.lerp(this.goalUp, k).normalize();
+      springTo(this.camPos, this.goalPos, this.camVel.pos, rate, dt);
+      springTo(this.camLook, this.goalLook, this.camVel.look, rate, dt);
+      springTo(this.camUp, this.goalUp, this.camVel.up, rate, dt).normalize();
     }
     camera.position.copy(this.camPos);
     camera.up.copy(this.camUp);
@@ -343,6 +347,7 @@ export class BixSurface extends EventTarget {
     }
     // 只渲染 Bix 星上的名牌，太空里的星球名牌不归这里管
     this.labelRenderer.render(this.stage.root, camera);
+    this.#updateHover();
   }
 
   #computeGoal(aspect) {
@@ -437,8 +442,9 @@ export class BixSurface extends EventTarget {
         down.lastX = e.clientX;
       }
       if (e.pointerType !== 'mouse') return;
+      // 只记下位置，每一帧最多做一次射线检测（见 #updateHover）
       this.#setPointer(e);
-      el.style.cursor = this.#pick(true) ? 'pointer' : '';
+      this.hoverDirty = true;
     };
     this.onPointerUp = (e) => {
       const click = down && !down.drag && Math.hypot(e.clientX - down.x, e.clientY - down.y) <= 10;
@@ -460,6 +466,15 @@ export class BixSurface extends EventTarget {
     el.addEventListener('pointerdown', this.onPointerDown);
     el.addEventListener('pointermove', this.onPointerMove);
     el.addEventListener('pointerup', this.onPointerUp);
+  }
+
+  /** 鼠标移过可以点的东西：换成手指形状 */
+  #updateHover() {
+    if (!this.hoverDirty) return;
+    this.hoverDirty = false;
+    const el = this.host.renderer.domElement;
+    const cursor = this.#pick(true) ? 'pointer' : '';
+    if (el.style.cursor !== cursor) el.style.cursor = cursor;
   }
 
   #setPointer(e) {
