@@ -185,6 +185,8 @@ npm run dev
 | 👂 **The Five Senses（五种感官）** · 第 2 层 | 8 课：小诗、看、听、闻、尝、摸、Ray Charles、Helen Keller | 读短文、答题找证据，再做分类（哪种感官、大声小声、甜咸酸、软硬）、写作或讲给大人听 | 改编自 CKLA K 年级 Domain 2 |
 | 🔗 **Consonant Blends（辅音连读）** · 第 3 层 | 4 课：l-blends、r-blends、s-blends、结尾连读 | 看图认词、拼词、可解码小故事、朗读计时 | 原创 |
 | 📚 **Nursery Rhymes and Fables（儿歌和寓言）** · 第 3 层 | 7 课：四课成对的传统儿歌，三个伊索寓言（狮子和老鼠、狗和倒影、龟兔赛跑） | 押韵、拍音节、人物和顺序、寓意（挑战）、比较不同寓言的角色（RL.K.9），再做复述、表演、写作 | 改编自 CKLA K 年级 Domain 1 |
+| ✨ **Silent e（不发音的 e）** · 第 4 层 | 4 课：a_e、i_e、o_e、u_e | 看图认词、拼词（cap → cape 的魔法 e）、可解码小故事、朗读计时 | 原创 |
+| 🌍 **Taking Care of the Earth（爱护地球）** · 第 4 层 | 8 课：地球、垃圾、自然资源、减少再用回收、堆肥、污染、小水滴 Willy、地球的告别信 | 由“老地球”自己讲；读短文、答题找证据，再做分类（是不是木头做的、减少再用还是回收、帮地球还是伤地球）、复述，最后写“我的地球承诺” | 改编自 CKLA K 年级 Domain 11 |
 
 内容的授权是 CC BY-NC-SA 4.0，和代码的授权不同，详见 [content/LICENSE.md](content/LICENSE.md) 和 [content/ATTRIBUTION.md](content/ATTRIBUTION.md)。改编内容的文章下面会显示署名。
 
@@ -248,6 +250,7 @@ npm run dev
 | 1 | 🛬 着陆区 · 气象站 | 四季与天气 | 短元音（航行期就开始） |
 | 2 | 🛍️ 集市 · 感官馆 | 五种感官 | 二合字母 sh、ch、th、ck |
 | 3 | 📚 图书馆 · 寓言厅 | 儿歌和寓言 | 辅音连读 fl、fr、st、nd… |
+| 4 | 🏛️ 设计院 · 地球馆 | 爱护地球 | 不发音的 e：cake、kite、bone、cube… |
 
 开发时还可以用网址直接操作：
 

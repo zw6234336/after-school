@@ -1,0 +1,119 @@
+{
+  "id": "ch04-design",
+  "title": "第 4 章 · 设计院",
+  "layer": 4,
+  "unit": "k-care-earth",
+  "surface": {
+    "ground": "#4caf7d",
+    "glow": "#a5f2c0",
+    "rain": false,
+    "stations": {
+      "RI": { "name": "地球馆", "icon": "🌍" }
+    }
+  },
+  "explore": {
+    "zones": [
+      { "id": "ocean", "icon": "🌊", "name": "海边", "color": "#4fc3f7", "lon": 0, "look": { "sky": "#06182a", "light": "#e1f5fe", "fx": "wind", "decor": ["rock", "grass", "mound"] } },
+      { "id": "forest", "icon": "🌳", "name": "大树林", "color": "#43a047", "lon": 72, "look": { "sky": "#06180b", "light": "#dcffe0", "fx": "leaves", "decor": ["tree", "tree", "bush"] } },
+      { "id": "recycle", "icon": "♻️", "name": "回收场", "color": "#26a69a", "lon": 144, "look": { "sky": "#0b1d1b", "light": "#e0f2f1", "fx": "motes", "decor": ["pile", "mound", "rock"] } },
+      { "id": "garden", "icon": "🪴", "name": "菜园", "color": "#9ccc65", "lon": 216, "look": { "sky": "#14200a", "light": "#f1f8e9", "fx": null, "decor": ["bush", "grass", "grass"] } },
+      { "id": "river", "icon": "💧", "name": "小河", "color": "#29b6f6", "lon": 288, "look": { "sky": "#04162a", "light": "#e3f2fd", "fx": "uprain", "decor": ["rock", "grass", "bush"] } }
+    ],
+    "discoveries": [
+      { "id": "land-ocean", "model": "two-suns", "zone": "ocean", "emoji": "🌍", "zh": "蓝球和绿球", "word": "ocean", "say": "Look! Land and ocean!", "note": "两个发光的小球绕着转：蓝的像海洋，绿的像陆地，合起来就是一颗地球", "from": { "lesson": "l1-earth" }, "at": [49, 350] },
+      { "id": "clean-beach", "model": "rainbow-bridge", "zone": "ocean", "emoji": "🏖️", "zh": "干净海滩上的彩虹", "word": "clean", "say": "No litter! It is clean!", "note": "海滩上一点垃圾都没有，两个小水洼中间架起一道彩虹", "from": { "lesson": "l6-pollution" }, "at": [30, 20] },
+      { "id": "clean-air", "model": "pinwheel-flowers", "zone": "forest", "emoji": "🌳", "zh": "吹干净空气的风车花", "word": "air", "say": "Trees help clean the air!", "note": "大树下转个不停的风车花，把树林里的空气吹得干干净净", "from": { "lesson": "l3-resources" }, "at": [49, 64] },
+      { "id": "recycle-pop", "model": "firework-flowers", "zone": "recycle", "emoji": "♻️", "zh": "变成新东西的旧瓶子", "word": "recycle", "say": "Recycle! Old things turn into new things!", "note": "旧瓶子一个个飞上天，炸开变成五颜六色的新东西", "from": { "lesson": "l4-recycle" }, "at": [48, 140] },
+      { "id": "compost-pile", "model": "dancing-leaves", "zone": "garden", "emoji": "🪱", "zh": "会翻身的堆肥", "word": "compost", "say": "Look! A compost pile!", "note": "一堆落叶和果皮，走近就翻起来：蚯蚓正在把它们变成黑黑的泥土", "from": { "lesson": "l5-compost" }, "at": [48, 214] },
+      { "id": "big-garden", "model": "pumpkin-patch", "zone": "garden", "emoji": "🎃", "zh": "用堆肥养大的南瓜", "word": "garden", "say": "Plant a garden!", "note": "菜园里的大南瓜，是用堆肥一点点养大的", "from": { "lesson": "l8-goodbye" }, "at": [30, 232] },
+      { "id": "willy-drop", "model": "follow-cloud", "zone": "river", "emoji": "💧", "zh": "小水滴 Willy", "word": "drop", "say": "Look! Willy the Water Drop!", "note": "一朵小云里住着小水滴 Willy，收进图鉴以后会跟着你走", "from": { "lesson": "l7-willy" }, "at": [49, 282] },
+      { "id": "fresh-pond", "model": "hot-spring", "zone": "river", "emoji": "🚰", "zh": "清清的小水塘", "word": "fresh", "say": "The water is fresh and clean!", "note": "河边一汪清清的水塘，是水厂刚洗干净的水", "from": { "lesson": "l7-willy" }, "at": [30, 306] }
+    ]
+  },
+  "door": {
+    "to": { "layer": 5, "name": "星核议会", "icon": "💎" },
+    "decode": {
+      "standard": "RF.K.3",
+      "unit": "k-phonics-silent-e",
+      "need": 8,
+      "words": ["cake", "snake", "skate", "kite", "bike", "five", "bone", "rose", "nose", "cube"]
+    },
+    "comprehend": {
+      "standard": "RI.K.1",
+      "vocab": ["bix", "zib"],
+      "tickets": [
+        {
+          "id": "zib-recycle",
+          "title": "Zib Can Recycle",
+          "text": "Dear friend, I like to recycle! I put cans and plastic bottles in a recycling bin. A truck takes them to a recycling center. Old bottles can become new toys! Your friend, Zib",
+          "questions": [
+            { "q": "Where does Zib put cans?", "options": ["in a recycling bin", "in the river", "in a garden"], "a": "in a recycling bin", "evidence": "I put cans and plastic bottles in a recycling bin" },
+            { "q": "What can old bottles become?", "options": ["new toys", "trees", "water"], "a": "new toys", "evidence": "Old bottles can become new toys" }
+          ]
+        },
+        {
+          "id": "zib-compost",
+          "title": "Zib's Compost Pile",
+          "text": "Dear friend, I made a compost pile in my garden. I put in carrot peels and lettuce leaves. Worms help the scraps rot. Now I have rich soil, and my vegetables grow big! Your friend, Zib",
+          "questions": [
+            { "q": "What did Zib put in the compost pile?", "options": ["carrot peels and lettuce leaves", "cans and bottles", "paper plates"], "a": "carrot peels and lettuce leaves", "evidence": "I put in carrot peels and lettuce leaves" },
+            { "q": "What helps the scraps rot?", "options": ["worms", "trucks", "fish"], "a": "worms", "evidence": "Worms help the scraps rot" }
+          ]
+        },
+        {
+          "id": "zib-water",
+          "title": "Zib Saves Water",
+          "text": "Dear friend, I turn off the water when I brush my teeth. Every drop is important! I pick up litter at the river, too. Little things help a lot! Your friend, Zib",
+          "questions": [
+            { "q": "What does Zib turn off?", "options": ["the water", "the lights", "the truck"], "a": "the water", "evidence": "I turn off the water when I brush my teeth" },
+            { "q": "Where does Zib pick up litter?", "options": ["at the river", "at the beach", "at the market"], "a": "at the river", "evidence": "I pick up litter at the river" }
+          ]
+        }
+      ]
+    },
+    "unlock": {
+      "id": "water-tower",
+      "emoji": "💧",
+      "name": "Bix 净水塔",
+      "note": "Zib 照你讲的爱护地球的办法造了这座塔：它把脏水变成干净的水，顶上的球一会儿绿一会儿蓝，像一颗小地球。",
+      "colors": ["#66bb6a", "#29b6f6", "#a5d6a7", "#4fc3f7"]
+    }
+  },
+  "opening": {
+    "title": "第 4 层 · 设计院",
+    "subtitle": "🌍 地球馆 · Taking Care of the Earth",
+    "intro": "第 3 层的门打开了！再往下一层，原住民在设计院里想办法：怎样把自己的星球照顾好？",
+    "vocab": {
+      "school": [],
+      "names": ["zib"],
+      "extra": ["hi", "listen", "which", "word", "words"]
+    },
+    "shots": [
+      { "type": "fly", "camera": "approach", "action": "approach", "zh": "穿过第 3 层的门，使命号继续往下飞……", "ms": 5200 },
+      { "type": "fly", "camera": "descent", "action": "land", "zh": "第 4 层到了：一座绿绿的设计院", "ms": 7000 },
+      { "type": "say", "camera": "zib", "action": "zib-appear", "text": "Hi! I like the tortoise!", "zh": "Zib 抱着一只小乌龟跑过来" },
+      {
+        "type": "ask",
+        "camera": "zib",
+        "q": "Slow and steady wins the ___.",
+        "options": ["race", "nap"],
+        "a": "race",
+        "hint": "The tortoise did not stop. Slow and steady wins the race!",
+        "review": { "source": "第 3 层 · The Hare and the Tortoise", "standard": "RL.K.2" }
+      },
+      { "type": "say", "camera": "zib", "action": "zib-wave", "text": "I can read new words, too!", "zh": "Zib 指指告示牌上的字母" },
+      {
+        "type": "ask",
+        "camera": "zib",
+        "q": "Listen. Which word?",
+        "speak": "frog",
+        "options": ["flag", "frog", "drum"],
+        "a": "frog",
+        "hint": "f … r … o … g — frog",
+        "review": { "source": "第 3 层 · 拼读 fr", "standard": "RF.K.3" }
+      },
+      { "type": "preview", "camera": "sign", "action": "sign", "word": "recycle", "text": "What is this? Let's find out!", "zh": "告示上的新词还看不懂，这一层就要学它" },
+      { "type": "title", "camera": "station", "ms": 3200 }
+    ]
+  }
+}

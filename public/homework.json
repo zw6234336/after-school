@@ -267,6 +267,16 @@
       "id": "unit-fables",
       "unit": "k-rhymes-fables",
       "lessons": "daily"
+    },
+    {
+      "id": "unit-silent-e",
+      "unit": "k-phonics-silent-e",
+      "lessons": "daily"
+    },
+    {
+      "id": "unit-earth",
+      "unit": "k-care-earth",
+      "lessons": "daily"
     }
   ]
 }

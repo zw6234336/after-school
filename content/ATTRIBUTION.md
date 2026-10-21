@@ -70,3 +70,24 @@ Core Knowledge Language Arts、Listening & Learning、Tell It Again! 是 Core Kn
 
 只用了文字，没有用读本里的图片。
 
+
+### Kindergarten · Domain 11 · Taking Care of the Earth
+
+- 原作：*Taking Care of the Earth — Tell It Again!™ Read-Aloud Anthology*, Kindergarten, Core Knowledge Language Arts®, © 2013 Core Knowledge Foundation
+- 下载页：<https://www.coreknowledge.org/free-resource/ckla-domain-11-taking-care-earth/>
+- 原作授权：[CC BY-NC-SA 3.0 Unported](https://creativecommons.org/licenses/by-nc-sa/3.0/)（读本版权页上写明）
+- 本项目里的单元：[`units/k-care-earth/unit.json`](units/k-care-earth/unit.json)
+- 和原作一样由“老地球”（Good Old Earth）自己讲；原作 10 课，两课回收合成一课、两课污染合成一课，共 8 课
+
+| 本项目的课 | 改编自 | 改动 |
+|---|---|---|
+| Hi, I'm Good Old Earth | Lesson 1: Introducing the Earth | 缩写成短文，保留地球自我介绍、从太空看是蓝色、陆地和空气、人和动植物共享土地和水；去掉了城市、公路、船和飞机；题目重写并加了文本证据；加了“说说最喜欢的地方”口语任务 |
+| Garbage | Lesson 2: Garbage | 缩写成短文，保留什么是垃圾、生日派对的垃圾、把垃圾拿出去、每周来的垃圾车和填埋场；去掉了从月亮上看和猜垃圾车去哪儿；题目重写并加了文本证据；加了“家里有几个垃圾桶”口语任务 |
+| Natural Resources | Lesson 3: Natural Resources | 缩写成短文，保留什么是自然资源、水的用处、树和木头做的东西、树让空气变干净、沙漠缺水；去掉了大洲和撒哈拉的细节；题目重写并加了文本证据；加了“是不是树做的”分类题 |
+| Reduce, Reuse, Recycle | Lesson 4: Reduce, Reuse, Recycle；Lesson 5: Recycle! Recycle! Recycle! | 两课合成一课并缩写，保留三个词各一个例子（只用一张纸巾、在用过的纸背面画画）、回收箱、回收中心、旧塑料瓶变成新玩具；去掉了填埋场的数字和各种回收工厂；题目重写并加了文本证据；加了“减少、再用还是回收”分类题 |
+| Composting | Lesson 6: Composting | 缩写成短文，保留 Smith 一家、吃不了的菜皮、后院的堆肥、蚯蚓、变成肥沃的泥土、让菜园长得好；去掉了晚饭的细节和收剩菜；题目重写并加了文本证据；加了“哪些能做堆肥”口语任务 |
+| Pollution | Lesson 7: Pollution；Lesson 8: Air Pollution | 两课合成一课并缩写，保留干净和脏的海滩、乱扔的垃圾、污染、汽车和工厂的烟、肺、能做的事（不乱扔、走路骑车、关灯）；去掉了有毒的化学品、害虫、雾霾和全球的影响；题目重写并加了文本证据；加了“帮地球还是伤地球”分类题 |
+| Willy the Water Drop | Lesson 9: Willy the Water Drop | 缩写小水滴 Willy 的旅行，保留树叶、有垃圾的河、工厂、水厂和“每一滴水都重要”；去掉了淡水的比例、鳟鱼和水库；题目重写并加了文本证据；加了复述任务 |
+| Goodbye from Good Old Earth | Lesson 10: Goodbye from Good Old Earth | 缩写成短文，保留减少再用回收、捡垃圾、堆肥、刷牙关水、种树种菜和“小事加起来就是大事”；去掉了回收计划的细节；题目重写并加了文本证据，其中一题和 Willy 那一课比较（RI.K.9）；加了“我的地球承诺”写作 |
+
+只用了文字，没有用读本里的图片。

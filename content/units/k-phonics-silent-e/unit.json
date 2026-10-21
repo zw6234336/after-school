@@ -1,0 +1,567 @@
+{
+  "id": "k-phonics-silent-e",
+  "grade": "K",
+  "title": "Silent e",
+  "titleZh": "不发音的 e（长元音）",
+  "icon": "🪄",
+  "color": "#4db6ac",
+  "question": "What does a silent e at the end of a word do?",
+  "questionZh": "单词结尾不发音的 e 有什么用？",
+  "license": "CC BY-NC-SA 4.0",
+  "wordWall": [
+    { "word": "cake", "meaning": "蛋糕", "emoji": "🎂", "lesson": "l1-a-e" },
+    { "word": "snake", "meaning": "蛇", "emoji": "🐍", "lesson": "l1-a-e" },
+    { "word": "skate", "meaning": "滑冰", "emoji": "⛸️", "lesson": "l1-a-e" },
+    { "word": "game", "meaning": "游戏", "emoji": "🎮", "lesson": "l1-a-e" },
+    { "word": "lake", "meaning": "湖", "emoji": "🏞️", "lesson": "l1-a-e" },
+    { "word": "kite", "meaning": "风筝", "emoji": "🪁", "lesson": "l2-i-e" },
+    { "word": "bike", "meaning": "自行车", "emoji": "🚲", "lesson": "l2-i-e" },
+    { "word": "five", "meaning": "五", "emoji": "5️⃣", "lesson": "l2-i-e" },
+    { "word": "pine", "meaning": "松树", "emoji": "🌲", "lesson": "l2-i-e" },
+    { "word": "smile", "meaning": "微笑", "emoji": "😊", "lesson": "l2-i-e" },
+    { "word": "bone", "meaning": "骨头", "emoji": "🦴", "lesson": "l3-o-e" },
+    { "word": "rose", "meaning": "玫瑰", "emoji": "🌹", "lesson": "l3-o-e" },
+    { "word": "nose", "meaning": "鼻子", "emoji": "👃", "lesson": "l3-o-e" },
+    { "word": "rope", "meaning": "绳子", "emoji": "🪢", "lesson": "l3-o-e" },
+    { "word": "cone", "meaning": "冰淇淋筒", "emoji": "🍦", "lesson": "l3-o-e" },
+    { "word": "cube", "meaning": "方块", "emoji": "🧊", "lesson": "l4-u-e" },
+    { "word": "mule", "meaning": "骡子", "emoji": "🫏", "lesson": "l4-u-e" },
+    { "word": "flute", "meaning": "笛子", "emoji": "🪈", "lesson": "l4-u-e" },
+    { "word": "tube", "meaning": "管子", "emoji": "🧪", "lesson": "l4-u-e" }
+  ],
+  "lessons": [
+    {
+      "id": "l1-a-e",
+      "title": "a_e",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "se-a-sounds",
+          "title": "Sounds: a long a with silent e (a_e)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "🎂 Which word is it?",
+              "options": ["cat", "cake", "cap"],
+              "a": "cake",
+              "speak": "cake",
+              "hint": "结尾的 e 不发音，它让前面的 a 读自己的名字 /ā/：cap → cape"
+            },
+            {
+              "q": "Which word has a long a with silent e (a_e)?",
+              "options": ["lap", "lake", "lad"],
+              "a": "lake",
+              "speak": "Which word has a long a sound? lap, lake, or lad?"
+            },
+            {
+              "q": "Which word rhymes with “cake”?",
+              "options": ["kite", "lake", "cat"],
+              "a": "lake",
+              "speak": "Which word rhymes with cake?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: cake → change /k/ to /l/ → ?",
+              "options": ["like", "lake", "lack"],
+              "a": "lake",
+              "speak": "Change the first sound of cake.",
+              "hint": "把 cake 开头的音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "se-a-build",
+          "title": "Build words with a long a with silent e (a_e)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🎂",
+              "tiles": ["c", "a", "k", "e", "i"],
+              "a": "cake",
+              "speak": "cake"
+            },
+            {
+              "q": "Build the word: 🐍",
+              "tiles": ["s", "n", "a", "k", "e", "o"],
+              "a": "snake",
+              "speak": "snake"
+            },
+            {
+              "q": "Build the word: ⛸️",
+              "tiles": ["s", "k", "a", "t", "e", "u"],
+              "a": "skate",
+              "speak": "skate"
+            },
+            {
+              "q": "Build the word: 🎮",
+              "tiles": ["g", "a", "m", "e", "i"],
+              "a": "game",
+              "speak": "game",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Build the word: 🏞️",
+              "tiles": ["l", "a", "k", "e", "o"],
+              "a": "lake",
+              "speak": "lake",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "se-a-read",
+          "title": "Read: Jake and the Snake",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "Jake and the Snake",
+            "genre": "literature",
+            "decodable": { "vowels": "aeiou", "names": ["Jake"], "silentE": true },
+            "text": "Jake has a cake. A snake came to the lake. The snake made a face at Jake. Jake gave the snake a bit of cake. The snake ate the cake. Then Jake and the snake swam in the lake."
+          },
+          "questions": [
+            {
+              "q": "What does Jake have?",
+              "options": ["a cake", "a kite", "a bone"],
+              "a": "a cake",
+              "evidence": "Jake has a cake",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Who came to the lake?",
+              "options": ["a snake", "a frog", "a duck"],
+              "a": "a snake",
+              "evidence": "A snake came to the lake",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What did the snake eat?",
+              "options": ["the cake", "a bone", "a bun"],
+              "a": "the cake",
+              "evidence": "The snake ate the cake",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["cake.", "Jake", "a", "has"],
+              "a": "Jake has a cake.",
+              "speak": "Jake has a cake.",
+              "standard": "RF.K.3c",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "se-a-fluency",
+          "title": "Fluency: Jake and the Snake",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "se-a-read"
+          }
+        }
+      ]
+    },
+    {
+      "id": "l2-i-e",
+      "title": "i_e",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "se-i-sounds",
+          "title": "Sounds: a long i with silent e (i_e)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "🪁 Which word is it?",
+              "options": ["kit", "kite", "cut"],
+              "a": "kite",
+              "speak": "kite",
+              "hint": "结尾的 e 不发音，它让前面的 i 读自己的名字 /ī/：kit → kite"
+            },
+            {
+              "q": "Which word has a long i with silent e (i_e)?",
+              "options": ["bit", "bike", "big"],
+              "a": "bike",
+              "speak": "Which word has a long i sound? bit, bike, or big?"
+            },
+            {
+              "q": "Which word rhymes with “bike”?",
+              "options": ["bake", "like", "bit"],
+              "a": "like",
+              "speak": "Which word rhymes with bike?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: kite → change /k/ to /b/ → ?",
+              "options": ["bit", "bite", "cute"],
+              "a": "bite",
+              "speak": "Change the first sound of kite.",
+              "hint": "把 kite 开头的音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "se-i-build",
+          "title": "Build words with a long i with silent e (i_e)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🪁",
+              "tiles": ["k", "i", "t", "e", "a"],
+              "a": "kite",
+              "speak": "kite"
+            },
+            {
+              "q": "Build the word: 🚲",
+              "tiles": ["b", "i", "k", "e", "o"],
+              "a": "bike",
+              "speak": "bike"
+            },
+            {
+              "q": "Build the word: 5️⃣",
+              "tiles": ["f", "i", "v", "e", "a"],
+              "a": "five",
+              "speak": "five"
+            },
+            {
+              "q": "Build the word: 🌲",
+              "tiles": ["p", "i", "n", "e", "u"],
+              "a": "pine",
+              "speak": "pine",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Build the word: 😊",
+              "tiles": ["s", "m", "i", "l", "e", "a"],
+              "a": "smile",
+              "speak": "smile",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "se-i-read",
+          "title": "Read: Mike and the Kite",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "Mike and the Kite",
+            "genre": "literature",
+            "decodable": { "vowels": "aeiou", "names": ["Mike"], "silentE": true },
+            "text": "Mike has a red kite. Mike rides his bike to the hill. Mike lets the kite rise up. The kite is up a long time. Then Mike rides his bike home. What a fine day!"
+          },
+          "questions": [
+            {
+              "q": "What does Mike have?",
+              "options": ["a red kite", "a blue cube", "a cake"],
+              "a": "a red kite",
+              "evidence": "Mike has a red kite",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "How does Mike get to the hill?",
+              "options": ["He rides his bike.", "He swims.", "He takes a bus."],
+              "a": "He rides his bike.",
+              "evidence": "Mike rides his bike to the hill",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "How long is the kite up?",
+              "options": ["a long time", "one day", "five days"],
+              "a": "a long time",
+              "evidence": "The kite is up a long time",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["kite.", "Mike", "a", "has", "red"],
+              "a": "Mike has a red kite.",
+              "speak": "Mike has a red kite.",
+              "standard": "RF.K.3c",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "se-i-fluency",
+          "title": "Fluency: Mike and the Kite",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "se-i-read"
+          }
+        }
+      ]
+    },
+    {
+      "id": "l3-o-e",
+      "title": "o_e",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "se-o-sounds",
+          "title": "Sounds: a long o with silent e (o_e)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "🦴 Which word is it?",
+              "options": ["bon", "bone", "bun"],
+              "a": "bone",
+              "speak": "bone",
+              "hint": "结尾的 e 不发音，它让前面的 o 读自己的名字 /ō/：not → note"
+            },
+            {
+              "q": "Which word has a long o with silent e (o_e)?",
+              "options": ["rot", "rose", "rod"],
+              "a": "rose",
+              "speak": "Which word has a long o sound? rot, rose, or rod?"
+            },
+            {
+              "q": "Which word rhymes with “bone”?",
+              "options": ["bike", "cone", "bun"],
+              "a": "cone",
+              "speak": "Which word rhymes with bone?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: rose → change /r/ to /n/ → ?",
+              "options": ["nest", "nose", "rope"],
+              "a": "nose",
+              "speak": "Change the first sound of rose.",
+              "hint": "把 rose 开头的音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "se-o-build",
+          "title": "Build words with a long o with silent e (o_e)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🦴",
+              "tiles": ["b", "o", "n", "e", "i"],
+              "a": "bone",
+              "speak": "bone"
+            },
+            {
+              "q": "Build the word: 🌹",
+              "tiles": ["r", "o", "s", "e", "a"],
+              "a": "rose",
+              "speak": "rose"
+            },
+            {
+              "q": "Build the word: 👃",
+              "tiles": ["n", "o", "s", "e", "u"],
+              "a": "nose",
+              "speak": "nose"
+            },
+            {
+              "q": "Build the word: 🪢",
+              "tiles": ["r", "o", "p", "e", "i"],
+              "a": "rope",
+              "speak": "rope",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Build the word: 🍦",
+              "tiles": ["c", "o", "n", "e", "a"],
+              "a": "cone",
+              "speak": "cone",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "se-o-read",
+          "title": "Read: Rose and the Bone",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "Rose and the Bone",
+            "genre": "literature",
+            "decodable": { "vowels": "aeiou", "names": ["Rose"], "silentE": true },
+            "text": "Rose is a dog. Rose has a big bone. Rose hid the bone by a stone. Then Rose went home. When Rose came back, the bone was not there! Rose put her nose on the stone. She dug and dug. Rose got the bone!"
+          },
+          "questions": [
+            {
+              "q": "What is Rose?",
+              "options": ["a dog", "a cat", "a snake"],
+              "a": "a dog",
+              "evidence": "Rose is a dog",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Where did Rose hide the bone?",
+              "options": ["by a stone", "in a box", "under a bed"],
+              "a": "by a stone",
+              "evidence": "Rose hid the bone by a stone",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "How did Rose find the bone?",
+              "options": ["She dug and dug.", "She asked a cat.", "She rode a bike."],
+              "a": "She dug and dug.",
+              "evidence": "She dug and dug",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["bone.", "Rose", "a", "has", "big"],
+              "a": "Rose has a big bone.",
+              "speak": "Rose has a big bone.",
+              "standard": "RF.K.3c",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "se-o-fluency",
+          "title": "Fluency: Rose and the Bone",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "se-o-read"
+          }
+        }
+      ]
+    },
+    {
+      "id": "l4-u-e",
+      "title": "u_e",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "se-u-sounds",
+          "title": "Sounds: a long u with silent e (u_e)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "🧊 Which word is it?",
+              "options": ["cub", "cube", "cab"],
+              "a": "cube",
+              "speak": "cube",
+              "hint": "结尾的 e 不发音，它让前面的 u 读自己的名字 /ū/：cub → cube"
+            },
+            {
+              "q": "Which word has a long u with silent e (u_e)?",
+              "options": ["mud", "mule", "mug"],
+              "a": "mule",
+              "speak": "Which word has a long u sound? mud, mule, or mug?"
+            },
+            {
+              "q": "Which word rhymes with “cube”?",
+              "options": ["cub", "tube", "cake"],
+              "a": "tube",
+              "speak": "Which word rhymes with cube?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: tune → change /t/ to /d/ → ?",
+              "options": ["tone", "dune", "tub"],
+              "a": "dune",
+              "speak": "Change the first sound of tune.",
+              "hint": "把 tune 开头的音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "se-u-build",
+          "title": "Build words with a long u with silent e (u_e)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🧊",
+              "tiles": ["c", "u", "b", "e", "a"],
+              "a": "cube",
+              "speak": "cube"
+            },
+            {
+              "q": "Build the word: 🫏",
+              "tiles": ["m", "u", "l", "e", "o"],
+              "a": "mule",
+              "speak": "mule"
+            },
+            {
+              "q": "Build the word: 🪈",
+              "tiles": ["f", "l", "u", "t", "e", "i"],
+              "a": "flute",
+              "speak": "flute"
+            },
+            {
+              "q": "Build the word: 🧪",
+              "tiles": ["t", "u", "b", "e", "a"],
+              "a": "tube",
+              "speak": "tube",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "se-u-read",
+          "title": "Read: Luke and the Cube",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "Luke and the Cube",
+            "genre": "literature",
+            "decodable": { "vowels": "aeiou", "names": ["Luke"], "silentE": true },
+            "text": "Luke has a blue cube. Luke can tap the cube like a drum. Tap, tap! Luke has a flute, too. Luke and his mule hum a tune. It is a cute tune!"
+          },
+          "questions": [
+            {
+              "q": "What does Luke have?",
+              "options": ["a blue cube", "a red kite", "a big bone"],
+              "a": "a blue cube",
+              "evidence": "Luke has a blue cube",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "How does Luke use the cube?",
+              "options": ["like a drum", "like a hat", "like a cup"],
+              "a": "like a drum",
+              "evidence": "Luke can tap the cube like a drum",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What do Luke and his mule hum?",
+              "options": ["a tune", "a word", "a race"],
+              "a": "a tune",
+              "evidence": "Luke and his mule hum a tune",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["cube.", "Luke", "a", "has", "blue"],
+              "a": "Luke has a blue cube.",
+              "speak": "Luke has a blue cube.",
+              "standard": "RF.K.3c",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "se-u-fluency",
+          "title": "Fluency: Luke and the Cube",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "se-u-read"
+          }
+        }
+      ]
+    }
+  ]
+}
