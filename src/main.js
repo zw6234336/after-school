@@ -167,7 +167,11 @@ async function start() {
         plans: () =>
           (source.subjects || [])
             .filter((s) => s?.lessons === 'daily' && UNITS[s.unit])
-            .map((s) => ({ unit: UNITS[s.unit], ...planStatus(UNITS[s.unit], planContext(UNITS[s.unit], s)) })),
+            .map((s) => {
+              const unit = UNITS[s.unit];
+              const chapter = Object.values(STORY).find((c) => c.unit === unit.id || c.door?.decode?.unit === unit.id);
+              return { unit, layer: chapter?.layer ?? null, ...planStatus(unit, planContext(unit, s)) };
+            }),
       },
       levels: {
         /** 某个难度下有多少作业和题目，用来在选择界面上显示 */

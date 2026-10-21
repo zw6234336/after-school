@@ -1057,7 +1057,7 @@ export class UI {
       <h3>🚀 故事进度 <small>（星际破译）</small></h3>
       <ul class="report-list">
         <li><div><b>${esc(title)}</b><small>${esc(detail)}</small></div>${action}</li>
-        ${(this.story.plans?.() || []).map(planHtml).join('')}
+        ${plansHtml(this.story.plans?.() || [])}
         ${chapter ? this.exploreHud.reportHtml() : ''}
         ${chapter ? this.wardrobe.reportHtml() : ''}
         ${chapter ? this.door.reportHtml() : ''}
@@ -1258,15 +1258,28 @@ export class UI {
   }
 }
 
-/** 家长报告里的“每天一课”：读完几课、今天排的是哪一课、什么时候开始 */
+/**
+ * 家长报告里的“每天一课”：正在学的单元一个一条（读完几课、今天是哪一课、什么时候开始），
+ * 已经学完的单元合成一条
+ */
+function plansHtml(plans) {
+  const name = (p) => `${esc(p.unit.icon || '')} ${esc(p.unit.titleZh || p.unit.title)}`;
+  const done = plans.filter((p) => p.read === p.total);
+  const waiting = plans.filter((p) => p.waiting && p.read < p.total);
+  const finished = done.length
+    ? `<li><div><b>✅ 已经学完 ${done.length} 个单元</b><small>${done.map((p) => `${name(p)}（${p.total} 课）`).join('、')}</small></div></li>`
+    : '';
+  const later = waiting.length
+    ? `<li><div><b>⏳ 还没开始的单元</b><small>${waiting.map((p) => `${name(p)}（${p.layer > 1 ? `下到第 ${p.layer} 层以后` : '降落 Bix 星以后'}的第二天开始）`).join('、')}。航行期只做学校作业和拼读</small></div></li>`
+    : '';
+  return plans.filter((p) => p.read < p.total && !p.waiting).map(planHtml).join('') + later + finished;
+}
+
 function planHtml(plan) {
-  if (!plan) return '';
-  const { unit, total, read, today, waiting, startsTomorrow, perDay } = plan;
+  const { unit, total, read, today, startsTomorrow, perDay } = plan;
   let detail;
-  if (waiting) detail = '这个单元属于 Bix 星的故事，航行期不排它的课，降落以后的第二天开始';
-  else if (startsTomorrow) detail = '今天刚着陆，明天开始';
+  if (startsTomorrow) detail = '今天刚着陆，明天开始';
   else if (today.length) detail = `今天：${today.map((t) => `《${t}》`).join('')}`;
-  else if (read === total) detail = '课都读完了，可以去门口试飞';
   else detail = '今天没有新课';
   return `
     <li><div><b>📅 每天${perDay > 1 ? ` ${perDay} ` : '一'}课 · ${esc(unit.titleZh || unit.title)}：读完 ${read}/${total} 课</b>

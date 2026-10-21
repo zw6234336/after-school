@@ -50,3 +50,23 @@ Core Knowledge Language Arts、Listening & Learning、Tell It Again! 是 Core Kn
 
 只用了文字，没有用读本里的图片。
 
+### Kindergarten · Domain 1 · Nursery Rhymes and Fables
+
+- 原作：*Nursery Rhymes and Fables — Tell It Again!™ Read-Aloud Anthology*, Kindergarten, Core Knowledge Language Arts®, © 2013 Core Knowledge Foundation
+- 下载页：<https://www.coreknowledge.org/free-resource/ckla-domain-01-nursery-rhymes-fables/>
+- 原作授权：[CC BY-NC-SA 3.0 Unported](https://creativecommons.org/licenses/by-nc-sa/3.0/)（读本版权页上写明）
+- 本项目里的单元：[`units/k-rhymes-fables/unit.json`](units/k-rhymes-fables/unit.json)
+- 儿歌本身是传统儿歌（公有领域），按原作选的儿歌和顺序配成对；三个寓言是伊索寓言，按原作的版本缩写
+
+| 本项目的课 | 改编自 | 改动 |
+|---|---|---|
+| Rain, Rain, Go Away | Lesson 2A–2B: Rain, Rain, Go Away; It's Raining, It's Pouring | 两首下雨的儿歌合成一课；题目重写并加了文本证据和押韵题；加了“押不押韵”的分类题 |
+| Jack and Jill | Lesson 4A, 9B: Jack and Jill; Humpty Dumpty | 两首“摔下来”的儿歌合成一课；题目重写并加了文本证据，其中一题比较两个角色（RL.K.9）；加了“边念边做动作”的口语任务 |
+| Twinkle, Twinkle, Little Star | Lesson 6A–6B: Star Light, Star Bright; Twinkle, Twinkle, Little Star | 两首星星的儿歌合成一课（Twinkle 只用第一段）；题目重写并加了文本证据和押韵题；加了“许个愿”的写作任务 |
+| Hickory, Dickory, Dock | Lesson 7A, 9A: Hickory, Dickory, Dock; Baa, Baa, Black Sheep | 两首儿歌合成一课；题目重写并加了文本证据和押韵题；加了“拍音节”的分类题（RF.K.2） |
+| The Lion and the Mouse | Lesson 10: The Lion and the Mouse | 缩写寓言，保留吵醒狮子、老鼠的承诺、狮子大笑、猎人的网、咬断绳子和寓意；去掉了“百兽之王”的对话；题目重写，寓意题标为一年级标准作为挑战；加了复述任务 |
+| The Dog and His Reflection | Lesson 11: The Dog and His Reflection | 缩写寓言，保留骨头、不肯分享、桥、倒影、骨头掉进水里和寓意；去掉了肉铺和埋骨头；题目重写，寓意题标为一年级标准作为挑战；加了观点写作 |
+| The Hare and the Tortoise | Lesson 12: The Hare and the Tortoise | 缩写寓言，保留爱吹牛的兔子、比赛、兔子睡觉、乌龟不停地走和寓意；去掉了发令的动物、胡萝卜和南瓜地；题目重写，寓意题标为一年级标准作为挑战；加了“比较三个寓言的角色”（RL.K.9） |
+
+只用了文字，没有用读本里的图片。
+

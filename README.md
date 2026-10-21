@@ -183,6 +183,8 @@ npm run dev
 | 🌦️ **Seasons and Weather（四季与天气）** | 8 课：天气、冬、春、夏、秋、蚱蜢和蚂蚁、暴风雨安全、气象学 | 读 Annie 的信或寓言、答题并找证据（RI/RL.K.1–4、RI.K.8–9），再做一项写作、分类或讲给大人听 | 改编自 Core Knowledge Language Arts（CKLA）的开放课程 |
 | 🔡 **Digraphs（二合字母拼读）** · 第 2 层 | 4 课：sh、ch、th、ck | 和短元音拼读一样：看图认词、拼词、可解码小故事、朗读计时 | 原创 |
 | 👂 **The Five Senses（五种感官）** · 第 2 层 | 8 课：小诗、看、听、闻、尝、摸、Ray Charles、Helen Keller | 读短文、答题找证据，再做分类（哪种感官、大声小声、甜咸酸、软硬）、写作或讲给大人听 | 改编自 CKLA K 年级 Domain 2 |
+| 🔗 **Consonant Blends（辅音连读）** · 第 3 层 | 4 课：l-blends、r-blends、s-blends、结尾连读 | 看图认词、拼词、可解码小故事、朗读计时 | 原创 |
+| 📚 **Nursery Rhymes and Fables（儿歌和寓言）** · 第 3 层 | 7 课：四课成对的传统儿歌，三个伊索寓言（狮子和老鼠、狗和倒影、龟兔赛跑） | 押韵、拍音节、人物和顺序、寓意（挑战）、比较不同寓言的角色（RL.K.9），再做复述、表演、写作 | 改编自 CKLA K 年级 Domain 1 |
 
 内容的授权是 CC BY-NC-SA 4.0，和代码的授权不同，详见 [content/LICENSE.md](content/LICENSE.md) 和 [content/ATTRIBUTION.md](content/ATTRIBUTION.md)。改编内容的文章下面会显示署名。
 
@@ -245,6 +247,7 @@ npm run dev
 |---|---|---|---|
 | 1 | 🛬 着陆区 · 气象站 | 四季与天气 | 短元音（航行期就开始） |
 | 2 | 🛍️ 集市 · 感官馆 | 五种感官 | 二合字母 sh、ch、th、ck |
+| 3 | 📚 图书馆 · 寓言厅 | 儿歌和寓言 | 辅音连读 fl、fr、st、nd… |
 
 开发时还可以用网址直接操作：
 

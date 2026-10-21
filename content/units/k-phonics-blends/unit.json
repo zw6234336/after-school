@@ -1,0 +1,575 @@
+{
+  "id": "k-phonics-blends",
+  "grade": "K",
+  "title": "Consonant Blends",
+  "titleZh": "辅音连读",
+  "icon": "🔗",
+  "color": "#ffb74d",
+  "question": "How do we read two consonants side by side?",
+  "questionZh": "两个辅音挨在一起怎么读？",
+  "license": "CC BY-NC-SA 4.0",
+  "wordWall": [
+    { "word": "flag", "meaning": "旗子", "emoji": "🚩", "lesson": "l1-l-blends" },
+    { "word": "clap", "meaning": "拍手", "emoji": "👏", "lesson": "l1-l-blends" },
+    { "word": "sled", "meaning": "雪橇", "emoji": "🛷", "lesson": "l1-l-blends" },
+    { "word": "plug", "meaning": "插头", "emoji": "🔌", "lesson": "l1-l-blends" },
+    { "word": "block", "meaning": "积木", "emoji": "🧱", "lesson": "l1-l-blends" },
+    { "word": "frog", "meaning": "青蛙", "emoji": "🐸", "lesson": "l2-r-blends" },
+    { "word": "crab", "meaning": "螃蟹", "emoji": "🦀", "lesson": "l2-r-blends" },
+    { "word": "drum", "meaning": "鼓", "emoji": "🥁", "lesson": "l2-r-blends" },
+    { "word": "truck", "meaning": "卡车", "emoji": "🚚", "lesson": "l2-r-blends" },
+    { "word": "brush", "meaning": "刷子", "emoji": "🖌️", "lesson": "l2-r-blends" },
+    { "word": "stop", "meaning": "停下", "emoji": "🛑", "lesson": "l3-s-blends" },
+    { "word": "swim", "meaning": "游泳", "emoji": "🏊", "lesson": "l3-s-blends" },
+    { "word": "skunk", "meaning": "臭鼬", "emoji": "🦨", "lesson": "l3-s-blends" },
+    { "word": "step", "meaning": "脚步", "emoji": "👣", "lesson": "l3-s-blends" },
+    { "word": "snack", "meaning": "零食", "emoji": "🍿", "lesson": "l3-s-blends" },
+    { "word": "hand", "meaning": "手", "emoji": "✋", "lesson": "l4-end-blends" },
+    { "word": "tent", "meaning": "帐篷", "emoji": "⛺", "lesson": "l4-end-blends" },
+    { "word": "lamp", "meaning": "灯", "emoji": "💡", "lesson": "l4-end-blends" },
+    { "word": "nest", "meaning": "鸟窝", "emoji": "🪺", "lesson": "l4-end-blends" },
+    { "word": "milk", "meaning": "牛奶", "emoji": "🥛", "lesson": "l4-end-blends" }
+  ],
+  "lessons": [
+    {
+      "id": "l1-l-blends",
+      "title": "l-blends",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "bl-l-sounds",
+          "title": "Sounds: an l-blend (fl, cl, sl, pl, bl)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "🚩 Which word is it?",
+              "options": ["lag", "flag", "flap"],
+              "a": "flag",
+              "speak": "flag",
+              "hint": "两个辅音连在一起，两个音都要读出来：f-l → fl"
+            },
+            {
+              "q": "Which word has an l-blend (fl, cl, sl, pl, bl)?",
+              "options": ["cap", "clap", "lap"],
+              "a": "clap",
+              "speak": "Which word has an l blend? cap, clap, or lap?"
+            },
+            {
+              "q": "Which word rhymes with “sled”?",
+              "options": ["slip", "bed", "cat"],
+              "a": "bed",
+              "speak": "Which word rhymes with sled?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: clap → change /k/ to /f/ → ?",
+              "options": ["slap", "flap", "clip"],
+              "a": "flap",
+              "speak": "Change the first sound of clap.",
+              "hint": "把 clap 开头的音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "bl-l-build",
+          "title": "Build words with an l-blend (fl, cl, sl, pl, bl)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🚩",
+              "tiles": ["f", "l", "a", "g", "o"],
+              "a": "flag",
+              "speak": "flag"
+            },
+            {
+              "q": "Build the word: 👏",
+              "tiles": ["c", "l", "a", "p", "i"],
+              "a": "clap",
+              "speak": "clap"
+            },
+            {
+              "q": "Build the word: 🛷",
+              "tiles": ["s", "l", "e", "d", "a"],
+              "a": "sled",
+              "speak": "sled"
+            },
+            {
+              "q": "Build the word: 🔌",
+              "tiles": ["p", "l", "u", "g", "e"],
+              "a": "plug",
+              "speak": "plug",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Build the word: 🧱",
+              "tiles": ["b", "l", "o", "ck", "a"],
+              "a": "block",
+              "speak": "block",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "bl-l-read",
+          "title": "Read: Glen and the Sled",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "Glen and the Sled",
+            "genre": "literature",
+            "decodable": { "vowels": "aeiou", "names": ["Glen"] },
+            "text": "Glen has a sled. Glen sets a red flag on the sled. The sled slips down the hill. Clip, clop! Glen claps. The flag flaps in the wind. Glen and the sled stop at the pond."
+          },
+          "questions": [
+            {
+              "q": "What does Glen have?",
+              "options": ["a sled", "a truck", "a tent"],
+              "a": "a sled",
+              "evidence": "Glen has a sled",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What does Glen set on the sled?",
+              "options": ["a red flag", "a big drum", "a frog"],
+              "a": "a red flag",
+              "evidence": "Glen sets a red flag on the sled",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Where do Glen and the sled stop?",
+              "options": ["at the pond", "at the shop", "at the tent"],
+              "a": "at the pond",
+              "evidence": "stop at the pond",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["sled.", "Glen", "a", "has"],
+              "a": "Glen has a sled.",
+              "speak": "Glen has a sled.",
+              "standard": "RF.K.3c",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "bl-l-fluency",
+          "title": "Fluency: Glen and the Sled",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "bl-l-read"
+          }
+        }
+      ]
+    },
+    {
+      "id": "l2-r-blends",
+      "title": "r-blends",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "bl-r-sounds",
+          "title": "Sounds: an r-blend (fr, cr, dr, tr, br)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "🐸 Which word is it?",
+              "options": ["fog", "frog", "from"],
+              "a": "frog",
+              "speak": "frog",
+              "hint": "两个辅音连在一起，两个音都要读出来：f-r → fr"
+            },
+            {
+              "q": "Which word has an r-blend (fr, cr, dr, tr, br)?",
+              "options": ["dug", "drum", "rum"],
+              "a": "drum",
+              "speak": "Which word has an r blend? dug, drum, or rum?"
+            },
+            {
+              "q": "Which word rhymes with “crab”?",
+              "options": ["crib", "grab", "dog"],
+              "a": "grab",
+              "speak": "Which word rhymes with crab?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: drip → change /d/ to /t/ → ?",
+              "options": ["drop", "trip", "grip"],
+              "a": "trip",
+              "speak": "Change the first sound of drip.",
+              "hint": "把 drip 开头的音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "bl-r-build",
+          "title": "Build words with an r-blend (fr, cr, dr, tr, br)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🐸",
+              "tiles": ["f", "r", "o", "g", "l"],
+              "a": "frog",
+              "speak": "frog"
+            },
+            {
+              "q": "Build the word: 🦀",
+              "tiles": ["c", "r", "a", "b", "l"],
+              "a": "crab",
+              "speak": "crab"
+            },
+            {
+              "q": "Build the word: 🥁",
+              "tiles": ["d", "r", "u", "m", "a"],
+              "a": "drum",
+              "speak": "drum"
+            },
+            {
+              "q": "Build the word: 🚚",
+              "tiles": ["t", "r", "u", "ck", "a"],
+              "a": "truck",
+              "speak": "truck",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Build the word: 🖌️",
+              "tiles": ["b", "r", "u", "sh", "i"],
+              "a": "brush",
+              "speak": "brush",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "bl-r-read",
+          "title": "Read: Fred the Frog",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "Fred the Frog",
+            "genre": "literature",
+            "decodable": { "vowels": "aeiou", "names": ["Fred"] },
+            "text": "Fred is a frog. Fred sits on a log by a pond. A crab gets on the log. Fred grins at the crab. Then a big truck stops. Fred and the crab drop in the pond. Drip, drip! Fred and the crab swim."
+          },
+          "questions": [
+            {
+              "q": "What is Fred?",
+              "options": ["a frog", "a crab", "a truck"],
+              "a": "a frog",
+              "evidence": "Fred is a frog",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Who gets on the log?",
+              "options": ["a crab", "a duck", "a hen"],
+              "a": "a crab",
+              "evidence": "A crab gets on the log",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Where do Fred and the crab drop?",
+              "options": ["in the pond", "on the truck", "in a box"],
+              "a": "in the pond",
+              "evidence": "drop in the pond",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["frog.", "Fred", "a", "is"],
+              "a": "Fred is a frog.",
+              "speak": "Fred is a frog.",
+              "standard": "RF.K.3c",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "bl-r-fluency",
+          "title": "Fluency: Fred the Frog",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "bl-r-read"
+          }
+        }
+      ]
+    },
+    {
+      "id": "l3-s-blends",
+      "title": "s-blends",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "bl-s-sounds",
+          "title": "Sounds: an s-blend (st, sw, sk, sn, sp)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "🛑 Which word is it?",
+              "options": ["top", "stop", "spot"],
+              "a": "stop",
+              "speak": "stop",
+              "hint": "两个辅音连在一起，两个音都要读出来：s-t → st"
+            },
+            {
+              "q": "Which word has an s-blend (st, sw, sk, sn, sp)?",
+              "options": ["win", "swim", "him"],
+              "a": "swim",
+              "speak": "Which word has an s blend? win, swim, or him?"
+            },
+            {
+              "q": "Which word rhymes with “stop”?",
+              "options": ["step", "mop", "cat"],
+              "a": "mop",
+              "speak": "Which word rhymes with stop?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: swim → change /sw/ to /sl/ → ?",
+              "options": ["swam", "slim", "skim"],
+              "a": "slim",
+              "speak": "Change the first sound of swim.",
+              "hint": "把 swim 开头的音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "bl-s-build",
+          "title": "Build words with an s-blend (st, sw, sk, sn, sp)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: 🛑",
+              "tiles": ["s", "t", "o", "p", "a"],
+              "a": "stop",
+              "speak": "stop"
+            },
+            {
+              "q": "Build the word: 🏊",
+              "tiles": ["s", "w", "i", "m", "u"],
+              "a": "swim",
+              "speak": "swim"
+            },
+            {
+              "q": "Build the word: 🦨",
+              "tiles": ["s", "k", "u", "n", "k", "e"],
+              "a": "skunk",
+              "speak": "skunk"
+            },
+            {
+              "q": "Build the word: 👣",
+              "tiles": ["s", "t", "e", "p", "o"],
+              "a": "step",
+              "speak": "step",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Build the word: 🍿",
+              "tiles": ["s", "n", "a", "ck", "u"],
+              "a": "snack",
+              "speak": "snack",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "bl-s-read",
+          "title": "Read: Stan Can Swim",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "Stan Can Swim",
+            "genre": "literature",
+            "decodable": { "vowels": "aeiou", "names": ["Stan"] },
+            "text": "Stan can swim. Stan swims in a pond. A skunk is on the bank. Stan stops and spots the skunk. The skunk sniffs. Stan has a snack. Stan and the skunk snack on a bun."
+          },
+          "questions": [
+            {
+              "q": "What can Stan do?",
+              "options": ["swim", "fly", "dig"],
+              "a": "swim",
+              "evidence": "Stan can swim",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Who is on the bank?",
+              "options": ["a skunk", "a frog", "a crab"],
+              "a": "a skunk",
+              "evidence": "A skunk is on the bank",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What do Stan and the skunk snack on?",
+              "options": ["a bun", "a nut", "a fish"],
+              "a": "a bun",
+              "evidence": "snack on a bun",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["swim.", "Stan", "can"],
+              "a": "Stan can swim.",
+              "speak": "Stan can swim.",
+              "standard": "RF.K.3c",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "bl-s-fluency",
+          "title": "Fluency: Stan Can Swim",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "bl-s-read"
+          }
+        }
+      ]
+    },
+    {
+      "id": "l4-end-blends",
+      "title": "Ending blends",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "bl-end-sounds",
+          "title": "Sounds: an ending blend (nd, nt, mp, st, lk)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "⛺ Which word is it?",
+              "options": ["ten", "tent", "test"],
+              "a": "tent",
+              "speak": "tent",
+              "hint": "结尾两个辅音连在一起：t-e-n-t → tent"
+            },
+            {
+              "q": "Which word has an ending blend (nd, nt, mp, st, lk)?",
+              "options": ["lap", "lamp", "lad"],
+              "a": "lamp",
+              "speak": "Which word has an ending blend? lap, lamp, or lad?"
+            },
+            {
+              "q": "Which word rhymes with “nest”?",
+              "options": ["net", "best", "sun"],
+              "a": "best",
+              "speak": "Which word rhymes with nest?",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Change the first sound: tent → change /t/ to /d/ → ?",
+              "options": ["den", "dent", "tint"],
+              "a": "dent",
+              "speak": "Change the first sound of tent.",
+              "hint": "把 tent 开头的音换掉，后面不变",
+              "standard": "RF.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "bl-end-build",
+          "title": "Build words with an ending blend (nd, nt, mp, st, lk)",
+          "standard": "RF.K.3",
+          "questions": [
+            {
+              "q": "Build the word: ✋",
+              "tiles": ["h", "a", "n", "d", "o"],
+              "a": "hand",
+              "speak": "hand"
+            },
+            {
+              "q": "Build the word: ⛺",
+              "tiles": ["t", "e", "n", "t", "a"],
+              "a": "tent",
+              "speak": "tent"
+            },
+            {
+              "q": "Build the word: 💡",
+              "tiles": ["l", "a", "m", "p", "i"],
+              "a": "lamp",
+              "speak": "lamp"
+            },
+            {
+              "q": "Build the word: 🪺",
+              "tiles": ["n", "e", "s", "t", "u"],
+              "a": "nest",
+              "speak": "nest",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Build the word: 🥛",
+              "tiles": ["m", "i", "l", "k", "a"],
+              "a": "milk",
+              "speak": "milk",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "bl-end-read",
+          "title": "Read: Max and the Tent",
+          "standard": "RF.K.4",
+          "passage": {
+            "title": "Max and the Tent",
+            "genre": "literature",
+            "decodable": { "vowels": "aeiou", "names": ["Max"] },
+            "text": "Max sets up a tent by a pond. Max has a lamp and a cup of milk. A frog jumps in the pond. Max gets wet! Then Max sits in the tent and has a rest."
+          },
+          "questions": [
+            {
+              "q": "What does Max set up?",
+              "options": ["a tent", "a sled", "a drum"],
+              "a": "a tent",
+              "evidence": "Max sets up a tent by a pond",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What does Max have?",
+              "options": ["a lamp and a cup of milk", "a red flag", "a big truck"],
+              "a": "a lamp and a cup of milk",
+              "evidence": "Max has a lamp and a cup of milk",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Why does Max get wet?",
+              "options": ["A frog jumps in the pond.", "It rains.", "Max swims."],
+              "a": "A frog jumps in the pond.",
+              "evidence": "A frog jumps in the pond",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Make the sentence from the story.",
+              "tiles": ["tent.", "Max", "up", "sets", "a"],
+              "a": "Max sets up a tent.",
+              "speak": "Max sets up a tent.",
+              "standard": "RF.K.3c",
+              "level": ["normal", "hard"]
+            }
+          ]
+        },
+        {
+          "id": "bl-end-fluency",
+          "title": "Fluency: Max and the Tent",
+          "standard": "RF.K.4",
+          "level": ["normal", "hard"],
+          "fluency": {
+            "passage": "bl-end-read"
+          }
+        }
+      ]
+    }
+  ]
+}
