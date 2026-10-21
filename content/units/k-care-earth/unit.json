@@ -1,0 +1,774 @@
+{
+  "id": "k-care-earth",
+  "grade": "K",
+  "title": "Taking Care of the Earth",
+  "titleZh": "爱护地球",
+  "icon": "🌍",
+  "color": "#66bb6a",
+  "question": "How can we take care of the Earth?",
+  "questionZh": "我们怎样爱护地球？",
+  "license": "CC BY-NC-SA 4.0",
+  "source": {
+    "work": "Taking Care of the Earth — Tell It Again! Read-Aloud Anthology (Kindergarten, Core Knowledge Language Arts)",
+    "short": "CKLA Kindergarten · Taking Care of the Earth",
+    "author": "Core Knowledge Foundation",
+    "year": 2013,
+    "url": "https://www.coreknowledge.org/free-resource/ckla-domain-11-taking-care-earth/",
+    "license": "CC BY-NC-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+    "notice": "This work is based on an original work of the Core Knowledge® Foundation made available through licensing under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License. This does not in any way imply that the Core Knowledge Foundation endorses this work."
+  },
+  "wordWall": [
+    { "word": "Earth", "meaning": "地球", "emoji": "🌍", "lesson": "l1-earth" },
+    { "word": "ocean", "meaning": "海洋", "emoji": "🌊", "lesson": "l1-earth" },
+    { "word": "land", "meaning": "陆地", "emoji": "🏞️", "lesson": "l1-earth" },
+    { "word": "trash", "meaning": "垃圾", "emoji": "🗑️", "lesson": "l2-garbage" },
+    { "word": "landfill", "meaning": "垃圾填埋场", "emoji": "⛰️", "lesson": "l2-garbage" },
+    { "word": "resources", "meaning": "资源", "emoji": "🌳", "lesson": "l3-resources" },
+    { "word": "wood", "meaning": "木头", "emoji": "🪵", "lesson": "l3-resources" },
+    { "word": "desert", "meaning": "沙漠", "emoji": "🏜️", "lesson": "l3-resources" },
+    { "word": "reduce", "meaning": "减少", "emoji": "➖", "lesson": "l4-recycle" },
+    { "word": "reuse", "meaning": "再用一次", "emoji": "🔁", "lesson": "l4-recycle" },
+    { "word": "recycle", "meaning": "回收再利用", "emoji": "♻️", "lesson": "l4-recycle" },
+    { "word": "compost", "meaning": "堆肥", "emoji": "🟫", "lesson": "l5-compost" },
+    { "word": "worms", "meaning": "蚯蚓", "emoji": "🪱", "lesson": "l5-compost" },
+    { "word": "litter", "meaning": "乱扔的垃圾", "emoji": "🚯", "lesson": "l6-pollution" },
+    { "word": "pollution", "meaning": "污染", "emoji": "🌫️", "lesson": "l6-pollution" },
+    { "word": "drop", "meaning": "一滴（水）", "emoji": "💧", "lesson": "l7-willy" },
+    { "word": "river", "meaning": "河", "emoji": "🏞️", "lesson": "l7-willy" },
+    { "word": "garden", "meaning": "花园，菜园", "emoji": "🪴", "lesson": "l8-goodbye" }
+  ],
+  "lessons": [
+    {
+      "id": "l1-earth",
+      "title": "Hi, I'm Good Old Earth",
+      "genre": "informational",
+      "from": "Lesson 1: Introducing the Earth",
+      "changes": "Shortened and simplified, keeping Earth as the narrator; kept water, land and air, and people, animals and plants sharing the land and water; removed cities, roads, boats and airplanes; questions rewritten with text evidence; added a favorite-place speaking task.",
+      "tasks": [
+        {
+          "id": "ce-l1-read",
+          "title": "Read: Hi, I'm Good Old Earth",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Hi, I'm Good Old Earth",
+            "genre": "informational",
+            "text": "Hi, kids! It's me, Earth. You can call me Good Old Earth. From space, I look mostly blue, because I am covered with lots of water. The green and brown parts are land. A blanket of air is all around me. People, animals, and plants all share the land. Trees and flowers give homes and food to birds, bees, and squirrels. Rivers, lakes, and oceans are homes for fish and turtles. I am glad you are here with me. Please help take care of me!",
+            "vocab": [
+              { "word": "Earth", "meaning": "地球", "emoji": "🌍" },
+              { "word": "ocean", "meaning": "海洋", "emoji": "🌊" },
+              { "word": "land", "meaning": "陆地", "emoji": "🏞️" },
+              { "word": "share", "meaning": "分享，一起用", "emoji": "🤝" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "Who is talking in this text?",
+              "options": ["Earth", "a bird", "a fish"],
+              "a": "Earth",
+              "evidence": "It's me, Earth"
+            },
+            {
+              "q": "Why does Earth look mostly blue from space?",
+              "options": ["It is covered with lots of water.", "It is very cold.", "The sky is blue."],
+              "a": "It is covered with lots of water.",
+              "evidence": "I am covered with lots of water"
+            },
+            {
+              "q": "What is all around Earth like a blanket?",
+              "options": ["air", "snow", "sand"],
+              "a": "air",
+              "evidence": "A blanket of air is all around me"
+            },
+            {
+              "q": "Who shares the land?",
+              "options": ["people, animals, and plants", "only people", "only fish"],
+              "a": "people, animals, and plants",
+              "evidence": "People, animals, and plants all share the land",
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Rivers, lakes, and oceans are homes for ___.",
+              "options": ["fish and turtles", "birds and bees", "cars and trucks"],
+              "a": "fish and turtles",
+              "evidence": "homes for fish and turtles",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What does Earth want you to do?",
+              "options": ["help take care of Earth", "go to space", "swim in the ocean"],
+              "a": "help take care of Earth",
+              "evidence": "Please help take care of me",
+              "standard": "RI.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "ce-l1-place",
+          "title": "Tell about a place on Earth you love",
+          "standard": "SL.K.4",
+          "note": "说一说你最喜欢的一个地方（公园、海边、山上……）：用 I like the ___. It has ___. 讲给大人听，说完请大人点“完成啦”。"
+        }
+      ]
+    },
+    {
+      "id": "l2-garbage",
+      "title": "Garbage",
+      "genre": "informational",
+      "from": "Lesson 2: Garbage",
+      "changes": "Shortened and simplified; kept what trash is, the birthday-party trash, taking out the trash, the weekly garbage truck and the landfill; removed the view from the moon and the guesses about where trucks go; questions rewritten with text evidence; added a trash-can hunt.",
+      "tasks": [
+        {
+          "id": "ce-l2-read",
+          "title": "Read: Garbage",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Garbage",
+            "genre": "informational",
+            "text": "Hi, it's Earth again. Let's talk about trash. Trash is stuff you used and do not need anymore. After a party, you put paper plates, napkins, and plastic spoons in the trash can. When the trash bag is full, someone takes it outside. A garbage truck comes once a week and takes the trash away. It takes the trash to a landfill. A landfill is a big place where trash is buried in the ground. There is a lot of trash on me!",
+            "vocab": [
+              { "word": "trash", "meaning": "垃圾", "emoji": "🗑️" },
+              { "word": "garbage", "meaning": "垃圾", "emoji": "🚛" },
+              { "word": "landfill", "meaning": "垃圾填埋场", "emoji": "⛰️" },
+              { "word": "buried", "meaning": "埋起来", "emoji": "⛏️" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What is trash?",
+              "options": ["stuff you used and do not need anymore", "food you will eat later", "toys you play with"],
+              "a": "stuff you used and do not need anymore",
+              "evidence": "Trash is stuff you used and do not need anymore"
+            },
+            {
+              "q": "How often does the garbage truck come?",
+              "options": ["once a week", "every hour", "once a year"],
+              "a": "once a week",
+              "evidence": "A garbage truck comes once a week"
+            },
+            {
+              "q": "Where does the garbage truck take the trash?",
+              "options": ["to a landfill", "to the ocean", "to space"],
+              "a": "to a landfill",
+              "evidence": "It takes the trash to a landfill"
+            },
+            {
+              "q": "A landfill is a big place where trash is ___.",
+              "options": ["buried in the ground", "made into cake", "put in the sky"],
+              "a": "buried in the ground",
+              "evidence": "trash is buried in the ground",
+              "standard": "RI.K.4",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Put the trash's trip in order.",
+              "order": ["You put trash in the trash can.", "Someone takes the bag outside.", "A garbage truck takes it away.", "The trash goes to a landfill."],
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is this text mostly about?",
+              "options": ["where our trash goes", "how to have a party", "how trucks are made"],
+              "a": "where our trash goes",
+              "evidence": "Let's talk about trash",
+              "standard": "RI.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "ce-l2-hunt",
+          "title": "Trash can hunt",
+          "standard": "SL.K.1",
+          "note": "和大人一起在家里找一找：家里有几个垃圾桶？在哪里？用 There is a trash can in the ___. 说给大人听，说完请大人点“完成啦”。"
+        }
+      ]
+    },
+    {
+      "id": "l3-resources",
+      "title": "Natural Resources",
+      "genre": "informational",
+      "from": "Lesson 3: Natural Resources",
+      "changes": "Shortened and simplified; kept what natural resources are, water and its uses, trees and what is made from them, trees cleaning the air and the desert; removed the continents and Sahara details; questions rewritten with text evidence; added a made-from-trees sort.",
+      "tasks": [
+        {
+          "id": "ce-l3-read",
+          "title": "Read: Natural Resources",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Natural Resources",
+            "genre": "informational",
+            "text": "Earth here! Natural resources are things that come from nature. People do not make them. Water and trees are two natural resources. You drink water. You use water to take a bath, wash dishes, and grow food in a garden. Trees give us wood to make houses, tables, and pencils. Paper is made from trees, too! Trees also help clean the air. Some places, like a desert, have very little water. It is hard to live there. Please do not waste natural resources!",
+            "vocab": [
+              { "word": "resources", "meaning": "资源", "emoji": "🌳" },
+              { "word": "wood", "meaning": "木头", "emoji": "🪵" },
+              { "word": "desert", "meaning": "沙漠", "emoji": "🏜️" },
+              { "word": "waste", "meaning": "浪费", "emoji": "🚱" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What are two natural resources?",
+              "options": ["water and trees", "cars and toys", "cake and candy"],
+              "a": "water and trees",
+              "evidence": "Water and trees are two natural resources"
+            },
+            {
+              "q": "What is paper made from?",
+              "options": ["trees", "water", "rocks"],
+              "a": "trees",
+              "evidence": "Paper is made from trees"
+            },
+            {
+              "q": "Why is it hard to live in a desert?",
+              "options": ["It has very little water.", "It has too many trees.", "It is too wet."],
+              "a": "It has very little water.",
+              "evidence": ["have very little water", "It is hard to live there"]
+            },
+            {
+              "q": "Natural resources are things that ___.",
+              "options": ["come from nature", "people make in a shop", "come from space"],
+              "a": "come from nature",
+              "evidence": "Natural resources are things that come from nature",
+              "standard": "RI.K.4",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What else do trees do?",
+              "options": ["help clean the air", "make the rain", "eat paper"],
+              "a": "help clean the air",
+              "evidence": "Trees also help clean the air",
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is this text mostly about?",
+              "options": ["things from nature that people need", "how to build a house", "how to cross a desert"],
+              "a": "things from nature that people need",
+              "evidence": "Natural resources are things that come from nature",
+              "standard": "RI.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "ce-l3-sort",
+          "title": "Sort: Made from trees?",
+          "standard": "L.K.5",
+          "questions": [
+            {
+              "q": "📄 paper",
+              "options": ["🌳 from trees", "❌ not from trees"],
+              "a": "🌳 from trees",
+              "speak": "paper. Is it made from trees?"
+            },
+            {
+              "q": "✏️ a pencil",
+              "options": ["🌳 from trees", "❌ not from trees"],
+              "a": "🌳 from trees",
+              "speak": "a pencil. Is it made from trees?"
+            },
+            {
+              "q": "🥤 a plastic cup",
+              "options": ["🌳 from trees", "❌ not from trees"],
+              "a": "❌ not from trees",
+              "speak": "a plastic cup. Is it made from trees?"
+            },
+            {
+              "q": "🪑 a wooden chair",
+              "options": ["🌳 from trees", "❌ not from trees"],
+              "a": "🌳 from trees",
+              "speak": "a wooden chair. Is it made from trees?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🥫 a metal can",
+              "options": ["🌳 from trees", "❌ not from trees"],
+              "a": "❌ not from trees",
+              "speak": "a metal can. Is it made from trees?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🪟 a glass window",
+              "options": ["🌳 from trees", "❌ not from trees"],
+              "a": "❌ not from trees",
+              "speak": "a glass window. Is it made from trees?",
+              "level": "hard"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l4-recycle",
+      "title": "Reduce, Reuse, Recycle",
+      "genre": "informational",
+      "from": "Lesson 4: Reduce, Reuse, Recycle; Lesson 5: Recycle! Recycle! Recycle!",
+      "changes": "Combined the two recycling lessons and shortened them; kept the three words with one example each (one paper towel, drawing on the back of used paper), the recycling bin, the recycling center and old plastic becoming new things; removed landfill numbers and the bottle-top factory; questions rewritten with text evidence; added a reduce-reuse-recycle sort.",
+      "tasks": [
+        {
+          "id": "ce-l4-read",
+          "title": "Read: Reduce, Reuse, Recycle",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Reduce, Reuse, Recycle",
+            "genre": "informational",
+            "text": "People make lots of trash, but you can help! Remember three words: reduce, reuse, and recycle. Reduce means to use less. Use just one paper towel, not five. Reuse means to use something again. Draw a picture on the back of old paper. Recycle means to turn old things into new things. Put paper, cans, glass, and plastic bottles in a recycling bin. A truck takes them to a recycling center. Old plastic bottles can become new toys!",
+            "vocab": [
+              { "word": "reduce", "meaning": "减少", "emoji": "➖" },
+              { "word": "reuse", "meaning": "再用一次", "emoji": "🔁" },
+              { "word": "recycle", "meaning": "回收再利用", "emoji": "♻️" },
+              { "word": "bin", "meaning": "箱子，桶", "emoji": "🗑️" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What does reduce mean?",
+              "options": ["use less", "use again", "throw away"],
+              "a": "use less",
+              "evidence": "Reduce means to use less"
+            },
+            {
+              "q": "How can you reuse old paper?",
+              "options": ["Draw a picture on the back.", "Throw it in the trash.", "Rip it up."],
+              "a": "Draw a picture on the back.",
+              "evidence": "Draw a picture on the back of old paper"
+            },
+            {
+              "q": "What goes in a recycling bin?",
+              "options": ["paper, cans, glass, and plastic bottles", "food scraps", "toys you still play with"],
+              "a": "paper, cans, glass, and plastic bottles",
+              "evidence": "Put paper, cans, glass, and plastic bottles in a recycling bin"
+            },
+            {
+              "q": "Where does the truck take the recycling?",
+              "options": ["to a recycling center", "to a landfill", "to the ocean"],
+              "a": "to a recycling center",
+              "evidence": "A truck takes them to a recycling center",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Recycle means to ___.",
+              "options": ["turn old things into new things", "use less", "buy new things"],
+              "a": "turn old things into new things",
+              "evidence": "Recycle means to turn old things into new things",
+              "standard": "RI.K.4",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What can old plastic bottles become?",
+              "options": ["new toys", "trees", "water"],
+              "a": "new toys",
+              "evidence": "Old plastic bottles can become new toys",
+              "standard": "RI.K.3",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "ce-l4-sort",
+          "title": "Sort: Reduce, reuse, or recycle?",
+          "standard": "L.K.5",
+          "questions": [
+            {
+              "q": "🧻 Use one paper towel, not five.",
+              "options": ["➖ reduce", "🔁 reuse", "♻️ recycle"],
+              "a": "➖ reduce",
+              "speak": "Use one paper towel, not five."
+            },
+            {
+              "q": "📝 Draw on the back of old paper.",
+              "options": ["➖ reduce", "🔁 reuse", "♻️ recycle"],
+              "a": "🔁 reuse",
+              "speak": "Draw on the back of old paper."
+            },
+            {
+              "q": "🥫 Put cans in the recycling bin.",
+              "options": ["➖ reduce", "🔁 reuse", "♻️ recycle"],
+              "a": "♻️ recycle",
+              "speak": "Put cans in the recycling bin."
+            },
+            {
+              "q": "🚰 Turn off the water.",
+              "options": ["➖ reduce", "🔁 reuse", "♻️ recycle"],
+              "a": "➖ reduce",
+              "speak": "Turn off the water.",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🧸 Give old toys to a friend.",
+              "options": ["➖ reduce", "🔁 reuse", "♻️ recycle"],
+              "a": "🔁 reuse",
+              "speak": "Give old toys to a friend.",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "📰 Put paper in the recycling bin.",
+              "options": ["➖ reduce", "🔁 reuse", "♻️ recycle"],
+              "a": "♻️ recycle",
+              "speak": "Put paper in the recycling bin.",
+              "level": "hard"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l5-compost",
+      "title": "Composting",
+      "genre": "informational",
+      "from": "Lesson 6: Composting",
+      "changes": "Shortened and simplified; kept the Smith family, food scraps, the compost pile, worms, compost becoming soil and helping the garden; removed the dinner details and storing leftovers; questions rewritten with text evidence; added a compost speaking task.",
+      "tasks": [
+        {
+          "id": "ce-l5-read",
+          "title": "Read: Composting",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Composting",
+            "genre": "informational",
+            "text": "Meet the Smith family. After dinner, there are food scraps that no one can eat, like carrot peels and lettuce leaves. The Smiths do not throw them in the trash. They put them in a compost pile in the backyard. Worms and tiny living things help the scraps rot. After a while, the scraps turn into dark, rich soil called compost. The Smiths put the compost in their garden. It helps the vegetables grow big and healthy! Composting is a kind of recycling.",
+            "vocab": [
+              { "word": "scraps", "meaning": "（吃剩的）碎屑", "emoji": "🍎" },
+              { "word": "compost", "meaning": "堆肥", "emoji": "🟫" },
+              { "word": "worms", "meaning": "蚯蚓", "emoji": "🪱" },
+              { "word": "soil", "meaning": "泥土", "emoji": "🌱" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What do the Smiths put in the compost pile?",
+              "options": ["food scraps", "plastic bottles", "old toys"],
+              "a": "food scraps",
+              "evidence": "They put them in a compost pile"
+            },
+            {
+              "q": "What helps the scraps rot?",
+              "options": ["worms and tiny living things", "fire", "the garbage truck"],
+              "a": "worms and tiny living things",
+              "evidence": "Worms and tiny living things help the scraps rot"
+            },
+            {
+              "q": "What do the scraps turn into?",
+              "options": ["dark, rich soil", "new toys", "paper"],
+              "a": "dark, rich soil",
+              "evidence": "the scraps turn into dark, rich soil"
+            },
+            {
+              "q": "Why do the Smiths put compost in their garden?",
+              "options": ["It helps the vegetables grow.", "It makes the garden smell.", "It keeps worms away."],
+              "a": "It helps the vegetables grow.",
+              "evidence": "It helps the vegetables grow big and healthy",
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Put composting in order.",
+              "order": ["Put food scraps in the compost pile.", "Worms help the scraps rot.", "The scraps turn into soil.", "The soil helps the garden grow."],
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Composting is a kind of ___.",
+              "options": ["recycling", "cooking", "painting"],
+              "a": "recycling",
+              "evidence": "Composting is a kind of recycling",
+              "standard": "RI.K.4",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "ce-l5-scraps",
+          "title": "Find scraps for compost",
+          "standard": "SL.K.1",
+          "note": "吃完饭和大人一起看看：哪些剩下的东西可以做堆肥（果皮、菜叶）？哪些不行（塑料、骨头）？用 This can go in the compost. 说给大人听，说完请大人点“完成啦”。"
+        }
+      ]
+    },
+    {
+      "id": "l6-pollution",
+      "title": "Pollution",
+      "genre": "informational",
+      "from": "Lesson 7: Pollution; Lesson 8: Air Pollution",
+      "changes": "Combined the two pollution lessons and shortened them; kept the clean and dirty beaches, litter, pollution, smoke from cars and factories, lungs and ways to help; removed toxic chemicals, pests, smog and global effects; questions rewritten with text evidence; added a helps-or-hurts sort.",
+      "tasks": [
+        {
+          "id": "ce-l6-read",
+          "title": "Read: Pollution",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Pollution",
+            "genre": "informational",
+            "text": "Look at these two beaches. One is clean. One has trash all over it. Trash that is left on the ground or in the water is called litter. Litter can hurt animals and plants. Things that make the land, water, or air dirty are called pollution. Smoke from cars and factories can make the air dirty. Dirty air is bad for your lungs. You can help! Do not litter. Walk or ride a bike when you can. Turn off lights you are not using.",
+            "vocab": [
+              { "word": "litter", "meaning": "乱扔的垃圾", "emoji": "🚯" },
+              { "word": "pollution", "meaning": "污染", "emoji": "🌫️" },
+              { "word": "factories", "meaning": "工厂", "emoji": "🏭" },
+              { "word": "lungs", "meaning": "肺", "emoji": "🫁" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What is litter?",
+              "options": ["trash left on the ground or in the water", "a kind of cat", "clean water"],
+              "a": "trash left on the ground or in the water",
+              "evidence": "Trash that is left on the ground or in the water is called litter"
+            },
+            {
+              "q": "What can litter do?",
+              "options": ["hurt animals and plants", "help plants grow", "make the air clean"],
+              "a": "hurt animals and plants",
+              "evidence": "Litter can hurt animals and plants"
+            },
+            {
+              "q": "What can make the air dirty?",
+              "options": ["smoke from cars and factories", "trees and flowers", "rain"],
+              "a": "smoke from cars and factories",
+              "evidence": "Smoke from cars and factories can make the air dirty"
+            },
+            {
+              "q": "Dirty air is bad for your ___.",
+              "options": ["lungs", "shoes", "toys"],
+              "a": "lungs",
+              "evidence": "Dirty air is bad for your lungs",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Which is a way you can help?",
+              "options": ["Walk or ride a bike.", "Leave the lights on.", "Throw trash on the beach."],
+              "a": "Walk or ride a bike.",
+              "evidence": "Walk or ride a bike when you can",
+              "standard": "RI.K.8",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Things that make the land, water, or air dirty are called ___.",
+              "options": ["pollution", "recycling", "compost"],
+              "a": "pollution",
+              "evidence": "are called pollution",
+              "standard": "RI.K.4",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "ce-l6-sort",
+          "title": "Sort: Helps Earth or hurts Earth?",
+          "standard": "L.K.5",
+          "questions": [
+            {
+              "q": "🧹 Pick up litter.",
+              "options": ["💚 helps", "💔 hurts"],
+              "a": "💚 helps",
+              "speak": "Pick up litter."
+            },
+            {
+              "q": "🏖️ Leave trash on the beach.",
+              "options": ["💚 helps", "💔 hurts"],
+              "a": "💔 hurts",
+              "speak": "Leave trash on the beach."
+            },
+            {
+              "q": "🚲 Ride a bike.",
+              "options": ["💚 helps", "💔 hurts"],
+              "a": "💚 helps",
+              "speak": "Ride a bike."
+            },
+            {
+              "q": "🚰 Leave the water running.",
+              "options": ["💚 helps", "💔 hurts"],
+              "a": "💔 hurts",
+              "speak": "Leave the water running.",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🌳 Plant a tree.",
+              "options": ["💚 helps", "💔 hurts"],
+              "a": "💚 helps",
+              "speak": "Plant a tree.",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "💡 Leave the lights on.",
+              "options": ["💚 helps", "💔 hurts"],
+              "a": "💔 hurts",
+              "speak": "Leave the lights on.",
+              "level": "hard"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l7-willy",
+      "title": "Willy the Water Drop",
+      "genre": "literature",
+      "from": "Lesson 9: Willy the Water Drop",
+      "changes": "Shortened the story of Willy's trip; kept the leaf, the littered river, the factory, the water treatment plant and why every drop matters; removed fresh-water percentages and factory details; questions rewritten with text evidence; added a retelling task.",
+      "tasks": [
+        {
+          "id": "ce-l7-read",
+          "title": "Read: Willy the Water Drop",
+          "standard": "RL.K.1",
+          "passage": {
+            "title": "Willy the Water Drop",
+            "genre": "literature",
+            "text": "This is Willy the Water Drop. Willy was resting on a leaf. Then the wind shook the leaf, and Willy fell into a river. The river had litter in it, so Willy got a little dirty. Next, Willy passed a factory. Dirty water from the factory went into the river, too. Yuck! At last, Willy went to a water plant, where people cleaned him. Now Willy is fresh and clean again. Every drop of water is important. Please help keep water clean!",
+            "vocab": [
+              { "word": "drop", "meaning": "一滴（水）", "emoji": "💧" },
+              { "word": "factory", "meaning": "工厂", "emoji": "🏭" },
+              { "word": "fresh", "meaning": "新鲜的，干净的", "emoji": "🚰" },
+              { "word": "important", "meaning": "重要的", "emoji": "⭐" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "Where was Willy resting?",
+              "options": ["on a leaf", "in a cup", "on a rock"],
+              "a": "on a leaf",
+              "evidence": "Willy was resting on a leaf",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "How did Willy get dirty?",
+              "options": ["The river had litter in it.", "He fell in mud.", "He went to a party."],
+              "a": "The river had litter in it.",
+              "evidence": "The river had litter in it",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Where did people clean Willy?",
+              "options": ["at a water plant", "at a landfill", "in a garden"],
+              "a": "at a water plant",
+              "evidence": "Willy went to a water plant, where people cleaned him",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Put Willy's trip in order.",
+              "order": ["Willy was resting on a leaf.", "Willy fell into a river.", "Willy passed a factory.", "People cleaned Willy at a water plant."],
+              "standard": "RL.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What came from the factory?",
+              "options": ["dirty water", "clean water", "fresh air"],
+              "a": "dirty water",
+              "evidence": "Dirty water from the factory went into the river",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is the big idea of this story?",
+              "options": ["Every drop of water is important.", "Leaves are pretty.", "Factories are fun."],
+              "a": "Every drop of water is important.",
+              "evidence": "Every drop of water is important",
+              "standard": "RL.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "ce-l7-retell",
+          "title": "Retell Willy's trip",
+          "standard": "RL.K.2",
+          "note": "用 First… Next… At last… 把小水滴 Willy 的旅行讲给大人听。讲完请大人点“完成啦”。"
+        }
+      ]
+    },
+    {
+      "id": "l8-goodbye",
+      "title": "Goodbye from Good Old Earth",
+      "genre": "informational",
+      "from": "Lesson 10: Goodbye from Good Old Earth",
+      "changes": "Shortened and simplified; kept reduce, reuse and recycle, litter pick-ups, composting, saving water, planting and 'little things add up'; removed the recycling-plan details and cardboard sorting; questions rewritten with text evidence, including a comparison with Willy's story (RI.K.9); added a promise-to-Earth writing task.",
+      "tasks": [
+        {
+          "id": "ce-l8-read",
+          "title": "Read: Goodbye from Good Old Earth",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Goodbye from Good Old Earth",
+            "genre": "informational",
+            "text": "This is Good Old Earth saying goodbye for now. Thank you for listening! Remember what you learned. Reduce, reuse, and recycle. Do not litter. If you see litter, ask a grown-up to help you pick it up. Start a compost pile for food scraps. Turn off the water when you brush your teeth. Plant a tree or a garden. If everyone does a few little things, it all adds up to big things! Tell your family and friends to help take care of me, too.",
+            "vocab": [
+              { "word": "goodbye", "meaning": "再见", "emoji": "👋" },
+              { "word": "remember", "meaning": "记住", "emoji": "🧠" },
+              { "word": "teeth", "meaning": "牙齿", "emoji": "🦷" },
+              { "word": "plant", "meaning": "种", "emoji": "🌱" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What three words should you remember?",
+              "options": ["reduce, reuse, and recycle", "eat, sleep, and play", "red, yellow, and blue"],
+              "a": "reduce, reuse, and recycle",
+              "evidence": "Reduce, reuse, and recycle"
+            },
+            {
+              "q": "What should you do if you see litter?",
+              "options": ["Ask a grown-up to help you pick it up.", "Kick it away.", "Leave it there."],
+              "a": "Ask a grown-up to help you pick it up.",
+              "evidence": "ask a grown-up to help you pick it up"
+            },
+            {
+              "q": "When should you turn off the water?",
+              "options": ["when you brush your teeth", "when you go to sleep", "when it rains"],
+              "a": "when you brush your teeth",
+              "evidence": "Turn off the water when you brush your teeth"
+            },
+            {
+              "q": "Why should everyone do a few little things?",
+              "options": ["They add up to big things.", "Little things are fun.", "Earth likes games."],
+              "a": "They add up to big things.",
+              "evidence": "it all adds up to big things",
+              "standard": "RI.K.8",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is this text mostly about?",
+              "options": ["ways to take care of Earth", "how to brush your teeth", "how to plant a tree"],
+              "a": "ways to take care of Earth",
+              "evidence": "Tell your family and friends to help take care of me",
+              "standard": "RI.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Willy's story and this letter both say to ___.",
+              "options": ["keep the water clean", "go to space", "eat more cake"],
+              "a": "keep the water clean",
+              "evidence": "Turn off the water when you brush your teeth",
+              "hint": "Willy 那一课说每一滴水都很重要",
+              "standard": "RI.K.9",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "ce-l8-write-easy",
+          "title": "Write: My promise to Earth",
+          "standard": "W.K.1",
+          "write": {
+            "prompt": "How will you help Earth?",
+            "frame": "I will ___.",
+            "minWords": 3
+          },
+          "level": "easy"
+        },
+        {
+          "id": "ce-l8-write",
+          "title": "Write: My promise to Earth",
+          "standard": "W.K.1",
+          "write": {
+            "prompt": "How will you help take care of Earth?",
+            "frame": "I will help Earth. I will ___.",
+            "minWords": 8
+          },
+          "level": ["normal", "hard"]
+        }
+      ]
+    }
+  ]
+}

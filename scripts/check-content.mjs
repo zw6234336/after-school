@@ -99,14 +99,17 @@ for (const unit of Object.values(units)) {
 
 /**
  * 可解码短文（passage.decodable）：每个词要么是 Dolch 高频词，要么是 vowels 里教过的短元音拼出来的
- * “辅音-元音-辅音”词（开头、结尾可以是两个辅音，可以加复数 s），要么是 names 里的人名
+ * “辅音-元音-辅音”词（开头、结尾可以是两个辅音，可以加复数 s），要么是 names 里的人名；
+ * silentE 为 true 时，“辅音-元音-辅音-e”的长元音词（cake、kite）也算
  */
 function checkDecodable(p, where) {
   const vowels = String(p.decodable.vowels || '');
   if (!/^[aeiou]+$/.test(vowels)) return errors.push(`${where}：decodable.vowels 要写教过的元音，比如 "ae"`);
   const names = new Set((p.decodable.names || []).map((n) => String(n).toLowerCase()));
   const cvc = new RegExp(`^[^aeiou]{1,2}[${vowels}][^aeiouwy]{1,2}s?$`);
-  const bad = [...new Set(String(p.text).toLowerCase().match(/[a-z']+/g).filter((w) => !DOLCH.has(w) && !names.has(w) && !cvc.test(w)))];
+  // silentE：教过不发音的 e 以后，cake、kite、bone 这种“辅音-元音-辅音-e”的词也可以拼读
+  const cvce = p.decodable.silentE ? new RegExp(`^[^aeiou]{1,2}[${vowels}][^aeiouwy]es?$`) : null;
+  const bad = [...new Set(String(p.text).toLowerCase().match(/[a-z']+/g).filter((w) => !DOLCH.has(w) && !names.has(w) && !cvc.test(w) && !cvce?.test(w)))];
   if (bad.length) errors.push(`${where}：可解码短文里有还不会拼读的词：${bad.join('、')}（只能用高频词和短元音 ${vowels} 的词）`);
 }
 
