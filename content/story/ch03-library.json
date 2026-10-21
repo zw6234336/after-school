@@ -1,0 +1,119 @@
+{
+  "id": "ch03-library",
+  "title": "第 3 章 · 图书馆",
+  "layer": 3,
+  "unit": "k-rhymes-fables",
+  "surface": {
+    "ground": "#6c5ba7",
+    "glow": "#b9a6ff",
+    "rain": false,
+    "stations": {
+      "RL": { "name": "寓言厅", "icon": "🦁" }
+    }
+  },
+  "explore": {
+    "zones": [
+      { "id": "rhyme", "icon": "🎵", "name": "儿歌原", "color": "#ffd166", "lon": 0, "look": { "sky": "#1c1530", "light": "#fff1c4", "fx": "motes", "decor": ["grass", "grass", "rock"] } },
+      { "id": "star", "icon": "⭐", "name": "星星谷", "color": "#5c6bc0", "lon": 72, "look": { "sky": "#05061a", "light": "#c5cae9", "fx": "upsnow", "decor": ["crystal", "rock"] } },
+      { "id": "clock", "icon": "🕰️", "name": "钟表林", "color": "#a1887f", "lon": 144, "look": { "sky": "#1a120e", "light": "#ffe0c2", "fx": "leaves", "decor": ["tree", "bush"] } },
+      { "id": "jungle", "icon": "🦁", "name": "狮子林", "color": "#43a047", "lon": 216, "look": { "sky": "#071a0c", "light": "#d7ffd9", "fx": null, "decor": ["tree", "tree", "bush"] } },
+      { "id": "race", "icon": "🏁", "name": "赛跑道", "color": "#c0ca33", "lon": 288, "look": { "sky": "#161a05", "light": "#f9fbe7", "fx": "wind", "decor": ["grass", "mound"] } }
+    ],
+    "discoveries": [
+      { "id": "rain-cloud", "model": "up-rain", "zone": "rhyme", "emoji": "🌧️", "zh": "唱儿歌的雨", "word": "rain", "say": "Rain, rain, go away!", "note": "雨点从地上往天上飞，一边飞一边唱", "from": { "lesson": "l1-rain" }, "at": [49, 350] },
+      { "id": "humpty-wall", "zone": "rhyme", "emoji": "🥚", "zh": "坐在墙上的蛋", "word": "wall", "say": "Humpty Dumpty sat on a wall!", "note": "一面矮墙，上面坐着一颗圆圆的蛋", "from": { "lesson": "l2-jack-jill" }, "at": [30, 20] },
+      { "id": "twinkle-star", "model": "firework-flowers", "zone": "star", "emoji": "⭐", "zh": "一闪一闪的星星花", "word": "star", "say": "Twinkle, twinkle, little star!", "note": "花苞飞上天，变成一闪一闪的小星星", "from": { "lesson": "l3-stars" }, "at": [49, 62] },
+      { "id": "wishing-star", "model": "two-suns", "zone": "star", "emoji": "🌠", "zh": "许愿星", "word": "wish", "say": "Look! I wish I may!", "note": "两颗星星绕着转，对着它们许个愿吧", "from": { "lesson": "l3-stars" }, "at": [30, 92] },
+      { "id": "hickory-clock", "zone": "clock", "emoji": "🕰️", "zh": "老鼠爬的大钟", "word": "clock", "say": "The mouse ran up the clock!", "note": "一座会发光的大钟，钟声一响，老鼠就跑下来", "from": { "lesson": "l4-clock" }, "at": [48, 140] },
+      { "id": "black-sheep", "model": "follow-cloud", "zone": "clock", "emoji": "🐑", "zh": "会跟着你走的绵羊云", "word": "wool", "say": "Baa, baa! Have you any wool?", "note": "一团毛茸茸的白云，像一只小绵羊，收进图鉴以后会跟着你走", "from": { "lesson": "l4-clock" }, "at": [30, 160] },
+      { "id": "lion-net", "zone": "jungle", "emoji": "🦁", "zh": "网住狮子的大网", "word": "net", "say": "Look! A net! The little mouse can help!", "note": "树林里挂着一张大网，网上有一个被咬开的洞", "from": { "lesson": "l5-lion-mouse" }, "at": [48, 214] },
+      { "id": "race-track", "model": "dancing-leaves", "zone": "race", "emoji": "🏁", "zh": "赛跑的终点", "word": "race", "say": "Slow and steady wins the race!", "note": "终点线旁边的落叶，走近就跳起来欢呼", "from": { "lesson": "l7-hare-tortoise" }, "at": [49, 282] }
+    ]
+  },
+  "door": {
+    "to": { "layer": 4, "name": "设计院", "icon": "🏛️" },
+    "decode": {
+      "standard": "RF.K.3",
+      "unit": "k-phonics-blends",
+      "need": 8,
+      "words": ["flag", "clap", "frog", "crab", "drum", "truck", "stop", "swim", "hand", "tent"]
+    },
+    "comprehend": {
+      "standard": "RL.K.1",
+      "vocab": ["bix", "zib", "fable", "rhyme", "rhymes"],
+      "tickets": [
+        {
+          "id": "zib-fable",
+          "title": "Zib Reads a Fable",
+          "text": "Dear friend, I read a fable. A little mouse can help a big lion! The lion was caught in a net. The mouse chewed the ropes. Little friends may be great friends! Your friend, Zib",
+          "questions": [
+            { "q": "Who was caught in a net?", "options": ["the lion", "the mouse", "Zib"], "a": "the lion", "evidence": "The lion was caught in a net" },
+            { "q": "How did the mouse help?", "options": ["He chewed the ropes.", "He ran away.", "He ate the net."], "a": "He chewed the ropes.", "evidence": "The mouse chewed the ropes" }
+          ]
+        },
+        {
+          "id": "zib-race",
+          "title": "Zib's Race",
+          "text": "Dear friend, I ran a race with a tortoise. I ran fast, and then I had a nap. The tortoise did not stop. The tortoise won! Slow and steady wins the race. Your friend, Zib",
+          "questions": [
+            { "q": "What did Zib do in the race?", "options": ["had a nap", "ate a cake", "flew away"], "a": "had a nap", "evidence": "then I had a nap" },
+            { "q": "Who won the race?", "options": ["the tortoise", "Zib", "the hare"], "a": "the tortoise", "evidence": "The tortoise won" }
+          ]
+        },
+        {
+          "id": "zib-rhymes",
+          "title": "Zib Likes Rhymes",
+          "text": "Dear friend, I like rhymes! Rain, rain, go away. Come again some other day. Jack and Jill went up the hill. Hill and Jill rhyme! Can you find a rhyme? Your friend, Zib",
+          "questions": [
+            { "q": "Which word rhymes with Jill?", "options": ["hill", "rain", "day"], "a": "hill", "evidence": "Hill and Jill rhyme" },
+            { "q": "What does Zib like?", "options": ["rhymes", "snow", "drums"], "a": "rhymes", "evidence": "I like rhymes" }
+          ]
+        }
+      ]
+    },
+    "unlock": {
+      "id": "story-tower",
+      "emoji": "📚",
+      "name": "Bix 故事塔",
+      "note": "Zib 把你读过的儿歌和寓言都收进了这座塔：每个圆环是一本书，顶上的球讲完一个故事就换一种颜色。",
+      "colors": ["#ffd166", "#9fa8ff", "#ff8a65", "#81c784"]
+    }
+  },
+  "opening": {
+    "title": "第 3 层 · 图书馆",
+    "subtitle": "📚 寓言厅 · Rhymes and Fables",
+    "intro": "第 2 层的门打开了！通道继续往下，第 3 层是原住民收藏地球故事的图书馆。",
+    "vocab": {
+      "school": [],
+      "names": ["zib"],
+      "extra": ["hi", "books", "listen", "which", "word", "sh"]
+    },
+    "shots": [
+      { "type": "fly", "camera": "approach", "action": "approach", "zh": "穿过第 2 层的门，使命号往更深的地方飞……", "ms": 5200 },
+      { "type": "fly", "camera": "descent", "action": "land", "zh": "第 3 层到了：一座好大的图书馆", "ms": 7000 },
+      { "type": "say", "camera": "zib", "action": "zib-appear", "text": "Hi! Look at all the books!", "zh": "Zib 抱着一摞书跑过来" },
+      {
+        "type": "ask",
+        "camera": "zib",
+        "q": "Lemons taste ___.",
+        "options": ["sour", "sweet"],
+        "a": "sour",
+        "hint": "Lemons taste sour. You make a funny face!",
+        "review": { "source": "第 2 层 · The Sense of Taste", "standard": "RI.K.1" }
+      },
+      { "type": "say", "camera": "zib", "action": "zib-wave", "text": "I hear with my ears!", "zh": "Zib 指指自己的耳朵" },
+      {
+        "type": "ask",
+        "camera": "zib",
+        "q": "Listen. Which word?",
+        "speak": "ship",
+        "options": ["chip", "ship", "shop"],
+        "a": "ship",
+        "hint": "sh … i … p — ship",
+        "review": { "source": "第 2 层 · 拼读 sh", "standard": "RF.K.3" }
+      },
+      { "type": "preview", "camera": "sign", "action": "sign", "word": "once", "text": "What is this? Let's find out!", "zh": "告示上的新词还看不懂，故事常常用它开头" },
+      { "type": "title", "camera": "station", "ms": 3200 }
+    ]
+  }
+}

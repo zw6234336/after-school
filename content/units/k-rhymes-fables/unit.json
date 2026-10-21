@@ -1,0 +1,724 @@
+{
+  "id": "k-rhymes-fables",
+  "grade": "K",
+  "title": "Nursery Rhymes and Fables",
+  "titleZh": "儿歌和寓言",
+  "icon": "📚",
+  "color": "#9fa8ff",
+  "question": "What can rhymes and fables teach us?",
+  "questionZh": "儿歌和寓言能教会我们什么？",
+  "license": "CC BY-NC-SA 4.0",
+  "source": {
+    "work": "Nursery Rhymes and Fables — Tell It Again! Read-Aloud Anthology (Kindergarten, Core Knowledge Language Arts)",
+    "short": "CKLA Kindergarten · Nursery Rhymes and Fables",
+    "author": "Core Knowledge Foundation",
+    "year": 2013,
+    "url": "https://www.coreknowledge.org/free-resource/ckla-domain-01-nursery-rhymes-fables/",
+    "license": "CC BY-NC-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+    "notice": "This work is based on an original work of the Core Knowledge® Foundation made available through licensing under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License. This does not in any way imply that the Core Knowledge Foundation endorses this work."
+  },
+  "wordWall": [
+    { "word": "rain", "meaning": "雨", "emoji": "🌧️", "lesson": "l1-rain" },
+    { "word": "snoring", "meaning": "打呼噜", "emoji": "😴", "lesson": "l1-rain" },
+    { "word": "pail", "meaning": "桶", "emoji": "🪣", "lesson": "l2-jack-jill" },
+    { "word": "wall", "meaning": "墙", "emoji": "🧱", "lesson": "l2-jack-jill" },
+    { "word": "star", "meaning": "星星", "emoji": "⭐", "lesson": "l3-stars" },
+    { "word": "diamond", "meaning": "钻石", "emoji": "💎", "lesson": "l3-stars" },
+    { "word": "wish", "meaning": "许愿", "emoji": "🌠", "lesson": "l3-stars" },
+    { "word": "clock", "meaning": "钟", "emoji": "🕰️", "lesson": "l4-clock" },
+    { "word": "wool", "meaning": "羊毛", "emoji": "🧶", "lesson": "l4-clock" },
+    { "word": "once", "meaning": "从前；一次", "emoji": "📖", "lesson": "l5-lion-mouse" },
+    { "word": "lion", "meaning": "狮子", "emoji": "🦁", "lesson": "l5-lion-mouse" },
+    { "word": "mouse", "meaning": "老鼠", "emoji": "🐭", "lesson": "l5-lion-mouse" },
+    { "word": "bone", "meaning": "骨头", "emoji": "🦴", "lesson": "l6-dog-bone" },
+    { "word": "reflection", "meaning": "倒影", "emoji": "🪞", "lesson": "l6-dog-bone" },
+    { "word": "greedy", "meaning": "贪心的", "emoji": "🤑", "lesson": "l6-dog-bone" },
+    { "word": "hare", "meaning": "野兔", "emoji": "🐇", "lesson": "l7-hare-tortoise" },
+    { "word": "tortoise", "meaning": "乌龟", "emoji": "🐢", "lesson": "l7-hare-tortoise" },
+    { "word": "race", "meaning": "赛跑", "emoji": "🏁", "lesson": "l7-hare-tortoise" }
+  ],
+  "lessons": [
+    {
+      "id": "l1-rain",
+      "title": "Rain, Rain, Go Away",
+      "genre": "literature",
+      "from": "Lesson 2A–2B: Rain, Rain, Go Away; It's Raining, It's Pouring",
+      "changes": "Paired the two traditional rain rhymes as one reading; questions rewritten with text evidence and rhyme questions; added a does-it-rhyme sort.",
+      "tasks": [
+        {
+          "id": "rf-l1-read",
+          "title": "Read: Rain, Rain, Go Away",
+          "standard": "RL.K.1",
+          "passage": {
+            "title": "Rain, Rain, Go Away",
+            "genre": "literature",
+            "text": "Rain, rain, go away. Come again some other day. Little Johnny wants to play. Rain, rain, go away. It's raining, it's pouring. The old man is snoring. He went to bed and bumped his head, and he couldn't get up in the morning.",
+            "vocab": [
+              { "word": "pouring", "meaning": "下大雨", "emoji": "🌧️" },
+              { "word": "snoring", "meaning": "打呼噜", "emoji": "😴" },
+              { "word": "bumped", "meaning": "撞到", "emoji": "🤕" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "Who wants to play?",
+              "options": ["Little Johnny", "the old man", "Jack"],
+              "a": "Little Johnny",
+              "evidence": "Little Johnny wants to play",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What is the old man doing?",
+              "options": ["snoring", "singing", "running"],
+              "a": "snoring",
+              "evidence": "The old man is snoring",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Which word rhymes with “away”?",
+              "options": ["day", "rain", "bed"],
+              "a": "day",
+              "hint": "away 和 day 结尾的音一样",
+              "standard": "RF.K.2"
+            },
+            {
+              "q": "Why couldn't the old man get up?",
+              "options": ["He bumped his head.", "He was hungry.", "It was sunny."],
+              "a": "He bumped his head.",
+              "evidence": "He went to bed and bumped his head",
+              "standard": "RL.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Which word rhymes with “pouring”?",
+              "options": ["snoring", "rain", "bed"],
+              "a": "snoring",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Both rhymes are about ___.",
+              "options": ["rain", "snow", "the sun"],
+              "a": "rain",
+              "evidence": ["Rain, rain, go away", "It's raining, it's pouring"],
+              "standard": "RL.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "rf-l1-rhyme",
+          "title": "Sort: Does it rhyme?",
+          "standard": "RF.K.2",
+          "questions": [
+            {
+              "q": "day – play",
+              "options": ["✅ rhymes", "❌ no"],
+              "a": "✅ rhymes",
+              "speak": "day, play. Do they rhyme?"
+            },
+            {
+              "q": "rain – sun",
+              "options": ["✅ rhymes", "❌ no"],
+              "a": "❌ no",
+              "speak": "rain, sun. Do they rhyme?"
+            },
+            {
+              "q": "bed – head",
+              "options": ["✅ rhymes", "❌ no"],
+              "a": "✅ rhymes",
+              "speak": "bed, head. Do they rhyme?"
+            },
+            {
+              "q": "go – bed",
+              "options": ["✅ rhymes", "❌ no"],
+              "a": "❌ no",
+              "speak": "go, bed. Do they rhyme?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "pouring – snoring",
+              "options": ["✅ rhymes", "❌ no"],
+              "a": "✅ rhymes",
+              "speak": "pouring, snoring. Do they rhyme?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "man – head",
+              "options": ["✅ rhymes", "❌ no"],
+              "a": "❌ no",
+              "speak": "man, head. Do they rhyme?",
+              "level": "hard"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l2-jack-jill",
+      "title": "Jack and Jill",
+      "genre": "literature",
+      "from": "Lesson 4A and 9B: Jack and Jill; Humpty Dumpty",
+      "changes": "Paired the two traditional falling rhymes as one reading; questions rewritten with text evidence, including a comparison of the two characters (RL.K.9); added a recite-and-act speaking task.",
+      "tasks": [
+        {
+          "id": "rf-l2-read",
+          "title": "Read: Jack and Jill",
+          "standard": "RL.K.1",
+          "passage": {
+            "title": "Jack and Jill",
+            "genre": "literature",
+            "text": "Jack and Jill went up the hill to fetch a pail of water. Jack fell down and broke his crown, and Jill came tumbling after. Humpty Dumpty sat on a wall. Humpty Dumpty had a great fall. All the king's horses and all the king's men couldn't put Humpty together again.",
+            "vocab": [
+              { "word": "pail", "meaning": "桶", "emoji": "🪣" },
+              { "word": "crown", "meaning": "头顶", "emoji": "👑" },
+              { "word": "tumbling", "meaning": "翻滚着摔下来", "emoji": "🤸" },
+              { "word": "together", "meaning": "在一起，拼好", "emoji": "🧩" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "Why did Jack and Jill go up the hill?",
+              "options": ["to fetch a pail of water", "to fly a kite", "to see the king"],
+              "a": "to fetch a pail of water",
+              "evidence": "to fetch a pail of water",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Who fell down first?",
+              "options": ["Jack", "Jill", "Humpty Dumpty"],
+              "a": "Jack",
+              "evidence": "Jack fell down",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Where did Humpty Dumpty sit?",
+              "options": ["on a wall", "on a hill", "in a pail"],
+              "a": "on a wall",
+              "evidence": "Humpty Dumpty sat on a wall",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Who could not put Humpty together again?",
+              "options": ["the king's horses and men", "Jack and Jill", "the old man"],
+              "a": "the king's horses and men",
+              "evidence": "couldn't put Humpty together again",
+              "standard": "RL.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Which word rhymes with “wall”?",
+              "options": ["fall", "hill", "men"],
+              "a": "fall",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "How are Jack and Humpty Dumpty alike?",
+              "options": ["They both fell down.", "They both went up a hill.", "They both fetched water."],
+              "a": "They both fell down.",
+              "evidence": ["Jack fell down", "had a great fall"],
+              "standard": "RL.K.9",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "rf-l2-act",
+          "title": "Say it and act it out",
+          "standard": "SL.K.6",
+          "note": "一边大声念 Jack and Jill，一边做动作：上山、提水、摔倒、滚下来。念给大人听，念完请大人点“完成啦”。"
+        }
+      ]
+    },
+    {
+      "id": "l3-stars",
+      "title": "Twinkle, Twinkle, Little Star",
+      "genre": "literature",
+      "from": "Lesson 6A–6B: Star Light, Star Bright; Twinkle, Twinkle, Little Star",
+      "changes": "Paired the two traditional star rhymes as one reading (first verse of 'Twinkle, Twinkle'); questions rewritten with text evidence and rhyme questions; added a wish-writing task.",
+      "tasks": [
+        {
+          "id": "rf-l3-read",
+          "title": "Read: Twinkle, Twinkle, Little Star",
+          "standard": "RL.K.1",
+          "passage": {
+            "title": "Twinkle, Twinkle, Little Star",
+            "genre": "literature",
+            "text": "Twinkle, twinkle, little star, how I wonder what you are. Up above the world so high, like a diamond in the sky. Twinkle, twinkle, little star, how I wonder what you are. Star light, star bright, first star I see tonight. I wish I may, I wish I might, have the wish I wish tonight.",
+            "vocab": [
+              { "word": "twinkle", "meaning": "一闪一闪", "emoji": "✨" },
+              { "word": "wonder", "meaning": "好奇，想知道", "emoji": "🤔" },
+              { "word": "diamond", "meaning": "钻石", "emoji": "💎" },
+              { "word": "wish", "meaning": "许愿", "emoji": "🌠" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "Where is the little star?",
+              "options": ["up above the world", "in the sea", "under a bed"],
+              "a": "up above the world",
+              "evidence": "Up above the world so high",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "The star is like a ___.",
+              "options": ["diamond", "ball", "cake"],
+              "a": "diamond",
+              "evidence": "like a diamond in the sky",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What does the child do with the first star?",
+              "options": ["makes a wish", "goes to sleep", "sings loud"],
+              "a": "makes a wish",
+              "evidence": "I wish I may",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Which word rhymes with “high”?",
+              "options": ["sky", "star", "wish"],
+              "a": "sky",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Which word rhymes with “bright”?",
+              "options": ["tonight", "wonder", "diamond"],
+              "a": "tonight",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "“Twinkle, twinkle, little star.” Twinkle means the star ___.",
+              "options": ["shines on and off", "falls down", "is very big"],
+              "a": "shines on and off",
+              "evidence": "Twinkle, twinkle, little star",
+              "standard": "RL.K.4",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "rf-l3-write-easy",
+          "title": "Write: My wish",
+          "standard": "W.K.1",
+          "write": {
+            "prompt": "Make a wish on a star.",
+            "frame": "I wish ___.",
+            "minWords": 4
+          },
+          "level": "easy"
+        },
+        {
+          "id": "rf-l3-write",
+          "title": "Write: My wish",
+          "standard": "W.K.1",
+          "write": {
+            "prompt": "Make a wish on a star. What would you do?",
+            "frame": "I wish I could ___. Then I would ___.",
+            "minWords": 9
+          },
+          "level": ["normal", "hard"]
+        }
+      ]
+    },
+    {
+      "id": "l4-clock",
+      "title": "Hickory, Dickory, Dock",
+      "genre": "literature",
+      "from": "Lesson 7A and 9A: Hickory, Dickory, Dock; Baa, Baa, Black Sheep",
+      "changes": "Paired two traditional rhymes as one reading; questions rewritten with text evidence and a rhyme question; added a clap-the-syllables sort (RF.K.2).",
+      "tasks": [
+        {
+          "id": "rf-l4-read",
+          "title": "Read: Hickory, Dickory, Dock",
+          "standard": "RL.K.1",
+          "passage": {
+            "title": "Hickory, Dickory, Dock",
+            "genre": "literature",
+            "text": "Hickory, dickory, dock. The mouse ran up the clock. The clock struck one. The mouse ran down. Hickory, dickory, dock. Baa, baa, black sheep, have you any wool? Yes, sir, yes, sir, three bags full. One for the master, and one for the dame, and one for the little boy who lives down the lane.",
+            "vocab": [
+              { "word": "clock", "meaning": "钟", "emoji": "🕰️" },
+              { "word": "struck", "meaning": "（钟）敲响", "emoji": "🔔" },
+              { "word": "wool", "meaning": "羊毛", "emoji": "🧶" },
+              { "word": "lane", "meaning": "小巷", "emoji": "🛣️" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "Where did the mouse run?",
+              "options": ["up the clock", "into a hole", "up a hill"],
+              "a": "up the clock",
+              "evidence": "The mouse ran up the clock",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What did the clock strike?",
+              "options": ["one", "two", "three"],
+              "a": "one",
+              "evidence": "The clock struck one",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "How many bags of wool does the sheep have?",
+              "options": ["three", "one", "five"],
+              "a": "three",
+              "evidence": "three bags full",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Who gets the last bag of wool?",
+              "options": ["the little boy who lives down the lane", "the master", "the mouse"],
+              "a": "the little boy who lives down the lane",
+              "evidence": "one for the little boy",
+              "standard": "RL.K.1",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Which word rhymes with “dock”?",
+              "options": ["clock", "mouse", "sheep"],
+              "a": "clock",
+              "standard": "RF.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What did the mouse do when the clock struck one?",
+              "options": ["It ran down.", "It went to sleep.", "It ate cheese."],
+              "a": "It ran down.",
+              "evidence": "The mouse ran down",
+              "standard": "RL.K.3",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "rf-l4-claps",
+          "title": "Clap the word: how many claps?",
+          "standard": "RF.K.2",
+          "questions": [
+            {
+              "q": "🐑 sheep",
+              "options": ["1 clap", "2 claps", "3 claps"],
+              "a": "1 clap",
+              "speak": "sheep. How many claps?"
+            },
+            {
+              "q": "🕰️ hickory",
+              "options": ["1 clap", "2 claps", "3 claps"],
+              "a": "3 claps",
+              "speak": "hickory. How many claps?"
+            },
+            {
+              "q": "👦 master",
+              "options": ["1 clap", "2 claps", "3 claps"],
+              "a": "2 claps",
+              "speak": "master. How many claps?"
+            },
+            {
+              "q": "🐭 mouse",
+              "options": ["1 clap", "2 claps", "3 claps"],
+              "a": "1 clap",
+              "speak": "mouse. How many claps?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🧶 woolly",
+              "options": ["1 clap", "2 claps", "3 claps"],
+              "a": "2 claps",
+              "speak": "woolly. How many claps?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🕰️ dickory",
+              "options": ["1 clap", "2 claps", "3 claps"],
+              "a": "3 claps",
+              "speak": "dickory. How many claps?",
+              "level": "hard"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l5-lion-mouse",
+      "title": "The Lion and the Mouse",
+      "genre": "literature",
+      "from": "Lesson 10: The Lion and the Mouse",
+      "changes": "Shortened the fable; kept waking the lion, the promise, the lion's laugh, the hunter's net, chewing the ropes and the moral; removed the 'king of beasts' exchange and the lion's change of mood; questions rewritten with text evidence, the moral tagged as a grade 1 stretch (RL.1.2); added a retelling task.",
+      "tasks": [
+        {
+          "id": "rf-l5-read",
+          "title": "Read: The Lion and the Mouse",
+          "standard": "RL.K.1",
+          "passage": {
+            "title": "The Lion and the Mouse",
+            "genre": "literature",
+            "text": "Once upon a time, a little mouse ran across a sleeping lion. The lion woke up. He was angry! He grabbed the mouse with his big paw. “Please let me go,” said the mouse. “Someday I will help you.” The lion laughed. How could a tiny mouse help a big lion? But he let the mouse go. Not long after, the lion was caught in a hunter's net. He could not get out. The mouse heard the lion roar. He ran to the net and chewed the ropes with his sharp little teeth. Soon the lion was free! “Little friends may be great friends,” said the mouse.",
+            "vocab": [
+              { "word": "paw", "meaning": "爪子", "emoji": "🐾" },
+              { "word": "hunter", "meaning": "猎人", "emoji": "🏹" },
+              { "word": "chewed", "meaning": "咬", "emoji": "🦷" },
+              { "word": "free", "meaning": "自由的，逃出来", "emoji": "🕊️" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "Who woke up the lion?",
+              "options": ["a little mouse", "a hunter", "a big dog"],
+              "a": "a little mouse",
+              "evidence": "a little mouse ran across a sleeping lion",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What did the mouse promise?",
+              "options": ["to help the lion someday", "to give the lion food", "to run away"],
+              "a": "to help the lion someday",
+              "evidence": "Someday I will help you",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "How did the mouse free the lion?",
+              "options": ["He chewed the ropes.", "He called a hunter.", "He pulled the lion's tail."],
+              "a": "He chewed the ropes.",
+              "evidence": "chewed the ropes",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Why did the lion laugh?",
+              "options": ["He did not think a tiny mouse could help him.", "The mouse told a joke.", "He was happy to be in the net."],
+              "a": "He did not think a tiny mouse could help him.",
+              "evidence": "How could a tiny mouse help a big lion?",
+              "standard": "RL.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Put the fable in order.",
+              "order": ["The mouse woke up the lion.", "The lion let the mouse go.", "The lion was caught in a net.", "The mouse chewed the ropes."],
+              "standard": "RL.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is the lesson of this fable?",
+              "options": ["Little friends may be great friends.", "Lions are always angry.", "Never go outside."],
+              "a": "Little friends may be great friends.",
+              "evidence": "Little friends may be great friends",
+              "standard": "RL.1.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "rf-l5-retell",
+          "title": "Retell the fable to a grown-up",
+          "standard": "RL.K.2",
+          "note": "用 First… Then… At the end… 把狮子和老鼠的故事讲给大人听，最后说出故事讲的道理。讲完请大人点“完成啦”。"
+        }
+      ]
+    },
+    {
+      "id": "l6-dog-bone",
+      "title": "The Dog and His Reflection",
+      "genre": "literature",
+      "from": "Lesson 11: The Dog and His Reflection",
+      "changes": "Shortened the fable; kept the bone, refusing to share, the bridge, the reflection, dropping the bone and the moral; removed the butcher and burying the bone; questions rewritten with text evidence, the moral tagged as a grade 1 stretch (RL.1.2); added an opinion-writing task.",
+      "tasks": [
+        {
+          "id": "rf-l6-read",
+          "title": "Read: The Dog and His Reflection",
+          "standard": "RL.K.1",
+          "passage": {
+            "title": "The Dog and His Reflection",
+            "genre": "literature",
+            "text": "Once upon a time, a big dog got a juicy bone. Other dogs asked, “Please let us smell your bone.” But the big dog did not want to share. He ran off to hide his bone. He came to a bridge over a stream. He looked down into the water and saw another dog with another bone! “I want that bone, too,” said the big dog. He opened his mouth to grab it. Splash! His own bone fell into the water. The other dog was only his reflection. The big dog lost his bone. If you are greedy, you may lose everything.",
+            "vocab": [
+              { "word": "juicy", "meaning": "多汁的", "emoji": "🍖" },
+              { "word": "bridge", "meaning": "桥", "emoji": "🌉" },
+              { "word": "reflection", "meaning": "倒影", "emoji": "🪞" },
+              { "word": "greedy", "meaning": "贪心的", "emoji": "🤑" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What did the big dog get?",
+              "options": ["a juicy bone", "a red ball", "a hat"],
+              "a": "a juicy bone",
+              "evidence": "a big dog got a juicy bone",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Where did the dog see another dog?",
+              "options": ["in the water", "on the bridge", "in a tree"],
+              "a": "in the water",
+              "evidence": "He looked down into the water",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What happened to his bone?",
+              "options": ["It fell into the water.", "He shared it.", "He ate it."],
+              "a": "It fell into the water.",
+              "evidence": "His own bone fell into the water",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "The other dog was only his reflection. A reflection is ___.",
+              "options": ["what you see of yourself in water or a mirror", "a kind of bone", "a big bridge"],
+              "a": "what you see of yourself in water or a mirror",
+              "evidence": "The other dog was only his reflection",
+              "standard": "RL.K.4",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Why did the dog open his mouth?",
+              "options": ["He wanted the other bone, too.", "He wanted to bark at a cat.", "He wanted a drink."],
+              "a": "He wanted the other bone, too.",
+              "evidence": "I want that bone, too",
+              "standard": "RL.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is the lesson of this fable?",
+              "options": ["If you are greedy, you may lose everything.", "Always cross a bridge fast.", "Dogs like water."],
+              "a": "If you are greedy, you may lose everything.",
+              "evidence": "If you are greedy",
+              "standard": "RL.1.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "rf-l6-write-easy",
+          "title": "Write: Should the dog share?",
+          "standard": "W.K.1",
+          "write": {
+            "prompt": "Should the big dog share his bone?",
+            "frame": "The dog should ___.",
+            "minWords": 4
+          },
+          "level": "easy"
+        },
+        {
+          "id": "rf-l6-write",
+          "title": "Write: Should the dog share?",
+          "standard": "W.K.1",
+          "write": {
+            "prompt": "Should the big dog share his bone? Tell what you think.",
+            "frame": "I think the dog should ___.",
+            "minWords": 7
+          },
+          "level": ["normal", "hard"]
+        }
+      ]
+    },
+    {
+      "id": "l7-hare-tortoise",
+      "title": "The Hare and the Tortoise",
+      "genre": "literature",
+      "from": "Lesson 12: The Hare and the Tortoise",
+      "changes": "Shortened the fable; kept the boasting hare, the challenge, the hare's nap, the steady tortoise and the moral; removed the animals starting the race, the carrots and the pumpkin patch; questions rewritten with text evidence, the moral tagged as a grade 1 stretch (RL.1.2); added a fable-characters comparison (RL.K.9).",
+      "tasks": [
+        {
+          "id": "rf-l7-read",
+          "title": "Read: The Hare and the Tortoise",
+          "standard": "RL.K.1",
+          "passage": {
+            "title": "The Hare and the Tortoise",
+            "genre": "literature",
+            "text": "There once was a hare who was very fast. He liked to tell everyone how slow they were. “You are so slow!” he said to the tortoise. “I bet I can beat you in a race,” said the tortoise. The race began. The hare ran far ahead. He looked back and saw the tortoise far behind. So the hare lay down for a nap. The tortoise kept going, slowly but steadily. The tortoise passed the sleeping hare. When the hare woke up, it was too late. The tortoise won the race! Slow and steady wins the race.",
+            "vocab": [
+              { "word": "hare", "meaning": "野兔", "emoji": "🐇" },
+              { "word": "tortoise", "meaning": "乌龟", "emoji": "🐢" },
+              { "word": "race", "meaning": "赛跑", "emoji": "🏁" },
+              { "word": "steady", "meaning": "稳稳的，不停的", "emoji": "🚶" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "Who was very fast?",
+              "options": ["the hare", "the tortoise", "the mouse"],
+              "a": "the hare",
+              "evidence": "a hare who was very fast",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "What did the hare do in the race?",
+              "options": ["took a nap", "ate a cake", "went home"],
+              "a": "took a nap",
+              "evidence": "the hare lay down for a nap",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Who won the race?",
+              "options": ["the tortoise", "the hare", "the dog"],
+              "a": "the tortoise",
+              "evidence": "The tortoise won the race",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Why did the hare take a nap?",
+              "options": ["He thought he was far ahead.", "He was cold.", "The tortoise told him to."],
+              "a": "He thought he was far ahead.",
+              "evidence": "saw the tortoise far behind",
+              "standard": "RL.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Put the fable in order.",
+              "order": ["The tortoise said, “I can beat you.”", "The hare ran far ahead.", "The hare took a nap.", "The tortoise won the race."],
+              "standard": "RL.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is the lesson of this fable?",
+              "options": ["Slow and steady wins the race.", "Hares are always lazy.", "Never run in a race."],
+              "a": "Slow and steady wins the race.",
+              "evidence": "Slow and steady wins the race",
+              "standard": "RL.1.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "rf-l7-compare",
+          "title": "Fable friends: who did it?",
+          "standard": "RL.K.9",
+          "questions": [
+            {
+              "q": "Who was greedy?",
+              "options": ["the big dog", "the little mouse", "the tortoise"],
+              "a": "the big dog",
+              "speak": "Who was greedy?"
+            },
+            {
+              "q": "Who helped a friend?",
+              "options": ["the little mouse", "the big dog", "the hare"],
+              "a": "the little mouse",
+              "speak": "Who helped a friend?"
+            },
+            {
+              "q": "Who kept going and did not stop?",
+              "options": ["the tortoise", "the hare", "the lion"],
+              "a": "the tortoise",
+              "speak": "Who kept going and did not stop?"
+            },
+            {
+              "q": "Who laughed at a small friend?",
+              "options": ["the lion", "the tortoise", "the mouse"],
+              "a": "the lion",
+              "speak": "Who laughed at a small friend?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Who lost what he had?",
+              "options": ["the big dog", "the lion", "the tortoise"],
+              "a": "the big dog",
+              "speak": "Who lost what he had?",
+              "level": ["normal", "hard"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -257,6 +257,16 @@
       "id": "unit-senses",
       "unit": "k-five-senses",
       "lessons": "daily"
+    },
+    {
+      "id": "unit-blends",
+      "unit": "k-phonics-blends",
+      "lessons": "daily"
+    },
+    {
+      "id": "unit-fables",
+      "unit": "k-rhymes-fables",
+      "lessons": "daily"
     }
   ]
 }
