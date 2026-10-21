@@ -1,0 +1,121 @@
+{
+  "id": "ch05-council",
+  "title": "第 5 章 · 星核议会",
+  "layer": 5,
+  "unit": "k-earth-ambassador",
+  "surface": {
+    "ground": "#3f4c9a",
+    "glow": "#ffd166",
+    "rain": false,
+    "stations": {
+      "RI": { "name": "议会厅", "icon": "🏛️" }
+    }
+  },
+  "explore": {
+    "zones": [
+      { "id": "weather-hall", "icon": "🌦️", "name": "天气厅", "color": "#4cc9f0", "lon": 0, "look": { "sky": "#0c1832", "light": "#e4edff", "fx": "upsnow", "decor": ["drift", "crystal", "rock"] } },
+      { "id": "senses-hall", "icon": "👃", "name": "感官厅", "color": "#ff9ecb", "lon": 72, "look": { "sky": "#2a1024", "light": "#ffe0f0", "fx": "motes", "decor": ["bush", "grass", "mound"] } },
+      { "id": "story-hall", "icon": "🕊️", "name": "故事厅", "color": "#b39ddb", "lon": 144, "look": { "sky": "#1c1530", "light": "#fff1c4", "fx": "leaves", "decor": ["tree", "bush", "grass"] } },
+      { "id": "earth-hall", "icon": "♻️", "name": "地球厅", "color": "#66bb6a", "lon": 216, "look": { "sky": "#06180b", "light": "#dcffe0", "fx": "wind", "decor": ["tree", "pile", "grass"] } },
+      { "id": "core", "icon": "💎", "name": "星核", "color": "#ffd166", "lon": 288, "look": { "sky": "#140c00", "light": "#fff3c4", "fx": "motes", "decor": ["crystal", "crystal", "rock"] } }
+    ],
+    "discoveries": [
+      { "id": "snowy-sky", "model": "up-snow", "zone": "weather-hall", "emoji": "❄️", "zh": "往天上飘的雪", "word": "snowy", "say": "It is cold and snowy!", "note": "雪花从地上往天上飘，飘到半空就亮起来", "from": { "lesson": "l1-weather" }, "at": [49, 350] },
+      { "id": "storm-jelly", "model": "jelly-storm", "zone": "weather-hall", "emoji": "⛈️", "zh": "装着雷雨的水母云", "word": "storm", "say": "A storm! Be indoors!", "note": "一朵像水母的云，肚子里一闪一闪的是小闪电", "from": { "lesson": "l1-weather" }, "at": [30, 20] },
+      { "id": "rose-pinwheel", "model": "pinwheel-flowers", "zone": "senses-hall", "emoji": "🌹", "zh": "香香的风车玫瑰", "word": "rose", "say": "A rose smells sweet!", "note": "一片转个不停的花，议会的人闻不到香味，只能看着它转", "from": { "lesson": "l2-senses" }, "at": [49, 64] },
+      { "id": "sour-pop", "model": "firework-flowers", "zone": "senses-hall", "emoji": "🍋", "zh": "酸溜溜的柠檬烟花", "word": "sour", "say": "Lemons taste sour!", "note": "花苞飞上天炸开，是柠檬味的小烟花", "from": { "lesson": "l2-senses" }, "at": [30, 92] },
+      { "id": "dove-cloud", "model": "follow-cloud", "zone": "story-hall", "emoji": "🕊️", "zh": "会跟着你飞的鸽子云", "word": "dove", "say": "Look! A dove!", "note": "一朵白云像一只鸽子，收进图鉴以后会跟着你飞", "from": { "lesson": "l3-ant-dove" }, "at": [48, 140] },
+      { "id": "ant-leaf", "model": "dancing-leaves", "zone": "story-hall", "emoji": "🍃", "zh": "救了小蚂蚁的叶子", "word": "leaf", "say": "The dove dropped a leaf!", "note": "一堆树叶，走近就飞起来转圈，像一只只小船", "from": { "lesson": "l3-ant-dove" }, "at": [30, 160] },
+      { "id": "compost-patch", "model": "pumpkin-patch", "zone": "earth-hall", "emoji": "🎃", "zh": "堆肥养大的南瓜", "word": "compost", "say": "Look! A compost pile!", "note": "Bix 星也学会了堆肥，种出来的南瓜又大又圆", "from": { "lesson": "l4-clean-bix" }, "at": [48, 214] },
+      { "id": "clean-spring", "model": "hot-spring", "zone": "earth-hall", "emoji": "🚰", "zh": "关好的水龙头", "word": "water", "say": "Turn off the water!", "note": "一汪干干净净的水塘，水不再白白流走了", "from": { "lesson": "l4-clean-bix" }, "at": [30, 232] },
+      { "id": "core-crystals", "zone": "core", "emoji": "💎", "zh": "星核碎片", "word": "core", "say": "Look! The Star Core!", "note": "一簇会发光的水晶，是 Bix 星星核掉下来的碎片", "from": { "lesson": "l5-ambassador" }, "at": [49, 282] },
+      { "id": "two-friends", "model": "two-suns", "zone": "core", "emoji": "🌏", "zh": "成了好朋友的两颗星", "word": "friends", "say": "Two places can be friends!", "note": "两颗星星绕着转：一颗是地球，一颗是 Bix 星", "from": { "lesson": "l5-ambassador" }, "at": [30, 306] }
+    ]
+  },
+  "door": {
+    "to": { "final": true, "name": "星核", "icon": "💎", "note": "走到星核，K 年级的英语就学完了！你是地球小大使啦。" },
+    "decode": {
+      "standard": "RF.K.3",
+      "unit": ["k-phonics-short-vowels", "k-phonics-digraphs", "k-phonics-blends", "k-phonics-silent-e"],
+      "need": 10,
+      "words": ["cat", "pig", "bus", "ship", "chick", "bath", "frog", "drum", "tent", "cake", "kite", "bone"]
+    },
+    "comprehend": {
+      "standard": "RI.K.1",
+      "vocab": ["bix", "zib"],
+      "tickets": [
+        {
+          "id": "council-party",
+          "title": "A Party at the Star Core",
+          "text": "Dear Earth Ambassador, We will have a party at the Star Core. Zib will bring a cake. The ant and the dove will come, too! Please bring all the words you learned. The Star Council",
+          "questions": [
+            { "q": "Where will the party be?", "options": ["at the Star Core", "at the river", "at the market"], "a": "at the Star Core", "evidence": "We will have a party at the Star Core" },
+            { "q": "What will Zib bring?", "options": ["a cake", "a kite", "a drum"], "a": "a cake", "evidence": "Zib will bring a cake" }
+          ]
+        },
+        {
+          "id": "zib-thanks",
+          "title": "Thank You from Zib",
+          "text": "Dear friend, Thank you! You taught me so much. Now I can read, and I can recycle. I made a compost pile, and I turn off the lights. You are my best friend! Your friend, Zib",
+          "questions": [
+            { "q": "What can Zib do now?", "options": ["read and recycle", "fly and swim", "sing and dance"], "a": "read and recycle", "evidence": "Now I can read, and I can recycle" },
+            { "q": "What did Zib make?", "options": ["a compost pile", "a rocket", "a kite"], "a": "a compost pile", "evidence": "I made a compost pile" }
+          ]
+        },
+        {
+          "id": "council-rose",
+          "title": "The Council Gets a Rose",
+          "text": "Dear Earth Ambassador, Guess what? Zib gave us a rose. We cannot smell it, but we can see it and touch it. It is red and soft. Next time, please tell us how it smells! The Star Council",
+          "questions": [
+            { "q": "What did Zib give the council?", "options": ["a rose", "a lemon", "a bell"], "a": "a rose", "evidence": "Zib gave us a rose" },
+            { "q": "How does the rose look and feel?", "options": ["red and soft", "blue and hard", "big and loud"], "a": "red and soft", "evidence": "It is red and soft" }
+          ]
+        }
+      ]
+    },
+    "unlock": {
+      "id": "star-core",
+      "emoji": "💎",
+      "name": "Bix 星核",
+      "note": "星核议会为你点亮了星核：每一层的颜色都在里面，天气的蓝、感官的粉、故事的紫、地球的绿，还有你学会的每一个词。",
+      "colors": ["#4cc9f0", "#ff9ecb", "#b39ddb", "#66bb6a", "#ffd166"]
+    }
+  },
+  "opening": {
+    "title": "第 5 层 · 星核议会",
+    "subtitle": "🏛️ 议会厅 · Earth Ambassador",
+    "intro": "第 4 层的门打开了！最深的一层是 Bix 星的星核，星核议会在那里等你。",
+    "vocab": {
+      "school": [],
+      "names": ["zib"],
+      "extra": ["hi", "listen", "which", "word"]
+    },
+    "shots": [
+      { "type": "fly", "camera": "approach", "action": "approach", "zh": "穿过第 4 层的门，使命号飞向星球最深的地方……", "ms": 5200 },
+      { "type": "fly", "camera": "descent", "action": "land", "zh": "第 5 层到了：星核在脚下发着光", "ms": 7000 },
+      { "type": "say", "camera": "zib", "action": "zib-appear", "text": "Hi! Look! I can recycle!", "zh": "Zib 抱着一个回收箱跑过来" },
+      {
+        "type": "ask",
+        "camera": "zib",
+        "q": "Reduce, reuse, and ___.",
+        "options": ["recycle", "litter"],
+        "a": "recycle",
+        "hint": "Remember three words: reduce, reuse, and recycle!",
+        "review": { "source": "第 4 层 · Reduce, Reuse, Recycle", "standard": "RI.K.1" }
+      },
+      { "type": "say", "camera": "zib", "action": "zib-wave", "text": "Look! A cube and a cake!", "zh": "Zib 指指告示牌上的字母" },
+      {
+        "type": "ask",
+        "camera": "zib",
+        "q": "Listen. Which word?",
+        "speak": "cube",
+        "options": ["cute", "cube", "cake"],
+        "a": "cube",
+        "hint": "c … u_e … b — cube",
+        "review": { "source": "第 4 层 · 拼读 u_e", "standard": "RF.K.3" }
+      },
+      { "type": "preview", "camera": "sign", "action": "sign", "word": "ambassador", "text": "What is this? Let's find out!", "zh": "告示上的新词还看不懂，这一层就要学它" },
+      { "type": "title", "camera": "station", "ms": 3200 }
+    ]
+  }
+}

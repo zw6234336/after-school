@@ -154,7 +154,7 @@ const wordsOf = (text) =>
 function learnedBefore(ch) {
   return chapters
     .filter((c) => c.layer < ch.layer)
-    .flatMap((c) => [c.unit, c.door?.decode?.unit, ...(c.voyage || [])])
+    .flatMap((c) => [c.unit, c.door?.decode?.unit, ...(c.voyage || [])].flat())
     .map((id) => units[id])
     .filter(Boolean)
     .flatMap((u) => [...unitWords(u), ...u.lessons.flatMap((l) => (l.tasks || []).flatMap((t) => wordsOf(t.passage?.text || '')))]);
@@ -326,20 +326,24 @@ function checkDoor(ch, at) {
 
   const dec = door.decode || {};
   if (!parseStandard(dec.standard || '')) at(`door.decode.standard "${dec.standard}" 不是 CCSS 代码`);
-  // 解码锁的词来自 decode.unit（比如拼读单元），没写就是这一层的单元
-  const decodeUnit = dec.unit ? units[dec.unit] : unit;
-  if (!decodeUnit) return at(`door.decode.unit "${dec.unit}" 在内容库里找不到`);
+  // 解码锁的词来自 decode.unit（比如拼读单元；写成列表就是几个单元的总复习），没写就是这一层的单元
+  const decodeIds = dec.unit ? [dec.unit].flat() : [unit.id];
+  const missing = decodeIds.filter((id) => !units[id]);
+  if (missing.length) return at(`door.decode.unit "${missing.join('、')}" 在内容库里找不到`);
+  const decodeName = decodeIds.join(' / ');
   const pics = new Map();
-  for (const w of decodeUnit.wordWall || []) pics.set(String(w.word).toLowerCase(), w.emoji);
-  for (const l of decodeUnit.lessons) {
-    for (const t of l.tasks || []) for (const v of t.passage?.vocab || []) if (!pics.has(String(v.word).toLowerCase())) pics.set(String(v.word).toLowerCase(), v.emoji);
+  for (const decodeUnit of decodeIds.map((id) => units[id])) {
+    for (const w of decodeUnit.wordWall || []) if (!pics.has(String(w.word).toLowerCase())) pics.set(String(w.word).toLowerCase(), w.emoji);
+    for (const l of decodeUnit.lessons) {
+      for (const t of l.tasks || []) for (const v of t.passage?.vocab || []) if (!pics.has(String(v.word).toLowerCase())) pics.set(String(v.word).toLowerCase(), v.emoji);
+    }
   }
   const words = Array.isArray(dec.words) ? dec.words : [];
   if (words.length < 3) at('door.decode.words 至少要 3 个词（每道题要两张干扰图）');
   const byPic = new Map();
   for (const w of words) {
     const pic = pics.get(String(w).toLowerCase());
-    if (!pic) at(`door.decode.words 里的 "${w}" 不是单元 ${decodeUnit.id} 词墙或生词表里带图的词`);
+    if (!pic) at(`door.decode.words 里的 "${w}" 不是单元 ${decodeName} 词墙或生词表里带图的词`);
     else if (byPic.has(pic)) at(`door.decode.words 里 "${w}" 和 "${byPic.get(pic)}" 的图一样（${pic}），看图分不出来`);
     else byPic.set(pic, w);
   }
@@ -417,7 +421,7 @@ for (const ch of chapters) {
   }
   if (ch.door) {
     const { to, decode, comprehend } = ch.door;
-    console.log(`   门：通往第 ${to?.layer} 层 ${to?.name} · 解码锁 ${decode?.words?.length ?? 0} 个${decode?.unit ? ` ${decode.unit} 的` : ''}词认出 ${decode?.need} 个 · 理解锁 ${comprehend?.tickets?.length ?? 0} 封短信`);
+    console.log(`   门：通往${to?.final ? ` ${to?.name}（最后一层）` : `第 ${to?.layer} 层 ${to?.name}`} · 解码锁 ${decode?.words?.length ?? 0} 个${decode?.unit ? ` ${[decode.unit].flat().join(' / ')} 的` : ''}词认出 ${decode?.need} 个 · 理解锁 ${comprehend?.tickets?.length ?? 0} 封短信`);
   }
 }
 

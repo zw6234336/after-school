@@ -2,6 +2,7 @@
 // 读完这一层单元的所有课（解码锁的词来自另一个单元的话，那个单元的课也要读完），就能来门口“试飞”：
 //   🔤 解码锁：屏幕上只显示英文单词（不朗读），孩子从三张图里选出它，认出 need 个就开。
 //      词来自 decode.unit（比如短元音拼读单元的 cat、pig、box），没写就用这一层的单元；
+//      写成几个单元的列表就是总复习（最后一层：前面每一层的拼读单元各出几个词）；
 //   🔍 理解锁：读 Zib 的一封短信，每道题都答对、并在信里点出证据句才开。
 // 每把锁只看这一次孩子自己做的结果：没有提示、不计时、不扣星星。没打开就记下“收集到的数据”
 // （哪些词没认出来、哪道题没答对），练完再来；锁打开以后一直开着。两把锁都开了，门打开，升起这一层的设计。
@@ -11,7 +12,7 @@ import { normalizeHomework } from './data.js';
 import { sound, speak, speakSequence, stopSpeaking, canSpeak } from './audio.js';
 import { esc, icanHtml, standardChip, passageHtml } from './lesson.js';
 import { parseStandard } from './standards.js';
-import { learnedLessons, doorState, addFlight, setDoorOpened } from './story.js';
+import { learnedLessons, doorState, addFlight, setDoorOpened, foundDiscoveries } from './story.js';
 
 const shuffle = (list) => {
   const a = [...list];
@@ -30,33 +31,39 @@ function nextChapterOf(door) {
 
 /**
  * 门现在的样子：哪几课还没读、两把锁开没开、能不能试飞；这一章没有门返回 null。
- * unit 是这一层的单元，decodeUnit 是解码锁的词来自的单元（没写就是同一个）；两个单元的课都要读完
+ * unit 是这一层的单元，decodeUnits 是解码锁的词来自的单元（没写就是同一个）。
+ * 一个拼读单元：两个单元的课都要读完；几个单元（总复习）：那些单元在前面几层已经读完了，只看这一层的单元
  */
 export function doorStatus(chapter) {
   const door = chapter?.door;
   const unit = door && UNITS[chapter.unit];
   if (!unit) return null;
-  const decodeUnit = UNITS[door.decode.unit] || unit;
-  const lessons = [...new Set([decodeUnit, unit])].flatMap((u) => {
+  const review = Array.isArray(door.decode.unit);
+  const listed = [door.decode.unit].flat().map((id) => UNITS[id]).filter(Boolean);
+  const decodeUnits = listed.length ? listed : [unit];
+  const lessons = [...new Set(review ? [unit] : [...decodeUnits, unit])].flatMap((u) => {
     const learned = learnedLessons(u.id);
     return u.lessons.map((l) => ({ id: l.id, title: l.title, icon: u.icon, read: learned.has(l.id) }));
   });
   const left = lessons.filter((l) => !l.read);
   const state = doorState(chapter.id);
-  return { ...state, door, unit, decodeUnit, lessons, left, ready: left.length === 0, open: state.decode && state.comprehend };
+  return { ...state, door, unit, decodeUnits, lessons, left, ready: left.length === 0, open: state.decode && state.comprehend };
 }
 
-/** 单元里的词 → 图和出自哪一课：先看词墙，再看每篇文章的生词表 */
-function wordInfo(unit) {
+/** 几个单元里的词 → 图和出自哪一课：先看词墙，再看每篇文章的生词表 */
+function wordInfo(units) {
   const map = new Map();
-  for (const w of unit.wordWall || []) {
-    map.set(w.word.toLowerCase(), { emoji: w.emoji, lesson: unit.lessons.find((l) => l.id === w.lesson) });
-  }
-  for (const lesson of unit.lessons) {
-    for (const t of lesson.tasks) {
-      for (const v of t.passage?.vocab || []) {
-        const key = v.word.toLowerCase();
-        if (!map.has(key)) map.set(key, { emoji: v.emoji, lesson });
+  for (const unit of units) {
+    for (const w of unit.wordWall || []) {
+      const key = w.word.toLowerCase();
+      if (!map.has(key)) map.set(key, { emoji: w.emoji, lesson: unit.lessons.find((l) => l.id === w.lesson) });
+    }
+    for (const lesson of unit.lessons) {
+      for (const t of lesson.tasks) {
+        for (const v of t.passage?.vocab || []) {
+          const key = v.word.toLowerCase();
+          if (!map.has(key)) map.set(key, { emoji: v.emoji, lesson });
+        }
       }
     }
   }
@@ -64,8 +71,8 @@ function wordInfo(unit) {
 }
 
 /** 解码锁的题：词的顺序打乱；干扰图先挑同一个字母开头的词，只看首字母猜不出来，要往后读 */
-function decodeItems(door, unit) {
-  const info = wordInfo(unit);
+function decodeItems(door, units) {
+  const info = wordInfo(units);
   const words = door.decode.words.map((word) => ({ word, ...info.get(word.toLowerCase()) }));
   return shuffle(words).map((item) => {
     const others = shuffle(words.filter((w) => w !== item));
@@ -95,10 +102,10 @@ function flightLine(f) {
 }
 
 /** 收集到的数据：没打开的锁差在哪儿、回去练什么 */
-function flightData(f, unit) {
+function flightData(f, units) {
   const out = [];
   if (f.decode && !f.decode.open) {
-    const info = wordInfo(unit);
+    const info = wordInfo(units);
     const titles = [...new Set(f.decode.missed.map((w) => info.get(w.toLowerCase())?.lesson?.title).filter(Boolean))];
     out.push(`没认出来的词：${f.decode.missed.join('、')}${titles.length ? ` → 再读一读${titles.map((t) => `《${t}》`).join('')}` : ''}`);
   }
@@ -111,8 +118,36 @@ function flightData(f, unit) {
   return out;
 }
 
+/**
+ * K 年级结业证书（最后一层的门打开以后）：走完几层、每个单元读了几课、词墙上一共多少个词、图鉴里找到几样。
+ * 单元按层排：航行期的、门上解码锁的、这一层的知识单元
+ */
+function certificateHtml(child, date) {
+  const chapters = Object.values(STORY).filter((c) => c.door).sort((a, b) => a.layer - b.layer);
+  const ids = [...new Set(chapters.flatMap((c) => [...(c.voyage || []), c.door.decode.unit, c.unit].flat()))].filter((id) => UNITS[id]);
+  const units = ids.map((id) => ({ unit: UNITS[id], read: UNITS[id].lessons.filter((l) => learnedLessons(id).has(l.id)).length }));
+  const words = new Set(units.flatMap(({ unit }) => (unit.wordWall || []).map((w) => w.word.toLowerCase())));
+  const found = chapters.reduce((n, c) => n + foundDiscoveries(c.id).length, 0);
+  const opened = chapters.filter((c) => doorState(c.id).opened).length;
+  const stat = (n, label) => `<li><b>${n}</b><span>${label}</span></li>`;
+  return `
+    <div class="certificate">
+      <div class="cert-head">🎓 K 年级结业证书</div>
+      <p class="cert-name">${esc(child || '小宇航员')}</p>
+      <p>走完了 Bix 星的 ${opened} 层，打开了每一层的门</p>
+      <ul class="cert-stats">
+        ${stat(units.length, '个单元')}
+        ${stat(units.reduce((n, u) => n + u.read, 0), '课')}
+        ${stat(words.size, '个词')}
+        ${stat(found, '样发现')}
+      </ul>
+      <ul class="cert-units">${units.map(({ unit, read }) => `<li>${esc(unit.icon || '')} ${esc(unit.titleZh || unit.title)} <small>${read}/${unit.lessons.length} 课</small></li>`).join('')}</ul>
+      <small class="cert-date">${esc(dayText(date))} · 使命星球</small>
+    </div>`;
+}
+
 export class DoorHud {
-  /** ui：toast、openModal（开门以后的解锁卡片）、closePanel、date（今天的日期）、descend（下到下一层：播放下一章的开场） */
+  /** ui：toast、openModal（开门以后的解锁卡片）、closePanel、date（今天的日期）、child（孩子的名字）、descend（下到下一层：播放下一章的开场） */
   constructor(ui) {
     this.ui = ui;
     this.view = null;
@@ -178,10 +213,10 @@ export class DoorHud {
     const { door, flights } = s;
     const last = flights[flights.length - 1];
     let detail;
-    if (s.opened) detail = `门已经打开${door.unlock ? `，解锁了${door.unlock.name}` : ''}。一共试飞 ${flights.length} 次`;
+    if (s.opened) detail = `门已经打开${door.unlock ? `，解锁了${door.unlock.name}` : ''}。一共试飞 ${flights.length} 次${door.to.final ? '。这是最后一层：K 年级的单元都学完了，门口可以看结业证书' : ''}`;
     else if (!s.ready) detail = `读完这一层的 ${s.lessons.length} 课才能试飞，还差：${s.left.map((l) => l.title).join('、')}`;
     else if (!last) detail = '这一层的课都读完了，可以去门口试飞了';
-    else detail = `试飞 ${flights.length} 次。最近一次（${dayText(last.date)}）：${[flightLine(last), ...flightData(last, s.decodeUnit)].join('；')}`;
+    else detail = `试飞 ${flights.length} 次。最近一次（${dayText(last.date)}）：${[flightLine(last), ...flightData(last, s.decodeUnits)].join('；')}`;
     return `
       <li><div><b>🚪 第 ${this.chapter.layer} 层的门 · 解码锁 ${s.decode ? '🔓' : '🔒'} · 理解锁 ${s.comprehend ? '🔓' : '🔒'}</b>
       <small>${esc(detail)}。门只锁故事，不锁使命任务；试飞不计分，只看孩子自己做的结果</small></div></li>`;
@@ -207,7 +242,8 @@ export class DoorHud {
       const u = door.unlock;
       const next = nextChapterOf(door);
       body = `${u ? `<div class="door-unlocked"><span aria-hidden="true">${esc(u.emoji)}</span><div><b>门已经打开，解锁了${esc(u.name)}</b><small>${esc(u.note)}</small></div></div>` : ''}
-        ${next ? `<button class="btn primary wide door-down" data-act="descend">🛗 下到第 ${door.to.layer} 层 · ${esc(door.to.icon || '')} ${esc(door.to.name)}</button>` : ''}`;
+        ${next ? `<button class="btn primary wide door-down" data-act="descend">🛗 下到第 ${door.to.layer} 层 · ${esc(door.to.icon || '')} ${esc(door.to.name)}</button>` : ''}
+        ${door.to.final ? '<button class="btn primary wide" data-act="certificate">🎓 看结业证书</button>' : ''}`;
     } else if (s.open) {
       body = '<button class="btn primary wide" data-act="unlock">🚪 两把锁都开了，开门！</button>';
     } else if (!s.ready) {
@@ -222,7 +258,7 @@ export class DoorHud {
     return `
       <header>
         <div>
-          <h2>${door.to.layer ? `🚪 通往第 ${door.to.layer} 层` : '🚪 通往'} · ${esc(door.to.icon || '')} ${esc(door.to.name)}</h2>
+          <h2>🚪 通往${door.to.layer ? `第 ${door.to.layer} 层 ·` : ''} ${esc(door.to.icon || '')} ${esc(door.to.name)}</h2>
           <p>两把锁都打开，门就开了。试飞不计分、不扣星星：没打开就收集数据，练完再来。</p>
         </div>
         <button class="icon-btn" data-act="close" aria-label="关闭">✕</button>
@@ -239,7 +275,7 @@ export class DoorHud {
       .slice(0, 5)
       .map((f) => {
         const ok = (!f.decode || f.decode.open) && (!f.comprehend || f.comprehend.open);
-        const data = flightData(f, s.decodeUnit);
+        const data = flightData(f, s.decodeUnits);
         return `
           <li class="${ok ? 'ok' : ''}">
             <b>${ok ? '✅' : '🧪'} 试飞 ${f.n} · ${esc(dayText(f.date))}</b>
@@ -266,7 +302,7 @@ export class DoorHud {
       steps,
       step: 0,
       record: { n: s.flights.length + 1, date },
-      decode: steps.includes('decode') ? { items: decodeItems(s.door, s.decodeUnit), i: 0, picks: [] } : null,
+      decode: steps.includes('decode') ? { items: decodeItems(s.door, s.decodeUnits), i: 0, picks: [] } : null,
       comprehend: steps.includes('comprehend') ? { ticket: tickets[tried % tickets.length], qi: 0, stage: 'answer', results: [], collapsed: false } : null,
     };
     sound.click();
@@ -438,7 +474,7 @@ export class DoorHud {
     const last = f.step === f.steps.length - 1;
     const name = kind === 'decode' ? '🔤 解码锁' : '🔍 理解锁';
     const score = kind === 'decode' ? `认出了 ${r.right} / ${r.total} 个词${r.open ? '' : `，要 ${r.need} 个`}` : `${r.total} 道题里过了 ${r.right} 道${r.open ? '' : '，要全部答对并找到证据'}`;
-    const data = flightData({ [kind]: r }, doorStatus(this.chapter).decodeUnit);
+    const data = flightData({ [kind]: r }, doorStatus(this.chapter).decodeUnits);
     if (r.open) sound.complete();
     this.#show(`
       ${this.#flightHead(name)}
@@ -459,7 +495,7 @@ export class DoorHud {
     this.flight = null;
     this.render();
     const open = s.decode && s.comprehend;
-    const data = flightData(f.record, s.decodeUnit);
+    const data = flightData(f.record, s.decodeUnits);
     if (open) sound.complete();
     this.#show(`
       <header>
@@ -497,7 +533,7 @@ export class DoorHud {
     const next = nextChapterOf(s.door);
     // 最后一层：通往星核，K 年级学完了；其他层：可以下到下一层（还没做好的层显示“正在建造中”）
     const ending = to.final
-      ? `<div class="next-layer final">🎓 ${esc(to.note || '走到星核，K 年级就学完了！')}</div>`
+      ? `<div class="next-layer final">🎓 ${esc(to.note || '走到星核，K 年级就学完了！')}</div>${certificateHtml(this.ui.child?.(), this.ui.date())}`
       : next
         ? `<div class="next-layer">${esc(to.icon || '')} 第 ${to.layer} 层 · ${esc(to.name)}：${esc(next.opening.intro || '新的一层在等你')}</div>`
         : `<div class="next-layer">${esc(to.icon || '')} 第 ${to.layer} 层 · ${esc(to.name)}正在建造中，敬请期待！</div>`;
@@ -508,7 +544,11 @@ export class DoorHud {
         ${u ? `<p>解锁了 <b>${esc(u.name)}</b></p><p class="unlock-note">${esc(u.note)}</p>` : ''}
         ${ending}
         <div class="modal-actions">
-          ${next ? `<button class="btn ghost" data-action="close-modal">先在这一层逛逛</button><button class="btn primary" data-action="land">🛗 下到第 ${to.layer} 层</button>` : '<button class="btn primary" data-action="close-modal">好耶！</button>'}
+          ${
+            next
+              ? `<button class="btn ghost" data-action="close-modal">先在这一层逛逛</button><button class="btn primary" data-action="land">🛗 下到第 ${to.layer} 层</button>`
+              : `${to.final ? '<button class="btn ghost" data-action="print">🖨️ 打印证书</button>' : ''}<button class="btn primary" data-action="close-modal">好耶！</button>`
+          }
         </div>
       </div>`);
   }
@@ -585,6 +625,15 @@ export class DoorHud {
       case 'descend':
         this.close();
         this.ui.descend();
+        break;
+      case 'certificate':
+        sound.click();
+        this.close();
+        this.ui.openModal(`
+          <div class="modal-card celebrate door-unlock">
+            ${certificateHtml(this.ui.child?.(), this.ui.date())}
+            <div class="modal-actions"><button class="btn ghost" data-action="print">🖨️ 打印证书</button><button class="btn primary" data-action="close-modal">好耶！</button></div>
+          </div>`);
         break;
     }
   }

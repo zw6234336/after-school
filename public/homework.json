@@ -277,6 +277,11 @@
       "id": "unit-earth",
       "unit": "k-care-earth",
       "lessons": "daily"
+    },
+    {
+      "id": "unit-ambassador",
+      "unit": "k-earth-ambassador",
+      "lessons": "daily"
     }
   ]
 }

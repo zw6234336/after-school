@@ -14,10 +14,21 @@ content/
   LICENSE.md                       内容授权：CC BY-NC-SA 4.0
   ATTRIBUTION.md                   来源和署名汇总
   units/
-    k-seasons-weather/unit.json    K 年级 · 四季与天气（改编自 CKLA Domain 8）
-    k-phonics-short-vowels/unit.json   K 年级 · 短元音拼读（原创，5 课）
+    k-phonics-short-vowels/unit.json   第 1 层 · 短元音拼读（原创，5 课）
+    k-seasons-weather/unit.json        第 1 层 · 四季与天气（改编自 CKLA Domain 8）
+    k-phonics-digraphs/unit.json       第 2 层 · 二合字母拼读（原创，4 课）
+    k-five-senses/unit.json            第 2 层 · 五种感官（改编自 CKLA Domain 2）
+    k-phonics-blends/unit.json         第 3 层 · 辅音连读（原创，4 课）
+    k-rhymes-fables/unit.json          第 3 层 · 儿歌和寓言（改编自 CKLA Domain 1）
+    k-phonics-silent-e/unit.json       第 4 层 · 不发音的 e（原创，4 课）
+    k-care-earth/unit.json             第 4 层 · 爱护地球（改编自 CKLA Domain 11）
+    k-earth-ambassador/unit.json       第 5 层 · 地球小大使：全年总复习（原创，5 课）
   story/
-    ch01-weather-station.json      故事第 1 章：第 1 层开场动画
+    ch01-weather-station.json      第 1 层 · 气象站（开场、闲逛、衣柜、门）
+    ch02-market.json               第 2 层 · 集市
+    ch03-library.json              第 3 层 · 图书馆
+    ch04-design.json               第 4 层 · 设计院
+    ch05-council.json              第 5 层 · 星核议会（最后一层，门通往星核）
   wordlists/
     dolch.json                     Dolch 高频词表（公有领域），检查开场字幕用
 ```
@@ -194,6 +205,7 @@ content/
     "standard": "RF.K.3",
     "need": 8,                                               // 认出几个就开
     "unit": "k-phonics-short-vowels",                         // 词来自哪个单元；不写就是这一层的单元。这个单元的课也要读完才能试飞
+                                                             // 写成列表就是总复习（最后一层：前面每一层的拼读单元），只要求读完这一层的单元
     "words": ["cat", "hat", "hen", …]                         // 那个单元词墙或生词表里带图的词，图不能重复
   },
   "comprehend": {                                            // 🔍 理解锁：读 Zib 的短信，答对并找到证据
@@ -211,6 +223,7 @@ content/
 - 解码锁的图来自词墙（`wordWall`）的 `emoji`，词墙里没有的再看文章生词表；词出自哪一课也从这里找，用来告诉孩子“再读一读哪一课”。
 - 短信的题目写法和普通阅读题一样，但每道题都要有 `evidence`。短信正文只能用高频词、这个单元文章里的词、前面几层学过的词和 `comprehend.vocab` 里的词。
 - `unlock.id` 决定开门以后升起来的三维建筑，见 `src/bix.js`；第 1 层是 `weather-tower`。
+- 最后一层的 `to` 写 `{ "name": "星核", "final": true, "note": "解锁卡片上的话" }`：开门以后的卡片和门口会出现 K 年级结业证书（走完几层、每个单元读了几课、词墙一共多少个词、图鉴找到几样），可以打印。
 
 ## 检查内容
 
