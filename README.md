@@ -316,7 +316,7 @@ npx wrangler login
 npm run deploy
 ```
 
-部署完成后地址是 `https://after-school.<你的子域>.workers.dev`，也可以在 Cloudflare 后台给它绑定自己的域名。修改 `homework.json` 后重新运行 `npm run deploy` 即可更新作业。
+部署完成后地址是 <https://afterschool.cc>（`wrangler.jsonc` 的 `routes` 绑定了 `afterschool.cc` 和 `www.afterschool.cc`，部署时自动建 DNS 记录和证书；换成自己的域名时改这里，域名要托管在同一个 Cloudflare 账号下）。修改 `homework.json` 后重新运行 `npm run deploy` 即可更新作业。
 
 > 也可以在 Cloudflare 后台 **Workers & Pages → 创建 → 导入 Git 仓库** 连接这个 GitHub 仓库，构建命令填 `npm run build`，部署命令填 `npx wrangler deploy`，之后每次 push 自动部署。
 
