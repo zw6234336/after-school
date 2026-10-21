@@ -3080,6 +3080,102 @@ body.cinematic .toast {
   color: var(--ink-soft);
 }
 
+.next-layer.final {
+  border-color: rgba(255, 209, 102, 0.5);
+  color: var(--gold);
+}
+
+/* K 年级结业证书：最后一层的门打开以后 */
+.certificate {
+  margin: 16px auto 0;
+  padding: 18px 16px 14px;
+  max-width: 30em;
+  border-radius: 18px;
+  border: 2px solid rgba(255, 209, 102, 0.55);
+  background: radial-gradient(circle at 50% 0%, rgba(255, 209, 102, 0.16), transparent 70%), rgba(255, 255, 255, 0.04);
+  text-align: center;
+}
+
+.certificate p {
+  margin: 4px 0;
+  color: var(--ink-soft);
+}
+
+.cert-head {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+}
+
+.certificate .cert-name {
+  margin-top: 8px;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.cert-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 14px 0 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.cert-stats li {
+  padding: 8px 4px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.cert-stats b {
+  display: block;
+  font-size: 22px;
+  color: var(--gold);
+}
+
+.cert-stats span {
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.cert-units {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.cert-units li {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 13px;
+}
+
+.cert-units small {
+  color: var(--ink-faint);
+}
+
+.cert-date {
+  color: var(--ink-faint);
+}
+
+/* 打印证书：只印证书，白底深色字（写在证书样式后面，才能盖住上面的颜色） */
+@media print {
+  .door-unlock > :not(.certificate) { display: none; }
+  .certificate { border-color: #c9a227; background: #fff; }
+  .certificate p, .cert-units small, .cert-date, .cert-stats span { color: #444; }
+  .cert-head, .cert-stats b { color: #9a7400; }
+  .certificate .cert-name { color: #000; }
+  .cert-stats li, .cert-units li { background: #f6f1e0; color: #000; }
+}
+
 /* 弹窗里换内容（试飞换题、衣柜换衣服）时卡片不再弹一下 */
 .modal-card.still {
   animation: none;

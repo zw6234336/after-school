@@ -87,6 +87,7 @@ export class UI {
       openModal: (html) => this.#openModal(html),
       closePanel: () => this.closePanel(),
       date: () => this.homework.date,
+      child: () => this.homework.child,
       descend: () => this.#land(),
     });
     this.door.setView(scene);

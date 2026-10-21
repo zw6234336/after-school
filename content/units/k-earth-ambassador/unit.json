@@ -1,0 +1,466 @@
+{
+  "id": "k-earth-ambassador",
+  "grade": "K",
+  "title": "Earth Ambassador",
+  "titleZh": "地球小大使",
+  "icon": "🎖️",
+  "color": "#ffd166",
+  "question": "What did I learn this year, and how can I share it?",
+  "questionZh": "这一年我学到了什么？怎样讲给别人听？",
+  "license": "CC BY-NC-SA 4.0",
+  "wordWall": [
+    { "word": "council", "meaning": "议会", "emoji": "🏛️", "lesson": "l1-weather" },
+    { "word": "meteorologist", "meaning": "气象学家", "emoji": "🌦️", "lesson": "l1-weather" },
+    { "word": "indoors", "meaning": "在屋里", "emoji": "🏠", "lesson": "l1-weather" },
+    { "word": "senses", "meaning": "感官", "emoji": "🖐️", "lesson": "l2-senses" },
+    { "word": "tongue", "meaning": "舌头", "emoji": "👅", "lesson": "l2-senses" },
+    { "word": "ant", "meaning": "蚂蚁", "emoji": "🐜", "lesson": "l3-ant-dove" },
+    { "word": "dove", "meaning": "鸽子", "emoji": "🕊️", "lesson": "l3-ant-dove" },
+    { "word": "leaf", "meaning": "树叶", "emoji": "🍃", "lesson": "l3-ant-dove" },
+    { "word": "problem", "meaning": "难题，麻烦", "emoji": "❓", "lesson": "l4-clean-bix" },
+    { "word": "everywhere", "meaning": "到处", "emoji": "🗺️", "lesson": "l4-clean-bix" },
+    { "word": "ambassador", "meaning": "大使", "emoji": "🎖️", "lesson": "l5-ambassador" },
+    { "word": "special", "meaning": "特别的", "emoji": "✨", "lesson": "l5-ambassador" },
+    { "word": "core", "meaning": "核心", "emoji": "💎", "lesson": "l5-ambassador" }
+  ],
+  "lessons": [
+    {
+      "id": "l1-weather",
+      "title": "The Council Asks About Weather",
+      "genre": "informational",
+      "tasks": [
+        {
+          "id": "ea-l1-read",
+          "title": "Read: The Council Asks About Weather",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "The Council Asks About Weather",
+            "genre": "informational",
+            "text": "Dear Earth friend, We are the Star Council of Bix. On Bix, the weather is always the same. Zib told us that Earth has four seasons: winter, spring, summer, and autumn. In winter, it can be cold and snowy, so people wear mittens. In summer, it can be hot, so people wear sunscreen. On rainy days, people wear rain boots. A meteorologist tells people what the weather will be. In a storm, the best place to be is indoors. The Star Council",
+            "vocab": [
+              { "word": "council", "meaning": "议会", "emoji": "🏛️" },
+              { "word": "seasons", "meaning": "季节", "emoji": "🍂" },
+              { "word": "meteorologist", "meaning": "气象学家", "emoji": "🌦️" },
+              { "word": "indoors", "meaning": "在屋里", "emoji": "🏠" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "Who wrote this letter?",
+              "options": ["the Star Council", "Zib", "Annie"],
+              "a": "the Star Council",
+              "evidence": "We are the Star Council of Bix"
+            },
+            {
+              "q": "What do people wear when it is cold and snowy?",
+              "options": ["mittens", "sunscreen", "rain boots"],
+              "a": "mittens",
+              "evidence": "so people wear mittens"
+            },
+            {
+              "q": "What does a meteorologist do?",
+              "options": ["tells people what the weather will be", "makes snow", "sells rain boots"],
+              "a": "tells people what the weather will be",
+              "evidence": "A meteorologist tells people what the weather will be"
+            },
+            {
+              "q": "Where is the best place to be in a storm?",
+              "options": ["indoors", "under a tree", "in a pool"],
+              "a": "indoors",
+              "evidence": "In a storm, the best place to be is indoors",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "How is the weather on Bix different?",
+              "options": ["It is always the same.", "It snows every day.", "It has four seasons."],
+              "a": "It is always the same.",
+              "evidence": "On Bix, the weather is always the same",
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is this letter mostly about?",
+              "options": ["weather and seasons", "how to fly a rocket", "a birthday party"],
+              "a": "weather and seasons",
+              "evidence": "Zib told us that Earth has four seasons",
+              "standard": "RI.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "ea-l1-report",
+          "title": "Weather report for the council",
+          "standard": "SL.K.4",
+          "note": "当一回天气预报员，把今天的天气讲给星核议会（大人）听：Today it is ___. You should wear ___. 说完请大人点“完成啦”。"
+        }
+      ]
+    },
+    {
+      "id": "l2-senses",
+      "title": "The Council Asks About Senses",
+      "genre": "informational",
+      "tasks": [
+        {
+          "id": "ea-l2-read",
+          "title": "Read: The Council Asks About Senses",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "The Council Asks About Senses",
+            "genre": "informational",
+            "text": "Dear Earth friend, Thank you for the weather report! Here is a funny thing. We on Bix can see, hear, and touch, but we cannot smell or taste. Zib says people have five senses. You smell with your nose. A rose smells sweet. Smoke can tell you there may be a fire. You taste with your tongue. Food can taste sweet, salty, sour, or bitter. Lemons taste sour! Can you teach us more about your senses? The Star Council",
+            "vocab": [
+              { "word": "senses", "meaning": "感官", "emoji": "🖐️" },
+              { "word": "smell", "meaning": "闻", "emoji": "👃" },
+              { "word": "taste", "meaning": "尝", "emoji": "👅" },
+              { "word": "tongue", "meaning": "舌头", "emoji": "👅" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What can the Bix people NOT do?",
+              "options": ["smell and taste", "see and hear", "touch"],
+              "a": "smell and taste",
+              "evidence": "we cannot smell or taste"
+            },
+            {
+              "q": "What do you smell with?",
+              "options": ["your nose", "your tongue", "your ears"],
+              "a": "your nose",
+              "evidence": "You smell with your nose"
+            },
+            {
+              "q": "How do lemons taste?",
+              "options": ["sour", "sweet", "salty"],
+              "a": "sour",
+              "evidence": "Lemons taste sour"
+            },
+            {
+              "q": "What can smoke tell you?",
+              "options": ["There may be a fire.", "It is time to eat.", "It will rain."],
+              "a": "There may be a fire.",
+              "evidence": "Smoke can tell you there may be a fire",
+              "standard": "RI.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "How many senses do people have?",
+              "options": ["five", "three", "two"],
+              "a": "five",
+              "evidence": "people have five senses",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What does the council want you to do?",
+              "options": ["teach them about senses", "tell them a fable", "send them lemons"],
+              "a": "teach them about senses",
+              "evidence": "Can you teach us more about your senses",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "ea-l2-sort",
+          "title": "Sort: Which sense?",
+          "standard": "L.K.5",
+          "questions": [
+            {
+              "q": "🌈 a rainbow",
+              "options": ["👀 see", "👂 hear", "👃 smell", "👅 taste", "✋ touch"],
+              "a": "👀 see",
+              "speak": "a rainbow. Which sense?"
+            },
+            {
+              "q": "🌹 a rose",
+              "options": ["👀 see", "👂 hear", "👃 smell", "👅 taste", "✋ touch"],
+              "a": "👃 smell",
+              "speak": "a rose. Which sense?"
+            },
+            {
+              "q": "🍋 a lemon",
+              "options": ["👀 see", "👂 hear", "👃 smell", "👅 taste", "✋ touch"],
+              "a": "👅 taste",
+              "speak": "a lemon. Which sense?"
+            },
+            {
+              "q": "🔔 a bell",
+              "options": ["👀 see", "👂 hear", "👃 smell", "👅 taste", "✋ touch"],
+              "a": "👂 hear",
+              "speak": "a bell. Which sense?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🪶 a soft feather",
+              "options": ["👀 see", "👂 hear", "👃 smell", "👅 taste", "✋ touch"],
+              "a": "✋ touch",
+              "speak": "a soft feather. Which sense?",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "🥨 a salty pretzel",
+              "options": ["👀 see", "👂 hear", "👃 smell", "👅 taste", "✋ touch"],
+              "a": "👅 taste",
+              "speak": "a salty pretzel. Which sense?",
+              "level": "hard"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l3-ant-dove",
+      "title": "The Ant and the Dove",
+      "genre": "literature",
+      "tasks": [
+        {
+          "id": "ea-l3-read",
+          "title": "Read: The Ant and the Dove",
+          "standard": "RL.K.1",
+          "passage": {
+            "title": "The Ant and the Dove",
+            "genre": "literature",
+            "text": "Once upon a time, an ant went to a river to get a drink. Splash! The ant fell into the water. A dove saw the ant from a tree. The dove dropped a leaf into the river. The ant climbed onto the leaf and got back to land. Later, a man with a net tried to catch the dove. The ant bit the man on his foot. \"Ouch!\" he yelled. The dove heard him and flew away. If you help others, they may help you, too.",
+            "vocab": [
+              { "word": "ant", "meaning": "蚂蚁", "emoji": "🐜" },
+              { "word": "dove", "meaning": "鸽子", "emoji": "🕊️" },
+              { "word": "leaf", "meaning": "树叶", "emoji": "🍃" },
+              { "word": "net", "meaning": "网", "emoji": "🥅" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "Where did the ant fall?",
+              "options": ["into the water", "into a tree", "into a net"],
+              "a": "into the water",
+              "evidence": "The ant fell into the water",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "How did the dove help the ant?",
+              "options": ["It dropped a leaf into the river.", "It gave the ant food.", "It sang a song."],
+              "a": "It dropped a leaf into the river.",
+              "evidence": "The dove dropped a leaf into the river",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "How did the ant help the dove?",
+              "options": ["It bit the man on his foot.", "It flew away.", "It dropped a leaf."],
+              "a": "It bit the man on his foot.",
+              "evidence": "The ant bit the man on his foot",
+              "standard": "RL.K.1"
+            },
+            {
+              "q": "Put the story in order.",
+              "order": ["The ant fell into the water.", "The dove dropped a leaf.", "A man tried to catch the dove.", "The ant bit the man."],
+              "standard": "RL.K.2",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Who are the characters in this story?",
+              "options": ["an ant, a dove, and a man", "a lion and a mouse", "a hare and a tortoise"],
+              "a": "an ant, a dove, and a man",
+              "standard": "RL.K.3",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "How is this story like The Lion and the Mouse?",
+              "options": ["A little animal helps a big friend.", "Both are about rain.", "Both have a race."],
+              "a": "A little animal helps a big friend.",
+              "evidence": "If you help others, they may help you, too",
+              "hint": "想一想：小老鼠救了狮子，小蚂蚁救了鸽子",
+              "standard": "RL.K.9",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "ea-l3-retell",
+          "title": "Retell the fable for the council",
+          "standard": "RL.K.2",
+          "note": "用 First… Next… At last… 把蚂蚁和鸽子的故事讲给大人听；讲完再说一说：它和《The Lion and the Mouse》哪里一样？讲完请大人点“完成啦”。"
+        }
+      ]
+    },
+    {
+      "id": "l4-clean-bix",
+      "title": "Help Bix Stay Clean",
+      "genre": "informational",
+      "tasks": [
+        {
+          "id": "ea-l4-read",
+          "title": "Read: Help Bix Stay Clean",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "Help Bix Stay Clean",
+            "genre": "informational",
+            "text": "Dear Earth friend, We have a problem on Bix. There is trash everywhere! Zib says people on Earth can help. They reduce, reuse, and recycle. They put food scraps in a compost pile, and worms help turn them into soil. They do not litter. They turn off the water and the lights when they are not using them. Little things add up to big things. What should we do first? Please tell us! The Star Council",
+            "vocab": [
+              { "word": "problem", "meaning": "难题，麻烦", "emoji": "❓" },
+              { "word": "everywhere", "meaning": "到处", "emoji": "🗺️" },
+              { "word": "recycle", "meaning": "回收再利用", "emoji": "♻️" },
+              { "word": "compost", "meaning": "堆肥", "emoji": "🟫" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What is the problem on Bix?",
+              "options": ["There is trash everywhere.", "It is too cold.", "There is no water."],
+              "a": "There is trash everywhere.",
+              "evidence": "There is trash everywhere"
+            },
+            {
+              "q": "What do people on Earth do?",
+              "options": ["reduce, reuse, and recycle", "eat, sleep, and play", "run, jump, and swim"],
+              "a": "reduce, reuse, and recycle",
+              "evidence": "They reduce, reuse, and recycle"
+            },
+            {
+              "q": "What helps turn food scraps into soil?",
+              "options": ["worms", "trucks", "rain"],
+              "a": "worms",
+              "evidence": "worms help turn them into soil"
+            },
+            {
+              "q": "When should you turn off the lights?",
+              "options": ["when you are not using them", "when you read a book", "when you eat"],
+              "a": "when you are not using them",
+              "evidence": "They turn off the water and the lights when they are not using them",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What does the council ask you?",
+              "options": ["What should we do first?", "Where is Zib?", "Can you swim?"],
+              "a": "What should we do first?",
+              "evidence": "What should we do first",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "Little things add up to ___.",
+              "options": ["big things", "no things", "bad things"],
+              "a": "big things",
+              "evidence": "Little things add up to big things",
+              "standard": "RI.K.8",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "ea-l4-write-easy",
+          "title": "Write: Tell Bix what to do",
+          "standard": "W.K.1",
+          "write": {
+            "prompt": "What should Bix do first?",
+            "frame": "Bix should ___.",
+            "minWords": 3
+          },
+          "level": "easy"
+        },
+        {
+          "id": "ea-l4-write",
+          "title": "Write: Tell Bix what to do",
+          "standard": "W.K.1",
+          "write": {
+            "prompt": "What should Bix do first? Why?",
+            "frame": "I think Bix should ___ because ___.",
+            "minWords": 8
+          },
+          "level": ["normal", "hard"]
+        }
+      ]
+    },
+    {
+      "id": "l5-ambassador",
+      "title": "You Are an Earth Ambassador",
+      "genre": "informational",
+      "tasks": [
+        {
+          "id": "ea-l5-read",
+          "title": "Read: You Are an Earth Ambassador",
+          "standard": "RI.K.1",
+          "passage": {
+            "title": "You Are an Earth Ambassador",
+            "genre": "informational",
+            "text": "Dear Earth friend, Thank you! You taught us about weather, senses, stories, and taking care of a planet. Now Bix is cleaner, and Zib is very happy. The Star Council wants to give you a special name. You are an Earth Ambassador! An ambassador is a person who helps two places be friends. Please come to the Star Core. Bring all the words you learned. We will have a party for you! The Star Council",
+            "vocab": [
+              { "word": "ambassador", "meaning": "大使", "emoji": "🎖️" },
+              { "word": "special", "meaning": "特别的", "emoji": "✨" },
+              { "word": "core", "meaning": "核心", "emoji": "💎" },
+              { "word": "party", "meaning": "派对", "emoji": "🎉" }
+            ]
+          },
+          "questions": [
+            {
+              "q": "What name does the council give you?",
+              "options": ["Earth Ambassador", "Star Captain", "Bix King"],
+              "a": "Earth Ambassador",
+              "evidence": "You are an Earth Ambassador"
+            },
+            {
+              "q": "What is an ambassador?",
+              "options": ["a person who helps two places be friends", "a kind of rocket", "a big storm"],
+              "a": "a person who helps two places be friends",
+              "evidence": "An ambassador is a person who helps two places be friends",
+              "standard": "RI.K.4"
+            },
+            {
+              "q": "Where does the council ask you to come?",
+              "options": ["to the Star Core", "to the river", "to the market"],
+              "a": "to the Star Core",
+              "evidence": "Please come to the Star Core"
+            },
+            {
+              "q": "What did you teach the council?",
+              "options": ["weather, senses, stories, and taking care of a planet", "how to fly a rocket", "how to bake a cake"],
+              "a": "weather, senses, stories, and taking care of a planet",
+              "evidence": "You taught us about weather, senses, stories, and taking care of a planet",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "How is Bix now?",
+              "options": ["cleaner", "dirtier", "colder"],
+              "a": "cleaner",
+              "evidence": "Now Bix is cleaner",
+              "level": ["normal", "hard"]
+            },
+            {
+              "q": "What is this letter mostly about?",
+              "options": ["thanking you and giving you a special name", "how to have a party", "the weather on Bix"],
+              "a": "thanking you and giving you a special name",
+              "evidence": "The Star Council wants to give you a special name",
+              "standard": "RI.K.2",
+              "level": "hard"
+            }
+          ]
+        },
+        {
+          "id": "ea-l5-write-easy",
+          "title": "Write: Teach the council",
+          "standard": "W.K.2",
+          "write": {
+            "prompt": "What can you teach the council?",
+            "frame": "I can teach you about ___.",
+            "minWords": 4
+          },
+          "level": "easy"
+        },
+        {
+          "id": "ea-l5-write",
+          "title": "Write: Teach the council",
+          "standard": "W.K.2",
+          "write": {
+            "prompt": "Write to the council about one thing on Earth.",
+            "frame": "Dear Council, On Earth, ___. Your friend, ___",
+            "minWords": 10
+          },
+          "level": ["normal", "hard"]
+        },
+        {
+          "id": "ea-l5-speech",
+          "title": "Earth Ambassador speech",
+          "standard": "SL.K.4",
+          "note": "当一回地球小大使：站起来，对家人大声讲这一年学到的三件事（天气、感官、故事、爱护地球……任选三样），每件用 I learned about ___. 开头。讲完请大人点“完成啦”。"
+        }
+      ]
+    }
+  ]
+}
