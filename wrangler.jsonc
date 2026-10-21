@@ -1,10 +1,15 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  // 部署后的地址：https://after-school.<你的子域>.workers.dev
+  // 部署后的地址：https://afterschool.cc（见下面的 routes）
   "name": "after-school",
   "compatibility_date": "2026-10-01",
   // 纯静态站点：只上传 vite 打包出来的 dist 目录
   "assets": {
     "directory": "./dist"
-  }
+  },
+  // 自己的域名（afterschool.cc 托管在同一个 Cloudflare 账号下），部署时自动建 DNS 记录和证书
+  "routes": [
+    { "pattern": "afterschool.cc", "custom_domain": true },
+    { "pattern": "www.afterschool.cc", "custom_domain": true }
+  ]
 }
